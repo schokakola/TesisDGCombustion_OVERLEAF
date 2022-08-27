@@ -1,0 +1,453 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% symbols a%%
+\newglossaryentry{interface}{
+	name=\ensuremath{\mathfrak{I}},
+	description={Interface},
+	sort={ag}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{bulk}{
+	name=\ensuremath{\gls{domain} \setminus \gls{interface}},
+	description={Bulk},
+	sort={af}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{domainA}{
+	name=\ensuremath{\mathfrak{A}},
+	description={Bulk phase A},
+	sort={ac}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{domainB}{
+	name=\ensuremath{\mathfrak{B}},
+	description={Bulk phase B},
+	sort={ad}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{domain}{
+	name=\ensuremath{\Omega},
+	description={Domain of interest, computational domain},
+	sort={aa}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{boundary}{
+	name=\ensuremath{\partial \gls{domain}},
+	description={Domain boundary},
+	sort={ab}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{normal}{
+	name=\ensuremath{\vectr{n}},
+	description={Normal vector},
+	sort={al}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{normalI}{
+	name=\ensuremath{\vectr{n}_{\gls{interface}}},
+	description={Interface normal vector},
+	sort={ak}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{normalB}{
+	name=\ensuremath{\vectr{n}_{\gls{boundary}}},
+	description={Outer boundary normal vector},
+	sort={aj}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{projT}{
+	name=\ensuremath{\tensr{P}},
+	description={Projection tensor},
+	sort={ao}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{projI}{
+	name=\ensuremath{{\gls{projT}}_{\gls{interface}}},
+	description={Interface projection tensor},
+	sort={an}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{tangent}{
+	name=\ensuremath{\vectr{\tau}},
+	description={Tangent vector},
+	sort={am}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{spc}{
+	name=\ensuremath{\mathfrak{s}},
+	description={Bulk phase, species},
+	sort={ae}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{velocI}{
+	name=\ensuremath{\vectr{u}_{\gls{interface}}},
+	description={Material interface velocity vector},
+	sort={aib}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{surfV}{
+	name=\ensuremath{\vectr{w}},
+	description={Singular surface velocity vector},
+	sort={ah}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{surfVn}{
+	name=\ensuremath{w},
+	description={Normal component of the singular surface velocity},
+	sort={aia}, type=symbols, symbol=[$-$]
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% symbols b%%
+
+\newglossaryentry{curv}{
+	name=\ensuremath{\kappa},
+	description={Mean curvature},
+	sort={bk}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{flux}{
+	name=\ensuremath{\vectr{f}},
+	description={Flux vector},
+	sort={bf}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{stressT}{
+	name=\ensuremath{\tensr{S}},
+	description={Stress tensor},
+	sort={bm}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{deformT}{
+	name=\ensuremath{\tensr{D}},
+	description={Rate of deformation tensor},
+	sort={bl}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{veloc}{
+	name=\ensuremath{\vectr{u}},
+	description={Velocity vector},
+	sort={ba}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{kinE}{
+	name=\ensuremath{ e_{\textrm{kin}} },
+	description={Kinetic energy},
+	sort={bc}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{surfE}{
+	name=\ensuremath{ e_{\gls{surfT}} },
+	description={Surface energy},
+	sort={bd}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{press}{
+	name=\ensuremath{p},
+	description={Pressure},
+	sort={bb}, type=symbols, symbol=[$-$]
+}
+%\newglossaryentry{dens}{
+%	name=\ensuremath{\rho},
+%	description={Density},
+%	sort={bg}, type=symbols, symbol=[$-$]
+%}
+%\newglossaryentry{visc}{
+%	name=\ensuremath{\mu},
+%	description={Dynamic viscosity},
+%	sort={bh}, type=symbols, symbol=[$-$]
+%}
+%\newglossaryentry{kinVisc}{
+%	name=\ensuremath{\nu},
+%	description={Kinematic viscosity},
+%	sort={bi}, type=symbols, symbol=[$-$]
+%}
+\newglossaryentry{surfT}{
+	name=\ensuremath{\sigma},
+	description={Surface tension coefficient},
+	sort={bj}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{fprop}{
+	name=\ensuremath{\psi},
+	description={General field/physical property},
+	sort={be}, type=symbols, symbol=[$-$]
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% symbols c%%
+\newglossaryentry{ffc}{
+	name=\ensuremath{\beta},
+	description={Coefficient of friction},
+	sort={ch}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{cLine}{
+	name=\ensuremath{L},
+	description={Contact line},
+	sort={cc}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{normalL}{
+	name=\ensuremath{\vectr{n}_{\gls{cLine}}},
+	description={Contact line normal vector},
+	sort={cf}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{cLineV}{
+	name=\ensuremath{U_{\gls{cLine}}},
+	description={Contact line velocity},
+	sort={cg}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{cAngle}{
+	name=\ensuremath{\theta},
+	description={Apparent contact angle},
+	sort={ca}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{cAngleStat}{
+	name=\ensuremath{{\gls{cAngle}}_{\textrm{stat}}},
+	description={Static contact angle},
+	sort={cb}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{lSlip}{
+	name=\ensuremath{l_\textrm{s}},
+	description={Slip length},
+	sort={ce}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{lcap}{
+	name=\ensuremath{l_{\textrm{cap}}},
+	description={Capillary length},
+	sort={cd}, type=symbols, symbol=[$-$]
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% symbols d%%
+
+\newglossaryentry{mflux}{
+	name=\ensuremath{\dot{m}},
+	description={Mass transfer rate},
+	sort={df}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{hVap}{
+	name=\ensuremath{h_{\textrm{vap}}},
+	description={Enthalpy/(latent) heat of vaporization},
+	sort={dg}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{Tsat}{
+	name=\ensuremath{T_{\textrm{sat}}},
+	description={Saturation temperature},
+	sort={db}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{hflux}{
+	name=\ensuremath{\vectr{q}},
+	description={Heat flux vector},
+	sort={dc}, type=symbols, symbol=[$-$]
+}
+%\newglossaryentry{temp}{
+%	name=\ensuremath{T},
+%	description={Temperature},
+%	sort={da}, type=symbols, symbol=[$-$]
+%}
+\newglossaryentry{hcap}{
+	name=\ensuremath{c},
+	description={Specific heat capacity},
+	sort={dd}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{tcond}{
+	name=\ensuremath{k},
+	description={Thermal conductivity},
+	sort={de}, type=symbols, symbol=[$-$]
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% symbols e%%
+
+\newglossaryentry{grdSz}{
+	name=\ensuremath{h},
+	description={Numerical mesh size},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{grid}{
+	name=\ensuremath{\mathfrak{K}_{\gls{grdSz}}},
+	description={Numerical mesh},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{gridX}{
+	name=\ensuremath{\mathfrak{K}_{\gls{grdSz}}^{\textrm{X}}},
+	description={Numerical cut-cell mesh},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{gridCC}{
+	name=\ensuremath{\mathfrak{K}_{\textrm{cc}}},
+	description={Set of cut-cells},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{gridNear}{
+	name=\ensuremath{\mathfrak{K}_{\textrm{near}}},
+	description={Set of cut-cell neighbours},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{gridFar}{
+	name=\ensuremath{\mathfrak{K}_{\textrm{far}}},
+	description={Set of far-field cells},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{cell}{
+	name=\ensuremath{K},
+	description={Numerical cell},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{cutcell}{
+	name=\ensuremath{\gls{cell}^{\gls{cut}}},
+	description={Numerical cut-cell},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{cut}{
+	name=\ensuremath{{\textrm{X}}},
+	description={Cut},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{aggTh}{
+	name=\ensuremath{\alpha},
+	description={Aggregation threshold},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{edge}{
+	name=\ensuremath{\Gamma},
+	description={Edge},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{edgeInt}{
+	name=\ensuremath{\gls{edge}_{\textrm{int}}},
+	description={Internal edge},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{edgeD}{
+	name=\ensuremath{\diri{\gls{edge}}},
+	description={Edge imposed with Dirichlet boundary condition},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{edgeN}{
+	name=\ensuremath{\neum{\gls{edge}}},
+	description={Edge imposed with Neumann boundary condition},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{normalGam}{
+	name=\ensuremath{\vectr{n}_{\gls{edge}}},
+	description={Edge normal field},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{normalIgam}{
+	name=\ensuremath{\vectr{n}_{\gls{interface},\gls{edge}}},
+	description={Edge normal field including the interface normal vector},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{Pdeg}{
+	name=\ensuremath{k},
+	description={Total degree of the polynomial space},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{brknPspacek}{
+	name=\ensuremath{\mathbb{P}_{\gls{Pdeg}}},
+	description={Broken polynomial space},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{levset}{
+	name=\ensuremath{\varphi},
+	description={Level-set function},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{phiDG}{
+	name=\ensuremath{\gls{levset}^{\textrm{dg}}},
+	description={Level-set function represented by a DG field},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{phi}{
+	name=\ensuremath{\gls{levset}^{\textrm{c0}}},
+	description={Constrained level-set function represented by a DG field},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{testV}{
+	name=\ensuremath{\vectr{v}},
+	description={Test function for the momentum equation},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{testP}{
+	name=\ensuremath{q},
+	description={Test function for the continuity equation},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{testT}{
+	name=\ensuremath{r},
+	description={Test function for the heat equation},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{testF}{
+	name=\ensuremath{\vartheta},
+	description={General test function},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{spaceVkX}{
+	name=\ensuremath{\mathbb{V}_{\vectr{\gls{Pdeg}}}^{\gls{cut}}},
+	description={Sum of broken polynomial spaces},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{pnlty}{
+	name=\ensuremath{\eta},
+	description={Penalty parameter},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{numflux}{
+	name=\ensuremath{\hat{F}},
+	description={Numerical flux},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{basis}{
+	name=\ensuremath{\phi},
+	description={Basis function},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{massM}{
+	name=\ensuremath{\tensr{M}},
+	description={Mass matrix},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{OpM}{
+	name=\ensuremath{\tensr{Op}},
+	description={Operator matrix},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{NoDOF}{
+	name=\ensuremath{N},
+	description={Number of total DOF},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{NoDOFloc}{
+	name=\ensuremath{N_{\gls{Pdeg}}},
+	description={Number of local DOF},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{logEdg}{
+	name=\ensuremath{Edg},
+	description={Logical edge},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{Agg}{
+	name=\ensuremath{Agg},
+	description={Aggregation mesh},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{AggMap}{
+	name=\ensuremath{A},
+	description={Aggregation map},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{dt}{
+	name=\ensuremath{\Delta t},
+	description={Time step size},
+	sort={e}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{velocExt}{
+	name=\ensuremath{\vectr{u}_{\textrm{ext}}},
+	description={Extension-velocity field},
+	sort={e} type=symbols, symbol=[$-$]
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% symbols f%%
+
+\newglossaryentry{peclet}{
+	name=\ensuremath{\textrm{Pe}},
+	description={Peclet number},
+	sort={f}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{laplace}{
+	name=\ensuremath{\textrm{La}},
+	description={Laplace number},
+	sort={f}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{eotvos}{
+	name=\ensuremath{\textrm{Eo}},
+	description={Eötvös number},
+	sort={f}, type=symbols, symbol=[$-$]
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% symbols g%%
+
+\newglossaryentry{waveLen}{
+	name=\ensuremath{\lambda},
+	description={Wavelength},
+	sort={g}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{waveNum}{
+	name=\ensuremath{k},
+	description={Wavenumber},
+	sort={g}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{freq}{
+	name=\ensuremath{\omega},
+	description={Oscillation frequency},
+	sort={g}, type=symbols, symbol=[$-$]
+}

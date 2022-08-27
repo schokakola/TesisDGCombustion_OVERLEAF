@@ -1,0 +1,2 @@
+tikz/output12.pdf: data/CouetteTempDifference_runtimes/xnsec_k2.txt
+tikz/output12.pdf: data/CouetteTempDifference_runtimes/SIMPLE_k2.txt

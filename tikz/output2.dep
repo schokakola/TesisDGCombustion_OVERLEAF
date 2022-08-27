@@ -1,0 +1,8 @@
+tikz/output2.pdf: data/MF_FULL_COMPARISON/T_smooth0.txt
+tikz/output2.pdf: data/MF_FULL_COMPARISON/T_smooth200.txt
+tikz/output2.pdf: data/MF_FULL_COMPARISON/T_smooth100.txt
+tikz/output2.pdf: data/MF_FULL_COMPARISON/T_smooth50.txt
+tikz/output2.pdf: data/MF_FULL_COMPARISON/T_smooth0.txt
+tikz/output2.pdf: data/MF_FULL_COMPARISON/T_smooth200.txt
+tikz/output2.pdf: data/MF_FULL_COMPARISON/T_smooth100.txt
+tikz/output2.pdf: data/MF_FULL_COMPARISON/T_smooth50.txt

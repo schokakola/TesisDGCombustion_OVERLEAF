@@ -1,0 +1,761 @@
+\chapter{Numerical methods}	\label{ch:introduction}
+%\glsresetall
+
+\section{The Discontinous Galerkin method}
+\subsection{Spatial discretization} \label{ssec:SpatDiscretization}
+We start by introducing some standard definitions and notations in the context of DG methods:\cite{kummerExtendedDiscontinuousGalerkin2017} \cite{kikkerFullyCoupledHighorder}
+We define a computational domain $\Omega \subset \mathbb{R}^2$ with a polygonal and simply connected boundary $\partial \Omega$. Our numerical grid is then defined by the set of non-overlapping elements $\mathcal{K} = \{K_1, ..., K_N\}$ with a characteristic mesh size $h$, so that $\Omega$ is the union of all elements, i.e. $\Omega = \bigcup_{i=1}^N K_i$. We define  $\Gamma = \bigcup_j \partial K_j$ as the union of all edges (internal edges and boundary edges) and $\Gamma_I = \Gamma \setminus \partial \Omega$ as the union of all interior edges. 
+For each edge of $\Gamma$ a normal field $\myvector{n}_{\Gamma}$ is defined. Particularly on $\partial \Omega$ is defined as an outer normal and $\vec{n}_\Gamma = \vec{n}_{\partial\Omega}$.
+For each field $\myvector{u} \in C^0\left(\Omega\setminus \Gamma_I\right)$ we define  $\myvector{u}^-$  and  $\myvector{u}^+$, which describe the information in the interior and exterior sides of the cell:
+\begin{align}
+\myvector{u}^- &= \lim_{\xi \searrow 0} \myvector{u}\left(\myvector{x} - \xi \myvector{n}_{\Gamma}\right) \quad \text{for } \myvector{x}\in \Gamma\\
+\myvector{u}^+ &= \lim_{\xi \searrow 0} \myvector{u}\left(\myvector{x} + \xi \myvector{n}_{\Gamma}\right) \quad \text{for } \myvector{x}\in \Gamma_I
+\end{align}
+The jump and mean values of $\myvector{u}$ on inner edges $\Gamma_I$ are defined as:
+\begin{align}
+\llbracket \myvector{u} \rrbracket &= \myvector{u}^+-\myvector{u}^- \\
+\{\myvector{u}\} &= \frac{1}{2} \left(\myvector{u}^-+\myvector{u}^+\right).
+\end{align}
+while the jump and mean values on boundary edges $\partial \Omega$ are:
+\begin{align}
+\llbracket \myvector{u} \rrbracket &= \myvector{u}^- \\
+\{\myvector{u}\} &= \myvector{u}^-.
+\end{align}
+We define the broken polynomial space of total degree $k$ as
+\begin{equation}
+\mathbb{P}_k(\mathcal{K}_h)= \{f \in L^2\left(\Omega\right); \forall K \in \mathcal{K}: f\vert_{K} \text{ is polynomial and deg}\left(f\vert_{K}\right)\leq k \}.
+\label{Eq:PolSpace}
+\end{equation}
+Additionally for $u \in \mathcal{C}^1(\Omega \setminus \Gamma)$ the broken gradient $\nabla_h u$ is defined as:
+\begin{equation}
+\nabla_h u
+= \begin{cases}
+0
+& \text{on }\Gamma\\
+\nabla u
+& \text{elsewhere }
+\end{cases}
+\end{equation}
+The broken divergence  $\nabla_h \cdot u$ is defined analogously. Finally, we define the function space for test and trial functions for $D_v$ dependent variables:
+\begin{equation}
+\mathbb{V}_\myvector{k} = \prod_{i=1}^{D_v} \mathbb{P}_{k_i}(K_h)
+\label{Eq:Vspace}
+\end{equation}
+where $\myvector{k} = \left(k_1,...,k_{D_v}\right)$. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Discretization for a DG Method}
+\label{sec:discretDGmethod}
+
+As an introductory example, following \textcite{hesthaven_nodal_2008}, we are considering the discretization of a general conservation law with a non-linear flux function $\gls{flux}(\gls{fprop})$ for a scalar quantity $\gls{fprop} = \gls{fprop}(\vectr{x},t)$ in $\gls{domain}$ and suitable Dirichlet boundary condition on $\gls{boundary} = \diri{\gls{boundary}}$ and a compatible initial condition $\gls{fprop}_0$. The problem statement reads 
+\begin{subequations}
+	\begin{align}
+	\pDeriv{\gls{fprop}}{t} + \div{\gls{flux}(\gls{fprop})} &= 0, &\vectr{x} \in  \gls{domain},    \label{eq:generalConservLaw}\\
+	\gls{fprop} &= \diri{\gls{fprop}}, &\vectr{x} \in \diri{\gls{boundary}},    
+	\label{eq:generalConservLawBC}\\
+	\gls{fprop}(\vectr{x}, 0) &= \gls{fprop}_0(\vectr{x}), &\vectr{x} \in  \gls{domain}.
+	\label{eq:generalConservLawIC}
+	\end{align}
+	\label{eq:generalConservLawProblem}
+\end{subequations}
+The goal is to find an approximate solution $\gls{fprop} = \gls{fprop}(\vectr{x},t)$ to $\gls{fprop}$ that fulfils the problem \eqref{eq:generalConservLawProblem}. Therefore, the problem domain $\gls{domain}$ is discretized by a numerical mesh $\gls{grid}$ and for each numerical cell $\gls{cell}_j$ we introduce the approximation by a local polynomial basis $\vectr{\gls{basis}}_j = (\gls{basis}_{j,l})_{l=1,...,\gls{NoDOFloc}} \in \gls{brknPspacek}(\{\gls{cell}_j\})$ with a cell-local support $\textrm{supp}(\vectr{\gls{basis}}_j) = \overline{\gls{cell}}_j$ as
+\begin{equation}
+\gls{fprop}_j(\vectr{x},t) = \sum_{l=1}^{N_k} \tilde{\gls{fprop}}_{j,l}(t) \gls{basis}_{j,l}(\vectr{x}) = \tilde{\vectr{\gls{fprop}}}_{j}(t) \cdot \vectr{\gls{basis}}_{j}(\vectr{x}), \quad \vectr{x} \in \gls{cell}_j,
+\label{eq:localApprox}
+\end{equation}
+where the coefficients $\tilde{\vectr{\gls{fprop}}}_{j} = (\tilde{\gls{fprop}}_{j,l})_{l=1,...,\gls{NoDOFloc}}$ denote the unknowns or degrees of freedom (DOF) of the local solution in cell $\gls{cell}_j$. In this work a modal polynomial basis is used, which fulfils the orthogonality condition
+\begin{equation}
+\int_{\gls{cell}_j}  \gls{basis}_{j,m} \gls{basis}_{j,n} \d{V} = \delta_{mn}
+\end{equation}
+with the Kronecker delta $\delta_{mn}$. Inserting the local approximation \eqref{eq:localApprox} into the conservation law \eqref{eq:generalConservLaw} results in a cell-wise residual 
+\begin{equation}
+R_j(\vectr{x},t) = \pDeriv{{\gls{fprop}}_j}{t} + \div{\gls{flux}({\gls{fprop}}_j)}, \quad \vectr{x} \in \gls{cell}_j. %, \forall \gls{cell}_j \in \gls{grid}.
+\label{eq:localRes}
+\end{equation}
+For a Galerkin method, the residual \eqref{eq:localRes} is minimized with respect to the same space as the ansatz functions, i.e. $\gls{brknPspacek}(\{\gls{cell}_j\})$. Thus, we demand for the test functions $\gls{testF}_{j,l} = \gls{basis}_{j,l}$ in each cell $\gls{cell}_j \in \gls{grid}$ that
+\begin{equation}
+\int_{\gls{cell}_j} R_j \gls{testF}_{j,l} \d{V} = \int_{\gls{cell}_j}  \pDeriv{{\gls{fprop}}_j}{t} \gls{basis}_{j,l} + \div{\gls{flux}({\gls{fprop}}_j)} \gls{basis}_{j,l} \d{V} \stackrel{!}{=} 0, \quad \forall \vectr{\gls{basis}}_{j,l}.
+\label{eq:DGminimization}
+\end{equation}
+So, for each cell we end up with a linear system of $\gls{NoDOFloc}$ equations. However so far, no approximate global solution $\gls{fprop} \in \gls{domain}$ can be regained from the minimization in \eqref{eq:DGminimization}. The global solution is assumed to be a piecewise polynomial approximation 
+\begin{equation}
+\gls{fprop}(\vectr{x},t) \approx  \gls{fprop}(\vectr{x},t) = \bigoplus\limits_{j=1}^{J} {\gls{fprop}}_j(\vectr{x},t) = \sum_{j=1}^{J} \sum_{l=1}^{\gls{NoDOFloc}} \tilde{\gls{fprop}}_{j,l}(t) \gls{basis}_{j,l}(\vectr{x}) \in \gls{brknPspacek}(\gls{grid})
+\label{eq:globalApprox}
+\end{equation}
+defined as the direct sum of the $J$ local solutions ${\gls{fprop}}_j$ in \eqref{eq:localApprox}. Here, $\tilde{\gls{fprop}}_{j,l}$, with $j={1,...,J}$ and $l={1,...,\gls{NoDOFloc}}$, denote the total DOF, with $\gls{NoDOF} = J \cdot \gls{NoDOFloc}$, of the global approximate solution $\gls{fprop}$. In order to formulate a global DG method, the spatial term on the right-hand side of equation \eqref{eq:DGminimization} is rewritten in terms of boundary edge integrals $\forall \gls{cell}_j \in \gls{grid}$ using partial integration  
+\begin{equation}
+\int_{\gls{cell}_j}  \pDeriv{{\gls{fprop}}_j}{t} \gls{basis}_{j,l} \d{V} - \int_{\gls{cell}_j} \gls{flux}({\gls{fprop}}_j) \cdot \gradH{\gls{basis}}_{j,l} \d{V} + \oint_{\partial{\gls{cell}}_j} \left( \gls{flux}({\gls{fprop}}_j) \cdot {\gls{normal}}_j \right) \gls{basis}_{j,l} \d{S} = 0, \quad \forall \gls{basis}_{j,l},
+\label{eq:DGfluxFormulation}
+\end{equation}  
+where ${\gls{normal}}_j$ represents the local outward pointing normal for cell ${\gls{cell}}_j$. Note that on the internal edges $\gls{edgeInt}$ the value of $\gls{flux}({\gls{fprop}}_j)$ is multiply defined. Therefore, a numerical flux $\gls{numflux}$ is introduced
+\begin{equation}
+\gls{numflux}(\inn{{\gls{fprop}}_j}, \out{{\gls{fprop}}_j}, \gls{normalGam}) \approx \gls{flux}({\gls{fprop}}_j) \cdot {\gls{normal}}_j,
+\end{equation}
+that uniquely defines the resulting value of both neighbouring values, i.e. $\inn{{\gls{fprop}}_j}$ and $\out{{\gls{fprop}}_j}$ at internal edges $\gls{edgeInt}$. Summing over all cells ${\gls{cell}}_j$, the global minimization problem for $\gls{fprop}(\vectr{x},t), \vectr{x} \in \gls{domain}$ reads: Find $\gls{fprop} \in \gls{brknPspacek}(\gls{grid})$, such that $\forall \gls{testF} = \gls{basis} \in \gls{brknPspacek}(\gls{grid})$
+\begin{equation}
+\int_{\gls{domain}}  \pDeriv{\gls{fprop}}{t} \gls{basis} \d{V} - \int_{\gls{domain}} \gls{flux}(\gls{fprop}) \cdot \gradH{\gls{basis}} \d{V} + \oint_{\gls{edge}} \gls{numflux}(\inn{\gls{fprop}}, \out{\gls{fprop}}, \gls{normalGam}) \jump{\gls{basis}} \d{S} = 0,
+\label{eq:semiDiscWeakForm}
+\end{equation}
+where at $\gls{edgeD}$ the outer value $ \out{\gls{fprop}} = \diri{\gls{fprop}} $ is given by the Dirichlet boundary condition \eqref{eq:generalConservLawBC}. In order to fully discretize the initial boundary value problem \eqref{eq:generalConservLawProblem}, one further needs to discretize the temporal term. This issue is skipped at this point and is discussed in Section \ref{sec:temporalDiscret}. Thus, the current form of \eqref{eq:semiDiscWeakForm} is referred to as the semi-discrete weak formulation of \eqref{eq:generalConservLawProblem}. 
+
+Considering the spatial discretization, the numerical flux $\gls{numflux}$ needs to satisfy certain mathematical and physical properties to ensure stability and convergence of the DG method. In this work the stability is defined in the continuous setting via the energy estimate 
+\begin{equation}
+\norm{\gls{fprop}(\vectr{x},t)}_{\gls{domain}}^2 \leq \norm{\gls{fprop}(\vectr{x},0)}_{\gls{domain}}^2, \quad \forall t \geq 0,
+\label{eq:energyEstimate}
+\end{equation}
+where homogenous Dirichlet conditions are assumed. Thus, stability is given, if the energy  $\norm{\gls{fprop}(\vectr{x},t)}_{\gls{domain}}^2$ only decreases in the absence of an inflow. 
+%A further discussion can be found in Section \ref{sec:stabilityEnergyConserv}. 
+Two properties need to be fulfilled in order to proof that the discrete problem \eqref{eq:semiDiscWeakForm} satisfies the discrete equivalent of the energy estimate in \eqref{eq:energyEstimate}. The numerical flux $\gls{numflux}$ is required to be a function that is Lipschitz continuous and monotonic, see \textcite{di_pietro_mathematical_2012} for the proof. Furthermore, it is obvious that the DG method needs to regain a unique approximate solution to the underlying problem. Thus, $\gls{numflux}$ satisfies the following consistency property 
+\begin{equation}
+\gls{numflux}(a,a,\gls{normal}) = \gls{flux}(a) \cdot \gls{normal}, \quad \forall a \in \mathbb{R}. 
+\label{eq:consistency}
+\end{equation}
+A direct consequence of \eqref{eq:consistency} is that the weak formulation \eqref{eq:semiDiscWeakForm} is directly fulfilled for $\gls{fprop} = \gls{fprop}$. Since considering a general conservation law in its conservative form, one further requires that $\gls{numflux}$ regains the global conservation property, i.e. the total amount of $\gls{fprop}$ only changes due to fluxes across the domain boundary $\gls{boundary}$, by satisfying     
+\begin{equation}
+\gls{numflux}(a,b,\gls{normal}) = -\gls{numflux}(a,b,-\gls{normal}), \quad \forall a,b \in \mathbb{R}. 
+\label{eq:conservativity}
+\end{equation}
+The specific form of a suitable numerical flux $\gls{numflux}$ is presented in Section \ref{sec:spatialDiscret}, where the spatial discretization of the two-phase flow problem is discussed. 
+
+%\todo[inline]{convergence property}
+
+Note that the system \eqref{eq:semiDiscWeakForm} can be written in a shorten matrix formulation as 
+\begin{equation}
+{\gls{massM}} \deriv{\tilde{\vectr{\gls{fprop}}}}{t} + \gls{OpM}(\tilde{\vectr{\gls{fprop}}}) = \vectr{b},
+\label{eq:discretMatrixForm}
+\end{equation}
+where the sought-after coefficients are given as the solution vector $\tilde{\vectr{\gls{fprop}}} = \{ \tilde{\gls{fprop}}_{1,1}, \tilde{\gls{fprop}}_{1,2}, \allowbreak ..., \allowbreak \tilde{\gls{fprop}}_{j,n}, \allowbreak ..., \allowbreak \tilde{\gls{fprop}}_{J,\gls{NoDOFloc}} \} \in \mathbb{R}^{\gls{NoDOF}}$. The mass matrix ${\gls{massM}} \in \mathbb{R}^{\gls{NoDOF} \times \gls{NoDOF}}$ has a block-diagonal structure with 
+\begin{equation}
+{\gls{massM}} = \left[ \begin{array}{cccc}
+{\gls{massM}}_{1} & 0 & \cdots & 0 \\
+0 & {\gls{massM}}_{2} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & {\gls{massM}}_{J}
+\end{array} \right],
+\end{equation} 
+where the cell-local mass matrix ${\gls{massM}}_j$ is defined by
+\begin{equation}
+({\gls{massM}}_j)_{m,n} = \int_{\gls{cell}_j} \gls{basis}_{j,m} \gls{basis}_{j,n} \d{V} = \int_{\gls{cell}_j} \vectr{\gls{basis}}_j \otimes \vectr{\gls{basis}}_j \d{V}.
+\label{eq:massMatrix}
+\end{equation} 
+The cell-local Operator matrix $\gls{OpM}_j$ is given by 
+\begin{equation}
+(\gls{OpM}_j)_{m,n} = - \int_{\gls{cell}_j} \gls{flux}(\tilde{{\gls{fprop}}}_{j,n} {\gls{basis}}_{j,n}) \cdot \gradH{\gls{basis}}_{j,m} \d{V} + \oint_{\partial{\gls{cell}}_j} \gls{numflux}(\tilde{{\gls{fprop}}}_{j,n}, \tilde{{\gls{fprop}}}_{j^{\ast},n},\gls{normalI}) \gls{basis}_{j,m} \d{S},
+\label{eq:genOpMatrix}
+\end{equation}
+where $j^{\ast}$ denotes the index of a neighbouring cell to $\gls{cell}_j$. Like the mass matrix, the operator matrix exhibits a block-diagonal structure, but including secondary diagonals due to the coupling with neighbouring cells over the numerical fluxes $\gls{numflux}$. The right-hand side $\vectr{b}$ incorporates the given Dirichlet boundary condition value $\diri{\gls{fprop}}$.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Discontinuous Galerkin discretization of the finite reaction rate problem}
+We start by presenting the DG discretization of the finite reaction system defined by \crefrange{eq:LowMachConti}{eq:LowMachMassBalance}. We define $\vec{Y}' = \left(Y_1,\dots,Y_{ns-1}\right)$ as the vector containing the first $(n_s-1)$ mass fractions and $\vec{s} = \left(s_1, \dots, s_{ns-1} \right)$ as the vector containing the test functions for the first $(n_s-1)$  mass fraction equations. The discretized form of \cref{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} is obtained by multiplying each equation by a test function, integrating it over an element $K$, applying integration by parts and finally using an adequate numerical flux for each term. Note that the convective and diffusive terms of the temperature scalars $T$, mass fraction $Y_\alpha$ and mixture fraction $z$ have the same form, so they share the same expression in their discretized form.
+In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition, \cite{babuskaFiniteElementMethod1973} we use a mixed order formulation, where polynomials of order $k$ for velocity, temperature and mass fractions, and of degree $k' = k-1$ for pressure are used.  Finally the discretized problem can be written as: find the numerical solution $(p_h,\vec{u}_h, T_h, \MFVecPrima_h) \in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h, r_h, \mathbf{s}_h) \in \mathbb{V}_\myvector{k}$ we have:
+\begin{subequations}
+	\begin{gather} 
+	\ContDis = \mathcal{B}^1(q_h),\label{DiscretizedConti} \\
+	\MomConv + \MomPres + \frac{1}{\Reynolds}\MomDiff + \frac{1}{\Froude^2}\MomSource = \mathcal{B}^2(\vec{v}_h), \label{DiscretizedMomentum} \\
+	\mathcal{S}^C\left(\vec{u}_h,T_h,r_h, \rhoh\right) + \frac{1}{\Reynolds~\Prandtl}\mathcal{S}^D\left(T_h,r_h,k/c_p(T_h)\right) + \text{H}~\Da ~ \mathcal{S}^S\left(r_h, \heatRelease(T_h,\vec{Y}_h), \rateReac(T_h,\vec{Y}_h),\cph\right) = \mathcal{B}^3(r_h), \label{DiscretizedEnergy} \\
+	\mathcal{S}^C\left(\vec{u}_h,\Yi, s_{\alpha h}, \rhoh\right) + \frac{1}{\Reynolds~\Prandtl~\Lewis_\alpha}\mathcal{S}^D\left(\Yi,s_{\alpha h},\rhodh\right) + \Da \mathcal{M}^S_\alpha\left(s_{\alpha h},\rateReac(T_h,\vec{Y}_h )\right) = \mathcal{B}^3(s_{\alpha h}). \label{DiscretizedMassFractions} 
+	\end{gather}\label{eqs:variatProblemFull}
+\end{subequations} 
+where the index $\alpha$ takes values $\alpha = 1, \dots,~(n_s - 1)$. The $n_s$-th component mass fraction $Y_{n_s}$ is calculated using \cref{eq:MassFractionConstraint}.
+\subsubsection{Discontinuous Galerkin discretization of the flame sheet problem}
+Discretizing the flame sheet problem given by \crefrange{eq:MixtFracConti2}{eq:MixtFracMF} proceeds in a similar way. Due to the similarity of the mass fraction equation and the mixture fraction equation the discretization is analogous. Again, we use a mixed order formulation of polynomials of degree $k$ for velocity and mixture fraction, and of degree $k-1$ for pressure. The resulting problem reads: find the numerical solution $(p_h,\vec{u}_h,z_h)\in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h,r_h)\in \mathbb{V}_\myvector{k}$ we have: 
+\begin{subequations}
+	\begin{gather} 
+	\mathcal{C}\left(\vec{u}_h,q_h, \rho(z_h)\right)  =\mathcal{B}^1(q_h), \label{DiscretizedConti2} \\
+	\mathcal{U}^C\left(\vec{w}_h,\vec{u}_h,\vec{v}_h, \rho(z_h)\right)+ 	\mathcal{U}^P\left(p_h,\vec{v}_h\right) + 	 \frac{1}{\Reynolds}\mathcal{U}^D\left(\vec{u}_h,\vec{v}_h,\mu(z_h)\right)  + \frac{1}{\Froude^2}\mathcal{U}^S\left(\rho(z), \vec{v}_h\right)  =\mathcal{B}^2(\vec{v}_h), \label{DiscretizedMomentum2} \\
+	{S}^C\left(\vec{u}_h,z_h,r_h, \rho(z_h)\right) + \frac{1}{\Reynolds~\Prandtl}\mathcal{S}^D\left(z_h,r_h,\rho D(z_h)\right) = \mathcal{B}^3(r_h). \label{DiscretizedEnergy2}
+	\end{gather}\label{eqs:variatFS}\\
+\end{subequations}
+Note that density and transport parameters are dependent on the mixture fraction $z$. The evaluation of those parameters is done as mentioned in  \cref{ssec:FlameSheet} and solved iteratively using a Newton-Dogleg type method as shown later in \cref{sec:newton}
+\subsubsection{Definitions of nonlinear forms}
+We show in the following the nonlinear forms used in this work. Regarding the choice of fluxes, we follow the "best practices" known in literature for the incompressible Navier-Stokes equation.
+It is known \cite{pietroMathematicalAspectsDiscontinuous2012,giraultDiscontinuousGalerkinMethod2004} that central difference fluxes for the pressure gradient and velocity divergence, combined with a coercive form for the viscous terms, e.g. symmetric interior penalty, gives a stable discretization for the Stokes equation. Furthermore, it is known that for all kinds of convective terms, a numerical flux which transports information in characteristic direction, e.g. Upwind, Lax-Friedrichs or Local-Lax-Friedrichs, must be used. We opted for the last one in our implementation, as it offers a good compromise between accuracy and stability.
+\paragraph{Continuity equation}
+We use a central difference flux for the discretization of the continuity equation: 
+\begin{equation}
+\mathcal{C}(\vec{u},q, \rho)  =  \oint_{\GammaI \cup\GammaN\cup \GammaND\cup \GammaP}{\mean{\rho\vec{u} }\cdot \vec{n}_\Gamma\jump{q} \dS} - \int_{\Omega}{\rho \vec{u}\cdot \nabla_h q} \dV.  \label{eq:Conti}
+\end{equation}
+The density in \cref{eq:Conti} is evaluated as a function of the temperature and mass fractions using the equation of state (\cref{eq:ideal_gas}). The term $\mathcal{B}^1$ on the right hand sides of \cref{DiscretizedConti} and \cref{DiscretizedConti2}  contains the Dirichlet boundary conditions:
+\begin{equation}
+\mathcal{B}^1(q) =  -\oint_{\GammaD\cup \GammaDW}{q(\rho_{\text{D}} \vec{u}_{\text{D}} \cdot \normalBoundary). \dS}
+\end{equation}
+The density at the boundary  $\rho_{\text{D}}$ is evaluated with \cref{eq:ideal_gas} using the corresponding Dirichlet values of temperature and mass fractions.
+\paragraph{Momentum equations}
+The convective term of the momentum equations is discretized using a Lax-Friedrichs flux
+\begin{equation}
+\mathcal{U}^C(\vec{w},\vec{u},\vec{v}, \rho)=  \oint_{\Gamma}{\left( \mean{\rho\vec{u}\otimes\vec{w} }\vec{n}_\Gamma + \frac{\gamma_1}{2}\jump{\vec{u}}\right)\cdot\jump{\vec{v}} \dS} 
+-\int_{\Omega}({\rho\vec{u}\otimes\vec{w}}):\nabla_h\vec{v} d\text{V}.
+\label{eq:Mom_convective}\\
+\end{equation}
+The Lax-Friedrichs parameter $\gamma_1$ is calculated as \cite{kleinHighorderDiscontinuousGalerkin2016}
+\begin{equation}
+\gamma_1  = \max \left\{2 \overline{\rho^+} |\overline{\vec{u}^+} \cdot \vec{n}^+|,2 \overline{\rho^-} |\overline{\vec{u}^-} \cdot \vec{n}^-|\right\},
+\label{eq:vardens_lambda}
+\end{equation}
+where $\overline{\rho_{h}^\pm}$ and $\overline{\vec{u}^\pm}$ are the mean values of $\rho^\pm$ and $\vec{u}^\pm$ in $K^\pm$, respectively.\\
+The pressure term is discretized by using a central difference flux
+\begin{equation}
+\mathcal{U}^P(p,\vec{v})=  \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}{ \mean{p}(\jump{\vec{v}}\cdot \vec{n} )\dS} 
+- \int_{\Omega}{p \nabla_h \cdot \vec{v} \dV}. \label{eq:Mom_pressure}
+\end{equation}
+The diffusive term of the momentum equations is discretized using an Symmetric Interior Penalty (SIP)  formulation \cite{shahbaziExplicitExpressionPenalty2005}
+\begin{equation}
+\begin{aligned}	
+\mathcal{U}^D(\vec{u},\vec{v},\mu) =  
+&\int_{\Omega}{\left(\mu\left((\nabla_h \vec{u}) + (\nabla_h \vec{u})^T - \frac{2}{3}(\nabla_h\cdot \vec{u})\mytensor{I} \right)\right)\colon \nabla_h\vec{v}} \dV\\ 
+- & \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}
+\left(\mean{\mu(\nabla_h\vec{u} + \nabla_h\vec{u}^T - \frac{2}{3}(\nabla_h\cdot \vec{u})\mytensor{I})}\normalBoundary\right)\cdot\jump{\vec{v}}\dS\\
+- & \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}
+\left(\mean{\mu(\nabla_h\vec{v} + \nabla_h\vec{v}^T - \frac{2}{3}(\nabla_h\cdot \vec{v})\mytensor{I})}\normalBoundary\right)\cdot\jump{\vec{u}} \dS\\
++ &  \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}} \eta \mu_{max} \jump{\vec{u}} \jump{\vec{v}}\dS.
+\label{eq:Mom_diffusive}
+\end{aligned}
+\end{equation}
+The viscosity $\mu$ is evaluated as a function of temperature according to \cref{eq:nondim_sutherland} and $\mu_{\text{max}} = \text{max}(\mu^{+}, \mu^{-})$.  Additionally  $\eta$ is the penalty term of the SIP formulation, which has to be chosen big enough to ensure coercivity of the form, but also as small as possible in order to not increase the condition number of the problem. The estimation of the penalty term is based on an expression of the form
+\begin{equation}
+\eta = \eta_0 \frac{A(\partial K)}{V(K)},
+\end{equation}
+where for a two-dimensional problem $A$ is the perimeter and $V$ the area of the element. Parameter $\eta_0$ is a safety factor and is set $\eta_0 = 4$ in all calculations. Further information on the determination of the penalty term can be found in  \cite{hillewaertDevelopmentDiscontinuousGalerkin2013b}.
+The source term arising due to body forces is:
+\begin{equation}
+\mathcal{U}^S\left(\rho, \vec{v}\right) =  \int_{\Omega}{  \rho \frac{\vec{g}}{\Vert \vec{g} \Vert}\cdot \vec{v}} \dV.  \label{eq:Mom_source}	
+\end{equation}
+The right hand sides of \cref{DiscretizedMomentum} and \cref{DiscretizedMomentum2} contain the information from Dirichlet boundary conditions:
+\begin{equation}
+\mathcal{B}^2(\vec{v}) = 
+-\oint_{\Gamma_{\text{D}}}{ \left( (\rho\vec{u}_{\text{D}}\otimes\vec{u}_{\text{D}} )\normalBoundary + \frac{\gamma_1}{2}\vec{u}_{\text{D}}\right)\cdot\vec{v} \dS}  +
+\oint_{\Gamma_{\text{D}}}{\mu_{\text{D}}\vec{u}_{\text{D}}\cdot(\nabla_h\vec{v} \normalBoundary + \nabla_h\vec{v}^T \normalBoundary- \eta \vec{v} )\dS.}	
+\end{equation}
+The Dirichlet viscosity value $\mu_{\text{D}}$ is calculated from \cref{eq:nondim_sutherland} using the Dirichlet values of the temperature at the boundary.
+\paragraph{Scalar equations}
+Since the convective and diffusive term for the temperature, mass fractions and mixture fraction share a similar form, we summarize here their discretized expressions in terms of an arbitrary scalar $X$ (corresponding to $T$ in the energy equation, $Y_\alpha$ in the equation for species $\alpha$ and $z$ for the mixture fraction equation) and transport parameter $\xi$ (i.e. $k/c_p$ in the energy equation, and $(\rho D)$ for the mass fraction and mixture fraction equations). The convective term of the scalars is discretized using a Lax-Friedrichs flux
+\begin{equation}
+\mathcal{S}^C(\vec{u},X,r, \rho) =  \oint_{\Gamma}{\left( \mean{\rho\vec{u}X }\cdot \vec{n} + \frac{\gamma_2}{2}\jump{X}\right)\jump{r} \dS} 
+- \int_{\Omega}({\rho \vec{u} X \cdot \nabla_h r) d\text{V}}. \label{eq:scalar_convective} 
+\end{equation}
+The Lax-Friedrichs parameter $\gamma_2$ is calculated as \cite{kleinHighorderDiscontinuousGalerkin2016}
+\begin{equation}
+\gamma_2  = \max \left\{\overline{\rho^+} |\overline{\vec{u}^+} \cdot \vec{n}^+|,\overline{\rho^-} |\overline{\vec{u}^-} \cdot \vec{n}^-|\right\}.
+\label{eq:vardens_lambda2}
+\end{equation}
+The diffusion term of scalars is discretized again with a SIP formulation:
+\begin{equation}
+\mathcal{S}^D(X,r,\xi)=  \int_{\Omega}{ \left(\xi \nabla_h X \cdot\nabla_h r\right) }\dV 
+- \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}{\left(
+	\mean{\xi \nabla_h X}\cdot \vec{n}\jump{r} +
+	\mean{\xi \nabla_h r}\cdot \vec{n}\jump{X} - 
+	\eta \xi_{\text{max}} \jump{X} \jump{r}
+	\right) \dS.
+} \label{eq:Temp_diffusive}
+\end{equation}
+The transport parameter $\xi$ is calculated as a function of temperature using \cref{eq:nondim_sutherland} and $\xi_{\text{max}} = \text{max}(\xi^{+}, \xi^{-})$. 
+The boundary condition term of the corresponding scalar equation is:
+\begin{equation}
+\mathcal{B}^3(r) =  -
+\oint_{\GammaD\cup \GammaND}{ \left( (\rho_D\vec{u}_D X_D)\cdot \normalBoundary + \frac{\gamma_2}{2}X_D\right)r \dS}   
++\oint_{\GammaD\cup \GammaND} \xi_D X_D(\nabla_h r \cdot \normalBoundary - \eta r )\dS.
+\end{equation}
+Here, $X_D$ is the Dirichlet value of the scalar $X$ on boundaries and $\xi_D$ is the corresponding transport parameter calculated,which is calculated with \cref{eq:nondim_sutherland} using the Dirichlet values of the temperature at the boundary.
+Finally, the volumetric source term of the energy and mass fraction equations are defined as follows:
+\begin{gather}
+\mathcal{S}^S(r,\heatRelease, \rateReac,c_p) =  \int_{\Omega}{ \frac{\heatRelease \rateReac}{c_p} r} \dV, \\
+\mathcal{M}^S_\alpha(s_\alpha,\rateReac ) =  \int_{\Omega}{  \stoicCoef_\alpha M_\alpha \rateReac s_\alpha} \dV. 
+\end{gather}
+The heat release $\heatRelease$ is calculated with \cref{eq:heatReleaseOneStepNonDim}, the reaction rate $\rateReac$ is evaluated using \cref{eq:NonDimArr} and the mixture heat capacity with \cref{eq:nondim_cpmixture}.
+\subsection{Temporal discretization}	
+\blindtext[7]
+
+\section{Computational methodology} \label{sec:CompMethodology}
+
+The presented solver is embedded in the \textit{BoSSS} (Bounded Support Spectral Solver) code, which is under development at the chair of fluid dynamics of the Technical University of Darmstadt, and is available under \href{https://github.com/FDYdarmstadt/BoSSS}{https://github.com/FDYdarmstadt/BoSSS}. \BoSSS is a general framework for the discretization of conservation laws using the DG method and uses a modal DG approach with orthonormal Legendre polynomials as basis functions. The \BoSSS code features a variety of applications in the context of computational fluid dynamics, such as a solver for multiphase flows with a sharp interface approach, \cite{kummerExtendedDiscontinuousGalerkin2017} an incompressible Immersed Boundary Method solver for particle laden flows,\cite{krauseIncompressibleImmersedBoundary2017} a solver for viscoelastic fluid flows,\cite{kikkerFullyCoupledHighorder} and a solver for compressible flows, \cite{geisenhoferDiscontinuousGalerkinImmersed2019} among others.
+
+The variational problem for the finite chemistry rate case described by \crefrange{DiscretizedConti}{DiscretizedMassFractions} and for the flame sheet problem, \crefrange{DiscretizedConti2}{DiscretizedEnergy2}, are linearised and solved using a Newton method with a Dogleg-type globalization \cite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008}. The \textit{BoSSS} framework provides an efficient algorithm for the evaluation of the Jacobian based on perturbations of the forms presented in the last section.
+The relatively large linear system of equations for each Newton iteration is solved by means of the in \BoSSS integrated orthonormalization multigrid algorithm \cite{kummerBoSSSPackageMultigrid2021}, which at the lowest multigrid levels makes use of the sparse direct solver PARDISO, originally developed by Schenk et al. \cite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
+from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows'' library collection to solve the linear system. 
+
+\textit{BoSSS} also features a method for solving highly nonlinear problems with a homotopy strategy.
+Further details on the used Newton method solver, the homotopy strategy and its implementation are given in the next sections, which are adapted from Kikker et al.\cite{kikkerFullyCoupledHighorder}  and are included for the sake of completeness. For information on the mentioned orthonormalization multigrid algorithm we refer the interested reader to the work of Kummer et al. \cite{kummerBoSSSPackageMultigrid2021}
+
+\subsubsection{Calculation of the Jacobian matrix} 
+We start by introducing a few new elements to be able to describe the implemented Newton method. 
+The discussion for the variational problem using the mixture fraction variable (\crefrange{DiscretizedConti2}{DiscretizedEnergy2}) is completely analogous, and will not be mentioned in this discussions. 
+%The variational problem defined by \cref*{DiscretizedConti,DiscretizedMomentum,DiscretizedEnergy,DiscretizedMassFractions} can be cast into a more compact notation. By subtracting all terms from the right-hand sides from the terms of the left-hand sides of \crefrange{DiscretizedConti}{DiscretizedMassFractions} the problem can be written as:
+Find $\myvector{U}_h \in \mathbb{V}_\myvector{k}$
+\begin{equation}
+\mathcal{N}(\myvector{U}_h,\myvector{V}_h) = 0 \quad \forall \ \myvector{V}_h \in \mathbb{V}_\myvector{k} ,
+\label{eq:CompactVariational}
+\end{equation} 
+for 
+$\myvector{U}_h = (p_h,\vec{u}_h, T_h, \MFVecPrima_h)$ and 
+$\myvector{V}_h = (q_h,\vec{v}_h, r_h, \mathbf{s}_h)$
+. We assume a basis 
+$\underline{\gvec{\Phi}} = ( \gvec{\Phi}_1, \ldots , \gvec{\Phi}_L )$ of $\mathbb{V}_\myvector{k}$,
+written as a row vector, with $L \coloneqq \textrm{dim}(\mathbb{V}_\myvector{k})$.
+Then $\myvector{U}_h$ can be represented as 
+$ \myvector{U}_h =  \underline{ \gvec{\Phi} } \cdot \myvector{U} $.
+The nonlinear problem (\ref{eq:CompactVariational}) can then be written as
+\begin{equation}
+\mathcal{A}(\myvector{U}) = 0 ,
+\label{Eq:nonLinSystem}
+\end{equation}
+with the nonlinear function 
+$\mathbb{R}^L \ni \myvector{U} \mapsto \mathcal{A}(\myvector{U}) \in \mathbb{R}^L$.
+The $i$-th component of $ \mathcal{A}(\myvector{U})$, can be defined by $\mathcal{N}(-,-)$ through the relation
+$[\mathcal{A}(\myvector{U})]_i = \mathcal{N}( \underline{ \gvec{\Phi} } \cdot \myvector{U} , \gvec{\Phi}_i)$.
+
+The formulation of the Newton method requires the Jacobian matrix   $\partial \mathcal{A}$ of $\mathcal{A}$, defined as
+\begin{equation}
+\partial \mathcal{A}_{ij}(\myvector{U}) \coloneqq \frac{\partial \mathcal{A}_i}{\partial U_j}(\myvector{U}).
+\label{Eq:Jacobian}
+\end{equation}
+Its computation is quite straightforward, but lengthy. The \BoSSS code is capable of evaluating the 
+Jacobian matrix automatically from the expressions given in Section \ref{ssec:SpatDiscretization}.
+We note that one could write $\mathcal{A}(\myvector{U})$ as
+\begin{equation}
+[\mathcal{A}(\myvector{U})]_i = \mathcal{N}( \myvector{U}_h , \gvec{\Phi}_i) =
+\int_{\Omega_h} 
+N_1 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \cdot \gvec{\Phi}_i 
++ N_2 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \cdot \nabla \gvec{\Phi}_i 
+\textrm{dV}
++
+\oint_{\Gamma} \ldots \mathrm{dS}.
+\label{eq:NonlinearGestalt}
+\end{equation}
+The edge integral, which is left out in \cref{eq:NonlinearGestalt},
+can be written in analogous fashion as the volume integral, i.e. as a sum over 
+four nonlinear functions, multiplied by 
+$ \gvec{\Phi}_i^{+}$,  $\gvec{\Phi}_i^{-}$, $ \nabla \gvec{\Phi}_i^{+}$ and  $ \nabla \gvec{\Phi}_i^{-}$,
+respectively. 
+These functions themselves may depend on 
+$\vec{x}$, $\myvector{U}_h^{+}$,  $\myvector{U}_h^{-}$, $\nabla \myvector{U}_h^{+}$ and  $\nabla \myvector{U}_h^{-}$.
+For sake of compactness, this part is skipped.
+Realizing that $\frac{\partial \myvector{U}_h}{\partial \myvector{U}_j}  = \gvec{\Phi}_j$ and by application of the 
+chain rule, one derives
+\begin{equation}
+\partial \mathcal{A}_{ij}(\myvector{U}) =
+\int_{\Omega_h} 
+( \partial_{ \myvector{U}_h}       N_1 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \gvec{\Phi}_j 
++   \partial_{\nabla \myvector{U}_h} N_1 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \nabla \gvec{\Phi}_j ) \cdot \gvec{\Phi}_i
++ \ldots
+\textrm{dV}
++
+\oint_{\Gamma} \ldots \mathrm{dS} .
+\label{eq:JacobiGestalt}
+\end{equation}
+All skipped terms in \cref{eq:JacobiGestalt} can be derived in an analogous fashion as the contributions for $N_1$.
+In the \BoSSS code, derivatives $ \partial_{ \myvector{U}_h} N_1 ( \ldots )$ and  $ \partial_{ \nabla \myvector{U}_h} N_1 ( \ldots )$
+are approximated by a finite difference, using a perturbation by $\sqrt{\mathtt{eps}}$ in the respective argument,
+where  $\mathtt{eps} = 2.22044604925031 \cdot 10^{-16}$ is the floating point accuracy for double precision.
+
+The notation introduced here allows us to describe the Newton-Dogleg method used in this work. We note however that this globalization strategy is still not sufficient to ensure convergence for some of the test cases presented, namely for high Rayleigh numbers for the differentially heated cavity problem. For those cases we use a homotopy strategy, where we start with a low homotopy-parameter, a parameter for which the solution of the problem is not hard to find, which is gradually and carefully increased until convergence for the desired value of the homotopy-parameter is reached (cf. \cref{sec:HomotopyMethod}).
+
+
+\subsection{Dogleg Method} \label{sec:newton}
+We consider a linearization of \cref{Eq:nonLinSystem} around $\myvector{U}_n$,
+\begin{equation}
+\mathcal{A}(\myvector{U}_{n}) +
+\partial \mathcal{A} (\myvector{U}_n) \underbrace{ ( \myvector{U}_{n+1} -  \myvector{U}_{n} ) }_{=: \myvector{s}'_n } 
+= 0.
+\label{eq:LinearizedSys}
+\end{equation} 
+By repeatedly solving this system one obtains
+a standard Newton scheme for \cref{Eq:nonLinSystem},
+yielding a sequence of approximate solutions
+$
+\myvector{U}_0, \myvector{U}_1, \myvector{U}_2, \ldots
+$
+obtained from an initial guess $\myvector{U}_0$ through the iteration scheme
+$
+\myvector{U}_{n+1} = \myvector{U}_n + \myvector{s}'_n.
+$
+In the classical un-damped Newton method, the correction step $\myvector{s}'_n$ is set to be the whole Newton-step,
+i.e  $\myvector{s}'_n = \myvector{s}_n$ with 
+\begin{equation} 
+\myvector{s}_n  \coloneqq - \partial \mathcal{A}(\myvector{U}_n)^{-1}\mathcal{A}(\myvector{U}_n),
+\label{eq:NewtonStep}
+\end{equation} 
+which is computed using a direct solver.
+Unfortunately, convergence of the Newton method for any starting value $\myvector{U}_0$ is not guaranteed. 
+In order to increase robustness when the distance between $\myvector{U}_0$ and the exact solution $\myvector{U}$ is large,
+we employ a globalization approach, presented by Pawlowski et al. \cite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008},
+known as the Dogleg-method, or Newton-Dogleg method.
+Here, we intend to give only the central ideas of method and refer to the original works for further details.
+Obviously, the exact solution of \cref{Eq:nonLinSystem} is also a minimum of the functional
+\begin{equation}
+f(\myvector{U}) \coloneqq \frac{1}{2}  \left\| \mathcal{A}(\myvector{U})  \right\|^2_2 .
+\end{equation}
+One observes that $\nabla f(\myvector{U}) = \partial \mathcal{A}(\myvector{U})^T \mathcal{A}(\myvector{U})$.
+For $\myvector{U}_n$, the approximate Cauchy point with respect to the 2-norm, 
+is defined as the minimizer $\myvector{g}_n$ of 
+$ \left\|  \mathcal{A}(\myvector{U}_{n}) + \partial \mathcal{A} (\myvector{U}_n) \myvector{g}_n \right\|_2  $
+in the direction of steepest decent, i.e. $\myvector{g}_n = \lambda \nabla f(\myvector{U}_n)$, $\lambda \in \mathbb{R}$.
+Substituting $\myvector{w} \coloneqq - \partial \mathcal{A}(\myvector{U}_n) \nabla f(\myvector{U}_n)$, $\myvector{g}_n$ is given by
+\begin{equation}
+\myvector{g}_n = \frac{\mathcal{A}(\myvector{U}_n) \cdot \myvector{w}}{\myvector{w} \cdot \myvector{w}} \nabla f(\myvector{U}_n) .
+\label{eq:CauchyPoint}
+\end{equation}
+
+For the Newton-Dogleg method, the correction step  $\myvector{s}'_n$
+is chosen along the so-called Dogleg curve, which is the piece-wise linear 
+curve from the origin to $\myvector{g}_n$ and further to $ \myvector{s}_n$.
+The selection of $\myvector{s}'_n$ on this curve is determined by the trust-region diameter $\delta > 0$:
+\begin{itemize}
+	\item
+	If $\|  \myvector{s}_n \|_2 \leq \delta$, $ \myvector{s}'_n =  \myvector{s}_n$.
+	
+	\item
+	If  $\|  \myvector{g}_n \|_2 \leq \delta$ and $\|  \myvector{s}_n \|_2 > \delta$,
+	$\myvector{s}'_n$ is chosen on the linear interpolation from $\myvector{g}_n$ to $\myvector{s}_n$
+	so that  $\|  \myvector{s}'_n \|_2 = \delta$:
+	For the ansatz
+	$\myvector{s}'_n = \tau \myvector{s}_n + (1-\tau) \myvector{g}_n$,
+	the interpolation factor $\tau$ is given as
+	$ \tau = (a^2 - c + \sqrt{(a^2 + b^2 - 2 c) \delta^2 - a^2 b^2 + c^2}) / (a^2 + b^2 - 2 c) $
+	with $a = \| \myvector{g}_n \|_2$,  $b = \| \myvector{s}_n \|_2$ and $c = \myvector{g}_n \cdot \myvector{s}_n $.
+	
+	\item
+	If  $\|  \myvector{g}_n \|_2 > \delta$, 
+	$  \myvector{g}_n = (\delta / \|  \myvector{g}_n \|_2) \myvector{g}_n$.
+\end{itemize}
+The choice and adaptation of the trust region diameter $\delta$ 
+throughout the Newton-Dogleg procedure follows 
+a sophisticated heuristic, 
+mainly based on comparing the actual residual reduction 
+$\textrm{ared}_n \coloneqq \| \mathcal{A} (\myvector{U}_n) \|_2 - \| \mathcal{A} (\myvector{U}_n  + \myvector{s}'_{n} ) \|_2$
+with the predicted residual reduction
+$\textrm{pred}_n \coloneqq \| \mathcal{A} (\myvector{U}_n) \|_2 - \| \mathcal{A} (\myvector{U}_n )   + \partial \mathcal{A} (\myvector{U}_n ) \myvector{s}'_{n} \|_2$; For the direct solver used in this work $\textrm{pred}_n$ simplifies to 
+$\textrm{pred}_n \coloneqq \| \mathcal{A} (\myvector{U}_n) \|_2$.
+We replicate the algorithm here, for the sake of completeness:
+\begin{itemize}
+	\item[(1)] 
+	Set $n=0$, $\delta_n = \min(10^{10}, \max(2 \cdot 10^{-6}, \| \myvector{s}_0 \|_2 ))$.
+	
+	\item[(2)]
+	Compute the Newton step $\myvector{s}_n$ and the Cauchy point  $\myvector{g}_n$ and 
+	find $\myvector{s}'_n$ on the Dogleg curve with respect to the recent $\delta_n$.
+	
+	\item[(3)]
+	While $\textrm{ared}_n \leq \textrm{pred}_n$ do: 
+	Update trust region diameter $\delta_n \leftarrow 0.5 \ \delta_n$
+	and re-compute $\myvector{s}'_n$.
+	If $\delta_n < 10^{-6}$ terminate abnormally and mark the computation as failed.
+	
+	\item[(4)]
+	If the convergence criterion (see below) is fulfilled, terminate and mark the computation as success.
+	
+	\item[(5)] 
+	Perform a final update of the trust region: Set
+	\[
+	\delta_{n+1} = \left\{ \begin{array}{ll}
+	\max( 10^{-6}, \| \myvector{s}_n \|_2 )     &\text{if } \textrm{ared}_n / \textrm{pred}_n < 0.1 \text{ and } \| \myvector{s}_n \|_2 \delta_n \\
+	\max( 10^{-6}, 0.25 \cdot \delta_n )        &\text{else, if } \textrm{ared}_n / \textrm{pred}_n < 0.1 \\
+	\min( 10^{10}, 4 \cdot \delta_n )           &\text{else, if } \textrm{ared}_n / \textrm{pred}_n > 0.75 \\
+	\delta_{n}                                  &\text{otherwise} \\
+	\end{array} \right.
+	\]
+	Set $\myvector{U}_{n+1} = \myvector{U}_{n} + \myvector{s}'_{n} $, update $n \leftarrow n + 1$ and return to step (2).
+	
+\end{itemize}
+All constants used in the algorithm above have been taken from the work of Pawlowski et al. \cite{pawlowskiGlobalizationTechniquesNewton2006}
+For a detailed description of the underlying ideas we also refer to these works, 
+which in turn are based on algorithms from Dennis and Schnabel's textbook. \cite{dennisNumericalMethodsUnconstrained1996}
+
+
+\subsection{Termination criterion}
+\label{ssec:TerminationCriterion}
+A simple approach to determine that a Newton-Dogleg loop can be terminated 
+is to check whether the residual norm has fallen below a certain threshold, i.e.
+$ \| \mathcal{A}(U_n) \| \leq \textrm{tol}  $.
+A universal choice for the tolerance is indeed difficult, 
+especially for investigations of convergence properties (cf.  \cref{ssec:ConvStudyHeatedCavity} and \cref{ss:UDF}).
+If it is chosen too low, the algorithm may never terminate, because of dominating numerical round-off errors. On the other hand, if it is chosen too high, the error of the premature termination may dominate  the error of 
+the spatial discretization and one cannot take the full advantage of the high-order method.
+Therefore the goal is to continue the Newton-Dogleg method until 
+the lowest possible limit dictated by floating point accuracy is reached.
+To identify the limit in a robust way, we first define the residual-norm skyline as
+\begin{equation}
+\textrm{sr}_n \coloneqq \min_{j \leq n} \| \mathcal{A}(\myvector{U}_j) \| 
+\end{equation}
+and, for $n \geq 2$, the averaged reduction factor
+\begin{equation}
+\textrm{arf}_n \coloneqq \frac{1}{2} \left(
+\frac{ \textrm{sr}_{n-2} }{  \max \{ \textrm{sr}_{n-1}, 10^{-100} \} }
++  \frac{ \textrm{sr}_{n-1} }{  \max \{ \textrm{sr}_{n},   10^{-100} \} }
+\right) .
+\end{equation}
+The Newton-Dogleg method is terminated if
+\begin{equation}
+n \geq 2 \text{ and }
+\textrm{sr}_n \leq 10^{-5} + 10^{-5} \| \myvector{U}_n \|_2 \text{ and }
+\textrm{arf}_n < 1.5 .
+\end{equation}
+For the computations in this work, this choice guarantees that the 
+nonlinear system is solved as accurately as possible. It secures that the numerical error is dominated by the error of the spatial or temporal discretization
+and not by the termination criterion of the Newton-Dogleg method.
+The skyline approach ensures robustness against oscillations close to the lower limit.
+\subsection{Solver safeguard}
+%TODO Bounding of values using the solver safeguard option. Manual modification of the proposed solution given by the solver in order to avoid unphysical solutions
+
+\subsection{Homotopy method}
+\label{sec:HomotopyMethod}
+Although the Newton-Dogleg method works well for a variety of cases,
+we experienced convergence problems for some of the test cases presented in next section. 
+In particular, for the differentially heated cavity test case, the method was not successful on finding a convergent solution for a Rayleigh number $Ra \geq 10^5$  within 60 Newton iterations.
+In such cases we used a homotopy strategy, which is loosely based on 
+ideas from the textbook of Deuflhard,\cite{deuflhardNewtonMethodsNonlinear2011} Chapter 5.
+\tikzexternaldisable
+\begin{figure}[t]
+	\centering
+	\pgfplotsset{
+		compat=1.3,
+		tick align = outside,
+		yticklabel style={/pgf/number format/fixed}, 
+	}
+	\begin{tikzpicture}	
+	\begin{axis}[
+	set layers=standard,
+	width=0.75\linewidth,
+	height=6cm,
+	axis y line*=left,
+	ymode = log,
+	xlabel=Iteration number,
+	xmin = 0,
+	ylabel=Residual and trust region $\delta$,
+	xtick = {0,2,...,36},
+	ytickten = {-16,-12,...,12}
+	]
+	\addplot[ blue, mark =square*, mark size = 2pt] file{data/ConvergenceStory_HeatedCavity_withHomotopy/delta3.txt};\label{plot_one}
+	\addplot[ orange, mark =o, mark size = 2.5pt] file{data/ConvergenceStory_HeatedCavity_withHomotopy/residuals3.txt};\label{plot_two}
+	\end{axis}	
+	\begin{axis}[ 
+	axis y line=right,
+	width=0.75\linewidth,
+	height=6cm,
+	axis x line=none,
+	ylabel= Homotopy parameter hp,
+	xmin = 0,
+	ymin = 50,
+	ymax = 1100,
+	legend style={at={(0.1,0.99)},anchor=north west,},
+	xtick={0,5,...,35},
+	ytick ={100,200,...,1000},
+	]
+	\addlegendimage{/pgfplots/refstyle=plot_two}\addlegendentry{$	\| \mathcal{A}_{\mathrm{hp}^*}(\myvector{U}_{n}) \|_2 $}
+	\addlegendimage{/pgfplots/refstyle=plot_one}\addlegendentry{$\delta$}
+	\addplot[red , mark =x, mark size = 2.5pt] file{data/ConvergenceStory_HeatedCavity_withHomotopy/reynolds3.txt};
+	\addlegendentry{$\mathrm{hp}$}
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Behaviour of the homotopy method for the differentially heated cavity test case. The homotopy parameter $\mathrm{hp}$ in this case is the Reynolds number. }
+	\label{fig:Homotopyevolution}
+\end{figure}
+
+\tikzexternalenable
+We start by identifying a parameter that makes the solution of the nonlinear problem difficult to solve. In the following we will refer to this variable as the homotopy parameter. 
+The main idea of the homotopy strategy consists of solving a series of simpler problems, starting with a parameter where the problem is easy to solve, and carefully increasing it until the desired value is reached.  Let $\mathrm{Hp}$ denote the value of the homotopy parameter for which a solution is being sought. Let
+\begin{equation}
+\mathcal{A}_{\mathrm{hp}^*}(\myvector{U}) = 0
+\label{eq:NonlinearAt-hp}
+\end{equation}
+be the discretized system for a certain intermediate homotopy-parameter
+$\mathrm{hp}^*$, between 0 and the `target'  homotopy-parameter $\mathrm{Hp}$, i.e. $0 \leq \mathrm{hp}^* \leq \mathrm{Hp}$.
+Furthermore, let $\myvector{U}_{\mathrm{hp},\epsilon} $ be an approximate solution 
+to the problem (\ref{eq:NonlinearAt-hp}) with $ \mathrm{hp}^* =  \mathrm{hp}$,
+up to a tolerance $\epsilon$, i.e.
+\begin{equation}
+\left\| \mathcal{A}_{\mathrm{hp}}( \myvector{U}_{\mathrm{hp},\epsilon} ) \right\|_2 \leq \epsilon .
+\end{equation}
+For the sake of clarity when discussing the algorithm which follows below, we distinguish between the 
+intermediate homotopy-parameter  $\mathrm{hp}$ for which we assume to already have found an acceptable solution
+and the next homotopy-parameter $\mathrm{hp}^*$ that we are currently trying to find a solution for.
+For any $\textrm{hp}^* > \textrm{hp}$
+we set 
+$
+\epsilon 
+= 10^{-5} 
+\left\| \mathcal{A}_{\mathrm{hp*}}( \myvector{U}_{\mathrm{hp},\epsilon} ) \right\|_2
+$,
+i.e. we aim for a residual norm reduction of at least five orders of magnitude with respect to the initial residual norm. 
+If  $\textrm{hp}^* = \textrm{Hp}$, the termination criterion presented in section \ref{ssec:TerminationCriterion} is applied.
+An approximate solution for the target homotopy-parameter is found by the following recipe: 
+\begin{itemize}
+	\item[(1)]
+	Set $\mathrm{hp} = 0$, i.e. start by obtaining an (approximate) solution $\myvector{U}_{0,\epsilon}$.
+	
+	\item[(2)] 
+	Search for a an increased homotopy-parameter $\mathrm{hp}^*$:
+	Find the minimal $i \geq 0$ so that for  
+	$
+	\mathrm{hp}^* = \frac{1}{2^i}(\mathrm{Hp} - \mathrm{hp}) + \mathrm{hp}
+	$
+	one has
+	$
+	\left\| \mathcal{A}_{\mathrm{hp}^*}(\myvector{U}_{\mathrm{hp},\epsilon}) \right\|_2
+	\leq
+	\delta_{\textrm{max}} \left\| \mathcal{A}_{\mathrm{hp}}(\myvector{U}_{\mathrm{hp},\epsilon}) \right\|_2
+	$
+	Here, $\delta_{\textrm{max}}$ is the maximal allowed increase of the residual for an increased
+	homotopy-parameter $\mathrm{hp}^*$;  $\delta_{\textrm{max}}$ is adapted in the following steps,
+	as an initial guess we use $ \delta_{\textrm{max}} = 10^6$.
+	
+	\item[(3)]
+	Use the Newton-Dogleg method to compute an approximate solution to the problem (\ref{eq:NonlinearAt-hp}),
+	for the homotopy-parameter $\mathrm{hp}^*$,
+	using the solution $\myvector{U}_{\mathrm{hp},\epsilon}$ as an initial guess.
+	
+	\begin{itemize}
+		\item 
+		If the Newton-Dogleg method did not converge successfully within ten steps,
+		the homotopy-parameter increase from $\mathrm{hp}$ to $\mathrm{hp}^*$ was probably too large.
+		Set $\delta_{\textrm{max}} \leftarrow 0.2\delta_{\textrm{max}}$ and go to step (2).
+		
+		\item
+		If the Newton-Dogleg method reached its convergence criterion and 
+		if the target homotopy-parameter is reached, i.e. $\mathrm{hp}^* = \mathrm{Hp}$,
+		the algorithm has successfully found an approximate solution
+		for $ \mathcal{A}_{\mathrm{Hp}}(\myvector{U}) = 0$ and can terminate.
+		
+		\item
+		Otherwise, if the Newton-Dogleg method converged successfully, but is below the target homotopy-parameter:
+		Accept the solution and set $\mathrm{hp} \leftarrow \mathrm{hp}^*$.
+		If the Newton-Dogleg method took less than three iterations to reach the convergence criterion,
+		set  $\delta_{\textrm{max}} \leftarrow 8\delta_{\textrm{max}}$.
+		Return to step (2).
+	\end{itemize}
+	
+\end{itemize}
+An exemplary run of the method is shown in \cref{fig:Homotopyevolution}. The homotopy parameter $\mathrm{hp}$ in this particular case is the Reynolds number. The homotopy-parameter hp was increased for iterations 10, 18, 22 and 24, causing an increase of the residuals $\| \mathcal{A}_{\mathrm{hp}^*}(\myvector{U}_{n}) \|_2 $, leading to a convergent solution after 34 Newton iterations. The presented algorithm offers a robust method for finding steady-state solutions of highly nonlinear systems.
+
+\subsection{Initialization of combustion applications}
+Cases involving combustion are initialized with the solution of the flame sheet problem, \cref{DiscretizedConti2,DiscretizedMomentum2,DiscretizedEnergy2}. This idea has been already employed in various works. \cite{smookeNumericalSolutionTwoDimensional1986,smookeNumericalModelingAxisymmetric1992} The reason for the use of this pre-step is twofold:
+\begin{itemize}
+	\item Solving \cref{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} using a Newton-type method requires adequate starting estimates in order to converge. Using the flame sheet solution as initial estimate improves the convergence properties of the method.
+	\item The system of  \cref*{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} possesses multiple solutions. One is the pure mixing (frozen) solution, where no chemical reaction has taken place, and the other one is the ignited solution, where the flame is present. Using the flame sheet solution as initial estimate ensures that the path taken by Newton's algorithm will tend towards the ignited solution.
+\end{itemize}
+We remark at this point that although for the solution of the flame sheet system the mixture heat capacity has been assumed to be constant, it remains an adequate estimate for the finite reaction-rate problem, where the heat capacity is a function of temperature and local concentration. In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with non-unity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method.
+
+Regarding the solution of the flame sheet problem (cf. \cref{sec:FlameSheet}), it should be noted that the sharp change in the primitive variables around $z = z_{st}$  could be problematic. In particular, the non-smoothness of the derived variables could lead to Gibbs phenomenon-type problems. This inconvenient can be remedied by using a regularized form of the equations. We define the smoothing function $\mathcal{H}$
+\begin{equation}\label{eq:regularization_MF}
+\mathcal{H}(z) \approx \frac{1}{2}(1+\tanh(\frac{z - z_{st} }{\sigma} )),
+\end{equation}
+The parameter $\sigma$ dictates the sharpness of the transition at $z = z_{st}$.  In \cref{fig:smoothings} the effect of the smoothing factor $\sigma$ on calculations of a flame in a counter-flow configuration are shown. It can be clearly observed how for increasing $\sigma$ the solution becomes smoother. Using \cref{eq:regularization_MF} the temperature and mass fraction fields can be written as
+\begin{equation}\label{eq:BS-TR}
+T(z) = z T_F^0 + (1-z)T_O^0 + \frac{Q Y_F^0}{c_p} z_{st}\frac{1- z}{1-z_{st}}\mathcal{H}(z) +  \frac{Q Y_F^0}{c_p}z\left(1-\mathcal{H}(z)\right),
+\end{equation}
+\begin{equation}\label{eq:BS-YFR}
+Y_F(z) = Y_F^0\frac{z - z_{st}}{1-z_{st}} \mathcal{H}(z),
+\end{equation}
+\begin{equation}\label{eq:BS-YOR}
+Y_O(z) = Y_O^0 \frac{z_{st}-z}{z_{st}} (1-\mathcal{H}(z)),
+\end{equation} 
+\begin{equation}\label{eq:BS-YPR}
+Y_P(z) =  Y_O^0\frac{M_P\nu_P}{M_O\nu_O}(1-z)\mathcal{H}(z) +
+Y_F^0\frac{M_P\nu_P}{M_F\nu_F}z (1-\mathcal{H}(z)).
+\end{equation}
+\begin{equation}\label{eq:BS-YNR}
+Y_N(z) = (1-Y_F^0)z + (1-Y_O^0)(1-z).
+\end{equation}
+
+The use of this regularized form of the equations results in practice on a spreading of the flame front, which eases the numerical calculation \citep{braackAdaptiveFiniteElement1997}.
+
+We note at this point that  \cref{eq:heatReleaseOneStep} yields unphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep} (we use $\phi = 1.2$). In practice however, this should not have a significant effect, because the unphysical values of $\hat Q$ appear at zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. Nevertheless, setting an upper bound for $\phi$ is helpful to avoid possible numerical instabilities.
+
+\subsubsection{Adaptive Mesh Refinement}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[
+	ausschnitt/.style={blue!50!red}
+	]
+	% Befehl für Teilbeschriftungen
+	\newcommand\teilbeschriftung[1]{
+		\node[below,text width=.45\textwidth] 
+		at (current axis.outer south){\subcaption{#1}};
+	}
+	% Einstellungen für Achsen
+	\pgfplotsset{
+		myaxis/.style={
+			width=0.4\textwidth,
+			height=0.3\textwidth,
+			xlabel=x,
+			ylabel=y,
+			yticklabel style={/pgf/number format/.cd,fixed,fixed zerofill,precision=1},
+		}
+	}
+	%
+	\begin{axis}[
+	myaxis,
+	xmin=0,
+	xmax=1,
+	xlabel = x,
+	ylabel = Temperature,
+	]
+	\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth0.txt}; %\addlegendentry{No smoothing}
+	\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth200.txt}; %\addlegendentry{$\sigma$=0.005}
+	\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth100.txt}; %\addlegendentry{$\sigma$=0.01}
+	\addplot [no markers, red]table {data/MF_FULL_COMPARISON/T_smooth50.txt}; %\addlegendentry{$\sigma$=0.02}
+	\draw[ausschnitt]
+	(axis cs:0.42,6.1)coordinate(ul)--
+	(axis cs:0.465,6.1)coordinate(ur)--
+	(axis cs:0.465,6.9)coordinate(or)--
+	(axis cs:0.42,6.9) -- cycle;
+	\end{axis}
+	%	\teilbeschriftung{Beschriftung 1}
+	% Ausschnitt
+	\begin{axis}[
+	axis on top, 	   
+	xshift=.5\textwidth,	
+	myaxis,
+	xmin = 0.440,xmax=0.460,
+	xlabel = x,
+	ylabel = Temperature,
+	legend pos=south west,
+	y tick label style={
+		/pgf/number format/.cd,
+		fixed,
+		fixed zerofill,
+		precision=1,
+		/tikz/.cd
+	},
+	x tick label style={
+		/pgf/number format/.cd,
+		fixed,
+		fixed zerofill,
+		precision=3,
+		/tikz/.cd
+	}
+	]
+	\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth0.txt}; \addlegendentry{No smoothing}
+	\addplot [no markers, green]table {data/MF_FULL_COMPARISON/T_smooth200.txt}; \addlegendentry{$\sigma$=0.005}
+	\addplot [no markers, blue]table {data/MF_FULL_COMPARISON/T_smooth100.txt}; \addlegendentry{$\sigma$=0.01}
+	\addplot [no markers, red]table {data/MF_FULL_COMPARISON/T_smooth50.txt}; \addlegendentry{$\sigma$=0.02}
+	\end{axis}
+	%	\teilbeschriftung{Beschriftung 2}
+	% Verbindungslinien
+	\draw[ausschnitt]
+	(current axis.north west)--(or)
+	(current axis.south west)--(ur);
+	\end{tikzpicture}
+	\caption{ Temperature profile calculated in the center-line of a counter-flow flame configuration for different smoothing parameters $\sigma$.}
+	\label{fig:smoothings}
+\end{figure}

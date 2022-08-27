@@ -1,0 +1,3 @@
+# To tell Git to treat all *.eps/*.fix files as binary data, add the following line to your .gitattributes file:
+*.eps -crlf -diff
+*.fig -crlf -diff

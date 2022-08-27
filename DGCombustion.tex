@@ -1,0 +1,495 @@
+%% This is file `DEMO-TUDaPhD.tex' version 3.21 (2022/01/12),
+%% it is part of
+%% TUDa-CI -- Corporate Design for TU Darmstadt
+%% ----------------------------------------------------------------------------
+%%
+%%  Copyright (C) 2018--2021 by Marei Peischl <marei@peitex.de>
+%%
+%% ============================================================================
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainers of this work are
+%%   Marei Peischl <tuda-ci@peitex.de>
+%%   Markus Lazanowski <latex@ce.tu-darmstadt.de>
+%%
+%% The development respository can be found at
+%% https://github.com/tudace/tuda_latex_templates
+%% Please use the issue tracker for feedback!
+%%
+%% If you need a compiled version of this document, have a look at
+%% http://mirror.ctan.org/macros/latex/contrib/tuda-ci/doc
+%% or at the documentation directory of this package (if installed)
+%% <path to your LaTeX distribution>/doc/latex/tuda-ci
+%% ============================================================================
+%%
+% !TeX program = lualatex
+%%
+
+\documentclass[
+	USenglish,
+	ruledheaders=chapter,% Ebene bis zu der die Überschriften mit Linien abgetrennt werden, vgl. DEMO-TUDaPub
+	class=book,% Basisdokumentenklasse. Wählt die Korrespondierende KOMA-Script Klasse
+	thesis={
+		% Für kleinere Abschlussarbeiten Siehe DEMO-TUDaThesis
+		type=dr,
+		dr=ing
+	},
+	accentcolor=7b,% Auswahl der Akzentfarbe
+	custommargins=geometry,%true,% Ränder werden mithilfe von typearea automatisch berechnet
+	marginpar=false,% Kopfzeile und Fußzeile erstrecken sich nicht über die Randnotizspalte
+	%BCOR=5mm,%Bindekorrektur, falls notwendig
+%	parskip=half-,%Absatzkennzeichnung durch Abstand vgl. KOMA-Script
+	fontsize=11pt,%Basisschriftgröße laut Corporate Design ist mit 9pt häufig zu klein
+%	logofile=example-image, %Falls die Logo Dateien nicht vorliegen
+	instbox=true,				% Blendet Box mit FB/FG auf der Titelseite ein/aus
+	pdfa=true,
+	%	captions=oneline
+	numbers=noenddot,			% Kein Punkt am Ende der Section-Nummerierung (KOMA-Script)
+]{tudapub}
+
+\geometry{
+	reset,
+	a4paper,
+	twoside,
+	outer=2.5cm,
+	inner=3.0cm,
+	top=2.0cm,
+	bottom=2.0cm,
+	includehead,
+	includefoot,
+	includemp,
+	nomarginpar
+}
+
+% Der folgende Block ist nur bei pdfTeX auf Versionen vor April 2018 notwendig
+\usepackage{iftex}
+\ifPDFTeX
+	\usepackage[utf8]{inputenc}%kompatibilität mit TeX Versionen vor April 2018
+\fi
+
+%%%%%%%%%%%%%%%%%%%
+%Sprachanpassung & Verbesserte Trennregeln
+%%%%%%%%%%%%%%%%%%%
+%\usepackage[english, main=ngerman]{babel}
+\usepackage[ngerman, main=USenglish]{babel}
+\usepackage[autostyle]{csquotes}% Anführungszeichen vereinfacht
+\usepackage{blindtext}
+% Falls mit pdflatex kompiliert wird, wird microtype automatisch geladen, in diesem Fall muss diese Zeile entfernt werden, und falls weiter Optionen hinzugefügt werden sollen, muss dies über
+% \PassOptionsToPackage{Optionen}{microtype}
+% vor \documentclass hinzugefügt werden.
+\usepackage{microtype}
+
+
+%%%%%%%%%%%%%%%%%%%
+%Literaturverzeichnis
+%%%%%%%%%%%%%%%%%%%
+\usepackage[
+backend = biber,             		
+natbib = true,                	% macht alte natbib-Befehle (\citep, \citet etc.) möglich
+style = authoryear,       		% Autor-Jahr Zitierweisen (STANDARD)
+%style = apa,
+%bibstyle = authoryear,
+%citestyle = authoryear,      
+uniquelist = false,        		% Unterscheidung von gleichen Autoren+Jahren: Wenn identisch, ergänzt biblatex bei Zitierung 
+% zunächst Namen bis maxcitenames erreicht, dann nimmt er Vornamen dazu. Befinden sich Einträge 
+% mit "Cockburn, B." und welche mit "Cockburn, Bernardo" in der .bib Datei, meint Biblatex einen 
+% Unterschied zu erkennen und gibt bei letzterem den Vornamen an. 
+uniquename = false,      		% uniquename=false unterdrückt dies, sodass er dann a,b,c hinter die Jahreszahl hängt
+maxcitenames = 2,         		% bei mehr als 2 Namen kürzt biblatex mit et al. ab
+maxbibnames = 25,       		% im Literaturverzeichnis keine Abkürzung mit et al. (bzw. erst ab 25 Autoren)
+firstinits = true,              % Nutzt Initialien statt vollem Namen im Literaturverzeichnis
+dashed = false,                	% kommt ein Autor im Verzeichnis öfter vor, wird als default bei den nächsten Papern eine Linie als 
+% Platzhalter eingefügt statt nochmal der Name. dashed=false lässt alle Namen wiederholen                        
+date = year,                    % Als Datumsangabe in Klammern im Verzeichnis nur das Jahr und nicht das volle Datum verwenden
+url = false,                    % Schaltet url-Angabe aus
+doi = true,              		% Schaltet doi-Angabe aus
+isbn = false,             		% Schaltet isbn-Angabe aus
+abbreviate = true,				% Ob Aufl. oder Auflage im Literaturverzeichnis stehen soll. Gilt für auch für die anderen Abkürzungen. 
+%	sorting=nyt,					% Sort by name, year, title
+maxalphanames=1,				% Sort by name of first author, year, title
+labelalpha,
+sorting=anyt,					
+]{biblatex}            
+% Abstand zwischen Einträgen in der BIBLIOGRAPHY
+\setlength\bibitemsep{1.1\itemsep}			% length between two different entries, preset to \itemsep
+%\setlength\bibnamesep{1.5\itemsep} 		% length between two entries of different authors
+%\setlength\bibinitsep{1.5\itemsep} 		% length between two entries of authors with different first letter 
+
+
+\DeclareNameAlias{sortname}{last-first}			% sortiert im Literaturverzeichnis alle Namen mit erst last name, dann first name. 
+% Default wäre: erster Autor last-first, alle anderen first-last
+
+%\addbibresource{bibliography.bib}
+
+\bibliography{bibliography}
+%\nocite{*}  
+%\bibliography{DEMO-TUDaBibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Fussnoten
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\counterwithout{footnote}{chapter}	% Durchgaengige Nummerierung
+
+%%%%%%%%%%%
+%Figures & Captions
+%%%%%%%%%%%
+\definecolor{gray140}{RGB}{140,140,140}
+\definecolor{fdygray}{RGB}{173,173,173}
+\definecolor{fdyyellow}{RGB}{245,163,0}
+
+\usepackage{subcaption}
+
+% Caption OHNE Serifen, SMALL
+\captionsetup{textfont={sf,small}, labelfont={bf,sf,small}}
+\captionsetup[sub]{textfont={sf,small}, labelfont={sf,small}}
+\captionsetup[algorithm]{textfont={sf,small}, labelfont={bf,sf,small}, labelsep=colon}
+
+\usepackage{ragged2e}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Paketvorschläge Mathematik
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{mathtools} 	% erweiterte Fassung von amsmath
+\usepackage{amssymb}   	% erweiterter Zeichensatz
+\usepackage{bm}			% bold math symbols (\boldsymbol)
+\usepackage{dsfont}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Misc. packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{siunitx}
+\usepackage{chemmacros} 
+\usepackage{stmaryrd}
+\usepackage{listings}
+%%%%%%%%%
+%Commands
+%%%%%%%%%
+\input{commands.tex}
+
+
+%%%%%%%%%%%
+%Glossaries
+%%%%%%%%%%%
+\usepackage[automake,
+nonumberlist, 	%do not show page numbers
+acronym,      	%generate acronym listing
+toc,          	%show listings as entries in table of contents
+nomain,		  	%user-definded gloassaries
+nopostdot=true	%remove the dot at the end of glossary descriptionsfsymbo
+]{glossaries}
+
+%Generate a list of symbols
+\newglossary[slg]{symbols}{syi}{syg}{List of Symbols}
+
+\newglossarystyle{mysymbolstyle}{%
+	\glossarystyle{long}%
+	\renewenvironment{theglossary}%
+	{\begin{longtable}[l]{p{15mm}p{1.5\glsdescwidth}}}%
+		{\end{longtable}}%
+}
+
+%Remove the dot at the end of glossary descriptions
+%\renewcommand*{\glspostdescription}{}
+
+%Format acronym glossary
+\setacronymstyle{long-short}
+\renewcommand{\glsnamefont}[1]{\textbf{\textsf{#1}}}%
+
+\newglossarystyle{myacronymstyle}{%
+	\glossarystyle{long}%
+	\renewenvironment{theglossary}%
+	{\begin{longtable}[l]{p{25mm}p{\glsdescwidth}}}%
+		{\end{longtable}}%
+}
+
+%Activate glossary commands
+\makeglossaries
+
+%Load glossary files
+\loadglsentries{chapters_others/abbreviations}
+\loadglsentries{chapters_others/symbols}
+\loadglsentries{chapters_others/SymbolsSM}
+
+\glsaddall
+
+
+
+%%%%%%%%%
+%Todo notes
+%%%%%%%%%
+%\usepackage[
+%colorinlistoftodos,
+%textsize=footnotesize,
+%]{todonotes}
+%\usepackage{todo}
+
+%%%%%%%%%
+%Tikz
+%%%%%%%%%
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+
+
+%%%%%%%%%
+%pgfplots
+%%%%%%%%%
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usetikzlibrary{spy,backgrounds}
+% Excludes todo notes from externalize
+\usepackage{letltxmacro}
+\usepackage{layouts}			%textwidth in cm: \printinunitsof{cm}\prntlen{\textwidth}
+
+% Options for pgfplots
+\usepgfplotslibrary{units}
+
+\pgfplotscreateplotcyclelist{mycycle}{%
+	solid, every mark/.append style={solid, fill=gray}, mark=*\\%
+	dashed, every mark/.append style={solid, fill=gray}, mark=square*\\%
+	dotted, every mark/.append style={solid, fill=gray}, line width=0.8pt, mark=diamond*\\%
+	dashdotted, every mark/.append style={solid, fill=gray, rotate=180},mark=triangle*\\%	
+	densely dashed, every mark/.append style={solid, fill=gray}, mark=otimes*\\%
+	loosely dashed, every mark/.append style={solid, fill=gray}, mark=triangle*\\%
+	loosely dotted, every mark/.append style={solid, fill=gray}, mark=oplus*\\%
+	densely dotted, every mark/.append style={solid, fill=gray}, mark=pentagon*\\%
+}
+
+\usepgfplotslibrary{groupplots}
+
+\pgfplotsset{
+	compat=newest,
+%	grid=major,
+	cycle list name=mycycle,
+	yminorticks=false,
+	tick align=outside,
+	tick pos=left,
+	legend pos=outer north east,
+	legend cell align=left,
+%	height=0.23\textwidth,
+%	width=0.23\textwidth,
+	every axis/.append style={scale only axis},
+	legend style={font=\footnotesize},
+	label style={font=\footnotesize},
+	tick label style={font=\footnotesize},
+}
+
+% Color map that is identical to the VisIt default color map
+\usepgfplotslibrary{colormaps}
+\pgfplotsset{%
+	/pgfplots/colormap={visit}{%
+		rgb255(0cm)=(0,0,255)
+		rgb255(1cm)=(0,255,255)
+		rgb255(2cm)=(0,255,0)
+		rgb255(3cm)=(255,255,0)
+		rgb255(4cm)=(255,0,0)
+	}
+}
+
+% Defines the macro "discard if not" that lets us filter data files
+% (see http://tex.stackexchange.com/a/106092/34032)
+\pgfplotsset{
+	discard if not/.style 2 args={
+		x filter/.code={
+			\edef\tempa{\thisrow{#1}}
+			\edef\tempb{#2}
+			\ifx\tempa\tempb
+			\else
+			\def\pgfmathresult{inf}
+			\fi
+		}
+	}
+}
+
+\usepackage{placeins} %% Allows use of FloatBarrier
+\usepackage{import}
+\usepackage{subcaption}
+\graphicspath{{./figures/}}
+\graphicspath{{./plots/}}
+%
+%\usetikzlibrary{external}
+%
+%\tikzexternalize
+%\tikzsetexternalprefix{figures/}
+
+ \usetikzlibrary{external}
+ \tikzexternalize[prefix=tikz/]
+ \tikzsetfigurename{output} %% Necesary for Overleaf
+\tikzset{external/force remake} %up-to-date checks of all following figures (see: 50.4.3 Remaking Figures or Skipping Figures in pgf manual)
+%%%%%%%%%
+%Cleveref
+%%%%%%%%%
+\usepackage{hyperref}
+\usepackage[
+nameinlink,
+capitalize,
+noabbrev	
+]{cleveref}
+
+%%%%%%%%%
+% Gkeichungsnummern, Labels, etc. anzeigen
+%%%%%%%%%
+%\usepackage[inline]{showlabels}
+%\renewcommand{\showlabelfont}{\footnotesize\ttfamily\color{magenta}}
+
+%%%%%%%%%%%%%%%%%%%
+%Paketvorschläge Tabellen
+%%%%%%%%%%%%%%%%%%%
+%\usepackage{array}     % Basispaket für Tabellenkonfiguration, wird von den folgenden automatisch geladen
+\usepackage{tabularx}   % Tabellen, die sich automatisch der Breite anpassen
+%\usepackage{longtable} % Mehrseitige Tabellen
+%\usepackage{xltabular} % Mehrseitige Tabellen mit anpassarer Breite
+\usepackage{booktabs}   % Verbesserte Möglichkeiten für Tabellenlayout über horizontale Linien
+
+\crefalias{subequation}{equation}
+
+\begin{document}
+
+%\listoftodos
+
+\frontmatter
+
+\title{A Discontinuous Galerkin Method for Diffusion Flames}
+\subtitle{Embedded in a low-Mach solver framework}
+\author[J. Gutiérrez-Jorquera]{Juan Francisco Gutiérrez Jorquera}%optionales Argument ist die Signatur,
+\birthplace{Santiago, Chile}%Geburtsort, bei Dissertationen zwingend notwendig
+%\reviewer{Gutachter 1 \and Gutachter 2 \and noch einer \and falls das immernoch nicht reicht}%Gutachter
+%Falls die Bezeichner entsprechend der Promotionsordnung angepasst werden sollen:
+\reviewer*[Erstreferent, Koreferent]{Prof. Dr.-Ing Martin Oberlack \and Gutachter 2}
+\publishers{Darmstadt}% Feld für die Ortsangabe oder einen Verlag. Dies ist mit Darmstadt -- D17 vorbelegt, s.u. jedoch wurde die Anforderung für diese Vorgabe reduziert, daher genügt auch die Ortsangabe.
+
+
+%%Sofern keine passende Option verfügbar ist
+%\drtext{}
+
+%Diese Felder werden untereinander auf der Titelseite platziert.
+%\department ist eine notwendige Angabe, siehe auch dem Abschnitt `Abweichung von den Vorgaben für die Titelseite'
+\department{mb} %Kürzel werden entsprechend der Liste in diesem Dokument ersetzt.
+\institute{Fachgebiet für Strömungsdynamik}
+%\group{Arbeitsgruppe}
+
+\submissiondate{\today}
+\examdate{\today}
+
+% Hinweis zur Lizenz:
+% TUDa-CI verwendet momentan die Lizenz CC BY-NC-ND 2.0 DE als Voreinstellung.
+% Die TU Darmstadt hat jedoch die Empfehlung von dieser auf die liberalere
+% CC BY 4.0 geändert. Diese erlaubt eine Verwendung bearbeiteter Versionen und
+% die kommerzielle Nutzung.
+% TUDa-CI wird im nächsten größeren Release ebenfalls diese Anpassung vornehmen.
+% Aus diesem Grund wird empfohlen die Lizenz manuell auszuwählen.
+\tuprints{urn=1234,printid=12345,doi=10.25534/tuprints-1234,license=cc-by-4.0}
+% To see further information on the license option in English, remove the license= key and pay attention to the warning & help message.
+
+\dedication{\textit{Dedication}}
+
+\selectlanguage{ngerman}
+\maketitle
+\selectlanguage{USenglish}
+
+\affidavit
+
+\cleardoublepage
+\phantomsection
+\hypertarget{abstr}{}
+\pdfbookmark[0]{Abstract}{abstr}
+\begin{abstract}
+	\input{chapters_others/abstract}
+\end{abstract}
+
+\cleardoublepage
+\phantomsection
+\hypertarget{zsfg}{}
+\pdfbookmark[0]{Zusammenfassung}{zsfg}
+\begin{abstract}[ngerman]
+	\input{chapters_others/zusammenfassung}
+\end{abstract}
+
+\cleardoublepage
+\phantomsection
+\hypertarget{ackn}{}
+\pdfbookmark[0]{Acknowledgements}{ackn}
+\input{chapters_others/acknowledgements}
+
+\cleardoublepage
+\phantomsection
+\pdfbookmark{\contentsname}{Contents}
+\tableofcontents
+
+%%%%%%\addtocontents{toc}{\protect\pagebreak}	%Seitenumbruch im Inhaltsverzeichnis einfügen
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+
+\cleardoublepage
+\phantomsection
+\printglossary[type=acronym, title=List of Abbreviations, style=myacronymstyle]
+
+\cleardoublepage
+\phantomsection
+\printglossary[type=symbols, style=mysymbolstyle]
+
+
+%%%%%%%%%%
+%Main part
+%%%%%%%%%%
+\mainmatter
+
+%
+%
+\cleardoublepage
+\input{chapters_main/introduction}
+\cleardoublepage
+\input{chapters_main/governing_equations}
+\cleardoublepage
+\input{chapters_main/numerical_method}
+\cleardoublepage
+\input{chapters_main/results}
+\cleardoublepage
+\input{chapters_main/conclusion}
+%
+%%%%%%%%%%%%%TODOOOOOOOOOOOOOOOOOO debo establecer de forma consistente si me refiero a las coordenadas como (x,y) o (x1,x2), similarmente si la velocidad es (u,v)o (u1,u2) 
+%%%%%%%%%%%%%%%%%%% TODO: Verificar si realmente todos los indices de las mass fractions ahora están referidos como k, y el numero total como N. Hacer lo mismo con M y W para los pesos moleculares.
+%
+%
+lalala25
+
+
+
+
+
+\cleardoublepage
+\printbibliography[heading=bibintoc]
+\label{bibref}
+%
+% \cleardoublepage
+% \appendix
+% \input{chapters_others/appendix}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Curriculum vitae}
+\input{chapters_others/cv}
+
+\end{document}
+

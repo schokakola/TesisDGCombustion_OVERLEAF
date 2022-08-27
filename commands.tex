@@ -1,0 +1,201 @@
+\renewcommand\vec{\mathbf}
+
+\DeclareMathOperator\supp{supp}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+
+\newcommand{\xdgShockSolver}{\emph{XDGShock} solver}
+\newcommand{\cnsSolver}{\emph{\gls{cns}} solver}
+\newcommand{\bosssFramework}{\emph{\acrshort{bosss}} framework}
+
+\newcommand{\leftSided}{\ensuremath{_{\mathrm{L}}}}
+\newcommand{\rightSided}{\ensuremath{_{\mathrm{R}}}}
+
+\newcommand{\diff}[1]{\,\mathrm{d} #1}
+\newcommand{\dV}{\diff{V}}
+\newcommand{\dt}{\diff{t}}
+\newcommand{\dS}{\diff{S}}
+\newcommand{\dl}{\diff{l}}
+\newcommand{\de}{\mathrm{d}}
+\newcommand{\D}{\mathrm{D}}
+\newcommand{\Tr}{^\intercal}
+
+\newcommand{\sourceCell}{\ensuremath{\gls{cell}^{\mathrm{src}}}}
+\newcommand{\targetCell}{\ensuremath{\gls{cell}^{\mathrm{tar}}}}
+
+\newcommand{\pre}{\ensuremath{_\mathrm{pre}}}
+\newcommand{\post}{\ensuremath{_\mathrm{post}}}
+\newcommand{\src}{\ensuremath{^{\mathrm{src}}}}
+\newcommand{\tar}{\ensuremath{^{\mathrm{tar}}}}
+\newcommand{\agg}{\ensuremath{^{\mathrm{agg}}}}
+
+\newcommand{\set}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\jump}[1]{\left[\!\left[{{#1}}\right]\!\right]}
+\newcommand{\aver}[1]{\left\{\!\!\left\{{#1}\right\}\!\!\right\}}
+\newcommand{\norm}[1]{\left|\!\left| {#1} \right|\!\right|}
+\newcommand{\normVector}[1]{\left| {#1} \right|}
+\newcommand{\scalarProduct}[1]{\ensuremath{\langle {#1} \rangle}}
+
+\newcommand{\basis}{\ensuremath{\phi}}
+\newcommand{\velocity}{\ensuremath{u}}
+\newcommand{\x}{\ensuremath{x}}
+\newcommand{\scalarField}{\ensuremath{\psi}}
+\newcommand{\testField}{\ensuremath{\vartheta}}
+\newcommand{\statePrimitive}{\ensuremath{W}}
+\newcommand{\coeffVec}{\ensuremath{\tilde{\boldsymbol{\scalarField}}}}
+%\newcommand{\f}{\ensuremath{\vec{\gls{function}}}}
+\newcommand{\scalarFieldVec}{\ensuremath{\boldsymbol{\scalarField}}}
+
+\newcommand{\xt}{\ensuremath{(\gls{x_vec}, \gls{t})}}
+\newcommand{\ps}{\ensuremath{\gls{poly_space}_{\gls{poly_degree}} (\set{\gls{cell}}_{\gls{h_length}})}}
+\newcommand{\ns}{\ensuremath{\gls{scalar_field}_{\gls{h_length}}}}
+\newcommand{\tn}{\ensuremath{\gls{t}_n}}
+\newcommand{\tnone}{\ensuremath{\gls{t}_{n+1}}}
+
+\newcommand{\cell}{\ensuremath{\gls{cell}_j}}
+\newcommand{\cutCellSpace}{\ensuremath{\gls{poly_space}_{\gls{poly_degree}}^{\mathrm{X}}}}
+
+
+
+
+\newcommand{\gasliq}{{}}
+\newcommand{\bb}[1]{\mathcal{#1}}
+\newcommand{\dza}[1]{\frac{d#1}{dz}}
+\newcommand{\dzb}[1]{\frac{d}{dz}(#1)}
+\newcommand{\BoSSS}{\textit{BoSSS }}
+\newcommand{\gvec}[1]{\boldsymbol{#1}}
+\renewcommand{\vec}{\textbf}
+\newcommand{\unigasconst}{\mathcal{R}}
+\newcommand{\pfrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pfracTWO}[2]{\frac{\partial^2 #1}{\partial {#2}^2}}
+\newcommand{\Dfrac}[1]{\frac{\text{D} #1}{\text{D} t}}
+\newcommand{\ddfrac}[1]{\frac{\text{d} #1}{\text{d} t}}
+\newcommand{\SumOvAllns}{\sum\limits_{k = 1}^{\gls{TotalNumberSpecies}}}
+\newcommand{\Viscosity}{\mu}
+\newcommand{\gray}{\rowcolor[gray]{.20}}
+%\newcommand{\diff}[1]{\,d\mkern-1mu\text{#1}}
+\newcommand{\mean}[1]{\left\{{#1}\right\}}
+%\newcommand{\dV}{\diff{V}}
+%\newcommand{\dS}{\diff{S}}
+\newcommand{\domain}{\Omega}
+\newcommand{\dA}{\diff{A}}
+\newcommand{\Dt}[1]{\frac{\text{D}{#1}}{\text{D}t}}
+\newcommand{\LTwoNorm}[1]{\left\lVert#1\right\rVert_{L^2}}
+\newcommand{\Reynolds}{\text{Re}}
+\newcommand{\Prandtl}{\text{Pr}}
+\newcommand{\Froude}{\text{Fr}}
+\newcommand{\Lewis}{\text{Le}}
+\newcommand{\LewisAlpha}{\text{Le}_\alpha}
+\newcommand{\Da}{\text{Da}}
+\newcommand{\Sc}{\text{Sc}}
+
+%\newcommand{\rateReac}{\dot\omega} 
+\newcommand{\rateReac}{\omega} 
+\newcommand{\stoicCoef}{\nu} 
+
+\newcommand{\heatRelease}{\mathrm{Q}}
+
+\newcommand{\MFVec}{\vec{Y}} 
+\newcommand{\MFVecPrima}{\vec{Y}'} 
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\myvector}[1]{\textbf{#1}}
+\newcommand{\mytensor}[1]{\boldsymbol #1}
+
+
+%\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+%\newcommand{\jump}[1]{\left\llbracket#1\right\rrbracket}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\average}[1]{\left\{#1\right\}}
+\newcommand{\flux}[1]{\widehat{#1}}
+\newcommand{\rf}[1]{\tilde{#1}_\infty}
+\newcommand{\DGvec}[1]{\underline{\tilde{#1}}}
+\newcommand{\Nu}{\text{Nu}}
+\newcommand{\Ra}{\text{Ra}}
+\newcommand{\Rey}{\text{Re}}
+\newcommand{\Pra}{\text{Pr}}
+\newcommand{\Fr}{\text{Fr}}
+\newcommand{\Mach}{\text{Ma}}
+
+\newcommand{\Yi}{Y_{\alpha h}}
+
+\newcommand{\RefVal}[1]{\hat #1_{\text{ref}}}
+\newcommand{\RefValS}[2]{\hat #1_{#2,\text{ref}}} \newcommand{\LtwoNorm}[1]{\left \Vert #1 \right\Vert_2}
+
+\newcommand{\GammaD}{\Gamma_{\text{D}}}
+\newcommand{\GammaDW}{\Gamma_{\text{DW}}}
+\newcommand{\GammaN}{\Gamma_{\text{N}}}
+\newcommand{\GammaND}{\Gamma_{\text{ND}}}
+\newcommand{\GammaI}{\Gamma_{\text{I}}}
+\newcommand{\GammaP}{\Gamma_{\text{P}}}
+
+\newcommand{\normalBoundary}{\vec{n}_{\Gamma}}
+
+\newcommand{\cph}{c_p(T_h,\vec{Y}_h)}
+\newcommand{\rhoh}{\rho(T_h,\vec{Y}_h)}
+\newcommand{\visch}{\mu(T_h)}
+\newcommand{\lambdah}{\lambda(T_h)}
+\newcommand{\rhodh}{\rho\!D_\alpha(T_h)}
+\newcommand{\cd}[1]{#1^{*}}
+\newcommand{\dtpart}[1]{\frac{\partial}{\partial t}(#1)}
+\newcommand{\dtpartcd}[1]{\frac{\partial}{\partial t^*}(#1)}
+\newcommand{\nondimA}[1]{#1 = \frac{#1^*}{#1^*_\infty}}
+\newcommand{\nondimB}[1]{#1 = \frac{#1^*}{p^*_\infty/\rho^*_\infty}}
+
+\newcommand{\ContDis}{\mathcal{C}\left(\vec{u}_h,q_h, \rhoh\right) }
+\newcommand{\MomConv}{\mathcal{U}^C\left(\vec{u}_h,\vec{u}_h,\vec{v}_h, \rhoh\right) } \newcommand{\MomConvDefinition}{\mathcal{U}^C\left(\vec{w}_h,\vec{u}_h,\vec{v}_h, \rhoh\right) }\newcommand{\MomPres}{\mathcal{U}^P\left(p_h,\vec{v}_h\right) }
+\newcommand{\MomDiff}{\mathcal{U}^D\left(\vec{u}_h,\vec{v}_h,\visch\right)}
+\newcommand{\MomSource}{\mathcal{U}^S\left(\rhoh, \vec{v}_h\right)}
+
+\newcommand{\EnergyConv}{\mathcal{E}^C\left(\vec{u}_h,T_h,r_h, \rhoh\right)}
+\newcommand{\EnergyDiff}{\mathcal{E}^D\left(T_h,r_h,\lambdah\right)} 
+\newcommand{\EnergySource}{\mathcal{E}^S\left(r_h, Q_h(T_h,\vec{Y}_h), \rateReac_h(T_h,\vec{Y}_h)\right)}
+\newcommand{\MFTestFunc}{s_h}
+\newcommand{\MFConv}{\mathcal{M}^C_\alpha\left(\vec{u}_h,\Yi,\MFTestFunc, \rhoh\right)}
+\newcommand{\MFDiff}{\mathcal{M}^D_\alpha\left(\Yi,\MFTestFunc,\rhodh\right) } 
+\newcommand{\MFSource}{\mathcal{M}^S_\alpha\left(\MFTestFunc,\rateReac_h(T_h,\vec{Y}_h )\right)}
+
+\newcommand{\glsHat}[1]{\hat{\gls{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\vectr}[1]{\boldsymbol{\mathbf{#1}}}
+\newcommand{\deriv}[2]{\frac{{\textrm{d}}{#1}}{{\textrm{d}}{#2}}}
+\newcommand{\pDeriv}[2]{\frac{\partial{#1}}{\partial{#2}}}
+\newcommand{\matDeriv}[1]{\frac{{\textrm{D}}{#1}}{\textrm{D}t}}
+\renewcommand{\div}[1]{\nabla \cdot {#1}}
+\newcommand{\lapl}[1]{\Delta{#1}}
+\newcommand{\divH}[1]{\nabla_{\gls{grdSz}} \cdot {#1}}
+\newcommand{\divI}[1]{\nabla_{\gls{interface}} \cdot {#1}}
+\newcommand{\grad}[1]{\nabla{#1}}
+\newcommand{\gradT}[1]{\nabla{#1}^{\textrm{T}}}
+\newcommand{\gradH}[1]{\nabla_{\gls{grdSz}}{#1}}
+\newcommand{\gradHT}[1]{\nabla_{\gls{grdSz}}{#1}^{\textrm{T}}}
+\newcommand{\gradI}[1]{\nabla_{\gls{interface}}{#1}}
+\newcommand{\gradIT}[1]{\nabla_{\gls{interface}}{#1}^{\textrm{T}}}
+%\newcommand{\jump}[1]{\left[\!\left[{{#1}}\right]\!\right]}
+%\newcommand{\aver}[1]{\left\{\!\left\{{#1}\right\}\!\right\}}
+%\newcommand{\norm}[1]{\left|\!\left| {#1} \right|\!\right|}
+\newcommand{\abs}[1]{\left| {#1} \right|}
+\newcommand{\tensr}[1]{ \boldsymbol{\mathbf{#1}} }
+\newcommand{\tensrT}[1]{ \boldsymbol{\mathbf{#1}}^{\textrm{T}} }
+\newcommand{\trace}[1]{{\textrm{tr}}{#1}}
+\newcommand{\cond}[1]{\textrm{cond}{\left(#1\right)}}
+\renewcommand{\d}[1]{~\textrm{d}{#1}}
+%\newcommand{\num}[1]{#1_{\gls{grdSz}}}
+\newcommand{\out}[1]{#1^{\textrm{out}}}
+\newcommand{\inn}[1]{#1^{\textrm{in}}}
+\newcommand{\diri}[1]{{#1}_{\textrm{D}}}
+\newcommand{\neum}[1]{{#1}_{\textrm{N}}}
+\newcommand{\wall}[1]{{#1}_{\textrm{wall}}}
+\newcommand{\slip}[1]{{#1}_{\textrm{S}}}
+\newcommand{\cL}[1]{{#1}_{\gls{cLine}}}
+\newcommand{\indA}[1]{{#1}_{\gls{domainA}}}
+\newcommand{\indB}[1]{{#1}_{\gls{domainB}}}
+\newcommand{\indI}[1]{{#1}_{\gls{interface}}}
+\newcommand{\brknPspace}[1]{\mathbb{P}_{#1}}
+\newcommand{\cutcell}[1]{{\gls{cell}}_{#1}^{\gls{cut}}}
+\newcommand{\basisX}[1]{{\gls{basis}}_{#1}^{\gls{cut}}}
+\newcommand{\basisXvec}[1]{{\vectr{\gls{basis}}}_{#1}^{\gls{cut}}}
+\newcommand{\vap}[1]{{#1}_{\textrm{v}}}
+\newcommand{\liq}[1]{{#1}_{\textrm{l}}}

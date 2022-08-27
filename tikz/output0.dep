@@ -1,0 +1,2 @@
+tikz/output0.pdf: data/MF_FULL_COMPARISON/TMF.txt
+tikz/output0.pdf: data/MF_FULL_COMPARISON/TFull.txt

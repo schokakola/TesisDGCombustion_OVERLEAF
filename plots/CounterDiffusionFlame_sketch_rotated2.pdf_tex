@@ -1,0 +1,75 @@
+%% Creator: Inkscape 1.0.1 (3bc2e813f5, 2020-09-07), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'CounterDiffusionFlame_sketch_rotated2.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{623.00240104bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.44444435)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0.50541383,0.31955222){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Fuel}\end{tabular}}}}%
+    \put(0.48914563,0.11898873){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Oxidizer}\end{tabular}}}}%
+    \put(0.52165765,0.4310296){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\hat D$\end{tabular}}}}%
+    \put(-0.00146562,0.21634103){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\hat{L}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{CounterDiffusionFlame_sketch_rotated2.pdf}}%
+    \put(0.50187804,0.002595){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$6\hat{L}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{CounterDiffusionFlame_sketch_rotated2.pdf}}%
+    \put(0.73588839,0.30040165){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Stagnation plane}\\\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{CounterDiffusionFlame_sketch_rotated2.pdf}}%
+    \put(0.28154156,0.39441284){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}%
+    \put(0.77020774,0.39621194){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}%
+    \put(0.77020774,0.04390421){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}%
+    \put(0.28264939,0.04291605){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}%
+    \put(0.23597805,0.28618457){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Flame}\\\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{CounterDiffusionFlame_sketch_rotated2.pdf}}%
+    \put(0.06924897,0.13479347){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Pressure outlet}\end{tabular}}}}}%
+    \put(0.99712048,0.14305974){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Pressure outlet}\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{CounterDiffusionFlame_sketch_rotated2.pdf}}%
+  \end{picture}%
+\endgroup%

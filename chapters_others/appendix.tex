@@ -1,0 +1,257 @@
+\chapter{Appendix}	\label{ch:appendix}
+\glsresetall
+%By substituting the expansions into the non-dimensionalized equations XX and the non-dimensionalized ideal gas equation XX, and collecting the lowest orders for $\epsilon$, the low-Mach number equations are obtained.
+	\section{NS and energy equations}
+	Equations with dimensions.\\
+	Conti:
+	\begin{equation}
+	\frac{\partial \rho^*}{\partial t^*}+ \nabla ^* \cdot (\cd{\rho}\cd{\vec{u}}) = 0
+	\end{equation}
+	Momentum
+	\begin{gather}
+	\dtpartcd{\rho^*\vec{u}^* } + \nabla ^* \cdot (\rho^*\vec{u}^*\vec{u}^*) + \nabla^*p^* = \nabla^* \cdot \tau^* + \rho^* \vec{g}^*\\
+	\tau^* = \mu^*(\nabla^*\vec{u}^* + (\nabla^*\vec{u}^*)^T) - \frac{2}{3}\mu^*\nabla^*\cdot \vec{u}^*\mathbf{I}
+	\end{gather}
+	energy
+	\begin{gather}
+	\dtpartcd{\rho^*E^* } + \nabla ^* \cdot (\rho^*H^*\vec{u}^*) = Q^*\\
+	Q^* = \nabla^* \cdot (\tau^*\cdot\vec{u}^*) + \rho^* \vec{g}^* \cdot \vec{u}^* + \nabla^*\cdot (k^*\nabla^*T^*)+\rho^*q^*
+	\end{gather}
+	And with the equations of state 
+	\begin{align}
+	p^* &= \rho ^* R^* T^*\\
+	e^* &= c_v^*T^*
+	\end{align}
+	\section{Low Mach number asymptotics}
+	\subsection{nondimensionalization}
+	The equations are non-dimensionalized (?) by using reference quantities denoted with the subscript $\infty$ and a reference length scale $L^*$
+	
+	\begin{align}
+	\nondimA{\rho},\quad
+	\nondimA{p},\quad
+	\nondimA{\vec{u}},\quad
+	\nondimA{T},\quad
+	\nondimA{\mu},\quad
+	\nondimA{\kappa},\quad \\
+	\mathbf{x} = \frac{\mathbf{x}^*}{L^*},\quad
+	t = \frac{t^*}{L^*/u^*_\infty},\quad
+	\nondimB{e},\quad
+	\nondimB{E},\quad
+	\nondimB{H}
+	\end{align}
+	The reference quantities are chosen such taht the nondimensional flow quantities remain of order O(1) for any low-reference-Mach number. The Mach number is defined as
+	\begin{equation}
+	M_\infty = \frac{u^*_\infty}{\sqrt{\gamma p^*_\infty/\rho^*_\infty}}
+	\end{equation}
+	To avoid the dependence on $\gamma$ we work with $\tilde{M}$ 
+	\begin{equation}
+	\tilde{M} = \frac{u^*_\infty}{\sqrt{p^*_\infty/\rho^*_\infty}} = \sqrt{\gamma}M_\infty
+	\end{equation}
+	Using the aforementioned reference quantities the nondimensionalized Navier-Stokes read\\
+	Continuity equation:
+	\begin{equation}
+	\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \vec{u}) = 0
+	\end{equation}
+	Momentum equations
+	\begin{equation}
+	\frac{\partial (\rho \vec{u})}{\partial t} + \nabla   \cdot (\rho \vec{u} \vec{u} ) + \frac{1}{\tilde{M}^2}\nabla p  = \frac{1}{\text{Re}_\infty}\nabla  \cdot \tau  + \frac{1}{\text{Fr}_\infty^2}\rho (-\mathbf{e}_r)
+	\end{equation}
+	Energy equations
+	\begin{gather}
+	\frac{\partial (\rho E)}{\partial t} + \nabla   \cdot (\rho H \vec{u} )   = Q \\
+	Q  =\frac{\tilde{M}^2}{\text{Re}_\infty} \nabla  \cdot (\tau \cdot\vec{u} ) + 
+	\frac{\tilde{M}^2}{\text{Fr}_\infty^2}\rho (-\mathbf{e}_r) \cdot \vec{u}  + 
+	\frac{\gamma}{(\gamma-1)\text{Re}_\infty\text{Pr}_\infty}\nabla \cdot (k \nabla T )+
+	\rho q 
+	\end{gather}
+	Where the Reynolds number, Froude number and Prandtl number are defined as
+	\begin{equation}
+	\text{Re}_\infty = \frac{\rho^*_\infty u^*_\infty L^*}{\mu^*_\infty}, \qquad \text{Fr}_\infty = \frac{u^*_\infty}{\sqrt{g^*L^*}}, \qquad \text{Pr}_\infty = \frac{c_p^* \mu^*_\infty}{\kappa^*_\infty}
+	\end{equation}
+	
+	
+	\subsection{Asymptotic analysis}
+	
+	We are interested in slow flow affected by acoustic effects in a confined gas over a long time. Therefore, we introduce the fast acoustic time scale
+	\begin{equation}
+	\tau = \frac{t^*}{L^* / \sqrt{\frac{p^*_\infty}{\rho^*_\infty}}} = \frac{t}{\tilde{M}}
+	\end{equation}
+	Note that the flow time scale ($t$) is determined by the time it takes the reference flow to travel one length scale, and the acoustic time scale corresponds to the time it takes to travel one length scale at the reference speed of sound divided by $\sqrt{\gamma}$\\
+	
+	In the two-time scale, single space scale low Mach number asymptotic analysis each flow variable is expanded as e.g. the pressure:
+	\begin{equation}\label{eq:defExp}
+	p(\mathbf{x},t,\tilde{M}) = p_0(\mathbf{x},t,\tau) + \tilde{M} p_1(\mathbf{x},t,\tau) + \tilde{M}^2 p_2(\mathbf{x},t,\tau) + \mathcal{O}(\tilde{M}^3)
+	\end{equation}
+	
+	Note that the time derivative at constant $\mathbf{x}$ and $\tilde{M}$ involves the flow time derivative $\partial/\partial t$ and the acoustic time derivative $\partial/\partial\tau$
+	\begin{equation}
+	\left.\frac{\partial p}{\partial t}\right|_{\mathbf{x},\tilde{M}} = 
+	\left( \frac{\partial}{\partial t} + \frac{1}{\tilde{M}}\frac{\partial}{\partial \tau}\right)[p_0 + \tilde{M} p_1 + \tilde{M}^2 p_2 + \mathcal{O}(\tilde{M}^3)]
+	\end{equation}
+	
+	Expanding each variable ($\rho$, $\vec{u}$, $p$, $E$...) according to \ref{eq:defExp}, inserting them in the Navier-Stokes equations and energy equations and comparing the Mach number powers we obtain for the continuity equation:
+	\begin{align}
+	M^{-1}:&\qquad \frac{\partial \rho_0}{\partial \tau} = 0\\
+	M^{0}:&\qquad  \frac{\partial \rho_1}{\partial \tau} + \frac{\partial \rho_0}{\partial t}  + \nabla \cdot (\rho \vec{u})_0 = 0\\
+	M^{1}:&\qquad  \frac{\partial \rho_2}{\partial \tau} + \frac{\partial \rho_1}{\partial t}  + \nabla \cdot (\rho \vec{u})_1 = 0
+	\end{align}
+	Note that the first equation implies that $\rho_0$ does not depend on the acoustic time scale ($\rho_0 = \rho_0(\mathbf{x}, t)$)
+	
+	Momentum equations:
+	\begin{align}
+	M^{-2}:& \qquad \nabla p_0 = 0 \label{eq:LeadMom}\\
+	M^{-1}:& \qquad \frac{\partial (\rho \vec{u})_0}{\partial \tau} + \nabla p_1 = 0\\
+	M^{0}:&  \qquad \frac{\partial (\rho \vec{u})_1}{\partial \tau} + \frac{\partial (\rho \vec{u})_0}{\partial t} + \nabla \cdot (\rho \vec{u}\vec{u})_0 + \nabla p_2 = \mathbf{G}_0 \label{eq:secOrderMomEq}\\
+	\text{with}& \qquad \mathbf{G}_0 = \frac{1}{\text{Re}_\infty}\nabla \cdot \tau_0 + \frac{1}{\text{Fr}_\infty^2}\rho_0(-\mathbf{e}_r)  
+	\end{align}
+	Again, note that the first equation implies that $p_0$ does not depend on $\mathbf{x}$.\\
+	
+	Energy Equations 
+	\begin{align}
+	M^{-1}:&\qquad \frac{\partial (\rho E)_0}{\partial \tau} = 0,\label{eq:LeadEn}\\
+	M^{0}: &\qquad \frac{\partial (\rho E)_1}{\partial \tau} + \frac{\partial (\rho E)_0}{\partial t} + \nabla \cdot (\rho H \vec{u})_0= Q_0,\\
+	M^{0}: &\qquad \frac{\partial (\rho E)_2}{\partial \tau} + \frac{\partial (\rho E)_1}{\partial t} + \nabla \cdot (\rho H \vec{u})_1= Q_1
+	\end{align}
+	With 
+	\begin{gather}
+	Q_0 = \frac{\gamma}{(\gamma - 1)\text{Re}_\infty \text{Pr}_\infty} \nabla \cdot (\kappa \nabla T)_0 + (\rho q)_0\\
+	Q_1 = \frac{\gamma}{(\gamma - 1)\text{Re}_\infty \text{Pr}_\infty} \nabla \cdot (\kappa \nabla T)_1 + (\rho q)_1
+	\end{gather}
+	
+	Similar treatment can be done for the equations of state
+	\begin{align}
+	p_0 &= (\gamma -1)(\rho E)_0,\label{eq:EqSt_p0}\\
+	p_1 &= (\gamma -1)(\rho E)_1,\\
+	p_2 &= (\gamma -1)[(\rho E)_2 - \frac{1}{2}\rho_0 u_0^2]\\
+	T_0 &= \frac{p_0}{\rho_0},\\
+	T_1 &= \frac{p_1-\rho_1 T_0}{\rho_0},\\
+	T_2 &= \frac{p_2 - \rho_1 T_1 - \rho_2 T_0}{\rho_0}
+	\end{align}
+	Using equations \eqref{eq:LeadMom}, \eqref{eq:LeadEn} and \eqref{eq:EqSt_p0} we see that the zeroth order pressure $p_0$ and the total energy density $(\rho E )_0$ only depend on the flow time $t$
+	\begin{equation}
+	p_0(t) = (\gamma - 1) (\rho E)_0 (t)
+	\end{equation}
+	
+	\section{Low Mach number equations}
+	If the first order continuity and energy equations, and the second order momentum equations are averaged over an acoustic wave period, the averaged velocity tensor describes the net acoustic effect on the averaged flow field. 
+	It can be shown that starting from the equations derived using asymptotic analysis in the last section, a simplified set of equations can be obtained. Removal of the acoustic effects leads to the low Mach number equations.
+	It is assumed that acoustic waves have a period $T_a$, i.e. $(\rho_1,(\rho \vec{u})_1,(\rho E)_1)(\mathbf{x}, t, \tau) = (\rho_1,(\rho \vec{u})_1,(\rho E)_1)(\mathbf{x}, t, \tau+ T_a)$
+	
+	For example, integrating the second order momentum equation \eqref{eq:secOrderMomEq} over a acostuic wave period $T_a$ we get
+	
+	\begin{equation}
+	\frac{\partial \rho_0 \overline{\vec{u}}_0 }{\partial t}  + \nabla \cdot (\rho_0  \overline{\vec{u}_0\vec{u}_0}) + \nabla \overline{p}_2 = \overline{\mathbf{G}}_0
+	\end{equation}
+	
+	The averaged velocity tensor $\overline{\vec{u}_0\vec{u}_0} = \frac{1}{T_a}\int_{0}^{T_a}\vec{u}_0(\vec{x},t,\tau)\vec{u}_0(\vec{x},t,\tau)\text{d}\tau$ 
+	describes the net acoustic effect on the averaged flow field.
+	
+	If the averaged velocity tensor  $\overline{\vec{u}_0\vec{u}_0}$ is approximated by the tensor  $\overline{\vec{u}}_0\overline{\vec{u}}_0$, the net acoustic effect is removed and we obtain the momentum equation in the zero Mach number limit.
+	\begin{equation}
+	\frac{\partial \rho_0 \overline{\vec{u}}_0 }{\partial t}  + \nabla \cdot (\rho_0  \overline{\vec{u}}_0\overline{\vec{u}}_0) + \nabla \overline{p}_2 = \overline{\mathbf{G}}_0
+	\end{equation}
+	
+	Using a similar procedure the averaged first order continuity equation and energy equation become the low mach continuity and momentum equations
+	\begin{equation}
+	\frac{\partial \rho_0 }{\partial t}  + \nabla \cdot (\rho_0  \overline{\vec{u}_0}) = 0
+	\end{equation}
+	\begin{equation}
+	\frac{\gamma}{\gamma -1} \rho_0 \left[\frac{\partial T_0}{\partial t}   + \overline{\vec{u}}_0 \cdot\nabla T_0 \right] - \frac{\text{d}p_0}{\text{d}t} = \overline{Q}_0
+	\end{equation} 
+	The low-Mach number equations are valid for arbitrary temperature and density changes governed by the equation of state $p_0(t) = \rho_0(\vec{x},t)T_0(\vec{x},t)$
+	
+	Since $p_0$ serves as the mean pressure in the energy equations, it represents the global thermodynamic pressure part. %As the second order pressure $p_2$ is determined by the momentum equation, 
+	The low mach number momentunm equation is coupled to the low mach number energy eqaution via the density $\rho_0$, viscosity $\mu(T_0)$ and equation of state $p_0 = \rho_0T_0$
+	
+	If only small temperature and density changes are allowed and if $p_0$ is asumed to be constant, the low mach number equations simplify to the bousinnesq equations. 
+	
+	The euler and NS equations can be obtained by neglecting the bouyancy forec and thereby the coupling between the momentum and energy equations
+
+
+
+
+
+
+
+
+
+
+
+
+\section{bla}\label{AP:DerivationOfLowMach}
+
+
+ For a comprehensive derivation of the low-Mach equations we refer to other works\cite{majdaDerivationNumericalSolution1985} \cite{rauwoensConservativeDiscreteCompatibilityconstraint2009} \cite{mullerLowMachNumberAsymptoticsNavierStokes1998} \cite{kleinNumericalModellingHigh2002}.  
+\section{The low-Mach number equations for reactive flows}
+
+
+\subsection{The steady non-dimensional low-Mach equations} \label{ssec:NonDimLowMachEquations}
+In the present work the low-Mach number limit approximation of the governing equations is used. This approximation is often used for flows where the Mach number (defined as $\text{Ma} = \RefVal{u}/\hat c$, where $\RefVal{u}$ is a characteristic flow velocity and $\hat{c}$ the speed of sound) is small, which is usually the case in typical laminar combustion systems. \cite{dobbinsFullyImplicitCompact2010} For a comprehensive derivation of the low-Mach equations we refer to other works\cite{majdaDerivationNumericalSolution1985} \cite{rauwoensConservativeDiscreteCompatibilityconstraint2009} \cite{mullerLowMachNumberAsymptoticsNavierStokes1998} \cite{kleinNumericalModellingHigh2002}.  
+One of the main results of the analysis is that for flows with a small Mach number the pressure can be decomposed as $\hat p(\hat {\vec{x}}, \hat t) = \hat p_0(\hat t) + \hat p_2(\hat{\vec{x}},\hat t)$. The spatially uniform  term $\hat p_0(\hat t)$ is called thermodynamic pressure, and only appears in the equation of state. For an open system it is constant and equal to the ambient pressure, while for a closed system (e.g. a system completely bounded by walls) it changes in order to ensure mass conservation, c.f. \cref{ss:DHC}. The perturbational term  $\hat p_2(\hat{\vec{x}},\hat t)$  plays a similar role as the pressure in the classical incompressible formulation, and only appears in the momentum equations. Effectively this approximation allows density variations due to temperature differences, and decouples it from the hydrodynamic pressure. From now on we will drop the sub-index of the hydrodynamic pressure $\hat p_2$ and we will refer to it simply as $\hat p$.
+
+We use in this work a non-dimensional formulation of the governing equations. We define the non-dimensional quantities
+%By substituting the expansions into the non-dimensionalized equations XX and the non-dimensionalized ideal gas equation XX, and collecting the lowest orders for $\epsilon$, the low-Mach number equations are obtained.
+%note that the form of the low-Mach equations is very similar to the original governing equations. La mayor diferencia proviene de la descomposicion de la presion en dos partes. blabla.
+\begin{align*}
+&\rho = \frac{\hat \rho}{\RefVal{\rho}}, \quad 
+p = \frac{\hat p}{\RefVal{p}}, \quad 
+\vec{u}= \frac{\hat{\vec{u}}}{\RefVal{u}}, \quad 
+T = \frac{\hat T}{\RefVal{T}},  \quad 
+c_p = \frac{\hat c_p}{\RefValS{c}{p}}, \quad
+M_\alpha = \frac{\hat{M}_\alpha}{\RefVal{M}}
+\\
+\mu = &\frac{\hat \mu}{\RefVal{\mu}},\quad
+D_\alpha = \frac{\hat D_\alpha}{\RefValS{D}{\alpha}}, \quad
+k = \frac{\hat k}{\RefVal{k}}\quad
+\nabla = \frac{\hat \nabla}{\RefVal{L}}, \quad
+t = \frac{\hat{t}}{\RefVal{t}},\quad 
+\vec{g} = \frac{\hat{\vec{g}}}{\RefVal{g}},\quad
+Q = \frac{\hat Q}{\hat{Q}_0}
+\end{align*}
+Here $\RefVal{u}, \RefVal{L}$, $\RefVal{p}$, $\RefVal{t}$ and $\RefVal{T}$ are the reference velocity, length, pressure, time and temperature, respectively, and are equal to some characteristic value for the particular studied configuration. Additionally, $\RefVal{g}$ is the gravitational acceleration and $\RefVal{M}$ is a reference molecular weight.  The reference transport properties $\RefVal{\mu}$, $\RefVal{k}$, $\RefValS{D}{\alpha}$ and the reference heat capacity of the mixture and $\RefValS{c}{p}$ are evaluated at the reference temperature $\RefVal{T}$. Similarly, the reference density has to satisfy the equation of state, thus $\RefVal{\rho} = \RefVal{p}/(\mathcal{R}\RefVal{T}\RefVal{M})$.  By introducing these definitions in the governing equations \cref{eq:GasLowMachConti,eq:GasLowMachMassBalance} the non-dimensional reactive low-Mach number set of equations are obtained. Since we are interested in the steady solution of the governing equations, all temporal derivatives vanish. Finally, the system of differential equations to be solved reads 
+\begin{subequations}
+	\begin{align}
+	\nabla \cdot (\rho \vec{u})   = 0, \label{eq:LowMachConti}\\\nabla \cdot (\rho \vec{u} \otimes \vec{u})  & = - \nabla p + \frac{1}{\Rey}\nabla \cdot \mu\left( \nabla \vec{u} +\nabla \vec{u}^T  - \frac{2}{3}(\nabla\cdot \vec{u})\mytensor{I} \right)  - \frac{1}{\Fr^2}\rho\frac{\vec{g}}{\Vert \vec{g} \Vert}, \label{eq:LowMachMomentum}\\\nabla \cdot (\rho \vec{u} T) & = \frac{1}{\text{Re}~\text{Pr}}\nabla \cdot\left(\frac{k}{c_p} \nabla T\right)+  
+	\text{H}~\Da~\frac{\heatRelease~\rateReac}{c_p}, \label{eq:LowMachEnergy}\\ 
+	\nabla \cdot (\rho  \vec{u}Y_\alpha)  & = \frac{1}{\text{Re}~\text{Pr}~\text{Le}_\alpha}\nabla \cdot(\rho D \nabla Y_\alpha)+  \Da~\stoicCoef_\alpha M_\alpha \rateReac. \quad (\alpha = 1, \dots,~n_s - 1) \label{eq:LowMachMassBalance} 
+	\end{align}
+	\label{eq:all-eq}
+\end{subequations}
+
+The $n_s$-th component mass fraction $Y_{n_s}$ is calculated using \cref{eq:MassFractionConstraint}. This system is solved for the primitive variables velocity $\vec{u} = (u_x, u_y)$, pressure $p$, temperature $T$ and mass fractions ${\mathbf{Y} = (Y_1,\dots,Y_{n_s})}$.
+Six non-dimensional factors arise from the non-dimensionalization process:
+\begin{gather*}
+\text{Re} = \frac{\RefVal{\rho} \RefVal{u}  \RefVal{L}}{\RefVal{\Viscosity}}, \quad
+\text{Fr} = \frac{\RefVal{u}}{\sqrt{\RefVal{g}\RefVal{L}}}, \quad
+\text{Pr} = \frac{\RefValS{c}{p} \RefVal{\Viscosity}}{\RefVal{k}}, \quad
+\text{Ma} = \frac{\RefVal{u}}{\sqrt{\gamma \RefVal{T} \hat{\gls{GasConstant}} / \RefVal{W} }},\\
+\text{Le}_\alpha = \frac{\RefVal{k}}{\RefVal{\rho} \RefValS{D}{\alpha} \RefValS{c}{p}}, \quad
+\Da = \frac{\hat B \RefVal{L} \RefVal{\rho}}{\RefVal{M}\RefVal{u}}, \quad \label{eq:Dahmkoeler}
+\text{H} = \frac{\hat \heatRelease_0}{\RefVal{M} \RefValS{c}{p} \RefVal{T}}
+\end{gather*} 
+the first three are the Reynolds, Froude and Prandtl number respectively. $\text{Le}_\alpha$ is the Lewis number of species $\alpha$. Finally $\text{Da}$ and H are the Damköhler number and the non-dimensional heat release respectively. The non-dimensional reaction rate is 
+\begin{align}
+\rateReac(T, \vec{Y})  = \left(\frac{\rho Y_F}{M_F}\right) \left(\frac{\rho Y_O}{M_O}\right)\text{exp}\left(\frac{-T_a}{T}\right), \label{eq:NonDimArr}
+\end{align}
+where $T_a = \hat{T}_a / \RefVal{T}$. Furthermore, the non-dimensional heat release is
+\begin{equation}
+\heatRelease(\phi)=
+\begin{cases}
+1 &\text{if}~ \phi \leq 1\\
+(1 - \alpha(\phi -1))&\text{if}~\phi > 1,
+\end{cases}  \label{eq:heatReleaseOneStepNonDim}     
+\end{equation}
+with $\phi$ evaluated according to \cref{eq:equivalenceRatio}. In the low-Mach limit, the ideal gas equation depends on the thermodynamic pressure, temperature and mass fractions. It reads in its non-dimensional form 
+\begin{align} \label{eq:ideal_gas}
+\rho(p_0,T, \vec{Y}) = \frac{p_0}{T \SumOvAllns \frac{Y_\alpha}{M_\alpha}}.
+\end{align}
+Similarly, the non-dimensional specific heat capacity of the mixture $c_p$ is calculated as
+\begin{equation}\label{eq:nondim_cpmixture}
+c_p(T,\mathbf{Y}) = \SumOvAllns Y_\alpha c_{p,\alpha}(T),
+\end{equation}
+and the non-dimensional viscosity as
+\begin{equation} \label{eq:nondim_sutherland}
+\mu(T) =  T^{\frac{3}{2}}\frac{1+\hat{S} }{\RefVal{T}T+\hat{S}}.
+\end{equation} 
+As mentioned before, the model for the transport parameters can be simplified by assuming constant values for the Prandtl and Lewis numbers. \cite{smokeFormulationPremixedNonpremixed1991} and we can write $\mu(T) = k/c_p(T) = \rho D_\alpha(T)$.
+In all calculations in this work the value of $\hat{S}$ for air is used, $\hat{S} = $ \SI{110.5}{\kelvin}.

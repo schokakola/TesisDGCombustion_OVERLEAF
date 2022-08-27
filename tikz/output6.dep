@@ -1,0 +1,4 @@
+tikz/output6.pdf: data/HeatedBackwardFacingStep/VelXArr7.txt
+tikz/output6.pdf: data/HeatedBackwardFacingStep/VelXArr15.txt
+tikz/output6.pdf: data/HeatedBackwardFacingStep/VelXArr7_REF.txt
+tikz/output6.pdf: data/HeatedBackwardFacingStep/VelXArr15_REF.txt

@@ -523,7 +523,7 @@ we experienced convergence problems for some of the test cases presented in next
 In particular, for the differentially heated cavity test case, the method was not successful on finding a convergent solution for a Rayleigh number $Ra \geq 10^5$  within 60 Newton iterations.
 In such cases we used a homotopy strategy, which is loosely based on 
 ideas from the textbook of Deuflhard,\cite{deuflhardNewtonMethodsNonlinear2011} Chapter 5.
-\tikzexternaldisable
+%\tikzexternaldisable
 \begin{figure}[t]
 	\centering
 	\pgfplotsset{
@@ -570,7 +570,7 @@ ideas from the textbook of Deuflhard,\cite{deuflhardNewtonMethodsNonlinear2011} 
 	\label{fig:Homotopyevolution}
 \end{figure}
 
-\tikzexternalenable
+%\tikzexternalenable
 We start by identifying a parameter that makes the solution of the nonlinear problem difficult to solve. In the following we will refer to this variable as the homotopy parameter. 
 The main idea of the homotopy strategy consists of solving a series of simpler problems, starting with a parameter where the problem is easy to solve, and carefully increasing it until the desired value is reached.  Let $\mathrm{Hp}$ denote the value of the homotopy parameter for which a solution is being sought. Let
 \begin{equation}

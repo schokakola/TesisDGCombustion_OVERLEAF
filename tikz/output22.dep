@@ -1,6 +1,0 @@
-tikz/output22.pdf: data/DataStrainSweep/2/FullVelocityX_BOSSS.txt
-tikz/output22.pdf: data/DataStrainSweep/2/FullVelocityX_MATLAB2.txt
-tikz/output22.pdf: data/DataStrainSweep/5/FullVelocityX_BOSSS.txt
-tikz/output22.pdf: data/DataStrainSweep/5/FullVelocityX_MATLAB.txt
-tikz/output22.pdf: data/DataStrainSweep/11/FullVelocityX_BOSSS.txt
-tikz/output22.pdf: data/DataStrainSweep/11/FullVelocityX_MATLAB.txt

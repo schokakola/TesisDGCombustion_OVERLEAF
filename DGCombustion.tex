@@ -30,10 +30,12 @@
 %% <path to your LaTeX distribution>/doc/latex/tuda-ci
 %% ============================================================================
 %%
-% !TeX program = lualatex
+% !TeX program = pdflatex
+%% TeX program = lualatex
 %%
 
 \documentclass[
+%	draft,
 	USenglish,
 	ruledheaders=chapter,% Ebene bis zu der die Überschriften mit Linien abgetrennt werden, vgl. DEMO-TUDaPub
 	class=book,% Basisdokumentenklasse. Wählt die Korrespondierende KOMA-Script Klasse
@@ -68,12 +70,17 @@
 	includemp,
 	nomarginpar
 }
-
-% Der folgende Block ist nur bei pdfTeX auf Versionen vor April 2018 notwendig
-\usepackage{iftex}
-\ifPDFTeX
-	\usepackage[utf8]{inputenc}%kompatibilität mit TeX Versionen vor April 2018
-\fi
+%\usepackage{atbegshi}
+%\newcommand\showtimer{%
+%	\message{^^Jtimer: \the\numexpr\the\pdfelapsedtime*1000/65536\relax}%
+%	\pdfresettimer}
+%\AtBeginDocument{\showtimer}
+%\AtBeginShipout {\showtimer}
+%% Der folgende Block ist nur bei pdfTeX auf Versionen vor April 2018 notwendig
+%\usepackage{iftex}
+%\ifPDFTeX
+%	\usepackage[utf8]{inputenc}%kompatibilität mit TeX Versionen vor April 2018
+%\fi
 
 %%%%%%%%%%%%%%%%%%%
 %Sprachanpassung & Verbesserte Trennregeln
@@ -325,9 +332,9 @@ nopostdot=true	%remove the dot at the end of glossary descriptionsfsymbo
 %\tikzexternalize
 %\tikzsetexternalprefix{figures/}
 
- \usetikzlibrary{external}
- \tikzexternalize[prefix=tikz/]
- \tikzsetfigurename{output} %% Necesary for Overleaf
+% \usetikzlibrary{external}
+% \tikzexternalize[prefix=tikz/]
+% \tikzsetfigurename{output} %% Necesary for Overleaf
 %\tikzset{external/force remake} %up-to-date checks of all following figures (see: 50.4.3 Remaking Figures or Skipping Figures in pgf manual)
 %%%%%%%%%
 %Cleveref
@@ -355,7 +362,7 @@ noabbrev
 \usepackage{booktabs}   % Verbesserte Möglichkeiten für Tabellenlayout über horizontale Linien
 
 \crefalias{subequation}{equation}
-
+\newcommand{\mycomment}[1]{}
 \begin{document}
 
 %\listoftodos
@@ -456,7 +463,7 @@ noabbrev
 \mainmatter
 
 %
-%
+
 \cleardoublepage
 \input{chapters_main/introduction}
 \cleardoublepage
@@ -465,17 +472,17 @@ noabbrev
 \input{chapters_main/numerical_method}
 \cleardoublepage
 \input{chapters_main/results}
-\cleardoublepage
-\input{chapters_main/conclusion}
-%
+%\cleardoublepage
+%\input{chapters_main/conclusion}
+
+
+
+
+
 %%%%%%%%%%%%%TODOOOOOOOOOOOOOOOOOO debo establecer de forma consistente si me refiero a las coordenadas como (x,y) o (x1,x2), similarmente si la velocidad es (u,v)o (u1,u2) 
 %%%%%%%%%%%%%%%%%%% TODO: Verificar si realmente todos los indices de las mass fractions ahora están referidos como k, y el numero total como N. Hacer lo mismo con M y W para los pesos moleculares.
 %
 %
-Copia de mi pc locall nueva
-
-
-
 
 
 \cleardoublepage

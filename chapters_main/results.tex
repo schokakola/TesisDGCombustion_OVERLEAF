@@ -1,29 +1,189 @@
 \chapter{Results}	\label{ch:results}
 \glsresetall
-The following sections will present the results obtained using the previously exposed solver in a variety of benchmark cases.
-The chosen test cases will be presented incrementally in complexity. In section \cref{ssec:CouetteFlowTempDiff} a Couette flow presenting a temperature gradient in the vertical direction is studied. 
-(Subsequently in section XX the temporal discretization is studied using the traditional Taylor-Green vortex.)
-In \cref{ss:DHC} a heated square cavity configuration is studied in order to asses the capability of the solver for variable density flows in closed systems. Later in in \cref{ss:CDF} and \cref{ss:CoFlowFlame} two different configurations for reactive flows are presented. 
+In the following sections a comprehensive validation of the solver presented previously using a variety of benchmark cases will be presented. The chosen test cases will be presented incrementally in complexity. In \cref{sec:SingleCompIsotCase} the applicability of the solver for isothermal single-component systems is analyzed. Later in \cref{sec:SinCompNonIsothermCase} several single-component non-isothermal configurations are studied. Finally in \cref{sec:MultCompNonIsothermCase} test-cases for multi-component non-isothermal systems are presented. 
+%Additionally the convergence properties of the DG-method will be analyzed for some of the systems.
+
+
 
 All calculations shown here where performed on AMD EPYC 7543 32-Core Processor, DDR4 %TODO \todo[inline]{which specifications of the cluster should i include?}
+Si no es stated otherwise, all calculations use the termination criterion presented in \cref{ssec:TerminationCriterion}
 
 
 
+\section{Single-component isothermal cases}\label{sec:SingleCompIsotCase}
+The solver presented in the previous sections is initially validated for single-component isothermal cases. In these cases only the continuity and momentum equations (\cref{eq:LowMach_Conti,eq:LowMach_Momentum}) are solved. The energy and species concentration equations (\cref{eq:LowMachEnergy,eq:LowMachMassBalance}) are replaced by the condition $T = 1.0$ and $Y_0 = 1.0$ in the complete domain. This means that the physical properties of the flow (density and viscosity) are constants and the flow is completely incompressible.
+
+%(Subsequently in section XX the temporal discretization is studied using the traditional Taylor-Green vortex.)
+\subsection{Lid-driven cavity flow}
+\begin{figure}[b]
+	\begin{center}
+		\def\svgwidth{0.3\textwidth}
+		\import{./plots/}{LidDrivvenGeometry.pdf_tex}		
+		\caption{Schematic representation of the Lid-Driven cavity flow.}
+		\label{fig:LidDrivenCavity}
+	\end{center}	
+\end{figure} 
+
+The lid-driven cavity flow is a test problem classically used for the validation of Navier-Stokes solvers. The system configuration is shown in \cref{fig:LidDrivenCavity}. It consists simply of a two-dimensional square cavity  enclosed by walls whose upper boundary moves at constant velocity, causing the fluid to move. This provides a simple test-case which can be used for the validation of incompressible Navier-Stokes solvers. Benchmarks results can be found widely in the available literature for different Reynolds numbers. We compare in this section our results with the ones published by \cite{botellaBenchmarkSpectralResults1998} and focus in the case where $\gls{Reynolds} = 1000$. 
+
+The problem is defined in the domain $\Omega = [0,1]\times [0,1]$. The system is solved for the velocity vector $\gls{velVec} = (u,v)$ and the pressure $p$. All boundary conditions are of the Dirichlet type, particularly with $\gls{velVec} = (-1,0)$ for the boundary at $y = 1$, and $\gls{velVec} = (0,0)$ for all other sides. The gravity vector is set to $\gls{gravityVec} = (0,0)$.  In \cref{fig:LiddrivenMesh} the used mesh is presented, which consists of a regular Cartesian mesh with $16\times16$ elements, with extra refinement on both upper corners. This was done to be able to better represent the complex effects that take place there. The streamlines plot presented in \cref{fig:LiddrivenMesh} show the different vortex structures typical to this kind of systems. Additional to the main vortex, smaller structures appear in the corners of the cavity. 
 
 
-\section{Single-component isothermal cases}
-\subsection{ Transpirating Channel?}	
-\blindtext[5]
-\subsection{ Taylor-Green vortex}
-\blindtext[5]
+
+	
+	\begin{figure}[t]
+		\centering
+		\pgfplotsset{width=0.35 \textwidth, compat=1.3}	
+		\begin{tikzpicture}
+			\begin{groupplot}[
+				group style={group size=2 by 3,		
+					horizontal sep = 1.5cm,
+					vertical sep = 2.0cm,
+					xlabels at=edge bottom,
+					ylabels at=edge left,
+				},
+				axis on top,
+				scale only axis,
+				enlargelimits=false,	
+				axis equal image,
+				xtick = {0.0, 0.5, 1},
+				ytick = {0.0, 0.5, 1},
+				]
+				\nextgroupplot
+				\addplot[thick,blue] graphics[	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,]  {../plots/lidmesh.png};
+			\end{groupplot}	
+		\end{tikzpicture}
+		\begin{tikzpicture}
+		\begin{groupplot}[
+			group style={group size=2 by 3,		
+				horizontal sep = 1.5cm,
+				vertical sep = 2.0cm,
+				xlabels at=edge bottom,
+				ylabels at=edge left,
+			},
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			xtick = {0.0, 0.5, 1},
+			ytick = {0.0, 0.5, 1},
+			]
+			\nextgroupplot
+			\addplot[thick,blue] graphics[	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,]  {../plots/Lid1000.png};
+		\end{groupplot}	
+	\end{tikzpicture}
+		\caption{Used mesh and streamlines obtained for the lid-driven cavity flow with $\gls{Reynolds} = 1000$} \label{fig:LiddrivenMesh}
+	\end{figure}
 
 
+In \cref{fig:LidVelocities} a comparison of the calculated velocity and the velocities provided by the benchmark are shown. For the calculations presented here, the polynomial degree is set to $k = 4$ and $k' = 3$. Clearly a very good agreement is obtained, even by using a relatively coarse mesh (the benchmark result uses a grid with $160\times160$ elements). 
+
+A more rigorous comparison of results is presented in X, where the extreme values of the velocity components calculated through the centerline of the cavity are compared with the results presented in X. It can be clearly seen how the results obtained with our solver are extremely close to the reference, seeing a difference only at the fifth digit after the decimal point for the velocity components. It can also be appreciated how the results obtained with the coarser meshes are still very close to those of the reference. It is worth mentioning that the comparison here could be considered unfair, since the simulations were performed with polynomial degrees of degree 4 for the velocity and three for the pressure. This point will be further discussed in later sections. 
+
+\newpage
+	\begin{figure}[tb]
+		\pgfplotsset{
+			group/xticklabels at=edge bottom,
+			legend style = {
+				at ={ (0.09,0.3), anchor= north east}
+			},
+		}
+		\begin{tikzpicture}
+			\begin{axis}[
+				width= 0.4\textwidth ,
+				height= 0.3\textwidth ,
+				xlabel = $y$,
+				ylabel= $u$, 
+				]
+				\addplot+[color=black, only marks] table {data/LidDrivenCavity/uRe1000_ref.txt}; \addlegendentry{Reference}
+				\addplot[color=black, no marks] table {data/LidDrivenCavity/uRe1000.txt}; \addlegendentry{BoSSS}
+			\end{axis}
+		\end{tikzpicture}
+		\pgfplotsset{
+			group/xticklabels at=edge bottom,
+			legend style = {
+				at ={ (0.59,0.3), anchor= north east}
+			},
+		}
+		\begin{tikzpicture}
+			\begin{axis}[
+				width= 0.4\textwidth ,
+				height= 0.3\textwidth ,
+				xlabel = $x$,
+				ylabel= $v$, 
+				ytick = {-0.5, 0.0, 0.5},
+				]
+				\addplot+[color=black, only marks] table {data/LidDrivenCavity/vRe1000_ref.txt}; \addlegendentry{Reference}
+				\addplot[color=black, no marks] table {data/LidDrivenCavity/vRe1000.txt}; \addlegendentry{BoSSS}
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Calculated velocities along the centerlines of the cavity and reference values. Left plot shows the x-velocity for $x = 0.5$. Right plot shows the y-velocity for $y = 0.5$  }
+		\label{fig:LidVelocities}
+	\end{figure}
+
+%	\begin{figure}[tb]
+%		\pgfplotsset{
+%			group/xticklabels at=edge bottom,
+%			legend style = {
+%				at ={ (0.09,0.2), anchor= north west}
+%			},
+%		}
+%		\begin{tikzpicture}
+%			\begin{axis}[
+%				width= 0.4\textwidth ,
+%				height= 0.3\textwidth ,
+%				xlabel = $y$,
+%				ylabel= $\omega$, 
+%				]
+%				\addplot+[color=black, only marks] table {data/LidDrivenCavity/omegaRe1000_x_ref.txt}; \addlegendentry{Reference}
+%				\addplot[color=black, no marks] table {data/LidDrivenCavity/omegaRe1000_x.txt}; \addlegendentry{BoSSS}
+%			\end{axis}
+%		\end{tikzpicture}
+%		\pgfplotsset{
+%			group/xticklabels at=edge bottom,
+%			legend style = {
+%				at ={ (0.59,1.0), anchor= north east}
+%			},
+%		}
+%		\begin{tikzpicture}
+%			\begin{axis}[
+%				width= 0.4\textwidth ,
+%				height= 0.3\textwidth ,
+%				xlabel = $x$,
+%				ylabel= $\omega$, 
+%				]
+%				\addplot+[color=black, only marks] table {data/LidDrivenCavity/omegaRe1000_y_ref.txt}; \addlegendentry{Reference}
+%				\addplot[color=black, no marks] table {data/LidDrivenCavity/omegaRe1000_y.txt}; \addlegendentry{BoSSS}
+%			\end{axis}
+%		\end{tikzpicture}
+%		\caption{Calculated vorticity along the centerlines of the cavity and reference values. Left plot shows the vorticity for $x = 0.5$. Right plot shows the vorticity for $y = 0.5$  }
+%		\label{fig:LidVorticities}
+%	\end{figure}
+
+
+
+%\subsection{ Taylor-Green vortex}
+%\blindtext[5]
+\begin{table}[]
+	\centering
+	\begin{tabular}{lllllrr}
+		\hline
+		$N$      & $u_{\text{max}}$ & $y_{\text{max}}$ & $v_{\text{max}}$ & $x_{\text{max}}$ & \multicolumn{1}{l}{$v_{\text{min}}$} & \multicolumn{1}{l}{$x_{\text{min}}$} \\ \hline
+		16        & 0.3852327        & 0.1820           & 0.3737295        & 0.8221           & -0.5056627                           & 0.0941                               \\
+		32        & 0.3872588        & 0.1821           & 0.3760675        & 0.8227           & -0.5080496                           & 0.0943                               \\
+		64        & 0.3897104        & 0.1748           & 0.3774796        & 0.8408           & -0.5248360                           & 0.0937                               \\
+		128       & 0.3886452        & 0.1720           & 0.3770127        & 0.8422           & -0.5271487                           & 0.0907                               \\
+		256       & 0.3885661        & 0.1717           & 0.3769403        & 0.8422           & -0.5270653                           & 0.0907                               \\
+		reference & 0.3885698        & 0.1717           & 0.3769447        & 0.8422           & \multicolumn{1}{l}{-0.5270771}       & \multicolumn{1}{l}{0.0908}           \\ \hline
+	\end{tabular}
+	\caption{Extrema of velocity components through the centerlines of the cavity for $\gls{Reynolds} = 1000$. Reference values obtainder from \cite{botellaBenchmarkSpectralResults1998} }
+	\label{tab:LidCavityExtrema}
+\end{table}
+	\FloatBarrier
+\newpage
 
 \subsection{Backward-facing step}\label{ssec:BackwardFacingStep}
-The backward-facing step problem is a clasical configuration widely used for validation of CFD codes.%and reference data is available in  \cite{armalyExperimentalTheoreticalInvestigation1983} and \cite{xieFluidFlowHeat2016}.
-In this section we shall present the results that intend to reproduce the conclusions of the numerical experiments presented in \cite{biswasBackwardFacingStepFlows2004}.
-
-In \cref{BFSsketch} a schematic representation of the problem is shown. 
+The backward-facing step problem is another classical configuration widely used for validation of incompressible CFD codes. It has been widely studied theoretically, experimentally and numerically by many authors in the last decades (see for example \cite{armalyExperimentalTheoreticalInvestigation1983,barkleyThreedimensionalInstabilityFlow2000,biswasBackwardFacingStepFlows2004} ).  In \cref{BFSsketch} a schematic representation of the problem is shown. It consists of a flow that is subjected to a sudden change in geometry, which causes separation and reattachment phenomena. For these reasons, this geometry can be considered more challenging than the one presented in the previous section, since special care of the used geometry has to be taken in order to capture accurately all complex phenomena taking place.
 
 Although The backward-facing step problem is known to be inherently three-dimensional, it has been shown that it can be studied as a two-dimensional configuration along the symmetry plane for moderate Reynolds numbers \citep{barkleyThreedimensionalInstabilityFlow2000, biswasBackwardFacingStepFlows2004}. For the range of Reynolds numbers used in our calculations the two-dimensional assumption is justified.  The origin of the coordinate system is set at the bottom part of the step. The step height \gls{StepHeigth} and channel height \gls{ChannelHeight} characterize the system. The results on the literature are often reported as a function of the expansion ratio, defined as $\gls{ExpansionRatio} = (\gls{ChannelHeight}+\gls{StepHeigth})/\gls{ChannelHeight}$. 
 %For all calculations shown here we set $L = 70 \gls{StepHeigth}$ and $L_0 = \gls{StepHeigth}$.
@@ -32,7 +192,7 @@ The Reynolds number for the backward-facing step configuration is defined in the
 \begin{equation}
 \gls{Reynolds}= \frac{\gls{StepHeigth}U_{\text{mean}}}{\gls{kinVisc}}
 \end{equation} 
-The system is isothermic and the fluid is assumed to be air. The inlet profile is parabolic and is given by
+The system is isothermal and the fluid is assumed to be air. The inlet profile is parabolic and is given by
 \begin{equation}
 u(y) = -6U_{\text{mean}}\frac{(y-S)(y-(h+S))}{h^2}
 \end{equation}
@@ -65,7 +225,7 @@ In order to minimize the effects of the outlet  boundary condition in the system
 	\pgfplotsset{
 		group/xticklabels at=edge bottom,
 		legend style = {
-			at ={ (0.0,0.9), anchor= north west}
+			at ={ (0.05,0.9), anchor= north west}
 		},
 		unit code/.code={\si{#1}}
 	}
@@ -76,7 +236,8 @@ In order to minimize the effects of the outlet  boundary condition in the system
 		group name=my plots,
 		group size=3 by 1,
 		x descriptions at=edge bottom,
-		ylabels at = edge left,
+		horizontal sep = 2cm,
+%		ylabels at = edge left,
 	},
 	width= 0.4\textwidth ,
 	height= 0.3\textwidth ,
@@ -84,29 +245,32 @@ In order to minimize the effects of the outlet  boundary condition in the system
 	ylabel= x/S, 
 	]
 	\nextgroupplot%[title = {\textbf{Primary recirculation zone}}]
-	\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/BottomReatLength.txt}; \addlegendentry{$R_1$,BoSSS}
-	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_BottomReatLength.txt}; \addlegendentry{$R_1$,Ref}
+	\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/BottomReatLength.txt}; \addlegendentry{$R_1$, BoSSS}
+	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_BottomReatLength.txt}; \addlegendentry{$R_1$, Ref}
 	\nextgroupplot%[title = {\textbf{Secondary recirculation zone}}]
-	\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopSepLength.txt};  \addlegendentry{$R_2$}
-	\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopReatLength.txt}; \addlegendentry{$R_3$}
-	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopSepLength.txt}; \addlegendentry{$R_2$}
-	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopReatLength.txt}; \addlegendentry{$R_3$}
+	\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopSepLength.txt};  \addlegendentry{$R_2$, BoSSS}
+	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopSepLength.txt}; \addlegendentry{$R_2$, Ref}
+	\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopReatLength.txt}; \addlegendentry{$R_3$, BoSSS}
+	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopReatLength.txt}; \addlegendentry{$R_3$, Ref}
 	\end{groupplot}
 	\end{tikzpicture}
 	\caption{ Detachment and reattachment lengths of the primary (left figure) and secondary (right figure) recirculation zones after the backward-facing step. Solid lines correspond to the results obtained with BoSSS and the marks to the reference solution \citep{biswasBackwardFacingStepFlows2004}.}
 	\label{fig:Re_De_Attachmentlengths}
 \end{figure}
-The backward-facing step configuration exhibits varying behaviour as the number of Reynolds changes. At small Reynolds number, a single vortex, usually called the primary vortex, appears in the vicinity of the step. In addition, as the Reynolds number increases, a second vortex eventually appears on the top wall, as is shown schematically in Figure \cref{BFSsketch}. 
-The deattachment and reattachment lengths of the vortices are values usually reported in the literature. It is possible to determine the position of deattachment by finding the point along the wall where the velocity gradient u acquires a value equal to zero. %TODO \todo[inline]{comment on this}
-Figure \cref{fig:Re_De_Attachmentlengths} shows the deattachment and reattachment lenghts of the primary and secondary vortices obtained with our code for different Reynolds numbers, which are also compared with the results presented in the reference \cite{biswasBackwardFacingStepFlows2004}. It can be observed how the results for the deattachment lengths of the primary vortex present very good agreement with those of the reference. In the case of the secondary vortex it is possible to see a very minimal deviation for the reattachment lenghts. It is interesting to note that despite the fact that the reference does not report the existence of a secondary vortex for $\gls{Reynolds} = 200$, with our code it was possible to observe it. The results allow us to conclude that it is possible to study flows with complex behavior for high Reynolds numbers, at least in the isothermal case. In the next section we will discuss what happens for the non-isothermal case.
+The backward-facing step configuration exhibits varying behaviour as the number of Reynolds changes. At small Reynolds number, a single vortex, usually called the primary vortex, appears in the vicinity of the step. In addition, as the Reynolds number increases, a second vortex eventually appears on the top wall, as is shown schematically in  \cref{BFSsketch}. 
+The detachment and reattachment lengths of the vortices are values usually reported in the literature. It is possible to determine the position of deattachment by finding the point along the wall where the velocity gradient acquires a value equal to zero. %TODO \todo[inline]{comment on this}
+ \cref{fig:Re_De_Attachmentlengths} shows the deattachment and reattachment lenghts of the primary and secondary vortices obtained with our code for different Reynolds numbers, which are also compared with the results presented in the reference \cite{biswasBackwardFacingStepFlows2004}. It can be observed how the results for the deattachment lengths of the primary vortex present very good agreement with those of the reference. In the case of the secondary vortex it is possible to see a very minimal deviation for the reattachment lenghts. It is interesting to note that despite the fact that the reference does not report the existence of a secondary vortex for $\gls{Reynolds} = 200$, with our code it was possible to observe it. The results allow us to conclude that it is possible to study flows with complex behavior for high Reynolds numbers, at least in the isothermal case. In the next section we will discuss what happens for the non-isothermal case.
+
+It is worth mentioning that the evaluation of the numerical accuracy of the solver using both incompressible test cases presented in this section is problematic due to singularities appearing. Nevertheless, the good agreement of our results with the benchmark let us conclude that the solver is able of simulating incompressible flows.
 
 
 
+\section{Single-component non-isothermal cases} \label{sec:SinCompNonIsothermCase}
+Here the equations for continuity, momentum and energy are solved (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy}). All systems are asumed to be single-component, thus $N = 1$ and $Y_0 = 1.0$.
+In section \cref{ssec:CouetteFlowTempDiff} a Couette flow presenting a temperature gradient in the vertical direction is studied. 
 
+In \cref{ss:DHC} a heated square cavity configuration is studied in order to asses the capability of the solver for variable density flows in closed systems. Later in in \cref{ss:CDF} and \cref{ss:CoFlowFlame} two different configurations for reactive flows are presented. 
 
-
-
-\section{Single-component non-isothermal cases}
 
 \subsection{Heated backward-facing step}
 As an extension to the previous case, we seek to recreate the results presented in \cite{xieFluidFlowHeat2016}, where the same backward-facing step configuration as presented above is studied, but with the particularity that in this case the bottom wall is heated to a constant temperature, thus featuring a non-isothermal system. The fluid entering the system has a temperature equal to $T_0 = 10°C$ and the bottom wall is set to a constant temperature of $T_1 = 40°C$. 
@@ -237,10 +401,12 @@ C_4 &= \frac{3}{5}\left(T_c^{5/3}-T_h^{5/3}\right)
 \end{align}
 and again $C$ is a real-valued arbitrary constant for the pressure. 
 \begin{center}
-	\begin{table}[tb!]
-		\begin{tabular}{ccc}
-			\begin{tikzpicture}[baseline]
-			\begin{axis}[
+\begin{figure}[tb]
+	\pgfplotsset{
+		group/xticklabels at=edge bottom,
+	}
+	\begin{tikzpicture}[baseline]
+		\begin{axis}[
 			xmin = 0, xmax = 1, ymin =0, ymax=1,
 			width= 0.2\textwidth ,
 			height= 0.22\textwidth ,
@@ -248,11 +414,10 @@ and again $C$ is a real-valued arbitrary constant for the pressure.
 			ylabel= u, 
 			]
 			\addplot+[color=black, no marks, thick] table {data/CouetteTempDifferenceData/u.txt};
-			\end{axis}
-			\end{tikzpicture}%
-			&
-			\begin{tikzpicture}[baseline]
-			\begin{axis}[
+		\end{axis}
+	\end{tikzpicture}%
+	\begin{tikzpicture}[baseline]
+		\begin{axis}[
 			xmin = 0, xmax = 1, %ymin =0, ymax=1,
 			width= 0.2\textwidth ,
 			height= 0.22\textwidth ,
@@ -260,11 +425,10 @@ and again $C$ is a real-valued arbitrary constant for the pressure.
 			ylabel= p, 
 			]
 			\addplot+[color=black, no marks, thick] table {data/CouetteTempDifferenceData/p.txt};
-			\end{axis}
-			\end{tikzpicture}%
-			&
-			\begin{tikzpicture}[baseline]
-			\begin{axis}[
+		\end{axis}
+	\end{tikzpicture}%
+	\begin{tikzpicture}[baseline]
+		\begin{axis}[
 			xmin = 0, xmax = 1, ymin =0.4, ymax=1.6,
 			width= 0.2\textwidth ,
 			height= 0.22\textwidth ,
@@ -272,13 +436,14 @@ and again $C$ is a real-valued arbitrary constant for the pressure.
 			ylabel= T, 
 			]
 			\addplot+[color=black, no marks, thick] table {data/CouetteTempDifferenceData/T.txt};
-			\end{axis}
-			\end{tikzpicture}%
-		\end{tabular}%
-		\caption{Solution of the Couette flow with vertical temperature gradient. Viscosity and heat conductivity are calculated with a Power-Law.}
-		\label{fig:CouetteSolution}
-	\end{table}
+		\end{axis}
+	\end{tikzpicture}%
+	\caption{Solution of the Couette flow with vertical temperature gradient. Viscosity and heat conductivity are calculated with a Power-Law.}
+	\label{fig:CouetteSolution}
+\end{figure}
 \end{center}
+
+
 \FloatBarrier
 For all calculations of this configuration shown in the following sections the dimensionless parameters are set as $\gls{Reynolds} = 10$ and $\gls{Prandtl} =0.71$, $T_h = 1.6$ and $T_c = 0.4$. Since we are dealing with an open system we set $p_0 =1.0$. The Froude number is calculated as 
 \begin{equation}
@@ -292,7 +457,7 @@ In \cref{fig:CouetteSolution} the solution for the velocity, pressure and temper
 
 \subsubsection{h-convergence study}
 
-The convergence properties of the DG method for this non-isothermic system was studied using the analytical solution described before. The domain is discretized and solved in uniform Cartesian meshes with $16\times16$, $32\times32$, $64\times64$ and $128\times128$ elements. The polynomial degrees for the velocity and temperature are changed from 1 to 4 and for the pressure from 0 to 3. The convergence criteria described in \cref{ssec:TerminationCriterion} was used for all calculations. The  analytical solution given by \cref{eq:CouetteU,eq:Couettep,eq:CouetteT} are as Dirichlet boundary conditions on all boundaries of the domain. The error is calculated against the analytical solution using the $L^2$ norm %TODO \todo[inline]{Comment more on the calculation of the l2norm}.
+The convergence properties of the DG method for this non-isothermal system was studied using the analytical solution described before. The domain is discretized and solved in uniform Cartesian meshes with $16\times16$, $32\times32$, $64\times64$ and $128\times128$ elements. The polynomial degrees for the velocity and temperature are changed from 1 to 4 and for the pressure from 0 to 3. The convergence criteria described in \cref{ssec:TerminationCriterion} was used for all calculations. The  analytical solution given by \cref{eq:CouetteU,eq:Couettep,eq:CouetteT} are as Dirichlet boundary conditions on all boundaries of the domain. The error is calculated against the analytical solution using the $L^2$ norm %TODO \todo[inline]{Comment more on the calculation of the l2norm}.
 In \cref{fig:ConvergenceDHC} the results of the h-convergence study are shown. We observe how the expected convergence rates are reached for all variables, namely a slope of the order $k+1$ for both velocity components and the temperature, and a slope of $k'+1$ for the pressure.
 
 %\input{chapters_main/ConvergenceStudy.tex}
@@ -622,6 +787,7 @@ In figure \cref{fig:RuntimeComparison} a comparison of the runtimes from both so
 
 
 
+\mycomment{
 
 
 
@@ -917,78 +1083,77 @@ We also compare the thermodynamic pressure and the Nusselt numbers to the benchm
 \begin{figure}[b!]
 	\centering
 	\begin{tikzpicture}
-	\begin{groupplot}[
-	group style={
-		group name= group,
-		group size=3 by 2,
-		xlabels at=edge bottom,
-		ylabels at=edge left,
-		horizontal sep = 2.0cm,
-		vertical sep = 1.5cm,
-	},
-	grid = major,
-	width=3.5cm,
-	height=3.5cm,
-	xlabel= $\sqrt{\text{Number of cells}}$,
-	ylabel= Nusselt,
-	xtick=data,
-	max space between ticks=1000pt,
-	try min ticks=5,
-	y tick label style= {
-		/pgf/number format/.cd,
-		fixed,
-		fixed zerofill,
-		precision = 4,
-		legend style = {at={(1,0)},anchor = south east}
-	}
-	]
-	\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 2}$}]
-	\addplot [solid,mark = *, ]  table {data/NusseltStudy/NusseltReLeft100Dg2.txt};
-	\addlegendentry{$\text{Nu}_h$};
-	\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight100Dg2.txt};
-	\addlegendentry{$\text{Nu}_c$};
-	\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg2.txt};	
-	\addlegendentry{$\text{Nu}_{\text{ref}}$};	
-	\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 3}$}]
-	\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft100Dg3.txt};	
-	\addlegendentry{$\text{Nu}_h$};
-	\addplot [solid, mark = square,] table {data/NusseltStudy/NusseltReRight100Dg3.txt};
-	\addlegendentry{$\text{Nu}_c$};
-	\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg3.txt};	
-	\addlegendentry{$\text{Nu}_{\text{ref}}$};		
-	\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 4}$}]
-	\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft100Dg4.txt};	
-	\addlegendentry{$\text{Nu}_h$};
-	\addplot [solid, mark = square,] table {data/NusseltStudy/NusseltReRight100Dg4.txt};	
-	\addlegendentry{$\text{Nu}_c$};
-	\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg4.txt};	
-	\addlegendentry{$\text{Nu}_{\text{ref}}$};
-	\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 2}$},ymax=9]
-	\addplot [solid,mark = *,]  table {data/NusseltStudy/NusseltReLeft1000000Dg2.txt};	
-	\addlegendentry{$\text{Nu}_h$};
-	\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg2.txt};	
-	\addlegendentry{$\text{Nu}_c$};
-	\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg2.txt};	
-	\addlegendentry{$\text{Nu}_{\text{ref}}$};
-	\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 3}$}]
-	\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft1000000Dg3.txt};	
-	\addlegendentry{$\text{Nu}_h$};
-	\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg3.txt};	
-	\addlegendentry{$\text{Nu}_c$};
-	\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg3.txt};	
-	\addlegendentry{$\text{Nu}_{\text{ref}}$};
-	\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 4}$}]
-	\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft1000000Dg4.txt};	
-	\addlegendentry{$\text{Nu}_h$};
-	\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg4.txt};	
-	\addlegendentry{$\text{Nu}_c$};
-	\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg4.txt};	
-	\addlegendentry{$\text{Nu}_{\text{ref}}$};
-	\end{groupplot}
+		\begin{groupplot}[
+			group style={
+				group name= group,
+				group size=3 by 2,
+				xlabels at=edge bottom,
+				ylabels at=edge left,
+				horizontal sep = 1.6cm,
+				vertical sep = 2.0cm,
+			},
+			grid = major,
+			width=3.5cm,
+			height=3.5cm,
+			xlabel= $\sqrt{\text{Number of cells}}$,
+			ylabel= Nusselt,
+			xtick=data,
+			max space between ticks=1000pt,
+			try min ticks=5,
+			y tick label style= {
+				/pgf/number format/.cd,
+				fixed,
+				fixed zerofill,
+				precision = 4,
+				legend style = {at={(1,0)},anchor = south east}
+			}
+			]
+			\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 2}$}]
+			\addplot [solid,mark = *, ]  table {data/NusseltStudy/NusseltReLeft100Dg2.txt};
+			\addlegendentry{$\text{Nu}_h$};
+			\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight100Dg2.txt};
+			\addlegendentry{$\text{Nu}_c$};
+			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg2.txt};	
+			\addlegendentry{$\text{Nu}_{\text{ref}}$};	
+			\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 3}$}]
+			\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft100Dg3.txt};	
+			\addlegendentry{$\text{Nu}_h$};
+			\addplot [solid, mark = square,] table {data/NusseltStudy/NusseltReRight100Dg3.txt};
+			\addlegendentry{$\text{Nu}_c$};
+			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg3.txt};	
+			\addlegendentry{$\text{Nu}_{\text{ref}}$};		
+			\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 4}$}]
+			\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft100Dg4.txt};	
+			\addlegendentry{$\text{Nu}_h$};
+			\addplot [solid, mark = square,] table {data/NusseltStudy/NusseltReRight100Dg4.txt};	
+			\addlegendentry{$\text{Nu}_c$};
+			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg4.txt};	
+			\addlegendentry{$\text{Nu}_{\text{ref}}$};
+			\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 2}$},ymax=9]
+			\addplot [solid,mark = *,]  table {data/NusseltStudy/NusseltReLeft1000000Dg2.txt};	
+			\addlegendentry{$\text{Nu}_h$};
+			\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg2.txt};	
+			\addlegendentry{$\text{Nu}_c$};
+			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg2.txt};	
+			\addlegendentry{$\text{Nu}_{\text{ref}}$};
+			\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 3}$}]
+			\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft1000000Dg3.txt};	
+			\addlegendentry{$\text{Nu}_h$};
+			\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg3.txt};	
+			\addlegendentry{$\text{Nu}_c$};
+			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg3.txt};	
+			\addlegendentry{$\text{Nu}_{\text{ref}}$};
+			\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 4}$}]
+			\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft1000000Dg4.txt};	
+			\addlegendentry{$\text{Nu}_h$};
+			\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg4.txt};	
+			\addlegendentry{$\text{Nu}_c$};
+			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg4.txt};	
+			\addlegendentry{$\text{Nu}_{\text{ref}}$};
+		\end{groupplot}
 	\end{tikzpicture}
 	\caption{Nusselt numbers calculated with \cref{eq:Nusselt} at the hot wall ($\text{Nu}_h$) and the cold wall ($\text{Nu}_c$) for different number of cells and polynomial order $k$. The reference values\cite{vierendeelsBenchmarkSolutionsNatural2003} are shown with dashed lines.}\label{fig:NusseltStudy}
 \end{figure}
-
 \paragraph{Convergence study}\label{ssec:ConvStudyHeatedCavity}
 An $h-$convergence study of the differentially heated cavity configuration was conducted. Calculations were done for polynomial degrees $k = {1,2,3,4}$ and equidistant regular meshes with respectively $8, 16, 32, 64, 128$ and $256$ elements in each spatial coordinate.  The $L^2$-Norm was used for the calculation of the errors against the solution on the finest mesh. Results of the $h$-convergence study for varying polynomial orders $k$ are shown in \cref{fig:ConvergenceDHC}. Recall that for increasing polynomial order, the expected order of convergence is given by the slope of the line curve when cell length and errors are presented in a log-log plot. Because we are using a mixed order formulation the slopes should be equal to $k$ for the pressure and equal to $k+1$ for all other variables.  It is observed how convergence rates scale approximately as $k+1$. Interestingly, for $k=2$ the rates are higher than expected. On the other hand, some degeneration on the convergence rates is observed for $k = 4$.
 
@@ -1263,7 +1428,7 @@ As discussed in the last section, the difference on values of the Nusselt number
 
 
 
-\section{Multi-component non-isothermal cases}
+\section{Multi-component non-isothermal cases}\label{sec:MultCompNonIsothermCase}
 In the following, we show results of the simulations of two test cases with combustion, namely the counterflow diffusion flame and the chambered diffusion flame. For both cases, the solution of the flame sheet problem described in \cref{ssec:FlameSheet} is calculated first. This solution is used subsequently as initial estimates for the solution of the finite chemistry rate problem (c.f. \cref{ssec:NonDimLowMachEquations}). In all test cases presented in this section, a smoothing parameter $\sigma = 50$ was used (c.f. \cref{ssec:FlameSheet}). For all test cases methane combustion according to the one-step model shown in \cref{sec:ChemModel} is considered. The mass fraction transport \cref{eq:LowMachMassBalance} is solved for the species \ch{CH4}, \ch{O2}, \ch{CO2} and \ch{H2O}, thus $\vec{Y}' = \left(Y_{\ch{CH4}},Y_{\ch{O2}},Y_{\ch{CO2}},Y_{\ch{H2O}}\right)$. The nitrogen mass fraction $Y_{\ch{N2}}$ is calculated according to \cref{eq:MassFractionConstraint}. 
 
 
@@ -1272,7 +1437,37 @@ In the following, we show results of the simulations of two test cases with comb
 
 As a first test for assessing basic behaviour related to combustion, a cofloing flame configuration used. This test case is the main prototype flame for diffusion regimes \cite{poinsotTheoreticalNumericalCombustion2005}. It is set up by sending a stream of fuel against a stream containing oxidizer. A diagram can be seen in X
 %TODO ACA VA UN sketch del coflowing flame con las boundary conditions 
-
+\begin{figure}[t!]
+	\centering
+	\pgfplotsset{
+		compat=1.3,
+		tick align = outside,
+		yticklabel style={/pgf/number format/fixed}, 
+	}
+	\begin{tikzpicture}	
+		\begin{axis}[
+			set layers=standard,
+			width=0.9\linewidth,
+			height=6cm,
+			ymode = log,
+			xlabel=Iteration number,
+			xmin = 0,
+			ylabel=Residual and trust region $\delta$,
+			xtick = {0,2,...,40},
+			ytickten = {-16,-12,...,12},
+			ymax = 1e11,
+			legend style = {at = {(0.1,0.1)}, anchor = south west},
+			]
+			\addplot[ orange, mark =o, mark size = 2.5pt] file{data/ConvergenceStory_CoFlow/residuals3.txt};\addlegendentry{$	\| \mathcal{A}(\myvector{U}_{n}) \|_2 $};	
+			\addplot[ blue, mark =square*, mark size = 2pt] file{data/ConvergenceStory_CoFlow/delta3.txt}; \addlegendentry{$\delta$};	
+			\node[draw, ] at (140,20) {Infinitely fast chemistry};
+			\draw [dashed,thick] (270, \pgfkeysvalueof{/pgfplots/ymin}) -- (270, \pgfkeysvalueof{/pgfplots/ymax});
+			\node[draw, ] at (340,20.0) {Finite rate chemistry};
+		\end{axis} 
+	\end{tikzpicture}
+	\caption{Typical convergence history of a diffusion flame in the coflowing flame configuration. }
+	\label{fig:CDF_ConvergenceStory}
+\end{figure} 
 % \begin{figure}[t!]
 % 	\begin{center}
 % 		\def\svgwidth{0.5\textwidth}
@@ -1331,6 +1526,7 @@ Before each refinement step the values of $\omega$ are normalized by the biggest
 	\begingroup \makeatletter \providecommand\color[2][]{\errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}\renewcommand\color[2][]{}}\providecommand\transparent[1]{\errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}\renewcommand\transparent[1]{}}\providecommand\rotatebox[2]{#2}\newcommand*\fsize{\dimexpr\f@size pt\relax}\newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}\ifx\svgwidth\undefined \setlength{\unitlength}{623.00240104bp}\ifx\svgscale\undefined \relax \else \setlength{\unitlength}{\unitlength * \real{\svgscale}}\fi \else \setlength{\unitlength}{\svgwidth}\fi \global\let\svgwidth\undefined \global\let\svgscale\undefined \makeatother \begin{picture}(1,0.44444435)\lineheight{1}\setlength\tabcolsep{0pt}\put(0.50541383,0.31955222){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Fuel}\end{tabular}}}}\put(0.48914563,0.11898873){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Oxidizer}\end{tabular}}}}\put(0.52165765,0.4310296){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\hat D$\end{tabular}}}}\put(-0.00146562,0.21634103){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\hat{L}$\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=1]{../plots/CounterDiffusionFlame_sketch_rotated2.pdf}}\put(0.50187804,0.002595){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$6\hat{L}$\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=2]{../plots/CounterDiffusionFlame_sketch_rotated2.pdf}}\put(0.73588839,0.30040165){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Stagnation plane}\\\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=3]{../plots/CounterDiffusionFlame_sketch_rotated2.pdf}}\put(0.28154156,0.39441284){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}\put(0.77020774,0.39621194){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}\put(0.77020774,0.04390421){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}\put(0.28264939,0.04291605){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}\put(0.23597805,0.28618457){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Flame}\\\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=4]{../plots/CounterDiffusionFlame_sketch_rotated2.pdf}}\put(0.06924897,0.13479347){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Pressure outlet}\end{tabular}}}}}\put(0.99712048,0.14305974){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Pressure outlet}\end{tabular}}}}}\put(0,0){\includegraphics[width=\unitlength,page=5]{../plots/CounterDiffusionFlame_sketch_rotated2.pdf}}\end{picture}\endgroup \caption{Schematic representation of the counterflow configuration.}
 	\label{fig:CDFScheme}
 \end{figure*}
+
 The counterflow diffusion flame is a canonical configuration used to study the structure of non-premixed flames. In its most basic configuration it consists of two oppositely situated jets. The fuel (possibly mixed with some inert component such as nitrogen) is fed into the system by one of the jets, while the other jet feeds air to the system, thereby establishing a stagnation point flow. Upon contact, the reactants produce a flame which is located in the vicinity of the stagnation plane. A diagram of the setup can be seen in \cref{fig:CDFScheme}. This simple configuration has been subject of study for decades  because it provides a simple way of creating a strained diffusion flame, which proves to be useful when studying the flame structure, extinction limits or production of pollutants of flames \cite{pandyaStructureFlatCounterFlow1964} \cite{spaldingTheoryMixingChemical1961} \cite{keyesFlameSheetStarting1987}. By assuming an infinite injector diameter and self-similarity of the solution, it is possible to reduce the governing equations to a one-dimensional formulation (see e.g. the textbook of Kee \cite{keeChemicallyReactingFlow2003}). As a means of validating our implementation we compare the results with the solution of the one-dimensional self-similar problem calculated with \lstinline|BVP4|, a fourth order finite difference boundary value problem solver provided by \lstinline|MATLAB|. 
 
 The combustion of a methane-nitrogen mixture with air was simulated using the \BoSSS code. The mass composition of the fuel inlet was assumed to be  $Y^0_{\ch{CH4}} = 0.2$ and $Y^0_{\ch{N2}} = 0.8$, and the oxidizer inlet corresponds to air with   $Y^0_{\ch{O2}} = 0.23$ and $Y^0_{\ch{N2}} = 0.77$. Because we are dealing with an open system, the thermodynamic pressure $\hat p_0$ is constant and set to the ambient pressure of $\SI{101325}{\pascal}$. As noted by Sung et al., \cite{sungStructuralResponseCounterflow1995} although the form of the inlet velocity profiles does have an influence on the solution of the problem, its effect on the solution near the flame zone is rather small. Nevertheless, as mentioned before the solution of the self-similar one-dimensional problem assumed an infinite injector diameter, which implies that the upstream velocity field has to be constant. Based on this fact we set the velocity profile of both inlets as a plug flow. Following combinations of inlet velocities were calculated:
@@ -1341,7 +1537,7 @@ The combustion of a methane-nitrogen mixture with air was simulated using the \B
 \end{itemize}
 By using as definition of the strain rate the maximum axial velocity gradient, the calculated strains for the three cases mentioned above are $\SI{34}{\per\second}$, $\SI{76}{\per\second}$ and $\SI{155}{\per\second}$, respectively. The temperature of both inlets is \SI{300}{\kelvin}. The separation between both jets $\hat L$ is equal to $\SI{0.02}{\meter}$, and the length of the inlet opening $\hat D$ is $\SI{0.02}{\meter}$. The left and right domain boundaries are selected to be at a distance $3\hat L$ of the center. A non-unity but constant Lewis number formulation is used,with  
 $\Lewis_{\ch{CH4}} =  0.97 $ , $\Lewis_{\ch{O2}} = 1.11 $, $\Lewis_{\ch{H2O}} = 0.83 $ and $\Lewis_{\ch{CO2}} = 1.39 $.\cite{smookePremixedNonpremixedTest1991} The heat capacity of each component is evaluated locally from NASA polynomials, and the mixture heat capacity is calculated with \cref{eq:nondim_cpmixture}.
-\tikzset{external/export next=false}
+%\tikzset{external/export next=false}
 \begin{figure}[t!]
 	\centering
 	\pgfplotsset{
@@ -1377,8 +1573,10 @@ $\Lewis_{\ch{CH4}} =  0.97 $ , $\Lewis_{\ch{O2}} = 1.11 $, $\Lewis_{\ch{H2O}} = 
 In \cref{fig:CDF_ConvergenceStory} the convergence history obtained for a typical calculation of the counter diffusion flame is presented. The solution of the flame sheet calculation requires 17 iterations until convergence is reached. The obtained solution is used as a starting value for the finite chemical rate calculation, which only needs 10 iterations until convergence is reached. We note that because the flame sheet calculation is only used as an approximation of the final solution, a low polynomial degree can be used. For the flame sheet calculation $k = 2$ was chosen, resulting in a rather small system with 26,880 degrees of freedom. For the finite rate calculation $k = 4$ was used, which resulted in a system with 174,110 degrees of freedom.  With the above-mentioned another advantage of the approach of using the flame sheet calculation for two-dimensional simulations can be highlighted. The initial estimate can be found relatively easily for a system with few degrees of freedom. Using the solution found as the initial estimate has the consequence that Newton's algorithm for the complete problem (which has many more degrees of freedom) only needs a few iterations to find a solution. 
 
 Because we are solving a two-dimensional configuration, in order to be able to compare our results with the ones obtained from the one-dimensional representation, the temperature, mass fractions and velocity profiles are extracted along the centerline of the system shown as the dashed line in \cref{fig:CDFScheme}. In \cref{fig:BoSSS_1D_Comparison_velocity} a comparison of the axial velocities calculated with \BoSSS and the one-dimensional solution is shown. While for the high strain case the results agree closely, for lower strains a discrepancy is observed. Recall that the derivation of the one-dimensional approximation assumes a constant velocity field incoming to the flame zone in order to obtain a self-similar solution. In the case of the two-dimensional configuration presented here, the border effects do have an influence on the centerline, which disrupts the self-similarity. This effect is more pronounced for low velocities, which explains the discrepancy between curves. Similarly, In \cref{fig:BoSSS_1D_Comparison} the temperature and mass fraction fields are presented. Again, a discrepancy is observed for low strains, but results show a good agreement for higher inlet velocities. It can also be observed how, as expected, \cite{fernandez-tarrazoSimpleOnestepChemistry2006} at higher strains a significant penetration (leakage) of oxygen across the flame is present. Finally, in \cref{fig:TempAndReacFields} the two-dimensional temperature, velocity and reaction rate fields for the case (a) are shown. 
-We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet. This fact made hard to realize an $h$-convergence study for the complete domain. Based on this we decided to analyze a flame configuration that does not exhibit this behaviour, as shown in the next section.
 
+Finally, in \Cref{fig:TemperatureConvergenceDiffFlame} we show how the maximum value of the temperature behaves for different mesh resolutions and polynomial degrees. The temperature tends to a limit value, and we observe how this value is reached already for coarse meshes when using a polynomial degree of three or four. We also observe that for $k=2$ the temperature tends to a limit value, but slower in comparison to $k =3$ or $4$. The values for $k=1$ are not displayed because for the mesh resolutions shown here, the values of the maximum temperature were of the order of 50 \si{K} bigger than the limit value. We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet. This fact made hard to realize a $h$-convergence study for the complete domain. Based on this we decided to analyse a flame configuration that doesn't exhibit this behaviour, as shown in the next section.
+
+We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet, which induces a pollution phenomenon on the accuracy of the solution. This fact made hard to realize an $h$-convergence study for the complete domain. Based on this fact we decided to analyze a flame configuration that does not exhibit this behaviour, as shown in the next section.
 \begin{figure}[t!]
 	\pgfplotsset{
 		group/xticklabels at=edge bottom,
@@ -1423,7 +1621,7 @@ We note that the solution of this configuration showed singularities in the boun
 	\caption{ Comparison of the axial velocity calculated with \BoSSS and the one-dimensional approximation. }
 	\label{fig:BoSSS_1D_Comparison_velocity}
 \end{figure}
-\tikzexternaldisable
+%\tikzexternaldisable
 %\tikzset{external/export next=false}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[b!]
 	\centering
@@ -1571,8 +1769,38 @@ We note that the solution of this configuration showed singularities in the boun
 	\begingroup \makeatletter \providecommand\color[2][]{\errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}\renewcommand\color[2][]{}}\providecommand\transparent[1]{\errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}\renewcommand\transparent[1]{}}\providecommand\rotatebox[2]{#2}\newcommand*\fsize{\dimexpr\f@size pt\relax}\newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}\ifx\svgwidth\undefined \setlength{\unitlength}{578.08882105bp}\ifx\svgscale\undefined \relax \else \setlength{\unitlength}{\unitlength * \real{\svgscale}}\fi \else \setlength{\unitlength}{\svgwidth}\fi \global\let\svgwidth\undefined \global\let\svgscale\undefined \makeatother \begin{picture}(1,0.56429776)\lineheight{1}\setlength\tabcolsep{0pt}\put(0,0){\includegraphics[width=\unitlength,page=1]{../plots/CDF_Results.pdf}}\end{picture}\endgroup \caption{Calculated temperature and velocity fields (top picture) and reaction rate (second picture) of the counter diffusion flame configuration, case (a). The unit of the temperature is \si{K} and of the reaction rate \si{\kilo\mole \per \meter \cubed \per \second}. }
 	\label{fig:TempAndReacFields}
 \end{figure}
-\tikzexternalenable
-
+%\tikzexternalenable
+\begin{figure}[tbp]
+	\centering
+	\begin{tikzpicture}[baseline]
+		\pgfplotsset{width=0.35\textwidth, compat=1.3}
+		\begin{axis}[
+			name=plot1,%	
+			xlabel=1/$\Delta x$,
+			%			ylabel=$ \left\llbracket  u_x - u_{x,\text{fine}} \right\rrbracket_2$,
+			ylabel = Maximal temperature,
+			xmajorgrids,
+			ymajorgrids,
+			ymax =1945, 
+			x unit=1/cm,
+			y unit=K,
+			legend style={at={(1,1)}, anchor=north east},
+			]
+			%			\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg1.txt};
+			%			\addlegendentry{$k=1$};
+			\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg2.txt};
+			\addlegendentry{$k=2$};
+			\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg3.txt};
+			\addlegendentry{$k=3$};
+			\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg4.txt};
+			\addlegendentry{$k=4$};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Maximum value of the temperature for the counter diffusion flame configuration, for different mesh sizes in the x-direction and polynomial degrees. Values for $k=1$ are not shown, because for this range of cell lengths the maximum temperature value was of the order of 50K higher than the ones depicted here.}
+	\label{fig:TemperatureConvergenceDiffFlame}
+\end{figure}
+\FloatBarrier
+\newpage
 \subsection{Chambered diffusion flame}\label{ss:UDF}
 
 
@@ -1847,3 +2075,4 @@ For this configuration an $h$-convergence study is conducted, where uniform Cart
 \section{Conclusions}\label{sec5}
 In the present work we have shown the discretization using the DG method for the reactive low-Mach equations. A mixed order formulation has been used, where velocity, temperature and mass fractions are represented by polynomials of degree $k$, and pressure by polynomials of degree $k-1$. The system obtained from the discretization was solved by means of a Newton-Dogleg type method. Additionally, a homotopy strategy for solving highly nonlinear systems was introduced and used for some of the presented test cases . For the reactive test cases the concept of the flame sheet estimate was demonstrated to be a useful and computationally cheap way of initializing the finite reaction rate combustion calculations. 
 The solver was used to calculate three different benchmark configurations, one without combustion and two cases with combustion. The first of these is the differentially heated cavity. This benchmark case was solved for varying Rayleigh numbers, spanning from $\text{Ra} = 10^2$ to $\text{Ra} = 10^7$.  It was observed that for cases with Rayleigh number larger than $10^5$ the use of our homotopy strategy was necessary to ensure convergence. Velocity and temperature profiles as well as thermodynamic pressure and Nusselt number were compared with a reference solution, obtaining very satisfactory results, thus validating our implementation of the method for variable density systems. An $h$-convergence study was presented for the differentially heated cavity, obtaining the expected convergence rates up to $k = 4$, where some degeneration on the rates was observed. Furthermore the counterflow diffusion flame configuration was analyzed, with which we intended to test the implemented chemistry model in conjunction with our solver. The results obtained with \BoSSS were compared with results obtained by solving the self-similar one-dimensional representation of the counter diffusion flame configuration for varying strain rates. While for low strains some discrepancies between results were observed, the difference narrowed for high strains, which can be explained by the influence of the border effects on the centerline results for a two-dimensional configuration. Finally, the chambered diffusion flame configuration was used to study the convergence rates of our method. It was shown that, as expected, the convergence rates increase when using higher degree polynomials, but with some deterioration compared to the theoretical expected convergence. In future work the implemented solver is intended to be used in conjunction with our extended-DG solver \cite{kummerExtendedDiscontinuousGalerkin2017,kummerBoSSSPackageMultigrid2021,krauseIncompressibleImmersedBoundary2017}in order to study multiphase reactive systems such as droplets.
+}

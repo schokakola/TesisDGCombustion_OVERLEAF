@@ -11,7 +11,7 @@ Si no es stated otherwise, all calculations use the termination criterion presen
 
 
 \section{Single-component isothermal cases}\label{sec:SingleCompIsotCase}
-The solver presented in the previous sections is initially validated for single-component isothermal cases. In these cases only the continuity and momentum equations (\cref{eq:LowMach_Conti,eq:LowMach_Momentum}) are solved. The energy and species concentration equations (\cref{eq:LowMachEnergy,eq:LowMachMassBalance}) are replaced by the condition $T = 1.0$ and $Y_0 = 1.0$ in the complete domain. This means that the physical properties of the flow (density and viscosity) are constants and the flow is completely incompressible.
+The solver presented in the previous sections is initially validated for single-component isothermal cases. In these cases only the continuity and momentum equations are solved. The energy and species concentration equations  are replaced by the condition $T = 1.0$ and $Y_0 = 1.0$ in the complete domain. This means that the physical properties of the flow (density and viscosity) are constants and the flow is completely incompressible.
 
 %(Subsequently in section XX the temporal discretization is studied using the traditional Taylor-Green vortex.)
 \subsection{Lid-driven cavity flow}
@@ -26,10 +26,9 @@ The solver presented in the previous sections is initially validated for single-
 
 The lid-driven cavity flow is a test problem classically used for the validation of Navier-Stokes solvers. The system configuration is shown in \cref{fig:LidDrivenCavity}. It consists simply of a two-dimensional square cavity  enclosed by walls whose upper boundary moves at constant velocity, causing the fluid to move. This provides a simple test-case which can be used for the validation of incompressible Navier-Stokes solvers. Benchmarks results can be found widely in the available literature for different Reynolds numbers. We compare in this section our results with the ones published by \cite{botellaBenchmarkSpectralResults1998} and focus in the case where $\gls{Reynolds} = 1000$. 
 
-The problem is defined in the domain $\Omega = [0,1]\times [0,1]$. The system is solved for the velocity vector $\gls{velVec} = (u,v)$ and the pressure $p$. All boundary conditions are of the Dirichlet type, particularly with $\gls{velVec} = (-1,0)$ for the boundary at $y = 1$, and $\gls{velVec} = (0,0)$ for all other sides. The gravity vector is set to $\gls{gravityVec} = (0,0)$.  In \cref{fig:LiddrivenMesh} the used mesh is presented, which consists of a regular Cartesian mesh with $16\times16$ elements, with extra refinement on both upper corners. This was done to be able to better represent the complex effects that take place there. The streamlines plot presented in \cref{fig:LiddrivenMesh} show the different vortex structures typical to this kind of systems. Additional to the main vortex, smaller structures appear in the corners of the cavity. 
+The problem is defined in the domain $\Omega = [0,1]\times [0,1]$. The system is solved for the velocity vector $\gls{velVec} = (u,v)$ and the pressure $p$. All boundary conditions are of the Dirichlet type, particularly with $\gls{velVec} = (-1,0)$ for the boundary at $y = 1$, and $\gls{velVec} = (0,0)$ for all other sides. The gravity vector is set to $\gls{gravityVec} = (0,0)$. 
 
-
-
+ In \cref{fig:LiddrivenMesh} the used mesh is presented, which corresponds to a Cartesian mesh with extra refinement on both upper corners. This was done to be able to better represent the complex effects that take place there.  The streamlines plot presented in \cref{fig:LiddrivenMesh} show the different vortex structures typical to this kind of systems. Additional to the main vortex, smaller structures appear in the corners of the cavity. 
 	
 	\begin{figure}[t]
 		\centering
@@ -76,9 +75,10 @@ The problem is defined in the domain $\Omega = [0,1]\times [0,1]$. The system is
 	\end{figure}
 
 
-In \cref{fig:LidVelocities} a comparison of the calculated velocity and the velocities provided by the benchmark are shown. For the calculations presented here, the polynomial degree is set to $k = 4$ and $k' = 3$. Clearly a very good agreement is obtained, even by using a relatively coarse mesh (the benchmark result uses a grid with $160\times160$ elements). 
+In \cref{fig:LidVelocities} a comparison of the calculated velocity and the velocities provided by the benchmark are shown. For the calculations presented here, the polynomial degree is set to $k = 4$ and $k' = 3$. A regular cartesian mesh with $16\times16$ elements with extra refinement in the corners is used. Clearly a very good agreement is obtained, even by using a relatively coarse mesh (the benchmark result uses a grid with $160\times160$ elements). 
 
-A more rigorous comparison of results is presented in X, where the extreme values of the velocity components calculated through the centerline of the cavity are compared with the results presented in X. It can be clearly seen how the results obtained with our solver are extremely close to the reference, seeing a difference only at the fifth digit after the decimal point for the velocity components. It can also be appreciated how the results obtained with the coarser meshes are still very close to those of the reference. It is worth mentioning that the comparison here could be considered unfair, since the simulations were performed with polynomial degrees of degree 4 for the velocity and three for the pressure. This point will be further discussed in later sections. 
+A more rigorous comparison of results is presented in \cref{tab:LidCavityExtrema}, where the extreme values of the velocity components calculated through the centerline of the cavity are compared with the results presented by \cite{botellaBenchmarkSpectralResults1998}. We use for this comparison different mesh resolutions. It can be clearly seen how for the $256\times 256$ mesh the results obtained with our solver are extremely close to the reference, seeing a difference only at the fifth digit after the decimal point for the velocity components, and no difference for the spatial coordinates where the extrema are. It can also be appreciated how the results obtained with the coarser meshes are still very close to those of the reference. It is worth mentioning this comparison here could be considered unfair, since the simulations were performed with polynomial degrees of degree 4 for the velocity and three for the pressure, while the calculations of the reference use %TODO
+ This point will be further discussed in later sections. 
 
 \newpage
 	\begin{figure}[tb]
@@ -168,13 +168,13 @@ A more rigorous comparison of results is presented in X, where the extreme value
 	\centering
 	\begin{tabular}{lllllrr}
 		\hline
-		$N$      & $u_{\text{max}}$ & $y_{\text{max}}$ & $v_{\text{max}}$ & $x_{\text{max}}$ & \multicolumn{1}{l}{$v_{\text{min}}$} & \multicolumn{1}{l}{$x_{\text{min}}$} \\ \hline
-		16        & 0.3852327        & 0.1820           & 0.3737295        & 0.8221           & -0.5056627                           & 0.0941                               \\
-		32        & 0.3872588        & 0.1821           & 0.3760675        & 0.8227           & -0.5080496                           & 0.0943                               \\
-		64        & 0.3897104        & 0.1748           & 0.3774796        & 0.8408           & -0.5248360                           & 0.0937                               \\
-		128       & 0.3886452        & 0.1720           & 0.3770127        & 0.8422           & -0.5271487                           & 0.0907                               \\
-		256       & 0.3885661        & 0.1717           & 0.3769403        & 0.8422           & -0.5270653                           & 0.0907                               \\
-		reference & 0.3885698        & 0.1717           & 0.3769447        & 0.8422           & \multicolumn{1}{l}{-0.5270771}       & \multicolumn{1}{l}{0.0908}           \\ \hline
+		Mesh     & $u_{\text{max}}$ & $y_{\text{max}}$ & $v_{\text{max}}$ & $x_{\text{max}}$ & \multicolumn{1}{l}{$v_{\text{min}}$} & \multicolumn{1}{l}{$x_{\text{min}}$} \\ \hline
+		$16\times16$        & 0.3852327        & 0.1820           & 0.3737295        & 0.8221           & -0.5056627                           & 0.0941                               \\
+		$32\times32$        & 0.3872588        & 0.1821           & 0.3760675        & 0.8227           & -0.5080496                           & 0.0943                               \\
+		$64\times64$       & 0.3897104        & 0.1748           & 0.3774796        & 0.8408           & -0.5248360                           & 0.0937                               \\
+		$128\times128$       & 0.3886452        & 0.1720           & 0.3770127        & 0.8422           & -0.5271487                           & 0.0907                               \\
+		$256\times256$       & 0.3885661        & 0.1717           & 0.3769403        & 0.8422           & -0.5270653                           & 0.0907                               \\
+		Reference & 0.3885698        & 0.1717           & 0.3769447        & 0.8422           & \multicolumn{1}{l}{-0.5270771}       & \multicolumn{1}{l}{0.0908}           \\ \hline
 	\end{tabular}
 	\caption{Extrema of velocity components through the centerlines of the cavity for $\gls{Reynolds} = 1000$. Reference values obtainder from \cite{botellaBenchmarkSpectralResults1998} }
 	\label{tab:LidCavityExtrema}
@@ -183,9 +183,9 @@ A more rigorous comparison of results is presented in X, where the extreme value
 \newpage
 
 \subsection{Backward-facing step}\label{ssec:BackwardFacingStep}
-The backward-facing step problem is another classical configuration widely used for validation of incompressible CFD codes. It has been widely studied theoretically, experimentally and numerically by many authors in the last decades (see for example \cite{armalyExperimentalTheoreticalInvestigation1983,barkleyThreedimensionalInstabilityFlow2000,biswasBackwardFacingStepFlows2004} ).  In \cref{BFSsketch} a schematic representation of the problem is shown. It consists of a flow that is subjected to a sudden change in geometry, which causes separation and reattachment phenomena. For these reasons, this geometry can be considered more challenging than the one presented in the previous section, since special care of the used geometry has to be taken in order to capture accurately all complex phenomena taking place.
+The backward-facing step problem is another classical configuration widely used for validation of incompressible CFD codes. It has been widely studied theoretically, experimentally and numerically by many authors in the last decades (see for example \cite{armalyExperimentalTheoreticalInvestigation1983,barkleyThreedimensionalInstabilityFlow2000,biswasBackwardFacingStepFlows2004} ).  In \cref{BFSsketch} a schematic representation of the problem is shown. It consists of a flow (usually considered fully developed) that is subjected to a sudden change in geometry, which causes separation and reattachment phenomena. For these reasons, this case can be considered more challenging than the one presented in the previous section, since special care of the used geometry has to be taken in order to capture accurately all complex phenomena taking place.
 
-Although The backward-facing step problem is known to be inherently three-dimensional, it has been shown that it can be studied as a two-dimensional configuration along the symmetry plane for moderate Reynolds numbers \citep{barkleyThreedimensionalInstabilityFlow2000, biswasBackwardFacingStepFlows2004}. For the range of Reynolds numbers used in our calculations the two-dimensional assumption is justified.  The origin of the coordinate system is set at the bottom part of the step. The step height \gls{StepHeigth} and channel height \gls{ChannelHeight} characterize the system. The results on the literature are often reported as a function of the expansion ratio, defined as $\gls{ExpansionRatio} = (\gls{ChannelHeight}+\gls{StepHeigth})/\gls{ChannelHeight}$. 
+Although the backward-facing step problem is known to be inherently three-dimensional, it has been shown that it can be studied as a two-dimensional configuration along the symmetry plane for moderate Reynolds numbers \citep{barkleyThreedimensionalInstabilityFlow2000, biswasBackwardFacingStepFlows2004}. For the range of Reynolds numbers used in our calculations the two-dimensional assumption is justified.  The origin of the coordinate system is set at the bottom part of the step. The step height \gls{StepHeigth} and channel height \gls{ChannelHeight} characterize the system. The results on the literature are often reported as a function of the expansion ratio, defined as $\gls{ExpansionRatio} = (\gls{ChannelHeight}+\gls{StepHeigth})/\gls{ChannelHeight}$. 
 %For all calculations shown here we set $L = 70 \gls{StepHeigth}$ and $L_0 = \gls{StepHeigth}$.
 We conduct a series of simulations with the objective of reproducing the results reported in \cite{biswasBackwardFacingStepFlows2004}, where the backward-facing step was calculated for Reynolds numbers up to $400$ and for a expansion ratio of $1.9423$. 
 The Reynolds number for the backward-facing step configuration is defined in the literature in many forms. We adopt here the definition based on the step height \gls{StepHeigth} and mean inlet velocity $U_{\text{mean}}$ as reference values, resulting in

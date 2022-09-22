@@ -168,6 +168,7 @@ where $j^{\ast}$ denotes the index of a neighbouring cell to $\gls{cell}_j$. Lik
 \subsubsection{Discontinuous Galerkin discretization of the finite reaction rate problem}
 We start by presenting the DG discretization of the finite reaction system defined by \crefrange{eq:LowMachConti}{eq:LowMachMassBalance}. We define $\vec{Y}' = \left(Y_1,\dots,Y_{ns-1}\right)$ as the vector containing the first $(n_s-1)$ mass fractions and $\vec{s} = \left(s_1, \dots, s_{ns-1} \right)$ as the vector containing the test functions for the first $(n_s-1)$  mass fraction equations. The discretized form of \cref{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} is obtained by multiplying each equation by a test function, integrating it over an element $K$, applying integration by parts and finally using an adequate numerical flux for each term. Note that the convective and diffusive terms of the temperature scalars $T$, mass fraction $Y_\alpha$ and mixture fraction $z$ have the same form, so they share the same expression in their discretized form.
 In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition, \cite{babuskaFiniteElementMethod1973} we use a mixed order formulation, where polynomials of order $k$ for velocity, temperature and mass fractions, and of degree $k' = k-1$ for pressure are used.  Finally the discretized problem can be written as: find the numerical solution $(p_h,\vec{u}_h, T_h, \MFVecPrima_h) \in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h, r_h, \mathbf{s}_h) \in \mathbb{V}_\myvector{k}$ we have:
+
 \begin{subequations}
 	\begin{gather} 
 	\ContDis = \mathcal{B}^1(q_h),\label{DiscretizedConti} \\
@@ -176,6 +177,8 @@ In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf
 	\mathcal{S}^C\left(\vec{u}_h,\Yi, s_{\alpha h}, \rhoh\right) + \frac{1}{\Reynolds~\Prandtl~\Lewis_\alpha}\mathcal{S}^D\left(\Yi,s_{\alpha h},\rhodh\right) + \Da \mathcal{M}^S_\alpha\left(s_{\alpha h},\rateReac(T_h,\vec{Y}_h )\right) = \mathcal{B}^3(s_{\alpha h}). \label{DiscretizedMassFractions} 
 	\end{gather}\label{eqs:variatProblemFull}
 \end{subequations} 
+
+
 where the index $\alpha$ takes values $\alpha = 1, \dots,~(n_s - 1)$. The $n_s$-th component mass fraction $Y_{n_s}$ is calculated using \cref{eq:MassFractionConstraint}.
 \subsubsection{Discontinuous Galerkin discretization of the flame sheet problem}
 Discretizing the flame sheet problem given by \crefrange{eq:MixtFracConti2}{eq:MixtFracMF} proceeds in a similar way. Due to the similarity of the mass fraction equation and the mixture fraction equation the discretization is analogous. Again, we use a mixed order formulation of polynomials of degree $k$ for velocity and mixture fraction, and of degree $k-1$ for pressure. The resulting problem reads: find the numerical solution $(p_h,\vec{u}_h,z_h)\in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h,r_h)\in \mathbb{V}_\myvector{k}$ we have: 

@@ -7,7 +7,7 @@ We start by introducing some standard definitions and notations in the context o
 We define a computational domain $\Omega \subset \mathbb{R}^2$ with a polygonal and simply connected boundary $\partial \Omega$. Our numerical grid is then defined by the set of non-overlapping elements $\mathcal{K} = \{K_1, ..., K_N\}$ with a characteristic mesh size $h$, so that $\Omega$ is the union of all elements, i.e. $\Omega = \bigcup_{i=1}^N K_i$. We define  $\Gamma = \bigcup_j \partial K_j$ as the union of all edges (internal edges and boundary edges) and $\Gamma_I = \Gamma \setminus \partial \Omega$ as the union of all interior edges. 
 For each edge of $\Gamma$ a normal field $\myvector{n}_{\Gamma}$ is defined. Particularly on $\partial \Omega$ is defined as an outer normal and $\vec{n}_\Gamma = \vec{n}_{\partial\Omega}$.
 For each field $\myvector{u} \in C^0\left(\Omega\setminus \Gamma_I\right)$ we define  $\myvector{u}^-$  and  $\myvector{u}^+$, which describe the information in the interior and exterior sides of the cell:
-\begin{align}
+\begin{align} 
 \myvector{u}^- &= \lim_{\xi \searrow 0} \myvector{u}\left(\myvector{x} - \xi \myvector{n}_{\Gamma}\right) \quad \text{for } \myvector{x}\in \Gamma\\
 \myvector{u}^+ &= \lim_{\xi \searrow 0} \myvector{u}\left(\myvector{x} + \xi \myvector{n}_{\Gamma}\right) \quad \text{for } \myvector{x}\in \Gamma_I
 \end{align}
@@ -166,28 +166,44 @@ where $j^{\ast}$ denotes the index of a neighbouring cell to $\gls{cell}_j$. Lik
 
 
 \subsubsection{Discontinuous Galerkin discretization of the finite reaction rate problem}
-We start by presenting the DG discretization of the finite reaction system defined by \crefrange{eq:LowMachConti}{eq:LowMachMassBalance}. We define $\vec{Y}' = \left(Y_1,\dots,Y_{ns-1}\right)$ as the vector containing the first $(n_s-1)$ mass fractions and $\vec{s} = \left(s_1, \dots, s_{ns-1} \right)$ as the vector containing the test functions for the first $(n_s-1)$  mass fraction equations. The discretized form of \cref{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} is obtained by multiplying each equation by a test function, integrating it over an element $K$, applying integration by parts and finally using an adequate numerical flux for each term. Note that the convective and diffusive terms of the temperature scalars $T$, mass fraction $Y_\alpha$ and mixture fraction $z$ have the same form, so they share the same expression in their discretized form.
+We start by presenting the DG discretization of the finite reaction system defined by \crefrange{eq:LowMachConti}{eq:LowMachMassBalance}. We define $\vec{Y}' = \left(Y_1,\dots,Y_{N-1}\right)$ as the vector containing the first $(n_s-1)$ mass fractions and $\vec{s} = \left(s_1, \dots, s_{N-1} \right)$ as the vector containing the test functions for the first $(n_s-1)$  mass fraction equations. The discretized form of \cref{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} is obtained by multiplying each equation by a test function, integrating it over an element $K$, applying integration by parts and finally using an adequate numerical flux for each term. Note that the convective and diffusive terms of the temperature scalars $T$, mass fraction $Y_\alpha$ and mixture fraction $z$ have the same form, so they share the same expression in their discretized form.
 In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition, \cite{babuskaFiniteElementMethod1973} we use a mixed order formulation, where polynomials of order $k$ for velocity, temperature and mass fractions, and of degree $k' = k-1$ for pressure are used.  Finally the discretized problem can be written as: find the numerical solution $(p_h,\vec{u}_h, T_h, \MFVecPrima_h) \in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h, r_h, \mathbf{s}_h) \in \mathbb{V}_\myvector{k}$ we have:
-
 \begin{subequations}
-	\begin{gather} 
-	\ContDis = \mathcal{B}^1(q_h),\label{DiscretizedConti} \\
-	\MomConv + \MomPres + \frac{1}{\Reynolds}\MomDiff + \frac{1}{\Froude^2}\MomSource = \mathcal{B}^2(\vec{v}_h), \label{DiscretizedMomentum} \\
-	\mathcal{S}^C\left(\vec{u}_h,T_h,r_h, \rhoh\right) + \frac{1}{\Reynolds~\Prandtl}\mathcal{S}^D\left(T_h,r_h,k/c_p(T_h)\right) + \text{H}~\Da ~ \mathcal{S}^S\left(r_h, \heatRelease(T_h,\vec{Y}_h), \rateReac(T_h,\vec{Y}_h),\cph\right) = \mathcal{B}^3(r_h), \label{DiscretizedEnergy} \\
-	\mathcal{S}^C\left(\vec{u}_h,\Yi, s_{\alpha h}, \rhoh\right) + \frac{1}{\Reynolds~\Prandtl~\Lewis_\alpha}\mathcal{S}^D\left(\Yi,s_{\alpha h},\rhodh\right) + \Da \mathcal{M}^S_\alpha\left(s_{\alpha h},\rateReac(T_h,\vec{Y}_h )\right) = \mathcal{B}^3(s_{\alpha h}). \label{DiscretizedMassFractions} 
-	\end{gather}\label{eqs:variatProblemFull}
+	\begin{align}%
+		%% Continuity
+		\mathcal{B}^1(q_h) 
+		&= \ContDis\ ,,  \label{DiscretizedConti}  		\\[1ex]
+		%% Momentum
+		\mathcal{B}^2(\vec{v}_h) 
+		&=	\MomConv + \MomPres + \frac{1}{\Reynolds}\MomDiff  \notag \\
+		&\quad + \smash{\frac{1}{\Froude^2}}\MomSource, \label{DiscretizedMomentum} 	\\[1ex]
+		%% Energy
+		\mathcal{B}^3(r_h) 
+		&= \mathcal{S}^C\left(\vec{u}_h,T_h,r_h, \rhoh\right) + \frac{1}{\Reynolds~\Prandtl}\mathcal{S}^D\left(T_h,r_h,k/c_p(T_h)\right)  \notag \\
+		&\quad + \text{H}~\Da ~ \mathcal{S}^S\left(r_h, \heatRelease(T_h,\vec{Y}_h), \rateReac(T_h,\vec{Y}_h),\cph\right), \label{DiscretizedEnergy} 	\\[1ex]
+		%% MassFractions
+		\mathcal{B}^3(s_{\alpha h}) 
+		&= \mathcal{S}^C\left(\vec{u}_h,\Yi, s_{\alpha h}, \rhoh\right) + \frac{1}{\Reynolds~\Prandtl~\Lewis_\alpha}\mathcal{S}^D\left(\Yi,s_{\alpha h},\rhodh\right)  \notag \\
+		&\quad + \Da \mathcal{M}^S_\alpha\left(s_{\alpha h},\rateReac(T_h,\vec{Y}_h )\right). \label{DiscretizedMassFractions} 
+	\end{align}\label{eqs:variatProblemFull}
 \end{subequations} 
-
 
 where the index $\alpha$ takes values $\alpha = 1, \dots,~(n_s - 1)$. The $n_s$-th component mass fraction $Y_{n_s}$ is calculated using \cref{eq:MassFractionConstraint}.
 \subsubsection{Discontinuous Galerkin discretization of the flame sheet problem}
 Discretizing the flame sheet problem given by \crefrange{eq:MixtFracConti2}{eq:MixtFracMF} proceeds in a similar way. Due to the similarity of the mass fraction equation and the mixture fraction equation the discretization is analogous. Again, we use a mixed order formulation of polynomials of degree $k$ for velocity and mixture fraction, and of degree $k-1$ for pressure. The resulting problem reads: find the numerical solution $(p_h,\vec{u}_h,z_h)\in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h,r_h)\in \mathbb{V}_\myvector{k}$ we have: 
 \begin{subequations}
-	\begin{gather} 
-	\mathcal{C}\left(\vec{u}_h,q_h, \rho(z_h)\right)  =\mathcal{B}^1(q_h), \label{DiscretizedConti2} \\
-	\mathcal{U}^C\left(\vec{w}_h,\vec{u}_h,\vec{v}_h, \rho(z_h)\right)+ 	\mathcal{U}^P\left(p_h,\vec{v}_h\right) + 	 \frac{1}{\Reynolds}\mathcal{U}^D\left(\vec{u}_h,\vec{v}_h,\mu(z_h)\right)  + \frac{1}{\Froude^2}\mathcal{U}^S\left(\rho(z), \vec{v}_h\right)  =\mathcal{B}^2(\vec{v}_h), \label{DiscretizedMomentum2} \\
-	{S}^C\left(\vec{u}_h,z_h,r_h, \rho(z_h)\right) + \frac{1}{\Reynolds~\Prandtl}\mathcal{S}^D\left(z_h,r_h,\rho D(z_h)\right) = \mathcal{B}^3(r_h). \label{DiscretizedEnergy2}
-	\end{gather}\label{eqs:variatFS}\\
+	\begin{align} 
+		%% Continuity
+		\mathcal{B}^1(q_h)
+		&= 	\mathcal{C}\left(\vec{u}_h,q_h, \rho(z_h)\right) \,, \label{DiscretizedConti2} \\
+		%% Momentum
+		\mathcal{B}^2(\vec{v}_h)
+		&= 	\mathcal{U}^C\left(\vec{w}_h,\vec{u}_h,\vec{v}_h, \rho(z_h)\right)+ 	\mathcal{U}^P\left(p_h,\vec{v}_h\right) +\frac{1}{\Reynolds}\mathcal{U}^D\left(\vec{u}_h,\vec{v}_h,\mu(z_h)\right)\notag\\
+		&\quad  + \frac{1}{\Froude^2}\mathcal{U}^S\left(\rho(z), \vec{v}_h\right)\,, \label{DiscretizedMomentum2} \\
+		%% Mixture Fraction	 
+		\mathcal{B}^3(r_h)
+		&= {S}^C\left(\vec{u}_h,z_h,r_h, \rho(z_h)\right) + \frac{1}{\Reynolds~\Prandtl}\mathcal{S}^D\left(z_h,r_h,\rho D(z_h)\right). \label{DiscretizedEnergy2}
+	\end{align}\label{eqs:variatFS}
 \end{subequations}
 Note that density and transport parameters are dependent on the mixture fraction $z$. The evaluation of those parameters is done as mentioned in  \cref{ssec:FlameSheet} and solved iteratively using a Newton-Dogleg type method as shown later in \cref{sec:newton}
 \subsubsection{Definitions of nonlinear forms}

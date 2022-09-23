@@ -58,8 +58,5 @@
     \put(-0.00708123,0.32019621){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{LidDrivvenGeometry.pdf}}%
     \put(0.48800179,1.09398398){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathbf{u}$\end{tabular}}}}%
-    \put(0.77399353,0.54242861){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$L$\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{LidDrivvenGeometry.pdf}}%
-    \put(0.13531962,0.80455195){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$L$\end{tabular}}}}%
   \end{picture}%
 \endgroup%

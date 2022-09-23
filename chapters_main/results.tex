@@ -1,14 +1,12 @@
 \chapter{Results}	\label{ch:results}
 \glsresetall
-In the following sections a comprehensive validation of the solver presented previously using a variety of benchmark cases will be presented. The chosen test cases will be presented incrementally in complexity. In \cref{sec:SingleCompIsotCase} the applicability of the solver for isothermal single-component systems is analyzed. Later in \cref{sec:SinCompNonIsothermCase} several single-component non-isothermal configurations are studied. Finally in \cref{sec:MultCompNonIsothermCase} test-cases for multi-component non-isothermal systems are presented. 
+ The following sections will present a comprehensive validation of the solver using a variety of test cases. The chosen test cases will be introduced incrementally in complexity. In \cref{sec:SingleCompIsotCase} the applicability of the solver for isothermal single-component systems is analyzed. Later in \cref{sec:SinCompNonIsothermCase} several single-component non-isothermal configurations are studied. Finally in \cref{sec:MultCompNonIsothermCase} test-cases for multi-component non-isothermal systems are presented. 
 %Additionally the convergence properties of the DG-method will be analyzed for some of the systems.
 
 
 
-All calculations shown here where performed on AMD EPYC 7543 32-Core Processor, DDR4 %TODO \todo[inline]{which specifications of the cluster should i include?}
-Si no es stated otherwise, all calculations use the termination criterion presented in \cref{ssec:TerminationCriterion}
-
-
+All calculations shown here where performed on a  AMD EPYC 7543 32-Core Processor, DDR4 %TODO \todo[inline]{which specifications of the cluster should i include?}
+Unless otherwise stated, all calculations use the termination criteria presented in \cref{ssec:TerminationCriterion}
 
 \section{Single-component isothermal cases}\label{sec:SingleCompIsotCase}
 The solver presented in the previous sections is initially validated for single-component isothermal cases. In these cases only the continuity and momentum equations are solved. The energy and species concentration equations  are replaced by the condition $T = 1.0$ and $Y_0 = 1.0$ in the complete domain. This means that the physical properties of the flow (density and viscosity) are constants and the flow is completely incompressible.
@@ -24,7 +22,7 @@ The solver presented in the previous sections is initially validated for single-
 	\end{center}	
 \end{figure} 
 
-The lid-driven cavity flow is a test problem classically used for the validation of Navier-Stokes solvers. The system configuration is shown in \cref{fig:LidDrivenCavity}. It consists simply of a two-dimensional square cavity  enclosed by walls whose upper boundary moves at constant velocity, causing the fluid to move. This provides a simple test-case which can be used for the validation of incompressible Navier-Stokes solvers. Benchmarks results can be found widely in the available literature for different Reynolds numbers. We compare in this section our results with the ones published by \cite{botellaBenchmarkSpectralResults1998} and focus in the case where $\gls{Reynolds} = 1000$. 
+The lid-driven cavity flow is a test problem classically used for the validation of Navier-Stokes solvers. The system configuration is shown in \cref{fig:LidDrivenCavity}. It consists simply of a two-dimensional square cavity  enclosed by walls whose upper boundary moves at constant velocity, causing the fluid to move. This provides a simple test-case which can be used for the validation of incompressible Navier-Stokes solvers. Benchmarks results can be found widely in the literature for different Reynolds numbers. We compare in this section our results with the ones published by \cite{botellaBenchmarkSpectralResults1998} and focus in the case where $\gls{Reynolds} = 1000$. 
 
 The problem is defined in the domain $\Omega = [0,1]\times [0,1]$. The system is solved for the velocity vector $\gls{velVec} = (u,v)$ and the pressure $p$. All boundary conditions are of the Dirichlet type, particularly with $\gls{velVec} = (-1,0)$ for the boundary at $y = 1$, and $\gls{velVec} = (0,0)$ for all other sides. The gravity vector is set to $\gls{gravityVec} = (0,0)$. 
 
@@ -77,8 +75,8 @@ The problem is defined in the domain $\Omega = [0,1]\times [0,1]$. The system is
 
 In \cref{fig:LidVelocities} a comparison of the calculated velocity and the velocities provided by the benchmark are shown. For the calculations presented here, the polynomial degree is set to $k = 4$ and $k' = 3$. A regular cartesian mesh with $16\times16$ elements with extra refinement in the corners is used. Clearly a very good agreement is obtained, even by using a relatively coarse mesh (the benchmark result uses a grid with $160\times160$ elements). 
 
-A more rigorous comparison of results is presented in \cref{tab:LidCavityExtrema}, where the extreme values of the velocity components calculated through the centerline of the cavity are compared with the results presented by \cite{botellaBenchmarkSpectralResults1998}. We use for this comparison different mesh resolutions. It can be clearly seen how for the $256\times 256$ mesh the results obtained with our solver are extremely close to the reference, seeing a difference only at the fifth digit after the decimal point for the velocity components, and no difference for the spatial coordinates where the extrema are. It can also be appreciated how the results obtained with the coarser meshes are still very close to those of the reference. It is worth mentioning this comparison here could be considered unfair, since the simulations were performed with polynomial degrees of degree 4 for the velocity and three for the pressure, while the calculations of the reference use %TODO
- This point will be further discussed in later sections. 
+A more rigorous comparison of results is presented in \cref{tab:LidCavityExtrema}, where the extreme values of the velocity components calculated through the centerline of the cavity are compared with the results presented by \cite{botellaBenchmarkSpectralResults1998}. We use for this comparison different mesh resolutions. It can be clearly seen how for the $256\times 256$ mesh the results obtained with our solver are extremely close to the reference, seeing a difference only at the fifth digit after the decimal point for the velocity components, and no difference for the spatial coordinates where the extrema are. It can also be appreciated how the results obtained with the coarser meshes are still very close to those of the reference. 
+%It is worth mentioning this comparison here could be considered unfair, since the simulations were performed with polynomial degrees of degree 4 for the velocity and three for the pressure, while the calculations of the reference use %TODO  This point will be further discussed in later sections. 
 
 \newpage
 	\begin{figure}[tb]
@@ -173,7 +171,7 @@ A more rigorous comparison of results is presented in \cref{tab:LidCavityExtrema
 		$32\times32$        & 0.3872588        & 0.1821           & 0.3760675        & 0.8227           & -0.5080496                           & 0.0943                               \\
 		$64\times64$       & 0.3897104        & 0.1748           & 0.3774796        & 0.8408           & -0.5248360                           & 0.0937                               \\
 		$128\times128$       & 0.3886452        & 0.1720           & 0.3770127        & 0.8422           & -0.5271487                           & 0.0907                               \\
-		$256\times256$       & 0.3885661        & 0.1717           & 0.3769403        & 0.8422           & -0.5270653                           & 0.0907                               \\
+		$256\times256$       & 0.3885661        & 0.1717           & 0.3769403        & 0.8422           & -0.5270653                           & 0.0907                               \\\hline
 		Reference & 0.3885698        & 0.1717           & 0.3769447        & 0.8422           & \multicolumn{1}{l}{-0.5270771}       & \multicolumn{1}{l}{0.0908}           \\ \hline
 	\end{tabular}
 	\caption{Extrema of velocity components through the centerlines of the cavity for $\gls{Reynolds} = 1000$. Reference values obtainder from \cite{botellaBenchmarkSpectralResults1998} }
@@ -183,7 +181,7 @@ A more rigorous comparison of results is presented in \cref{tab:LidCavityExtrema
 \newpage
 
 \subsection{Backward-facing step}\label{ssec:BackwardFacingStep}
-The backward-facing step problem is another classical configuration widely used for validation of incompressible CFD codes. It has been widely studied theoretically, experimentally and numerically by many authors in the last decades (see for example \cite{armalyExperimentalTheoreticalInvestigation1983,barkleyThreedimensionalInstabilityFlow2000,biswasBackwardFacingStepFlows2004} ).  In \cref{BFSsketch} a schematic representation of the problem is shown. It consists of a flow (usually considered fully developed) that is subjected to a sudden change in geometry, which causes separation and reattachment phenomena. For these reasons, this case can be considered more challenging than the one presented in the previous section, since special care of the used geometry has to be taken in order to capture accurately all complex phenomena taking place.
+The backward-facing step problem is another classical configuration widely used for validation of incompressible CFD codes. It has been widely studied theoretically, experimentally and numerically by many authors in the last decades (see for example \cite{armalyExperimentalTheoreticalInvestigation1983,barkleyThreedimensionalInstabilityFlow2000,biswasBackwardFacingStepFlows2004} ).  In \cref{BFSsketch} a schematic representation of the problem is shown. It consists of a channel flow (usually considered fully developed) that is subjected to a sudden change in geometry, which causes separation and reattachment phenomena. For these reasons, this case can be considered more challenging than the one presented in the previous section, since special care of the used geometry has to be taken in order to capture accurately all complex phenomena taking place.
 
 Although the backward-facing step problem is known to be inherently three-dimensional, it has been shown that it can be studied as a two-dimensional configuration along the symmetry plane for moderate Reynolds numbers \citep{barkleyThreedimensionalInstabilityFlow2000, biswasBackwardFacingStepFlows2004}. For the range of Reynolds numbers used in our calculations the two-dimensional assumption is justified.  The origin of the coordinate system is set at the bottom part of the step. The step height \gls{StepHeigth} and channel height \gls{ChannelHeight} characterize the system. The results on the literature are often reported as a function of the expansion ratio, defined as $\gls{ExpansionRatio} = (\gls{ChannelHeight}+\gls{StepHeigth})/\gls{ChannelHeight}$. 
 %For all calculations shown here we set $L = 70 \gls{StepHeigth}$ and $L_0 = \gls{StepHeigth}$.
@@ -192,12 +190,11 @@ The Reynolds number for the backward-facing step configuration is defined in the
 \begin{equation}
 \gls{Reynolds}= \frac{\gls{StepHeigth}U_{\text{mean}}}{\gls{kinVisc}}
 \end{equation} 
-The system is isothermal and the fluid is assumed to be air. The inlet profile is parabolic and is given by
+The system is isothermal and the fluid is assumed to be air. The boundary at $ x = -L_0$ is a inlet boundary condition, where a parabolic profile is defined with %, with a kinematic viscosity  $\nu = \SI{15.52e-6 }{\meter \squared \per \second}$
 \begin{equation}
 u(y) = -6U_{\text{mean}}\frac{(y-S)(y-(h+S))}{h^2}
 \end{equation}
-%The boundary conditions ??
-In order to minimize the effects of the outlet  boundary condition in the system, the length $L$ of the domain was set to $L = 70 \gls{StepHeigth}$. Additionally  $L_0 = \gls{StepHeigth}$. For all calculations in this section an structured grid with 88400 elements is used. To better resolve the complex structures that occur in this configuration, smaller elements are used in the vicinity of the step, as seen in figure \cref{bfsmesh}.
+In order to minimize the effects of the outlet  boundary condition in the system, the length $L$ of the domain was set to $L = 70 \gls{StepHeigth}$. All other boundaries are fixed walls. The effect of the domain length before the step was seen to have almost no impact on the calculation, and is just set to $L_0 = \gls{StepHeigth}$. For all calculations in this section a structured grid with 88400 elements is used. To better resolve the complex structures that occur in this configuration, smaller elements are used in the vicinity of the step, as seen in figure \cref{bfsmesh}.
 
 %Preliminary calculations showed that the calculated reattachment and detachment lengths are highly sensitivy to an adequate mesh.
 \begin{figure}[tb]
@@ -218,6 +215,33 @@ In order to minimize the effects of the outlet  boundary condition in the system
 	\end{center}	
 \end{figure} 
 
+\begin{figure}[bt]
+	\centering
+	\pgfplotsset{
+		group/xticklabels at=edge bottom,
+		%		legend style = {
+			%			at ={ (1.0,1.0), anchor= north east}
+			%		},
+		unit code/.code={\si{#1}}
+	}
+	\begin{tikzpicture}
+		\begin{axis}[
+			width= 0.4\textwidth,
+			height= 0.3\textwidth ,
+			xlabel = $u$,
+			ylabel= $y$, 
+			legend style={at={(1,1)}, anchor=north east},
+			]
+			\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/VelXArr7.txt};%\addlegendentry{$x=7$, BoSSS}
+			\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/VelXArr15.txt};%\addlegendentry{$x=15$, BoSSS}
+			\addplot+[color=black, only marks, thick] table {data/HeatedBackwardFacingStep/VelXArr7_REF.txt}; \addlegendentry{$x=7$}
+			\addplot+[color=black, only marks, thick] table {data/HeatedBackwardFacingStep/VelXArr15_REF.txt};	\addlegendentry{$x=15$}
+			%	 \addlegendentry{Reference}y
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Distribution of x-component of velocity in the backward-facing step configuration for a Reynolds number of 400. Solid lines correspond to results obtained with BoSSS}
+	\label{fig:uvelBFS}
+\end{figure} 
 
 
 
@@ -242,7 +266,7 @@ In order to minimize the effects of the outlet  boundary condition in the system
 	width= 0.4\textwidth ,
 	height= 0.3\textwidth ,
 	xlabel = \gls{Reynolds},
-	ylabel= x/S, 
+	ylabel= x, 
 	]
 	\nextgroupplot%[title = {\textbf{Primary recirculation zone}}]
 	\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/BottomReatLength.txt}; \addlegendentry{$R_1$, BoSSS}
@@ -254,44 +278,44 @@ In order to minimize the effects of the outlet  boundary condition in the system
 	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopReatLength.txt}; \addlegendentry{$R_3$, Ref}
 	\end{groupplot}
 	\end{tikzpicture}
-	\caption{ Detachment and reattachment lengths of the primary (left figure) and secondary (right figure) recirculation zones after the backward-facing step. Solid lines correspond to the results obtained with BoSSS and the marks to the reference solution \citep{biswasBackwardFacingStepFlows2004}.}
+	\caption{ Detachment and reattachment lengths of the primary (left figure) and secondary (right figure) recirculation zones after the backward-facing step compared to the reference solution \citep{biswasBackwardFacingStepFlows2004}.}
 	\label{fig:Re_De_Attachmentlengths}
 \end{figure}
-The backward-facing step configuration exhibits varying behaviour as the number of Reynolds changes. At small Reynolds number, a single vortex, usually called the primary vortex, appears in the vicinity of the step. In addition, as the Reynolds number increases, a second vortex eventually appears on the top wall, as is shown schematically in  \cref{BFSsketch}. 
-The detachment and reattachment lengths of the vortices are values usually reported in the literature. It is possible to determine the position of deattachment by finding the point along the wall where the velocity gradient acquires a value equal to zero. %TODO \todo[inline]{comment on this}
- \cref{fig:Re_De_Attachmentlengths} shows the deattachment and reattachment lenghts of the primary and secondary vortices obtained with our code for different Reynolds numbers, which are also compared with the results presented in the reference \cite{biswasBackwardFacingStepFlows2004}. It can be observed how the results for the deattachment lengths of the primary vortex present very good agreement with those of the reference. In the case of the secondary vortex it is possible to see a very minimal deviation for the reattachment lenghts. It is interesting to note that despite the fact that the reference does not report the existence of a secondary vortex for $\gls{Reynolds} = 200$, with our code it was possible to observe it. The results allow us to conclude that it is possible to study flows with complex behavior for high Reynolds numbers, at least in the isothermal case. In the next section we will discuss what happens for the non-isothermal case.
+The backward-facing step configuration exhibits varying behavior as the number of Reynolds changes. At small Reynolds number, a single vortex, usually called the primary vortex, appears in the vicinity of the step. In addition, as the Reynolds number increases, a second vortex eventually appears on the top wall, as is shown schematically in  \cref{BFSsketch}. 
+The detachment and reattachment lengths of the vortices are values usually reported in the literature. It is possible to determine the position of detachment by finding the point along the wall where the velocity gradient normal to the wall acquires a value equal to zero. Cubic splines were used to more accurately find this point.
 
-It is worth mentioning that the evaluation of the numerical accuracy of the solver using both incompressible test cases presented in this section is problematic due to singularities appearing. Nevertheless, the good agreement of our results with the benchmark let us conclude that the solver is able of simulating incompressible flows.
+\cref{fig:Re_De_Attachmentlengths} shows the detachment and reattachment lengths of the primary and secondary vortices obtained with our code for different Reynolds numbers, which are also compared with the results presented in the reference paper from \cite{biswasBackwardFacingStepFlows2004}. It can be observed how the results for the detachment lengths of the primary vortex present very good agreement with those of the reference. In the case of the secondary vortex it is possible to see a very minimal deviation for the reattachment lengths. It is interesting to note that despite the fact that the reference does not report the existence of a secondary vortex for $\gls{Reynolds} = 200$, with our code it was possible to observe it. The results allow us to conclude that it is possible to study flows with complex behavior for high Reynolds numbers, at least in the isothermal case. In the next section we will discuss what happens for the non-isothermal case.
 
 
+It is worth mentioning that the evaluation of the numerical accuracy of the solver using the two incompressible test cases presented in this section is problematic due to the presence of singularities, specifically on the corners at the coordinates $ \vec{x} = (0,1)$ and $\vec{x} =(1,1)$ of the Lid-driven cavity (where the pressure is not finite according to \cite{botellaBenchmarkSpectralResults1998}), and at the corner of the step $\vec{x} = (0,S)$ of the backward-facing step. The accuracy of the solver will be assessed in following chapters. 
 
 \section{Single-component non-isothermal cases} \label{sec:SinCompNonIsothermCase}
-Here the equations for continuity, momentum and energy are solved (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy}). All systems are asumed to be single-component, thus $N = 1$ and $Y_0 = 1.0$.
-In section \cref{ssec:CouetteFlowTempDiff} a Couette flow presenting a temperature gradient in the vertical direction is studied. 
-
-In \cref{ss:DHC} a heated square cavity configuration is studied in order to asses the capability of the solver for variable density flows in closed systems. Later in in \cref{ss:CDF} and \cref{ss:CoFlowFlame} two different configurations for reactive flows are presented. 
+For the test cases presented in this section the equations for continuity, momentum and energy are solved and all systems are assumed to be single-component, thus $N = 1$ and $Y_0 = 1.0$. We start by showing in \cref{ssec:HeatedBackwardFacingStep} a extension of the backward-facing step configuration presented in the last section, considering now a non-isothermal system. Later in \cref{ssec:CouetteFlowTempDiff} a Couette flow configuration presenting a temperature gradient in the vertical direction is studied. Finally in \cref{ss:DHC} a heated square cavity configuration is studied in order to asses the capability of the solver for variable density flows in closed systems. 
 
 
-\subsection{Heated backward-facing step}
-As an extension to the previous case, we seek to recreate the results presented in \cite{xieFluidFlowHeat2016}, where the same backward-facing step configuration as presented above is studied, but with the particularity that in this case the bottom wall is heated to a constant temperature, thus featuring a non-isothermal system. The fluid entering the system has a temperature equal to $T_0 = 10°C$ and the bottom wall is set to a constant temperature of $T_1 = 40°C$. 
-In \cite{xieFluidFlowHeat2016} results are reported for the local Nusselt numbers and local friction coefficients $f_d$  along the bottom wall for different expansion ratios and Reynolds numbers. The local Nusselt number is defined as
-\begin{equation}
-\gls{Nusselt} = \frac{S}{T_0-T_1}\nabla T \cdot \vec{n}
-\end{equation}
-On the other hand, and by recognizing that the wall shear stress along the bottom wall $\tau_{\text{w}} = -\mu \nabla u \cdot \vec{n}$, the local friction factor can be written as
-\begin{equation}
-f_d = \frac{8\nu} { (U_{\text{mean}})^2}  \nabla u \cdot \vec{n} 
-\end{equation}
-A series of simulations for varying Reynolds numbers and expansion ratios were conducted. In \cref{BFS_Streamlines} the temperature field and streamlines corresponding to a calculation with $\gls{Reynolds} = 700$ is shown. Here the apparition of the secondary vortex is appreciated. We point out here that the results obtained by us are substantially different from those reported in \cite{xieFluidFlowHeat2016}, and will not be shown here.
-Nevertheless, in the work of \cite{henninkLowMachNumberFlow2022} the same is also pointed out, saying that with his method it was not possible to reproduce the results presented by \cite{xieFluidFlowHeat2016}. Comparing our results with those of Hennink we can see that the same results are obtained, as demonstrated in \cref{fig:fd_Nu_plot}.
-
+\subsection{Heated backward-facing step}\label{ssec:HeatedBackwardFacingStep}
 \begin{figure}[tb]
 	\begin{center}
-		\includegraphics[width=\linewidth]{../plots/HBFS_TemperatureRe700.pdf}
+		\includegraphics[width=\linewidth]{../plots/HBFS_TemperatureRe700_2.pdf}
 		\caption{Temperature profile (top) and streamlines (bottom) corresponding to the backward-facing Step configuration for $\gls{Reynolds} = 400$ and an expansion ratio of two.}
 		\label{BFS_Streamlines}
 	\end{center}	
 \end{figure} 
+
+As an extension to the previous case, we seek to reproduce the results presented by \cite{xieFluidFlowHeat2016}, where the same backward-facing step configuration as presented in \cref{ssec:BackwardFacingStep} is studied, but with the particularity that in this case the bottom wall is heated to a constant temperature higher than the inlet temperature, thus featuring a non-isothermal system. The fluid entering the system has a temperature equal to $T_0 = \SI{283}{\kelvin}$ and the bottom wall is set to a constant temperature of $T_1 =\SI{313}{\kelvin}$
+In the work of \cite{xieFluidFlowHeat2016} results are reported for the local Nusselt numbers and local friction coefficients $f_d$  along the bottom wall for different expansion ratios and Reynolds numbers. By putting together the definition of the Nusselt number ( $\gls{Nusselt} = \frac{\gls{HeatTransCoef}\hat{L}}{\gls{HeatConductivity}}$), Newtons law of cooling ($\hat{\vec{q}} = \hat{h} (\hat{T}_0 - \hat{T}_W )$), and Fourier's law of heat  conduction, ($\hat{\vec{q}} = \hat \lambda \hat{\nabla} \glsHat{temp}$) a expression for the local Nusselt number is obtained
+\begin{equation}
+\gls{NusseltLoc} = \frac{\hat L}{\hat T_0-\hat T_W}\hat \nabla \hat T \cdot \hat {\vec{n}}
+\end{equation}
+where $\hat L$ is a reference length. We choose $ \hat L = \hat S$. Additionally by recognizing that the wall shear stress along the bottom wall $\tau_{\text{w}} = -\mu \nabla u \cdot \vec{n}$, the local friction factor can be written as
+\begin{equation}
+f_d = \frac{8\nu} { (U_{\text{mean}})^2}  \nabla u \cdot \vec{n} 
+\end{equation}
+It should be noted that, for the range of temperature differences involved in this case, the variation of physical parameters such as density, viscosity and thermal conductivity with respect to temperature has no appreciable influence on the calculated flow fields.
+
+Simulations for different Reynolds numbers and expansion ratios were conducted. In \cref{BFS_Streamlines} the temperature field and streamlines corresponding to a calculation with $\gls{Reynolds} = 700$ is shown. Here the apparition of the secondary vortex is appreciated.
+
+It must be noted here that the results obtained by us are substantially different from those reported by \cite{xieFluidFlowHeat2016}, and will not be shown here. However, in the work of \cite{henninkLowMachNumberFlow2022} the same is also pointed out, saying that with his method it was not possible to reproduce the results presented by \cite{xieFluidFlowHeat2016}. Comparing our results with those of Hennink we can observe that the same results are obtained. as demonstrated in \cref{fig:fd_Nu_plot}. We can conclude from these results that the solver is able to deal with non-isothermal flows adequately.  
 
 \begin{figure}[tb]
 	\pgfplotsset{
@@ -323,36 +347,11 @@ Nevertheless, in the work of \cite{henninkLowMachNumberFlow2022} the same is als
 	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_Nu700.txt}; \addlegendentry{Reference}
 	\end{axis}
 	\end{tikzpicture}
-	\caption{ Local friction factor and local Nusselt number along the bottom wall for $\gls{Reynolds} = 700$ and an expansion ratio of two. The solid lines corresponds to our solution and the marks to the reference \cite{henninkLowMachNumberFlow2022}}
+	\caption{ Local friction factor and local Nusselt number along the bottom wall for $\gls{Reynolds} = 700$ and an expansion ratio of two. The solid lines corresponds to our solution and the marks to the reference \citep{henninkLowMachNumberFlow2022}}
 	\label{fig:fd_Nu_plot}
 \end{figure}
 
-\begin{figure}[tb]
-\centering
-	\pgfplotsset{
-		group/xticklabels at=edge bottom,
-		legend style = {
-			at ={ (0.59,1.0), anchor= north east}
-		},
-		unit code/.code={\si{#1}}
-	}
-	\begin{tikzpicture}
-	\begin{axis}[
-	width= 0.4\textwidth ,
-	height= 0.3\textwidth ,
-	xlabel = x,
-	ylabel= $f_d$, 
-	]
-	\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/VelXArr7.txt};
-	\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/VelXArr15.txt};
-	\addplot+[color=black, only marks, thick] table {data/HeatedBackwardFacingStep/VelXArr7_REF.txt}; 
-	\addplot+[color=black, only marks, thick] table {data/HeatedBackwardFacingStep/VelXArr15_REF.txt};	
-	%	 \addlegendentry{Reference}y
-	\end{axis}
-	\end{tikzpicture}
-	\caption{bla}
-	\label{fig:uvelBFS}
-\end{figure}
+
 
 \FloatBarrier
 
@@ -365,12 +364,10 @@ Nevertheless, in the work of \cite{henninkLowMachNumberFlow2022} the same is als
 		\label{fig:CouetteTempDiff_scheme}
 	\end{center}	
 \end{figure} 
+As a following test case for the low-Mach solver we study a Couette-flow with a vertical temperature gradient. This configuration was already studied in \citep{kleinHighorderDiscontinuousGalerkin2016}, where the SIMPLE algorithm in a DG framework was used. We intend in this section to reproduce their results by using our fully coupled solver. Additionally, we show how our implemented solver performs in relation to the SIMPLE based solver. 
 
-As a first benchmark case to test the implemented low-Mach solver we analyse the Couette flow with a vertical temperature gradient. This configuration was already studied in \citep{kleinHighorderDiscontinuousGalerkin2016}, where the SIMPLE algorithm in a DG framework was used. We intend in this section to reproduce their results by using our fully coupled solver. 
-We also show later how our implemented solver performs in relation to the SIMPLE based solver.% by comparing runtimes 
-
-In \cref{fig:CouetteTempDiff_scheme} a schematic representation of the testcase is shown. The top wall corresponds to a moving wall ($u = 1$) with a fixed temperature $T=T_h$. The bottom wall is a static one ($u = 0$), and has a constant temperature $T = T_c$. 
-The domain is chosen as $\Omega = [0,1]\times[0,1]$, and Dirichlet boundary conditions are used for all boundaries. It is assumed that the fluid is composed of only one component, thus $\gls{TotalNumberSpecies} = 1$ and we can prescribe $Y_0 = 1.0$ everywhere in the domain. Additionally,the system is subjected to a gravitational field, where the gravity vector only has a component in the $y$ direction. Under this conditions, the x-velocity, pressure and temperature are only dependent on the $y$ coordinate, i.e. $u = u(y)$, $T = T(y)$ and $p = p(y)$. Thus, the governing equations (\cref{eq:NS-eq}) reduce to 
+In \cref{fig:CouetteTempDiff_scheme} a schematic representation of the test-case is shown. The top wall corresponds to a moving wall ($u = 1$) with a fixed temperature $T=T_h$. The bottom wall is a static one ($u = 0$), and has a constant temperature $T = T_c$. 
+The domain is chosen as $\Omega = [0,1]\times[0,1]$, and Dirichlet boundary conditions are used for all boundaries. Additionally,the system is subjected to a gravitational field, where the gravity vector only has a component in the $y$ direction. Under this conditions, the x-component of velocity, pressure and temperature are only dependent on the $y$ coordinate, i.e. $u = u(y)$, $T = T(y)$ and $p = p(y)$. %Thus, the governing equations (\cref{eq:NS-eq}) reduce to 
 \begin{align}
 &\frac{1}{\gls{Reynolds}} \pfrac{ }{y}\left(\mu\pfrac{u}{y}\right) = 0,\\
 &\pfrac{p}{y} = -\frac{\gls{dens}}{\gls{Froude}^2},\\
@@ -386,12 +383,14 @@ It is possible to find an analytical solution for this problem.
 %\end{align}
 %where $C$ is an arbitrary constant which defines the mean value of the pressure TODO rewritethis.
 % Variable transport properties
-By assuming a temperature dependence of the transport properties according a Power Law ($\mu = \lambda = T^{2/3}$) a solution is obtained as 
+Under this conditions, and by assuming a temperature dependence of the transport properties according to a Power Law ($\mu = \lambda = T^{2/3}$) a solution is obtained as 
+\begin{subequations}
 \begin{align}
-u(y) &= C_1 + C_2\left(y + \frac{T_c^{5/3}}{T_h^{5/3}-T_c^{5/3}} \right)^{3/5},\label{eq:CouetteU}\\
-p(y) &= -\frac{5p_0}{2\gls{Froude}^2}\frac{\left(y\left(T_h^{5/3}-T_c^{5/3}\right)+T_c^{5/3}\right)^{2/5}}{\left(T_h^{5/3}-T_c^{5/3}\right)}+C,\label{eq:Couettep}\\
-T(y) &= \left(C_3 - \frac{5}{3}C_4 y\right)^{3/5}\label{eq:CouetteT}.
+	u(y) &= C_1 + C_2\left(y + \frac{T_c^{5/3}}{T_h^{5/3}-T_c^{5/3}} \right)^{3/5},\label{eq:CouetteU}\\
+	p(y) &= -\frac{5p_0}{2\gls{Froude}^2}\frac{\left(y\left(T_h^{5/3}-T_c^{5/3}\right)+T_c^{5/3}\right)^{2/5}}{\left(T_h^{5/3}-T_c^{5/3}\right)}+C,\label{eq:Couettep}\\
+	T(y) &= \left(C_3 - \frac{5}{3}C_4 y\right)^{3/5}\label{eq:CouetteT}.
 \end{align} 
+\end{subequations}
 Where the constants $C_1$, $C_2$, $C_3$ and $C_4$ are determined by using the boundary conditions on the top and bottom walls, and are given by 
 \begin{align}
 C_1 &= \frac{\left(\frac{T_c^{5/3}}{T_h^{5/3}-T_c^{5/3}}\right)^{3/5}}{\left(\frac{T_c^{5/3}}{T_h^{5/3}-T_c^{5/3}}\right)^{3/5}-\left(\frac{T_h^{5/3}}{T_h^{5/3}-T_c^{5/3}}\right)^{3/5}}\\
@@ -399,7 +398,7 @@ C_2 &= \frac{1}{\left(\frac{T_h^{5/3}}{T_h^{5/3}-T_c^{5/3}}\right)^{3/5}-\left(\
 C_3 &= T_c^{5/3},\\
 C_4 &= \frac{3}{5}\left(T_c^{5/3}-T_h^{5/3}\right)
 \end{align}
-and again $C$ is a real-valued arbitrary constant for the pressure. 
+and $C$ is a real-valued arbitrary constant for the pressure.%
 \begin{center}
 \begin{figure}[tb]
 	\pgfplotsset{
@@ -442,26 +441,15 @@ and again $C$ is a real-valued arbitrary constant for the pressure.
 	\label{fig:CouetteSolution}
 \end{figure}
 \end{center}
-
-
 \FloatBarrier
-For all calculations of this configuration shown in the following sections the dimensionless parameters are set as $\gls{Reynolds} = 10$ and $\gls{Prandtl} =0.71$, $T_h = 1.6$ and $T_c = 0.4$. Since we are dealing with an open system we set $p_0 =1.0$. The Froude number is calculated as 
+For all calculations of this configuration shown the dimensionless parameters are set as $\gls{Reynolds} = 10$ and $\gls{Prandtl} =0.71$, $T_h = 1.6$ and $T_c = 0.4$. Since we are dealing with an open system we set $p_0 =1.0$. The Froude number is calculated as 
 \begin{equation}
 \text{Fr} = \left( \frac{2\text{Pr}(T_h-T_c)}{(T_h+T_c)}\right)^{1/2}
 \end{equation}
 In \cref{fig:CouetteSolution} the solution for the velocity, pressure and temperature are shown. The results are for a mesh with $26\times26$ elements and a polynomial degree of three for $u$ and $T$, and a polynomial degree of two for $p$.
-%\pgfplotsset{
-%	small,
-%}
-
-
 \subsubsection{h-convergence study}
-
-The convergence properties of the DG method for this non-isothermal system was studied using the analytical solution described before. The domain is discretized and solved in uniform Cartesian meshes with $16\times16$, $32\times32$, $64\times64$ and $128\times128$ elements. The polynomial degrees for the velocity and temperature are changed from 1 to 4 and for the pressure from 0 to 3. The convergence criteria described in \cref{ssec:TerminationCriterion} was used for all calculations. The  analytical solution given by \cref{eq:CouetteU,eq:Couettep,eq:CouetteT} are as Dirichlet boundary conditions on all boundaries of the domain. The error is calculated against the analytical solution using the $L^2$ norm %TODO \todo[inline]{Comment more on the calculation of the l2norm}.
+The convergence properties of the DG method for this non-isothermal system was studied using the analytical solution described before. The domain is discretized and solved in uniform Cartesian meshes with $16\times16$, $32\times32$, $64\times64$ and $128\times128$ elements. The polynomial degrees for the velocity and temperature are changed from 1 to 4 and for the pressure from 0 to 3. The convergence criteria described in \cref{ssec:TerminationCriterion} was used for all calculations. The  analytical solution given by \cref{eq:CouetteU,eq:Couettep,eq:CouetteT} are used as Dirichlet boundary conditions on all boundaries of the domain. The error is calculated against the analytical solution using the $L^2$ norm. %TODO \todo[inline]{Comment more on the calculation of the l2norm}.
 In \cref{fig:ConvergenceDHC} the results of the h-convergence study are shown. We observe how the expected convergence rates are reached for all variables, namely a slope of the order $k+1$ for both velocity components and the temperature, and a slope of $k'+1$ for the pressure.
-
-%\input{chapters_main/ConvergenceStudy.tex}
-
 \begin{figure}[t!]
 	\centering
 	\pgfplotsset{width=0.34\textwidth, compat=1.3}
@@ -712,7 +700,7 @@ In \cref{fig:ConvergenceDHC} the results of the h-convergence study are shown. W
 			{\pgfmathprintnumber{\slopeXD}};		
 		\end{groupplot}
 	\end{tikzpicture}
-	\caption{Convergence study of the differentially heated cavity problem for $\text{Ra} = 10^3$.}\label{fig:ConvergenceDHC}
+	\caption{Convergence study of the Couette-flow with temperature difference. A power-law is used for the transport parameters.}\label{fig:ConvergenceDHC}
 \end{figure}
 
 \subsubsection{Comparison with SIMPLE}
@@ -787,7 +775,7 @@ In figure \cref{fig:RuntimeComparison} a comparison of the runtimes from both so
 
 
 
-\mycomment{
+%\mycomment{
 
 
 
@@ -1429,6 +1417,7 @@ As discussed in the last section, the difference on values of the Nusselt number
 
 
 \section{Multi-component non-isothermal cases}\label{sec:MultCompNonIsothermCase}
+Later in in \cref{ss:CDF} and \cref{ss:CoFlowFlame} two different configurations for reactive flows are presented. 
 In the following, we show results of the simulations of two test cases with combustion, namely the counterflow diffusion flame and the chambered diffusion flame. For both cases, the solution of the flame sheet problem described in \cref{ssec:FlameSheet} is calculated first. This solution is used subsequently as initial estimates for the solution of the finite chemistry rate problem (c.f. \cref{ssec:NonDimLowMachEquations}). In all test cases presented in this section, a smoothing parameter $\sigma = 50$ was used (c.f. \cref{ssec:FlameSheet}). For all test cases methane combustion according to the one-step model shown in \cref{sec:ChemModel} is considered. The mass fraction transport \cref{eq:LowMachMassBalance} is solved for the species \ch{CH4}, \ch{O2}, \ch{CO2} and \ch{H2O}, thus $\vec{Y}' = \left(Y_{\ch{CH4}},Y_{\ch{O2}},Y_{\ch{CO2}},Y_{\ch{H2O}}\right)$. The nitrogen mass fraction $Y_{\ch{N2}}$ is calculated according to \cref{eq:MassFractionConstraint}. 
 
 
@@ -2075,4 +2064,4 @@ For this configuration an $h$-convergence study is conducted, where uniform Cart
 \section{Conclusions}\label{sec5}
 In the present work we have shown the discretization using the DG method for the reactive low-Mach equations. A mixed order formulation has been used, where velocity, temperature and mass fractions are represented by polynomials of degree $k$, and pressure by polynomials of degree $k-1$. The system obtained from the discretization was solved by means of a Newton-Dogleg type method. Additionally, a homotopy strategy for solving highly nonlinear systems was introduced and used for some of the presented test cases . For the reactive test cases the concept of the flame sheet estimate was demonstrated to be a useful and computationally cheap way of initializing the finite reaction rate combustion calculations. 
 The solver was used to calculate three different benchmark configurations, one without combustion and two cases with combustion. The first of these is the differentially heated cavity. This benchmark case was solved for varying Rayleigh numbers, spanning from $\text{Ra} = 10^2$ to $\text{Ra} = 10^7$.  It was observed that for cases with Rayleigh number larger than $10^5$ the use of our homotopy strategy was necessary to ensure convergence. Velocity and temperature profiles as well as thermodynamic pressure and Nusselt number were compared with a reference solution, obtaining very satisfactory results, thus validating our implementation of the method for variable density systems. An $h$-convergence study was presented for the differentially heated cavity, obtaining the expected convergence rates up to $k = 4$, where some degeneration on the rates was observed. Furthermore the counterflow diffusion flame configuration was analyzed, with which we intended to test the implemented chemistry model in conjunction with our solver. The results obtained with \BoSSS were compared with results obtained by solving the self-similar one-dimensional representation of the counter diffusion flame configuration for varying strain rates. While for low strains some discrepancies between results were observed, the difference narrowed for high strains, which can be explained by the influence of the border effects on the centerline results for a two-dimensional configuration. Finally, the chambered diffusion flame configuration was used to study the convergence rates of our method. It was shown that, as expected, the convergence rates increase when using higher degree polynomials, but with some deterioration compared to the theoretical expected convergence. In future work the implemented solver is intended to be used in conjunction with our extended-DG solver \cite{kummerExtendedDiscontinuousGalerkin2017,kummerBoSSSPackageMultigrid2021,krauseIncompressibleImmersedBoundary2017}in order to study multiphase reactive systems such as droplets.
-}
+%}

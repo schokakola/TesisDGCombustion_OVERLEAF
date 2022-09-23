@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.92.4, www.inkscape.org
+%% Creator: Inkscape 1.0.1 (3bc2e813f5, 2020-09-07), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'HeatedCouetteSketch.pdf' (pdf, eps, ps)
 %%
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{1297.00108806bp}%
+    \setlength{\unitlength}{1343.81608137bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,18 +50,18 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.69509032)%
+  \begin{picture}(1,0.70882658)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{HeatedCouetteSketch.pdf}}%
-    \put(0.46349816,0.67751672){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Moving wall\\$u = 1$, $v = 0$, $T = T_h$\end{tabular}}}}%
+    \put(0.48226513,0.69186526){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Moving wall\\$u = 1$, $v = 0$, $T = T_h$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{HeatedCouetteSketch.pdf}}%
-    \put(0.87986485,0.59126539){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{g}$\end{tabular}}}}%
-    \put(0.46353715,0.03436789){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Static wall\\$u = 0$, $v = 0$, $T = T_c$\end{tabular}}}}%
-    \put(0.13013043,0.40551276){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$u = u(y)$,\\$v = 0$,\\$T = T(y)$.\end{tabular}}}}%
-    \put(0.76916165,0.41052062){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$u = u(y)$,\\$v = 0$,\\$T = T(y)$.\end{tabular}}}}%
+    \put(0.88412671,0.58071306){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{g}$\end{tabular}}}}%
+    \put(0.48230276,0.03317048){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Static wall\\$u = 0$, $v = 0$, $T = T_c$\end{tabular}}}}%
+    \put(-0.0018531,0.40143156){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$u = u(y)$,\\$v = 0$,\\$T = T(y)$.\end{tabular}}}}%
+    \put(0.77728011,0.40626496){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$u = u(y)$,\\$v = 0$,\\$T = T(y)$.\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{HeatedCouetteSketch.pdf}}%
-    \put(0.05607625,0.16691951){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y$\end{tabular}}}}%
-    \put(0.11682554,0.09799241){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x$\end{tabular}}}}%
+    \put(0.08903672,0.17115027){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y$\end{tabular}}}}%
+    \put(0.14766966,0.10462441){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x$\end{tabular}}}}%
   \end{picture}%
 \endgroup%

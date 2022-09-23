@@ -46,21 +46,6 @@
          id="path1876" />
     </marker>
     <marker
-       style="overflow:visible"
-       id="Arrow2Lstart"
-       refX="0.0"
-       refY="0.0"
-       orient="auto"
-       inkscape:stockid="Arrow2Lstart"
-       inkscape:isstock="true"
-       inkscape:collect="always">
-      <path
-         transform="scale(1.1) translate(1,0)"
-         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
-         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#000000;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         id="path1457" />
-    </marker>
-    <marker
        inkscape:stockid="Arrow2Lend"
        orient="auto"
        refY="0"
@@ -134,22 +119,6 @@
          d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
          id="path5737"
-         inkscape:connector-curvature="0" />
-    </marker>
-    <marker
-       inkscape:isstock="true"
-       style="overflow:visible"
-       id="marker5681"
-       refX="0"
-       refY="0"
-       orient="auto"
-       inkscape:stockid="Arrow2Lend"
-       inkscape:collect="always">
-      <path
-         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
-         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
-         id="path5679"
          inkscape:connector-curvature="0" />
     </marker>
     <marker
@@ -437,10 +406,6 @@
        sodipodi:arc-type="arc"
        transform="scale(-1,1)"
        sodipodi:open="true" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow2Lstart);marker-end:url(#marker5681)"
-       d="M 140.95258,80.567051 V 185.88107"
-       id="path1431" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -452,35 +417,5 @@
          x="108.00675"
          y="64.516518"
          style="stroke-width:0.264583">$\mathbf{u}$</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="143.48688"
-       y="132.94246"
-       id="text1847"><tspan
-         sodipodi:role="line"
-         id="tspan1845"
-         x="143.48688"
-         y="132.94246"
-         style="stroke-width:0.264583">$L$</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1878);marker-end:url(#marker1888)"
-       d="M 140.95258,80.567051 V 185.88107"
-       id="path1874" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow2Lstart-4);marker-end:url(#marker5681-5)"
-       d="M 158.97423,90.422644 H 53.660211"
-       id="path1431-5" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="64.253014"
-       y="100.42345"
-       id="text1847-5"><tspan
-         sodipodi:role="line"
-         id="tspan1845-2"
-         x="64.253014"
-         y="100.42345"
-         style="stroke-width:0.264583">$L$</tspan></text>
   </g>
 </svg>

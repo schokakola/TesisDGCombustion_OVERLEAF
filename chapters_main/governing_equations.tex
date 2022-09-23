@@ -3,6 +3,7 @@
 In this work we present the methodology used to simulate reactive fluids in the low-Mach regime using the DG method. In this chapter we intend to show the governing equations, which will be discretized in the following chapters. First, in \cref{sec:GovEqLowMach} the equations for a flow in the low-Mach regime with finite reaction velocity are shown. A brief derivation of the set low-Mach equations is presented, which should also serve as a way of showing and justifying the assumptions made in this work. We restricted ourselves to a one-step chemical model, but the algorithm presented could also be used for more complex chemistry models.
 Subsequently, in \cref{sec:FlameSheet} the governing equations are shown for the case of assuming an irreversible chemical model with an infinite reaction rate. This case is often called the Burke–Schumann limit. These equations are used as part of the algorithm to solve the finite reaction rate case.%
 %
+
 \section{The low-Mach number equations for reactive flows} \label{sec:GovEqLowMach}
 Combustion processes can be modeled by a system of nonlinear partial differential equations, namely the balance equations for total mass, momentum, energy, and mass of individual species (usually expressed in terms of mass fractions). This system needs to be solved together with an equation of state and expressions for the transport properties as well as for the chemical reaction rates. 
 The derivation of the governing equations for a reacting flow system can be found in the literature. (see, for example, \citep{keeChemicallyReactingFlow2003}, \citep{poinsotTheoreticalNumericalCombustion2005}). In the following pages, the main ideas regarding the derivation of equations are presented. For a more detailed explanation, we refer to the cited works and the references therein. 
@@ -447,7 +448,9 @@ The following boundary conditions are imposed for the resolution of the finite r
 	\label{eq:bc_P}	
 	\end{align}	
 \end{subequations} 
+
 where $k$ denotes the index from mass fractions $k = (1,\dots,N-1)$. The boundary $\Gamma_\text{D}$ represents conditions for inlets and walls, with velocity, temperature, mass fractions and mixture fraction defined as Dirichlet boundary conditions. Boundaries $\Gamma_\text{DW}$  are used to represent adiabatic walls, where velocity is given as a Dirichlet boundary condition, but with the gradients perpendicular to the wall of the transported scalars set to zero. The boundary $\Gamma_\text{N}$ represent an outflow of the domain with homogeneous Neumann condition for all scalars. The boundary $\Gamma_{\text{ND}}$ also  represents an outlet boundary condition, but with Dirichlet boundary conditions for the scalars. Finally the boundaries $\Gamma_P$ are periodic boundaries, where $\vec{x}$ and $\vec{x}'$ are periodic pairs in the domain.
 
-
+\mycomment{
 %TODO cosas por poner en algun lado
+}

@@ -111,3 +111,6 @@ auto/
 
 # MATLAB
 *.asv
+
+# backupfiles from indentation
+*.bak*

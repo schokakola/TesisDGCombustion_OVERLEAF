@@ -1,0 +1,2 @@
+tikz/CoFlow_ConvergenceStory.pdf: data/ConvergenceStory_CoFlow/residuals3.txt
+tikz/CoFlow_ConvergenceStory.pdf: data/ConvergenceStory_CoFlow/delta3.txt

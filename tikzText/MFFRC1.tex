@@ -1,0 +1,20 @@
+\begin{tikzpicture} [spy using outlines={magnification=2.5,  width=2cm, height=1cm, connect spies}]
+\begin{axis}[
+	axis on top, 	
+	width= 0.42\textwidth ,
+	height= 0.3\textwidth ,
+	xmin = 0,xmax=1,
+	xlabel = x,
+	ylabel = Temperature,
+	legend pos=north east,
+	]
+	\addplot [no markers, green]table {data/MF_FULL_COMPARISON/TMF.txt}; \addlegendentry{Infinite rate}
+	\addplot [no markers]table {data/MF_FULL_COMPARISON/TFull.txt}; \addlegendentry{Finite rate}
+	\coordinate (spypoint) at (axis cs:0.45,6.3);
+	\coordinate (magnifyglass) at (axis cs:0.72,3.5);
+	\begin{scope}
+		\spy [size=2cm] on (spypoint)
+		in node[fill=white] at (magnifyglass);
+	\end{scope}
+\end{axis}
+\end{tikzpicture}%

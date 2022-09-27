@@ -31,47 +31,10 @@ The problem is defined in the domain $\Omega = [0,1]\times [0,1]$. The system is
 	\begin{figure}[t]
 		\centering
 		\pgfplotsset{width=0.35 \textwidth, compat=1.3}	
-		\begin{tikzpicture}
-			\begin{groupplot}[
-				group style={group size=2 by 3,		
-					horizontal sep = 1.5cm,
-					vertical sep = 2.0cm,
-					xlabels at=edge bottom,
-					ylabels at=edge left,
-				},
-				axis on top,
-				scale only axis,
-				enlargelimits=false,	
-				axis equal image,
-				xtick = {0.0, 0.5, 1},
-				ytick = {0.0, 0.5, 1},
-				]
-				\nextgroupplot
-				\addplot[thick,blue] graphics[	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,]  {../plots/lidmesh.png};
-			\end{groupplot}	
-		\end{tikzpicture}
-		\begin{tikzpicture}
-		\begin{groupplot}[
-			group style={group size=2 by 3,		
-				horizontal sep = 1.5cm,
-				vertical sep = 2.0cm,
-				xlabels at=edge bottom,
-				ylabels at=edge left,
-			},
-			axis on top,
-			scale only axis,
-			enlargelimits=false,	
-			axis equal image,
-			xtick = {0.0, 0.5, 1},
-			ytick = {0.0, 0.5, 1},
-			]
-			\nextgroupplot
-			\addplot[thick,blue] graphics[	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,]  {../plots/Lid1000.png};
-		\end{groupplot}	
-	\end{tikzpicture}
+		\inputtikz{LiddrivenMesh1}
+		\inputtikz{LiddrivenMesh2}
 		\caption{Used mesh and streamlines obtained for the lid-driven cavity flow with $\gls{Reynolds} = 1000$} \label{fig:LiddrivenMesh}
 	\end{figure}
-
 
 In \cref{fig:LidVelocities} a comparison of the calculated velocity and the velocities provided by the benchmark are shown. For the calculations presented here, the polynomial degree is set to $k = 4$ and $k' = 3$. A regular cartesian mesh with $16\times16$ elements with extra refinement in the corners is used. Clearly a very good agreement is obtained, even by using a relatively coarse mesh (the benchmark result uses a grid with $160\times160$ elements). 
 
@@ -80,44 +43,23 @@ A more rigorous comparison of results is presented in \cref{tab:LidCavityExtrema
 
 \newpage
 	\begin{figure}[tb]
-		\pgfplotsset{
-			group/xticklabels at=edge bottom,
-			legend style = {
-				at ={ (0.09,0.3), anchor= north east}
-			},
-		}
-		\begin{tikzpicture}
-			\begin{axis}[
-				width= 0.4\textwidth ,
-				height= 0.3\textwidth ,
-				xlabel = $y$,
-				ylabel= $u$, 
-				]
-				\addplot+[color=black, only marks] table {data/LidDrivenCavity/uRe1000_ref.txt}; \addlegendentry{Reference}
-				\addplot[color=black, no marks] table {data/LidDrivenCavity/uRe1000.txt}; \addlegendentry{BoSSS}
-			\end{axis}
-		\end{tikzpicture}
-		\pgfplotsset{
-			group/xticklabels at=edge bottom,
-			legend style = {
-				at ={ (0.59,0.3), anchor= north east}
-			},
-		}
-		\begin{tikzpicture}
-			\begin{axis}[
-				width= 0.4\textwidth ,
-				height= 0.3\textwidth ,
-				xlabel = $x$,
-				ylabel= $v$, 
-				ytick = {-0.5, 0.0, 0.5},
-				]
-				\addplot+[color=black, only marks] table {data/LidDrivenCavity/vRe1000_ref.txt}; \addlegendentry{Reference}
-				\addplot[color=black, no marks] table {data/LidDrivenCavity/vRe1000.txt}; \addlegendentry{BoSSS}
-			\end{axis}
-		\end{tikzpicture}
-		\caption{Calculated velocities along the centerlines of the cavity and reference values. Left plot shows the x-velocity for $x = 0.5$. Right plot shows the y-velocity for $y = 0.5$  }
-		\label{fig:LidVelocities}
-	\end{figure}
+	\pgfplotsset{
+		group/xticklabels at=edge bottom,
+		legend style = {
+			at ={ (0.09,0.3), anchor= north east}
+		},
+	}
+	\inputtikz{LidVelocities1}
+	\pgfplotsset{
+		group/xticklabels at=edge bottom,
+		legend style = {
+			at ={ (0.59,0.3), anchor= north east}
+		},
+	}
+	\inputtikz{LidVelocities2}
+	\caption{Calculated velocities along the centerlines of the cavity and reference values. Left plot shows the x-velocity for $x = 0.5$. Right plot shows the y-velocity for $y = 0.5$  }
+	\label{fig:LidVelocities}
+\end{figure}
 
 %	\begin{figure}[tb]
 %		\pgfplotsset{
@@ -224,21 +166,7 @@ In order to minimize the effects of the outlet  boundary condition in the system
 			%		},
 		unit code/.code={\si{#1}}
 	}
-	\begin{tikzpicture}
-		\begin{axis}[
-			width= 0.4\textwidth,
-			height= 0.3\textwidth ,
-			xlabel = $u$,
-			ylabel= $y$, 
-			legend style={at={(1,1)}, anchor=north east},
-			]
-			\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/VelXArr7.txt};%\addlegendentry{$x=7$, BoSSS}
-			\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/VelXArr15.txt};%\addlegendentry{$x=15$, BoSSS}
-			\addplot+[color=black, only marks, thick] table {data/HeatedBackwardFacingStep/VelXArr7_REF.txt}; \addlegendentry{$x=7$}
-			\addplot+[color=black, only marks, thick] table {data/HeatedBackwardFacingStep/VelXArr15_REF.txt};	\addlegendentry{$x=15$}
-			%	 \addlegendentry{Reference}y
-		\end{axis}
-	\end{tikzpicture}
+\inputtikz{uvelBFS}
 	\caption{Distribution of x-component of velocity in the backward-facing step configuration for a Reynolds number of 400. Solid lines correspond to results obtained with BoSSS}
 	\label{fig:uvelBFS}
 \end{figure} 
@@ -254,30 +182,7 @@ In order to minimize the effects of the outlet  boundary condition in the system
 		unit code/.code={\si{#1}}
 	}
 	\centering
-	\begin{tikzpicture}
-	\begin{groupplot}[
-	group style={
-		group name=my plots,
-		group size=3 by 1,
-		x descriptions at=edge bottom,
-		horizontal sep = 2cm,
-%		ylabels at = edge left,
-	},
-	width= 0.4\textwidth ,
-	height= 0.3\textwidth ,
-	xlabel = \gls{Reynolds},
-	ylabel= x, 
-	]
-	\nextgroupplot%[title = {\textbf{Primary recirculation zone}}]
-	\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/BottomReatLength.txt}; \addlegendentry{$R_1$, BoSSS}
-	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_BottomReatLength.txt}; \addlegendentry{$R_1$, Ref}
-	\nextgroupplot%[title = {\textbf{Secondary recirculation zone}}]
-	\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopSepLength.txt};  \addlegendentry{$R_2$, BoSSS}
-	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopSepLength.txt}; \addlegendentry{$R_2$, Ref}
-	\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopReatLength.txt}; \addlegendentry{$R_3$, BoSSS}
-	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopReatLength.txt}; \addlegendentry{$R_3$, Ref}
-	\end{groupplot}
-	\end{tikzpicture}
+\inputtikz{Re_De_Attachmentlengths}
 	\caption{ Detachment and reattachment lengths of the primary (left figure) and secondary (right figure) recirculation zones after the backward-facing step compared to the reference solution \citep{biswasBackwardFacingStepFlows2004}.}
 	\label{fig:Re_De_Attachmentlengths}
 \end{figure}
@@ -288,6 +193,7 @@ The detachment and reattachment lengths of the vortices are values usually repor
 
 
 It is worth mentioning that the evaluation of the numerical accuracy of the solver using the two incompressible test cases presented in this section is problematic due to the presence of singularities, specifically on the corners at the coordinates $ \vec{x} = (0,1)$ and $\vec{x} =(1,1)$ of the Lid-driven cavity (where the pressure is not finite according to \cite{botellaBenchmarkSpectralResults1998}), and at the corner of the step $\vec{x} = (0,S)$ of the backward-facing step. The accuracy of the solver will be assessed in following chapters. 
+
 
 \section{Single-component non-isothermal cases} \label{sec:SinCompNonIsothermCase}
 For the test cases presented in this section the equations for continuity, momentum and energy are solved and all systems are assumed to be single-component, thus $N = 1$ and $Y_0 = 1.0$. We start by showing in \cref{ssec:HeatedBackwardFacingStep} a extension of the backward-facing step configuration presented in the last section, considering now a non-isothermal system. Later in \cref{ssec:CouetteFlowTempDiff} a Couette flow configuration presenting a temperature gradient in the vertical direction is studied. Finally in \cref{ss:DHC} a heated square cavity configuration is studied in order to asses the capability of the solver for variable density flows in closed systems. 
@@ -325,29 +231,9 @@ It must be noted here that the results obtained by us are substantially differen
 		},
 		unit code/.code={\si{#1}}
 	}
-	\begin{tikzpicture}
-	\begin{axis}[
-	width= 0.4\textwidth ,
-	height= 0.3\textwidth ,
-	xlabel = x,
-	ylabel= $f_d$, 
-	]
-	\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/fd700.txt}; \addlegendentry{BoSSS}
-	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_fd700.txt}; \addlegendentry{Reference}
-	\end{axis}
-	\end{tikzpicture}
-	\begin{tikzpicture}
-	\begin{axis}[
-	width= 0.4\textwidth ,
-	height= 0.3\textwidth ,
-	xlabel = x,
-	ylabel= \gls{Nusselt}, 
-	]
-	\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/Nu700.txt}; \addlegendentry{BoSSS}
-	\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_Nu700.txt}; \addlegendentry{Reference}
-	\end{axis}
-	\end{tikzpicture}
-	\caption{ Local friction factor and local Nusselt number along the bottom wall for $\gls{Reynolds} = 700$ and an expansion ratio of two. The solid lines corresponds to our solution and the marks to the reference \citep{henninkLowMachNumberFlow2022}}
+\inputtikz{fd_Nu_plot1}
+\inputtikz{fd_Nu_plot2}
+	\caption{Local friction factor and local Nusselt number along the bottom wall for $\gls{Reynolds} = 700$ and an expansion ratio of two. The solid lines corresponds to our solution and the marks to the reference \citep{henninkLowMachNumberFlow2022}}
 	\label{fig:fd_Nu_plot}
 \end{figure}
 
@@ -404,39 +290,9 @@ and $C$ is a real-valued arbitrary constant for the pressure.%
 	\pgfplotsset{
 		group/xticklabels at=edge bottom,
 	}
-	\begin{tikzpicture}[baseline]
-		\begin{axis}[
-			xmin = 0, xmax = 1, ymin =0, ymax=1,
-			width= 0.2\textwidth ,
-			height= 0.22\textwidth ,
-			xlabel = y,
-			ylabel= u, 
-			]
-			\addplot+[color=black, no marks, thick] table {data/CouetteTempDifferenceData/u.txt};
-		\end{axis}
-	\end{tikzpicture}%
-	\begin{tikzpicture}[baseline]
-		\begin{axis}[
-			xmin = 0, xmax = 1, %ymin =0, ymax=1,
-			width= 0.2\textwidth ,
-			height= 0.22\textwidth ,
-			xlabel = y,
-			ylabel= p, 
-			]
-			\addplot+[color=black, no marks, thick] table {data/CouetteTempDifferenceData/p.txt};
-		\end{axis}
-	\end{tikzpicture}%
-	\begin{tikzpicture}[baseline]
-		\begin{axis}[
-			xmin = 0, xmax = 1, ymin =0.4, ymax=1.6,
-			width= 0.2\textwidth ,
-			height= 0.22\textwidth ,
-			xlabel = y,
-			ylabel= T, 
-			]
-			\addplot+[color=black, no marks, thick] table {data/CouetteTempDifferenceData/T.txt};
-		\end{axis}
-	\end{tikzpicture}%
+\inputtikz{CouetteSolution1}
+\inputtikz{CouetteSolution2}
+\inputtikz{CouetteSolution3}
 	\caption{Solution of the Couette flow with vertical temperature gradient. Viscosity and heat conductivity are calculated with a Power-Law.}
 	\label{fig:CouetteSolution}
 \end{figure}
@@ -453,254 +309,8 @@ In \cref{fig:ConvergenceDHC} the results of the h-convergence study are shown. W
 \begin{figure}[t!]
 	\centering
 	\pgfplotsset{width=0.34\textwidth, compat=1.3}
-	\begin{tikzpicture}
-		\begin{groupplot}[
-			group style={
-				group name= group,
-				group size=2 by 2,
-				ylabels at=edge left,
-				horizontal sep = 2.5cm,
-				vertical sep = 1.5cm,
-			},
-			xtick={2^-8,2^-7,2^-6, 2^-5, 2^-4,2^-3},
-			xticklabels = {$2^{-8}$,$2^{-7}$,$2^{-6}$,$2^{-5}$, $2^{-4}$, $2^{-3}$},
-			xlabel=Cell length $h$,
-			xmajorgrids,
-			ymajorgrids,
-			legend style={at={(1,0)}, anchor=south east},
-			]
-			\nextgroupplot[xmode=log, ymode=log,ylabel = $\LtwoNorm{ u_x - u_{x,\text{fine}}}$,]
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/VelocityXDG1Data.txt};
-			\addlegendentry{$k=1$};
-			\addplot[solid,  forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/VelocityXDG1Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.90] (B)
-			;
-			\xdef\slopeXA{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor= west]
-			{\pgfmathprintnumber{\slopeXA}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/VelocityXDG2Data.txt};
-			\addlegendentry{$k=2$};
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}				
-			}}]
-			{data/ConvStudy_Couette_PowerLaw/VelocityXDG2Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.90] (B)
-			;
-			\xdef\slopeXB{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.15,anchor=  west]
-			{\pgfmathprintnumber{\slopeXB}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/VelocityXDG3Data.txt};
-			\addlegendentry{$k=3$};			
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/VelocityXDG3Data.txt}
-			coordinate [pos=0.80] (A)
-			coordinate [pos=0.95] (B)
-			;
-			\xdef\slopeXC{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0,anchor=east]
-			{\pgfmathprintnumber{\slopeXC}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/VelocityXDG4Data.txt};
-			\addlegendentry{$k=4$};
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/VelocityXDG4Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.9] (B)
-			;
-			\xdef\slopeXD{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor=south west]
-			{\pgfmathprintnumber{\slopeXD}};	
-			\nextgroupplot[xmode=log, ymode=log,	ylabel = $\LtwoNorm{ u_y - u_{y,\text{fine}}}$,]
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/VelocityYDG1Data.txt};
-			\addlegendentry{$k=1$};
-			\addplot[solid,  forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/VelocityYDG1Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.90] (B)
-			;
-			\xdef\slopeXA{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor= west]
-			{\pgfmathprintnumber{\slopeXA}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/VelocityYDG2Data.txt};
-			\addlegendentry{$k=2$};
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/VelocityYDG2Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.90] (B)
-			;
-			\xdef\slopeXB{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor=  west]
-			{\pgfmathprintnumber{\slopeXB}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/VelocityYDG3Data.txt};
-			\addlegendentry{$k=3$};			
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/VelocityYDG3Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.90] (B)
-			;
-			\xdef\slopeXC{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor=south west]
-			{\pgfmathprintnumber{\slopeXC}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/VelocityYDG4Data.txt};
-			\addlegendentry{$k=4$};
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/VelocityYDG4Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.9] (B)
-			;
-			\xdef\slopeXD{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor=south west]
-			{\pgfmathprintnumber{\slopeXD}};	
-			\nextgroupplot[ xmode=log, ymode=log,	ylabel=$ \LtwoNorm{T - T_{\text{fine}}}$,]
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/TemperatureDG1Data.txt};
-			\addlegendentry{$k=1$};
-			\addplot[solid,  forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/TemperatureDG1Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.90] (B)
-			;
-			\xdef\slopeXA{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor= west]
-			{\pgfmathprintnumber{\slopeXA}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/TemperatureDG2Data.txt};
-			\addlegendentry{$k=2$};
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/TemperatureDG2Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.85] (B)
-			;
-			\xdef\slopeXB{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor=  west]
-			{\pgfmathprintnumber{\slopeXB}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/TemperatureDG3Data.txt};
-			\addlegendentry{$k=3$};			
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/TemperatureDG3Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.90] (B)
-			;
-			\xdef\slopeXC{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor=south west]
-			{\pgfmathprintnumber{\slopeXC}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/TemperatureDG4Data.txt};
-			\addlegendentry{$k=4$};
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={100000,800000,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/TemperatureDG4Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.9] (B)
-			;
-			\xdef\slopeXD{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor=south west]
-			{\pgfmathprintnumber{\slopeXD}};
-			\nextgroupplot[xmode=log, ymode=log,ylabel=$\LtwoNorm{ p - p_{\text{fine}} }$,]
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/PressureDG1Data.txt};
-			\addlegendentry{$k'=0$};
-			\addplot[solid,  forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/PressureDG1Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.90] (B)
-			;
-			\xdef\slopeXA{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor= west]
-			{\pgfmathprintnumber{\slopeXA}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/PressureDG2Data.txt};
-			\addlegendentry{$k'=1$};
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/PressureDG2Data.txt}
-			coordinate [pos=0.80] (A)
-			coordinate [pos=0.95] (B)
-			;
-			\xdef\slopeXB{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0, anchor =east]
-			{\pgfmathprintnumber{\slopeXB}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/PressureDG3Data.txt};
-			\addlegendentry{$k'=2$};			
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/PressureDG3Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.90] (B)
-			;
-			\xdef\slopeXC{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor=south west]
-			{\pgfmathprintnumber{\slopeXC}};			
-			\addplot+[color=black, dashed] table {data/ConvStudy_Couette_PowerLaw/PressureDG4Data.txt};
-			\addlegendentry{$k'=3$};
-			\addplot[solid, forget plot] table [   
-			x=x,
-			y={create col/linear regression={y=y,
-					variance list={10000,800,600,500,400,200,100}}}]
-			{data/ConvStudy_Couette_PowerLaw/PressureDG4Data.txt}
-			coordinate [pos=0.75] (A)
-			coordinate [pos=0.9] (B)
-			;
-			\xdef\slopeXD{\pgfplotstableregressiona}			
-			\draw (A) |- (B)
-			node [pos=0.55,anchor=south west]
-			{\pgfmathprintnumber{\slopeXD}};		
-		\end{groupplot}
-	\end{tikzpicture}
-	\caption{Convergence study of the Couette-flow with temperature difference. A power-law is used for the transport parameters.}\label{fig:ConvergenceDHC}
+	\inputtikz{ConvergenceCFTD}
+	\caption{Convergence study of the Couette-flow with temperature difference. A power-law is used for the transport parameters.}\label{fig:ConvergenceCFTD}
 \end{figure}
 
 \subsubsection{Comparison with SIMPLE}
@@ -717,51 +327,11 @@ In figure \cref{fig:RuntimeComparison} a comparison of the runtimes from both so
 \begin{center}
 	\begin{table}[tb!]
 		\begin{tabular}{ccc}
-			\begin{tikzpicture}[baseline]
-			\begin{axis}[
-			width= 0.2\textwidth ,
-			height= 0.22\textwidth ,
-			xlabel = $\sqrt{\text{Number of cells}}$,
-			ylabel= Runtime{, (sec)}, 
-			legend style={at={(0,1)}, anchor=north west},
-			title = {$k=1$},
-			xtick={4,8,16},
-			%						title = {$\mathbf{k=1}$},
-			]
-			\addplot+[color=black, thick] table {data/CouetteTempDifference_runtimes/xnsec_k1.txt};\addlegendentry{XNSEC};
-			\addplot+[color=black, thick] table {data/CouetteTempDifference_runtimes/SIMPLE_k1.txt};\addlegendentry{SIMPLE};
-			\end{axis}
-			\end{tikzpicture}%
+			\inputtikz{RuntimeComparison1}
 			&
-			\begin{tikzpicture}[baseline]
-			\begin{axis}[
-			width= 0.2\textwidth ,
-			height= 0.22\textwidth ,
-			xlabel = $\sqrt{\text{Number of cells}}$,
-			ylabel= Runtime{, (sec)}, 
-			legend style={at={(0,1)}, anchor=north west},
-			title = {$k=2$},
-			xtick={4,8,16},
-			]
-			\addplot+[color=black, thick] table {data/CouetteTempDifference_runtimes/xnsec_k2.txt};\addlegendentry{XNSEC};
-			\addplot+[color=black, thick] table {data/CouetteTempDifference_runtimes/SIMPLE_k2.txt};\addlegendentry{SIMPLE};
-			\end{axis}
-			\end{tikzpicture}%
+			\inputtikz{RuntimeComparison2}
 			&
-			\begin{tikzpicture}[baseline]
-			\begin{axis}[
-			width= 0.2\textwidth ,
-			height= 0.22\textwidth ,
-			xlabel = $\sqrt{\text{Number of cells}}$,
-			ylabel= Runtime{, (sec)}, 
-			legend style={at={(0,1)}, anchor=north west},
-			title = {$k=3$},
-			xtick={4,8,16},
-			]
-			\addplot+[color=black, thick] table {data/CouetteTempDifference_runtimes/xnsec_k3.txt};\addlegendentry{XNSEC};
-			\addplot+[color=black, thick] table {data/CouetteTempDifference_runtimes/SIMPLE_k3.txt};\addlegendentry{SIMPLE};
-			\end{axis}
-			\end{tikzpicture}%
+					\inputtikz{RuntimeComparison3}
 		\end{tabular}%
 		\caption{Runtime comparison of the DG-SIMPLE algorithm \citep{kleinHighorderDiscontinuousGalerkin2016} and the present solver (XNSEC) for the Couette flow with vertical temperature gradient configuration}
 		\label{fig:RuntimeComparison}
@@ -769,24 +339,22 @@ In figure \cref{fig:RuntimeComparison} a comparison of the runtimes from both so
 \end{center} 
 
 
-
-
 \FloatBarrier
 
 
 
-%\mycomment{
-
-
-
 \subsection{Differentially heated cavity problem}\label{ss:DHC}
-\begin{figure}[bp]
+
+\begin{figure}[bt]
 	\begin{center}
 		\def\svgwidth{0.53\textwidth}
-		\begingroup \makeatletter \providecommand\color[2][]{\errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}\renewcommand\color[2][]{}}\providecommand\transparent[1]{\errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}\renewcommand\transparent[1]{}}\providecommand\rotatebox[2]{#2}\newcommand*\fsize{\dimexpr\f@size pt\relax}\newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}\ifx\svgwidth\undefined \setlength{\unitlength}{685.82780493bp}\ifx\svgscale\undefined \relax \else \setlength{\unitlength}{\unitlength * \real{\svgscale}}\fi \else \setlength{\unitlength}{\svgwidth}\fi \global\let\svgwidth\undefined \global\let\svgscale\undefined \makeatother \begin{picture}(1,0.5577705)\lineheight{1}\setlength\tabcolsep{0pt}\put(0,0){\includegraphics[width=\unitlength,page=1]{../plots/diffheatedCavityGeometry.pdf}}\put(0.49682295,0.08500579){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}\put(0.20516158,0.40737416){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$g$\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=2]{../plots/diffheatedCavityGeometry.pdf}}\put(0.49520184,0.44089067){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$L$\end{tabular}}}}\put(0.66516869,0.28937231){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$L$\end{tabular}}}}\put(0.27070017,0.28757142){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$\hat{T}_h$\end{tabular}}}}\put(0.73299485,0.28368869){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\hat{T}_c$\end{tabular}}}}\put(0.50040873,0.52453636){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=3]{../plots/diffheatedCavityGeometry.pdf}}\put(0.34544306,0.01736467){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x$\end{tabular}}}}\put(0.25242378,0.17511997){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y$\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=4]{../plots/diffheatedCavityGeometry.pdf}}\end{picture}\endgroup \caption{Schematic representation of the differentially heated cavity problem.}
+		\import{./plots/}{diffheatedCavityGeometry.pdf_tex}		
+	\caption{Schematic representation of the differentially heated cavity problem.}
 		\label{DHCGeom}
 	\end{center}	
 \end{figure} 
+
+
 
 The differentially heated cavity problem corresponds to a classical benchmark case often used to asses the capability of numerical codes to simulate variable density flows. \cite{paillereComparisonLowMach2000,vierendeelsBenchmarkSolutionsNatural2003,tyliszczakProjectionMethodHighorder2014} In this section, we show the basic set-up and compare our results with the ones presented in the work of Vierendeels et al. \cite{vierendeelsBenchmarkSolutionsNatural2003} where benchmark solutions for the differentially heated cavity are presented. They solve the fully compressible Navier-Stokes equations on a $1024\times1024$ stretched grid using a Finite Volume Method with quadratic convergence.
 
@@ -856,85 +424,15 @@ an increase of the acceleration of the fluid in the vicinity of the walls for in
 \begin{figure}
 	\centering
 	\pgfplotsset{width=0.45 \textwidth, compat=1.3}
-	\begin{tikzpicture}
-	\begin{groupplot}[
-	group style={group size=2 by 3,		
-		horizontal sep = 1.5cm,
-		vertical sep = 2.0cm,
-		xlabels at=edge bottom,
-		ylabels at=edge left,
-	},
-	axis on top,
-	scale only axis,
-	enlargelimits=false,	
-	axis equal image,
-	xlabel = $x$,
-	ylabel = $y$,
-	xtick = {0.0, 0.5, 1},
-	ytick = {0.0, 0.5, 1},
-	]
-	\nextgroupplot[title = {$ \gls{Reynolds}= 10^2$}]
-	\addplot[thick,blue] graphics[	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,] {../plots/HSC_streamline.0000.png};
-	\nextgroupplot[title = {$ \gls{Reynolds}= 10^3$}]
-	\addplot[thick,blue] graphics[	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,]  {../plots/HSC_streamline.0001.png};
-	\nextgroupplot[title = {$ \gls{Reynolds}= 10^4$}]
-	\addplot[thick,blue] graphics[	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,]  {../plots/HSC_streamline.0002.png};
-	\nextgroupplot[title = {$ \gls{Reynolds}= 10^5$}]
-	\addplot[thick,blue] graphics[	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,]  {../plots/HSC_streamline.0003.png};
-	\nextgroupplot[title = {$ \gls{Reynolds}= 10^6$}]
-	\addplot[thick,blue] graphics[xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,]  {../plots/HSC_streamline.0004.png};
-	\nextgroupplot[title = {$ \gls{Reynolds}= 10^7$}]
-	\addplot[thick,blue] graphics[xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,]  {../plots/HSC_streamline.0005.png};
-	\end{groupplot}	
-	\end{tikzpicture}
-	\caption{Streamlines of the heated cavity configuration with $\epsilon = 0.6$.}
+	\inputtikz{HSCStreamlines}
+	\caption{Streamlines of the heated cavity configuration with $\epsilon = 0.6$.}\label{fig:HSCStreamlines}
 \end{figure}
 
 
 \begin{figure}[!htb]
 	\centering
 	\pgfplotsset{width=0.20\textwidth, compat=1.3}
-	\begin{tikzpicture}
-	\begin{groupplot}[
-	group style={
-		group name= group,
-		group size=3 by 2,
-		horizontal sep = 2.0cm,
-		vertical sep = 2.0cm,
-	},
-	xmin=0, xmax=1.0,
-	ymin=-0.4, ymax = 0.4,
-	x tick label style={
-		/pgf/number format/.cd,
-		precision=3,
-		/tikz/.cd
-	},
-	xlabel=$y$,
-	ylabel= $u_x$,
-	xmajorgrids,
-	ymajorgrids,
-	legend style={at={(1,1)}, anchor=north east},
-	]
-	\nextgroupplot[title = {$\text{Ra} = 10^2$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX0.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX0_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^3$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX1.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX1_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^4$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX2.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX2_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^5$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX3.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX3_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^6$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX4.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX4_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^7$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX5.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityXComparison/VelocityX5_REF.txt};
-	\end{groupplot}
-	\end{tikzpicture}
+	\inputtikz{VelocityXProfile}
 	\caption{ Profiles of the x-velocity component along the vertical line $x=0.5$. Solid lines represents our solution and the marks the benchmark solution. \cite{vierendeelsBenchmarkSolutionsNatural2003}}
 	\label{fig:VelocityXProfile}
 \end{figure}
@@ -943,205 +441,27 @@ an increase of the acceleration of the fluid in the vicinity of the walls for in
 \begin{figure}[b!]
 	\centering
 	\pgfplotsset{width=0.20\textwidth, compat=1.3}
-	\begin{tikzpicture}
-	\begin{groupplot}[
-	group style={
-		group name= group,
-		group size=3 by 2,
-		horizontal sep = 2.0cm,
-		vertical sep = 2.0cm,
-	},
-	xmin=0, xmax=1.0,
-	ymin=-0.4, ymax=0.4,
-	x tick label style={
-		/pgf/number format/.cd,
-		precision=3,
-		/tikz/.cd
-	},
-	xlabel=$x$,
-	ylabel= $u_y$,
-	xmajorgrids,
-	ymajorgrids,
-	legend style={at={(1,1)}, anchor=north east},
-	]
-	\nextgroupplot[title = {$\text{Ra} = 10^2$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY0.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY0_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^3$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY1.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY1_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^4$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY2.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY2_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^5$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY3.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY3_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^6$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY4.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY4_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^7$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY5.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY5_REF.txt};
-	\end{groupplot}
-	\end{tikzpicture}
+	\inputtikz{VelocityYProfile}
 	\caption{ Profiles of the y-velocity component along the horizontal line $y=0.5$. Solid lines represents our solution and marks the benchmark solution. \cite{vierendeelsBenchmarkSolutionsNatural2003}}
 	\label{fig:VelocityYProfile}
 \end{figure}
-We also compare the thermodynamic pressure and the Nusselt numbers to the benchmark solution. The results are shown in \cref{tab:p0_Nu_Results}. The thermodynamic pressure is obtained from \cref{eq:p0Condition}, and the Nusselt number is calculated with \cref{eq:Nusselt}. We observe that our results are in very good agreement with the reference results, and the thermodynamic pressure differ at most in the fourth decimal place. Note that the Nusselt number of the heated  wall $(\text{Nu}_\text{h})$ and the Nusselt number of the cold wall $(\text{Nu}_\text{c})$ are different.  As the Rayleigh number grows, this discrepancy becomes bigger, hinting that at such Rayleigh numbers the used mesh is not refined enough  to represent adequately the thin boundary layer and more complex flow structures appearing at high-Rayleigh cases. While for an energy conservative system $\text{Nu}_\text{h}$ and $\text{Nu}_c$ should be equal, for our formulation this is not the case and the values differ slightly. This discrepancy can be seen as a measure of the discretization error from the DG formulation.\cite{kleinHighorderDiscontinuousGalerkin2016} This hints that the discrepancy between Nusselt numbers should decrease when increasing the mesh resolution, which will be discussed in the next section. 
 
+We also compare the thermodynamic pressure and the Nusselt numbers to the benchmark solution. The results are shown in \cref{tab:p0_Nu_Results}. The thermodynamic pressure is obtained from \cref{eq:p0Condition}, and the Nusselt number is calculated with \cref{eq:Nusselt}. We observe that our results are in very good agreement with the reference results, and the thermodynamic pressure differ at most in the fourth decimal place. Note that the Nusselt number of the heated  wall $(\text{Nu}_\text{h})$ and the Nusselt number of the cold wall $(\text{Nu}_\text{c})$ are different.  As the Rayleigh number grows, this discrepancy becomes bigger, hinting that at such Rayleigh numbers the used mesh is not refined enough  to represent adequately the thin boundary layer and more complex flow structures appearing at high-Rayleigh cases. While for an energy conservative system $\text{Nu}_\text{h}$ and $\text{Nu}_c$ should be equal, for our formulation this is not the case and the values differ slightly. This discrepancy can be seen as a measure of the discretization error from the DG formulation.\cite{kleinHighorderDiscontinuousGalerkin2016} This hints that the discrepancy between Nusselt numbers should decrease when increasing the mesh resolution, which will be discussed in the next section. 
 
 \begin{figure}[b!]
 	\centering
 	\pgfplotsset{width=0.20\textwidth, compat=1.3}
-	\begin{tikzpicture}
-	\begin{groupplot}[
-	group style={
-		group name= group,
-		group size=3 by 2,
-		horizontal sep = 2.0cm,
-		vertical sep = 2.0cm,
-	},
-	xmin=0, xmax=1.0,
-	ymin=0.4, ymax =1.6, 
-	x tick label style={
-		/pgf/number format/.cd,
-		precision=3,
-		/tikz/.cd
-	},
-	xlabel=$x$,
-	ylabel= T,
-	xmajorgrids,
-	ymajorgrids,
-	legend style={at={(0,0)}, anchor=south west},
-	]
-	\nextgroupplot[title = {$\text{Ra} = 10^2$}]
-	\addplot[solid,every mark/.append style={solid, fill=gray}, mark=triangle*] coordinates{(-1,-1)};
-	\addplot[dashed,every mark/.append style={solid, fill=gray}, mark=diamond*] coordinates{(-1,-1)};
-	\addplot[densely dashdotted,every mark/.append style={solid, fill=gray}, mark=oplus*] coordinates{(-1,-1)};
-	\addlegendentry{$y = 0$};
-	\addlegendentry{$y = 0.5$};
-	\addlegendentry{$y = 1$};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra0_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra0_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra0_REF.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra0.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra0.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra0.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^3$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra1.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra1.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra1.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra1_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra1_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra1_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^4$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra2.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra2.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra2.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra2_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra2_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra2_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^5$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra3.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra3.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra3.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra3_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra3_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra3_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^6$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra4.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra4.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra4.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra4_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra4_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra4_REF.txt};
-	\nextgroupplot[title = {$\text{Ra} = 10^7$}]
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra5.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra5.txt};
-	\addplot+[color=black, no marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra5.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_bot_Ra5_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_mid_Ra5_REF.txt};
-	\addplot+[color=black, only marks] table {data/HeatedSquareCavity_TemperatureComparison/Temperatures_top_Ra5_REF.txt};
-	\end{groupplot}
-	\end{tikzpicture}
+	\inputtikz{TempProfile}
 	\caption{Temperature profiles for the differentially heated square cavity along different vertical levels. Solid lines represent our solution and marks the benchmark solution. \cite{vierendeelsBenchmarkSolutionsNatural2003}}
 	\label{fig:TempProfile}
 \end{figure}
 
 \begin{figure}[b!]
 	\centering
-	\begin{tikzpicture}
-		\begin{groupplot}[
-			group style={
-				group name= group,
-				group size=3 by 2,
-				xlabels at=edge bottom,
-				ylabels at=edge left,
-				horizontal sep = 1.6cm,
-				vertical sep = 2.0cm,
-			},
-			grid = major,
-			width=3.5cm,
-			height=3.5cm,
-			xlabel= $\sqrt{\text{Number of cells}}$,
-			ylabel= Nusselt,
-			xtick=data,
-			max space between ticks=1000pt,
-			try min ticks=5,
-			y tick label style= {
-				/pgf/number format/.cd,
-				fixed,
-				fixed zerofill,
-				precision = 4,
-				legend style = {at={(1,0)},anchor = south east}
-			}
-			]
-			\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 2}$}]
-			\addplot [solid,mark = *, ]  table {data/NusseltStudy/NusseltReLeft100Dg2.txt};
-			\addlegendentry{$\text{Nu}_h$};
-			\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight100Dg2.txt};
-			\addlegendentry{$\text{Nu}_c$};
-			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg2.txt};	
-			\addlegendentry{$\text{Nu}_{\text{ref}}$};	
-			\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 3}$}]
-			\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft100Dg3.txt};	
-			\addlegendentry{$\text{Nu}_h$};
-			\addplot [solid, mark = square,] table {data/NusseltStudy/NusseltReRight100Dg3.txt};
-			\addlegendentry{$\text{Nu}_c$};
-			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg3.txt};	
-			\addlegendentry{$\text{Nu}_{\text{ref}}$};		
-			\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 4}$}]
-			\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft100Dg4.txt};	
-			\addlegendentry{$\text{Nu}_h$};
-			\addplot [solid, mark = square,] table {data/NusseltStudy/NusseltReRight100Dg4.txt};	
-			\addlegendentry{$\text{Nu}_c$};
-			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg4.txt};	
-			\addlegendentry{$\text{Nu}_{\text{ref}}$};
-			\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 2}$},ymax=9]
-			\addplot [solid,mark = *,]  table {data/NusseltStudy/NusseltReLeft1000000Dg2.txt};	
-			\addlegendentry{$\text{Nu}_h$};
-			\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg2.txt};	
-			\addlegendentry{$\text{Nu}_c$};
-			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg2.txt};	
-			\addlegendentry{$\text{Nu}_{\text{ref}}$};
-			\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 3}$}]
-			\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft1000000Dg3.txt};	
-			\addlegendentry{$\text{Nu}_h$};
-			\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg3.txt};	
-			\addlegendentry{$\text{Nu}_c$};
-			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg3.txt};	
-			\addlegendentry{$\text{Nu}_{\text{ref}}$};
-			\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 4}$}]
-			\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft1000000Dg4.txt};	
-			\addlegendentry{$\text{Nu}_h$};
-			\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg4.txt};	
-			\addlegendentry{$\text{Nu}_c$};
-			\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg4.txt};	
-			\addlegendentry{$\text{Nu}_{\text{ref}}$};
-		\end{groupplot}
-	\end{tikzpicture}
+	\inputtikz{NusseltStudy}
 	\caption{Nusselt numbers calculated with \cref{eq:Nusselt} at the hot wall ($\text{Nu}_h$) and the cold wall ($\text{Nu}_c$) for different number of cells and polynomial order $k$. The reference values\cite{vierendeelsBenchmarkSolutionsNatural2003} are shown with dashed lines.}\label{fig:NusseltStudy}
 \end{figure}
+
 \paragraph{Convergence study}\label{ssec:ConvStudyHeatedCavity}
 An $h-$convergence study of the differentially heated cavity configuration was conducted. Calculations were done for polynomial degrees $k = {1,2,3,4}$ and equidistant regular meshes with respectively $8, 16, 32, 64, 128$ and $256$ elements in each spatial coordinate.  The $L^2$-Norm was used for the calculation of the errors against the solution on the finest mesh. Results of the $h$-convergence study for varying polynomial orders $k$ are shown in \cref{fig:ConvergenceDHC}. Recall that for increasing polynomial order, the expected order of convergence is given by the slope of the line curve when cell length and errors are presented in a log-log plot. Because we are using a mixed order formulation the slopes should be equal to $k$ for the pressure and equal to $k+1$ for all other variables.  It is observed how convergence rates scale approximately as $k+1$. Interestingly, for $k=2$ the rates are higher than expected. On the other hand, some degeneration on the convergence rates is observed for $k = 4$.
 
@@ -1151,253 +471,7 @@ As discussed in the last section, the difference on values of the Nusselt number
 \begin{figure}[t!]
 	\centering
 	\pgfplotsset{width=0.34\textwidth, compat=1.3}
-	\begin{tikzpicture}
-	\begin{groupplot}[
-	group style={
-		group name= group,
-		group size=2 by 2,
-		ylabels at=edge left,
-		horizontal sep = 2.5cm,
-		vertical sep = 1.5cm,
-	},
-	xtick={2^-8,2^-7,2^-6, 2^-5, 2^-4,2^-3},
-	xticklabels = {$2^{-8}$,$2^{-7}$,$2^{-6}$,$2^{-5}$, $2^{-4}$, $2^{-3}$},
-	xlabel=Cell length $h$,
-	xmajorgrids,
-	ymajorgrids,
-	legend style={at={(1,0)}, anchor=south east},
-	]
-	\nextgroupplot[xmode=log, ymode=log,ylabel = $\LtwoNorm{ u_x - u_{x,\text{fine}}}$,]
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityXDG1Data.txt};
-	\addlegendentry{$k=1$};
-	\addplot[solid,  forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/VelocityXDG1Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXA{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor= west]
-	{\pgfmathprintnumber{\slopeXA}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityXDG2Data.txt};
-	\addlegendentry{$k=2$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}				
-	}}]
-	{data/HSC_convstudy_XNSEC/VelocityXDG2Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXB{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.15,anchor=  west]
-	{\pgfmathprintnumber{\slopeXB}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityXDG3Data.txt};
-	\addlegendentry{$k=3$};			
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/VelocityXDG3Data.txt}
-	coordinate [pos=0.80] (A)
-	coordinate [pos=0.95] (B)
-	;
-	\xdef\slopeXC{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0,anchor=east]
-	{\pgfmathprintnumber{\slopeXC}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityXDG4Data.txt};
-	\addlegendentry{$k=4$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/VelocityXDG4Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.9] (B)
-	;
-	\xdef\slopeXD{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXD}};	
-	\nextgroupplot[xmode=log, ymode=log,	ylabel = $\LtwoNorm{ u_y - u_{y,\text{fine}}}$,]
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityYDG1Data.txt};
-	\addlegendentry{$k=1$};
-	\addplot[solid,  forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/VelocityYDG1Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXA{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor= west]
-	{\pgfmathprintnumber{\slopeXA}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityYDG2Data.txt};
-	\addlegendentry{$k=2$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/VelocityYDG2Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXB{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=  west]
-	{\pgfmathprintnumber{\slopeXB}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityYDG3Data.txt};
-	\addlegendentry{$k=3$};			
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/VelocityYDG3Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXC{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXC}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityYDG4Data.txt};
-	\addlegendentry{$k=4$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/VelocityYDG4Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.9] (B)
-	;
-	\xdef\slopeXD{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXD}};	
-	\nextgroupplot[ xmode=log, ymode=log,	ylabel=$ \LtwoNorm{T - T_{\text{fine}}}$,]
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/TemperatureDG1Data.txt};
-	\addlegendentry{$k=1$};
-	\addplot[solid,  forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/TemperatureDG1Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXA{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor= west]
-	{\pgfmathprintnumber{\slopeXA}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/TemperatureDG2Data.txt};
-	\addlegendentry{$k=2$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/TemperatureDG2Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.85] (B)
-	;
-	\xdef\slopeXB{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=  west]
-	{\pgfmathprintnumber{\slopeXB}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/TemperatureDG3Data.txt};
-	\addlegendentry{$k=3$};			
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/TemperatureDG3Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXC{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXC}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/TemperatureDG4Data.txt};
-	\addlegendentry{$k=4$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={100000,800000,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/TemperatureDG4Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.9] (B)
-	;
-	\xdef\slopeXD{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXD}};
-	\nextgroupplot[xmode=log, ymode=log,ylabel=$\LtwoNorm{ p - p_{\text{fine}} }$,]
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/PressureDG1Data.txt};
-	\addlegendentry{$k'=0$};
-	\addplot[solid,  forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/PressureDG1Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXA{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor= west]
-	{\pgfmathprintnumber{\slopeXA}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/PressureDG2Data.txt};
-	\addlegendentry{$k'=1$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/PressureDG2Data.txt}
-	coordinate [pos=0.80] (A)
-	coordinate [pos=0.95] (B)
-	;
-	\xdef\slopeXB{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0, anchor =east]
-	{\pgfmathprintnumber{\slopeXB}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/PressureDG3Data.txt};
-	\addlegendentry{$k'=2$};			
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/PressureDG3Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXC{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXC}};			
-	\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/PressureDG4Data.txt};
-	\addlegendentry{$k'=3$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/HSC_convstudy_XNSEC/PressureDG4Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.9] (B)
-	;
-	\xdef\slopeXD{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXD}};		
-	\end{groupplot}
-	\end{tikzpicture}
+	\inputtikz{ConvergenceDHC}
 	\caption{Convergence study of the differentially heated cavity problem for $\text{Ra} = 10^3$.}\label{fig:ConvergenceDHC}
 \end{figure}
 
@@ -1433,29 +507,9 @@ As a first test for assessing basic behaviour related to combustion, a cofloing 
 		tick align = outside,
 		yticklabel style={/pgf/number format/fixed}, 
 	}
-	\begin{tikzpicture}	
-		\begin{axis}[
-			set layers=standard,
-			width=0.9\linewidth,
-			height=6cm,
-			ymode = log,
-			xlabel=Iteration number,
-			xmin = 0,
-			ylabel=Residual and trust region $\delta$,
-			xtick = {0,2,...,40},
-			ytickten = {-16,-12,...,12},
-			ymax = 1e11,
-			legend style = {at = {(0.1,0.1)}, anchor = south west},
-			]
-			\addplot[ orange, mark =o, mark size = 2.5pt] file{data/ConvergenceStory_CoFlow/residuals3.txt};\addlegendentry{$	\| \mathcal{A}(\myvector{U}_{n}) \|_2 $};	
-			\addplot[ blue, mark =square*, mark size = 2pt] file{data/ConvergenceStory_CoFlow/delta3.txt}; \addlegendentry{$\delta$};	
-			\node[draw, ] at (140,20) {Infinitely fast chemistry};
-			\draw [dashed,thick] (270, \pgfkeysvalueof{/pgfplots/ymin}) -- (270, \pgfkeysvalueof{/pgfplots/ymax});
-			\node[draw, ] at (340,20.0) {Finite rate chemistry};
-		\end{axis} 
-	\end{tikzpicture}
-	\caption{Typical convergence history of a diffusion flame in the coflowing flame configuration. }
-	\label{fig:CDF_ConvergenceStory}
+	\inputtikz{CoFlow_ConvergenceStory}
+	\caption{Typical convergence history of a diffusion flame in the coflowing flame configuration with mesh refinement.}
+	\label{fig:CoFlow_ConvergenceStory}
 \end{figure} 
 % \begin{figure}[t!]
 % 	\begin{center}
@@ -1474,47 +528,20 @@ Before each refinement step the values of $\omega$ are normalized by the biggest
 \begin{figure}
 	\centering
 	\pgfplotsset{width=0.75 \textwidth, compat=1.3}
-	\begin{tikzpicture}
-	\begin{axis}[
-	axis on top,
-	scale only axis,
-	enlargelimits=false,	
-	axis equal image,
-	%	xlabel = $x$,
-	%	ylabel = $y$,
-	%	xtick = {0.0, 0.5, 1},
-	%	ytick = {0.0, 0.5, 1},
-	]
-	\addplot[thick,blue] graphics[	
-	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=3.0,
-	] {../plots/visit0188.png};
-	\end{axis}	
-	\end{tikzpicture}
-	\begin{tikzpicture}
-	\begin{axis}[
-	axis on top,
-	scale only axis,
-	enlargelimits=false,	
-	axis equal image,
-	%	xlabel = $x$,
-	%	ylabel = $y$,
-	%	xtick = {0.0, 0.5, 1},
-	%	ytick = {0.0, 0.5, 1},
-	]
-	\addplot[thick,blue] graphics[	
-	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=3.0,
-	] {../plots/visit0184.png};
-	\end{axis}	
-	\end{tikzpicture}
-	\caption{Coflowing Flame.}
+	\inputtikz{CoFlowFlameFig1}
+	\inputtikz{CoFlowFlameFig2}	
+	\caption{Coflowing Flame.} \label{fig:CoFlowFlameFig}
 \end{figure}
 \subsection{Counterflow diffusion flame}\label{ss:CDF}	
-\begin{figure*}[tb!]
-	\centering
-	\def\svgwidth{0.8\textwidth}
-	\begingroup \makeatletter \providecommand\color[2][]{\errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}\renewcommand\color[2][]{}}\providecommand\transparent[1]{\errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}\renewcommand\transparent[1]{}}\providecommand\rotatebox[2]{#2}\newcommand*\fsize{\dimexpr\f@size pt\relax}\newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}\ifx\svgwidth\undefined \setlength{\unitlength}{623.00240104bp}\ifx\svgscale\undefined \relax \else \setlength{\unitlength}{\unitlength * \real{\svgscale}}\fi \else \setlength{\unitlength}{\svgwidth}\fi \global\let\svgwidth\undefined \global\let\svgscale\undefined \makeatother \begin{picture}(1,0.44444435)\lineheight{1}\setlength\tabcolsep{0pt}\put(0.50541383,0.31955222){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Fuel}\end{tabular}}}}\put(0.48914563,0.11898873){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Oxidizer}\end{tabular}}}}\put(0.52165765,0.4310296){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\hat D$\end{tabular}}}}\put(-0.00146562,0.21634103){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\hat{L}$\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=1]{../plots/CounterDiffusionFlame_sketch_rotated2.pdf}}\put(0.50187804,0.002595){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$6\hat{L}$\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=2]{../plots/CounterDiffusionFlame_sketch_rotated2.pdf}}\put(0.73588839,0.30040165){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Stagnation plane}\\\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=3]{../plots/CounterDiffusionFlame_sketch_rotated2.pdf}}\put(0.28154156,0.39441284){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}\put(0.77020774,0.39621194){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}\put(0.77020774,0.04390421){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}\put(0.28264939,0.04291605){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}\put(0.23597805,0.28618457){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Flame}\\\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=4]{../plots/CounterDiffusionFlame_sketch_rotated2.pdf}}\put(0.06924897,0.13479347){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Pressure outlet}\end{tabular}}}}}\put(0.99712048,0.14305974){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Pressure outlet}\end{tabular}}}}}\put(0,0){\includegraphics[width=\unitlength,page=5]{../plots/CounterDiffusionFlame_sketch_rotated2.pdf}}\end{picture}\endgroup \caption{Schematic representation of the counterflow configuration.}
-	\label{fig:CDFScheme}
-\end{figure*}
+
+\begin{figure}[b]
+	\begin{center}
+		\def\svgwidth{0.8\textwidth}
+		\import{./plots/}{CounterDiffusionFlame_sketch_rotated2.pdf_tex}		
+\caption{Schematic representation of the counterflow configuration.}
+\label{fig:CDFScheme}
+	\end{center}	
+\end{figure} 
 
 The counterflow diffusion flame is a canonical configuration used to study the structure of non-premixed flames. In its most basic configuration it consists of two oppositely situated jets. The fuel (possibly mixed with some inert component such as nitrogen) is fed into the system by one of the jets, while the other jet feeds air to the system, thereby establishing a stagnation point flow. Upon contact, the reactants produce a flame which is located in the vicinity of the stagnation plane. A diagram of the setup can be seen in \cref{fig:CDFScheme}. This simple configuration has been subject of study for decades  because it provides a simple way of creating a strained diffusion flame, which proves to be useful when studying the flame structure, extinction limits or production of pollutants of flames \cite{pandyaStructureFlatCounterFlow1964} \cite{spaldingTheoryMixingChemical1961} \cite{keyesFlameSheetStarting1987}. By assuming an infinite injector diameter and self-similarity of the solution, it is possible to reduce the governing equations to a one-dimensional formulation (see e.g. the textbook of Kee \cite{keeChemicallyReactingFlow2003}). As a means of validating our implementation we compare the results with the solution of the one-dimensional self-similar problem calculated with \lstinline|BVP4|, a fourth order finite difference boundary value problem solver provided by \lstinline|MATLAB|. 
 
@@ -1534,27 +561,7 @@ $\Lewis_{\ch{CH4}} =  0.97 $ , $\Lewis_{\ch{O2}} = 1.11 $, $\Lewis_{\ch{H2O}} = 
 		tick align = outside,
 		yticklabel style={/pgf/number format/fixed}, 
 	}
-	\begin{tikzpicture}	
-	\begin{axis}[
-	set layers=standard,
-	width=0.75\linewidth,
-	height=6cm,
-	ymode = log,
-	xlabel=Iteration number,
-	xmin = 0,
-	ylabel=Residual and trust region $\delta$,
-	xtick = {0,2,...,32},
-	ytickten = {-16,-12,...,12},
-	ymax = 1e9,
-	legend style = {at = {(0.1,0.1)}, anchor = south west},
-	]
-	\addplot[ orange, mark =o, mark size = 2.5pt] file{data/ConvergenceStory_CounterDiffusionFlame/residuals3.txt};\addlegendentry{$	\| \mathcal{A}(\myvector{U}_{n}) \|_2 $};	
-	\addplot[ blue, mark =square*, mark size = 2pt] file{data/ConvergenceStory_CounterDiffusionFlame/delta3.txt}; \addlegendentry{$\delta$};	
-	\node[draw, ] at (80,16.3) {Flame sheet calculation};
-	\draw [dashed,thick] (180, \pgfkeysvalueof{/pgfplots/ymin}) -- (180, \pgfkeysvalueof{/pgfplots/ymax});
-	\node[draw, ] at (240,16.3) {Finite rate chemistry calculation};
-	\end{axis} 
-	\end{tikzpicture}
+\inputtikz{CDF_ConvergenceStory}
 	\caption{Convergence history of the diffusion flame in the counterflow configuration, with a maximum strain value of $165.1 $\si{s^{-1}}}
 	\label{fig:CDF_ConvergenceStory}
 \end{figure} 
@@ -1564,6 +571,7 @@ In \cref{fig:CDF_ConvergenceStory} the convergence history obtained for a typica
 Because we are solving a two-dimensional configuration, in order to be able to compare our results with the ones obtained from the one-dimensional representation, the temperature, mass fractions and velocity profiles are extracted along the centerline of the system shown as the dashed line in \cref{fig:CDFScheme}. In \cref{fig:BoSSS_1D_Comparison_velocity} a comparison of the axial velocities calculated with \BoSSS and the one-dimensional solution is shown. While for the high strain case the results agree closely, for lower strains a discrepancy is observed. Recall that the derivation of the one-dimensional approximation assumes a constant velocity field incoming to the flame zone in order to obtain a self-similar solution. In the case of the two-dimensional configuration presented here, the border effects do have an influence on the centerline, which disrupts the self-similarity. This effect is more pronounced for low velocities, which explains the discrepancy between curves. Similarly, In \cref{fig:BoSSS_1D_Comparison} the temperature and mass fraction fields are presented. Again, a discrepancy is observed for low strains, but results show a good agreement for higher inlet velocities. It can also be observed how, as expected, \cite{fernandez-tarrazoSimpleOnestepChemistry2006} at higher strains a significant penetration (leakage) of oxygen across the flame is present. Finally, in \cref{fig:TempAndReacFields} the two-dimensional temperature, velocity and reaction rate fields for the case (a) are shown. 
 
 Finally, in \Cref{fig:TemperatureConvergenceDiffFlame} we show how the maximum value of the temperature behaves for different mesh resolutions and polynomial degrees. The temperature tends to a limit value, and we observe how this value is reached already for coarse meshes when using a polynomial degree of three or four. We also observe that for $k=2$ the temperature tends to a limit value, but slower in comparison to $k =3$ or $4$. The values for $k=1$ are not displayed because for the mesh resolutions shown here, the values of the maximum temperature were of the order of 50 \si{K} bigger than the limit value. We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet. This fact made hard to realize a $h$-convergence study for the complete domain. Based on this we decided to analyse a flame configuration that doesn't exhibit this behaviour, as shown in the next section.
+
 
 We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet, which induces a pollution phenomenon on the accuracy of the solution. This fact made hard to realize an $h$-convergence study for the complete domain. Based on this fact we decided to analyze a flame configuration that does not exhibit this behaviour, as shown in the next section.
 \begin{figure}[t!]
@@ -1575,232 +583,57 @@ We note that the solution of this configuration showed singularities in the boun
 		unit code/.code={\si{#1}}
 	}
 	\centering
-	\begin{tikzpicture}
-	\begin{groupplot}[
-	group style={
-		group name=my plots,
-		group size=3 by 1,
-		x descriptions at=edge bottom,
-		ylabels at = edge left,
-	},
-	width= 0.21\textwidth ,
-	height= 0.21\textwidth ,
-	xlabel = $x$,
-	x unit=\meter,
-	y unit = \meter \per \second,
-	ylabel= Axial-velocity,
-	change x base=true,
-	x SI prefix=centi,	
-	change y base = true,
-	y SI prefix=centi,
-	max space between ticks=1000pt,
-	try min ticks=5,
-	]
-	\nextgroupplot[title = {\textbf{Case (a)}}]
-	\addplot+[color=black, no marks, thick] table {data/DataStrainSweep/2/FullVelocityX_BOSSS.txt}; \addlegendentry{\BoSSS}
-	\addplot+[color=black, no marks, dashed]table {data/DataStrainSweep/2/FullVelocityX_MATLAB2.txt};\addlegendentry{1D}
-	\nextgroupplot[title = {\textbf{Case (b)}}]
-	\addplot+[color=black, no marks, thick] table {data/DataStrainSweep/5/FullVelocityX_BOSSS.txt};\addlegendentry{\BoSSS}
-	\addplot+[color=black, no marks, dashed]table {data/DataStrainSweep/5/FullVelocityX_MATLAB.txt};\addlegendentry{1D}
-	\nextgroupplot [title = {\textbf{Case (c)}}]
-	\addplot+[color=black, no marks, thick] table {data/DataStrainSweep/11/FullVelocityX_BOSSS.txt};\addlegendentry{\BoSSS}
-	\addplot+[color=black, no marks, dashed]table {data/DataStrainSweep/11/FullVelocityX_MATLAB.txt};\addlegendentry{1D}
-	\end{groupplot}
-	\end{tikzpicture}
+	\inputtikz{BoSSS_1D_Comparison_velocity}
 	\caption{ Comparison of the axial velocity calculated with \BoSSS and the one-dimensional approximation. }
 	\label{fig:BoSSS_1D_Comparison_velocity}
 \end{figure}
-%\tikzexternaldisable
+\newpage
+\tikzexternaldisable
 %\tikzset{external/export next=false}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[b!]
 	\centering
 	\pgfplotsset{
-		width=0.65\textwidth,
-		height = 0.2\textwidth,
+		width=0.85\textwidth,
+		height = 0.3\textwidth,
 		compat=1.3,
 		tick align = outside,
 		yticklabel style={/pgf/number format/fixed}, 
-	}
-	\begin{tikzpicture}[baseline]
-	\begin{axis}[
-	title = {\textbf{Case (a)}},
-	ylabel= Temperature ,
-	axis y line*=left,
-	ymin = 300,
-	y unit= K, 
-	change x base=true,
-	x SI prefix=centi,
-	xtick=\empty,
-	xticklabel=\empty,
-	]
-	\addplot+[color=cyan, no marks, thick] table {data/DataStrainSweep/2/FullTemperature_BOSSS.txt};
-	\addplot+[color=cyan, no marks, dashed]table {data/DataStrainSweep/2/FullTemperature_MATLAB.txt};
-	\end{axis}
-	
-	\begin{axis}[
-	x tick label style={
-		/pgf/number format/.cd,
-		precision=3,
-		/tikz/.cd
-	},
-	ymin=0.0, ymax =0.25, 
-	ylabel= Mass fraction,
-	legend style={at={(0.8,0.7)}, anchor=north east},
-	axis y line*=right,
-	change x base=true,
-	x SI prefix=centi,
-	xtick=\empty,
-	xticklabel=\empty,
-	] 	
-	\addplot+[color=black, no marks, thick,solid] table {data/DataStrainSweep/2/FullMassFraction0_BOSSS.txt};
-	\addplot+[color=blue,no marks,thick,solid] table {data/DataStrainSweep/2/FullMassFraction1_BOSSS.txt};
-	\addplot+[color=green, no marks,thick,solid] table {data/DataStrainSweep/2/FullMassFraction2_BOSSS.txt};
-	\addplot+[color=red, no marks,thick,solid] table {data/DataStrainSweep/2/FullMassFraction3_BOSSS.txt};
-	\addplot+[color=black,no marks, dashed] table {data/DataStrainSweep/2/FullMassFraction0_Matlab.txt};
-	\addplot+[color=blue,no marks, dashed] table {data/DataStrainSweep/2/FullMassFraction1_Matlab.txt};
-	\addplot+[color=green,no marks, dashed] table {data/DataStrainSweep/2/FullMassFraction2_Matlab.txt};
-	\addplot+[color=red,no marks, dashed] table {data/DataStrainSweep/2/FullMassFraction3_Matlab.txt};	
-	\end{axis}
-	\end{tikzpicture}	
-	\begin{tikzpicture}[baseline]
-	\begin{axis}[
-	title = {\textbf{Case (b)}},
-	ylabel= Temperature ,
-	axis y line*=left,
-	ymin = 300,
-	y unit= K, 
-	change x base=true,
-	x SI prefix=centi,
-	xtick=\empty,
-	xticklabel=\empty,
-	]
-	\addplot+[color=cyan, no marks, thick] table {data/DataStrainSweep/5/FullTemperature_BOSSS.txt};
-	\addplot+[color=cyan, no marks, dashed]table {data/DataStrainSweep/5/FullTemperature_MATLAB.txt};
-	\end{axis} 	
-	\begin{axis}[
-	x tick label style={
-		/pgf/number format/.cd,
-		precision=3,
-		/tikz/.cd
-	},
-	ymin=0.0, ymax =0.25, 
-	ylabel= Mass fraction,
-	axis y line*=right,
-	change x base=true,
-	x SI prefix=centi,
-	xtick=\empty,
-	xticklabel=\empty,
-	] 	
-	\addplot+[color=black, no marks, thick,solid] table {data/DataStrainSweep/5/FullMassFraction0_BOSSS.txt};
-	\addplot+[color=blue,no marks,thick,solid] table {data/DataStrainSweep/5/FullMassFraction1_BOSSS.txt};
-	\addplot+[color=green, no marks,thick,solid] table {data/DataStrainSweep/5/FullMassFraction2_BOSSS.txt};
-	\addplot+[color=red, no marks,thick,solid] table {data/DataStrainSweep/5/FullMassFraction3_BOSSS.txt};
-	\addplot+[color=black,no marks, dashed] table {data/DataStrainSweep/5/FullMassFraction0_Matlab.txt};
-	\addplot+[color=blue,no marks, dashed] table {data/DataStrainSweep/5/FullMassFraction1_Matlab.txt};
-	\addplot+[color=green,no marks, dashed] table {data/DataStrainSweep/5/FullMassFraction2_Matlab.txt};
-	\addplot+[color=red,no marks, dashed] table {data/DataStrainSweep/5/FullMassFraction3_Matlab.txt};	
-	\end{axis}
-	\end{tikzpicture}	 	
-	\begin{tikzpicture}[baseline]
-	\begin{axis}[
-	title = {\textbf{Case (c)}},
-	xlabel=$x$,
-	ylabel= Temperature ,
-	axis y line*=left,
-	ymin = 300,
-	x unit=m,
-	y unit= K, 
-	change x base=true,
-	x SI prefix=centi
-	]
-	\addplot[color=cyan, no marks, thick] table {data/DataStrainSweep/11/FullTemperature_BOSSS.txt}; \label{TemperatureBosss}
-	\addplot[color=cyan, no marks, dashed]table {data/DataStrainSweep/11/FullTemperature_MATLAB.txt}; \label{TemperatureMatlab}
-	\end{axis} 	
-	\begin{axis}[
-	x tick label style={
-		/pgf/number format/.cd,
-		precision=3,
-		/tikz/.cd
-	},
-	ymin=0.0, ymax =0.25, 
-	xlabel=$x$,
-	ylabel= Mass fraction,
-	x unit=m,
-	axis y line*=right,
-	change x base=true,
-	x SI prefix=centi
-	]
-	\addplot[color=black, no marks, thick,solid] table {data/DataStrainSweep/11/FullMassFraction0_BOSSS.txt}; \label{MF0_BOSSS}
-	\addplot[color=blue,no marks,thick,solid] table {data/DataStrainSweep/11/FullMassFraction1_BOSSS.txt}; 	\label{MF1_BOSSS}
-	\addplot[color=green, no marks,thick,solid] table {data/DataStrainSweep/11/FullMassFraction2_BOSSS.txt}; 	\label{MF2_BOSSS}
-	\addplot[color=red, no marks,thick,solid] table {data/DataStrainSweep/11/FullMassFraction3_BOSSS.txt}; 	\label{MF3_BOSSS}
-	\addplot[color=black,no marks, dashed] table {data/DataStrainSweep/11/FullMassFraction0_Matlab.txt};\label{MF0_MATLAB}
-	\addplot[color=blue,no marks, dashed] table {data/DataStrainSweep/11/FullMassFraction1_Matlab.txt};\label{MF1_MATLAB}	
-	\addplot[color=green,no marks, dashed] table {data/DataStrainSweep/11/FullMassFraction2_Matlab.txt};\label{MF2_MATLAB}	
-	\addplot[color=red,no marks, dashed] table {data/DataStrainSweep/11/FullMassFraction3_Matlab.txt};\label{MF3_MATLAB}	
-	\end{axis}
-	\node[draw,anchor=south east] at (11.0cm,0.4cm) {
-		\begin{tabular}{ccl}
-		$T$:& \BoSSS \ref{TemperatureBosss} ;& 1D \tikz{\ref{TemperatureMatlab}}  \\
-		$Y_{\ch{CH4}}$:& \BoSSS \tikz{\ref{MF0_BOSSS}} ;& 1D \tikz{\ref{MF0_MATLAB}} \\
-		$Y_{\ch{O2}}$:& \BoSSS \tikz{\ref{MF1_BOSSS}} ;& 1D \tikz{\ref{MF1_MATLAB}} \\
-		$Y_{\ch{CO2}}$:& \BoSSS \tikz{\ref{MF2_BOSSS}} ;& 1D \tikz{\ref{MF2_MATLAB}}  \\
-		$Y_{\ch{H2O}}$:& \BoSSS \tikz{\ref{MF3_BOSSS}} ;& 1D \tikz{\ref{MF3_MATLAB}}  
-		\end{tabular}
-	};
-	\end{tikzpicture}	
-	\caption{ Comparison of temperature and mass fraction fields obtained with \BoSSS and the one-dimensional approximation.}
+	}	
+	\inputtikz{BoSSS_1D_Comparison1}
+	\inputtikz{BoSSS_1D_Comparison2}
+	\inputtikz{BoSSS_1D_Comparison3}
+	\caption{Comparison of temperature and mass fraction fields obtained with \BoSSS and the one-dimensional approximation.}
 	\label{fig:BoSSS_1D_Comparison}
 \end{figure}
-\begin{figure}[tb!]
-	\centering
-	\def\svgwidth{0.8\textwidth}
-	\begingroup \makeatletter \providecommand\color[2][]{\errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}\renewcommand\color[2][]{}}\providecommand\transparent[1]{\errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}\renewcommand\transparent[1]{}}\providecommand\rotatebox[2]{#2}\newcommand*\fsize{\dimexpr\f@size pt\relax}\newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}\ifx\svgwidth\undefined \setlength{\unitlength}{578.08882105bp}\ifx\svgscale\undefined \relax \else \setlength{\unitlength}{\unitlength * \real{\svgscale}}\fi \else \setlength{\unitlength}{\svgwidth}\fi \global\let\svgwidth\undefined \global\let\svgscale\undefined \makeatother \begin{picture}(1,0.56429776)\lineheight{1}\setlength\tabcolsep{0pt}\put(0,0){\includegraphics[width=\unitlength,page=1]{../plots/CDF_Results.pdf}}\end{picture}\endgroup \caption{Calculated temperature and velocity fields (top picture) and reaction rate (second picture) of the counter diffusion flame configuration, case (a). The unit of the temperature is \si{K} and of the reaction rate \si{\kilo\mole \per \meter \cubed \per \second}. }
+\tikzexternalenable
+\newpage
+\begin{figure}[b]
+	\begin{center}
+		\def\svgwidth{0.8\textwidth}
+		\import{./plots/}{CDF_Results.pdf_tex}		
+\caption{Calculated temperature and velocity fields (top picture) and reaction rate (second picture) of the counter diffusion flame configuration, case (a). The unit of the temperature is \si{K} and of the reaction rate \si{\kilo\mole \per \meter \cubed \per \second}. }
 	\label{fig:TempAndReacFields}
-\end{figure}
-%\tikzexternalenable
+	\end{center}	
+\end{figure} 
+
 \begin{figure}[tbp]
 	\centering
-	\begin{tikzpicture}[baseline]
-		\pgfplotsset{width=0.35\textwidth, compat=1.3}
-		\begin{axis}[
-			name=plot1,%	
-			xlabel=1/$\Delta x$,
-			%			ylabel=$ \left\llbracket  u_x - u_{x,\text{fine}} \right\rrbracket_2$,
-			ylabel = Maximal temperature,
-			xmajorgrids,
-			ymajorgrids,
-			ymax =1945, 
-			x unit=1/cm,
-			y unit=K,
-			legend style={at={(1,1)}, anchor=north east},
-			]
-			%			\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg1.txt};
-			%			\addlegendentry{$k=1$};
-			\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg2.txt};
-			\addlegendentry{$k=2$};
-			\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg3.txt};
-			\addlegendentry{$k=3$};
-			\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg4.txt};
-			\addlegendentry{$k=4$};
-		\end{axis}
-	\end{tikzpicture}
+	\inputtikz{TemperatureConvergenceDiffFlame}
 	\caption{Maximum value of the temperature for the counter diffusion flame configuration, for different mesh sizes in the x-direction and polynomial degrees. Values for $k=1$ are not shown, because for this range of cell lengths the maximum temperature value was of the order of 50K higher than the ones depicted here.}
 	\label{fig:TemperatureConvergenceDiffFlame}
 \end{figure}
 \FloatBarrier
 \newpage
 \subsection{Chambered diffusion flame}\label{ss:UDF}
-
-
-\begin{figure}[b!]
+\begin{figure}[b]
 	\begin{center}
-		\def\svgwidth{0.35\textwidth}
-		\begingroup \makeatletter \providecommand\color[2][]{\errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}\renewcommand\color[2][]{}}\providecommand\transparent[1]{\errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}\renewcommand\transparent[1]{}}\providecommand\rotatebox[2]{#2}\newcommand*\fsize{\dimexpr\f@size pt\relax}\newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}\ifx\svgwidth\undefined \setlength{\unitlength}{943.88190322bp}\ifx\svgscale\undefined \relax \else \setlength{\unitlength}{\unitlength * \real{\svgscale}}\fi \else \setlength{\unitlength}{\svgwidth}\fi \global\let\svgwidth\undefined \global\let\svgscale\undefined \makeatother \begin{picture}(1,0.84935754)\lineheight{1}\setlength\tabcolsep{0pt}\put(0,0){\includegraphics[width=\unitlength,page=1]{../plots/UnstrainedFlameConfig.pdf}}\put(0.50835425,0.17720939){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Fuel\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=2]{../plots/UnstrainedFlameConfig.pdf}}\put(0.48865082,0.47743759){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Flame\end{tabular}}}}\put(0.67802482,0.8252095){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Products\end{tabular}}}}\put(0.37592055,0.8252095){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Oxidizer\end{tabular}}}}\put(0.15496603,0.19893189){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Periodic boundary\end{tabular}}}}}\put(0.9420434,0.18958958){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Periodic boundary\end{tabular}}}}}\put(0.40312388,0.00958245){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Velocity inlet\end{tabular}}}}\put(0.38405371,0.60552565){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Pressure outlet\end{tabular}}}}\put(0.90275774,0.64694849){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}x = 0\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=3]{../plots/UnstrainedFlameConfig.pdf}}\put(0.06707395,0.67423724){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}y\end{tabular}}}}\put(0.0313179,0.55432415){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}x\end{tabular}}}}\put(0,0){\includegraphics[width=\unitlength,page=4]{../plots/UnstrainedFlameConfig.pdf}}\end{picture}\endgroup \vspace{0.2cm}
+		\def\svgwidth{0.8\textwidth}
+		\import{./plots/}{UnstrainedFlameConfig.pdf_tex}		
 		\caption{Schematic representation of the chambered diffusion flame configuration. }
-		\label{fig:chamberedDifFlame}
+\label{fig:chamberedDifFlame}
 	\end{center}	
-\end{figure}
+\end{figure} 
+
 The chambered diffusion flame configuration has served as a model for many theoretical studies related to diffusion flames\cite{matalonEffectThermalExpansion2010,rameauNumericalBifurcationChambered1985,matalonDiffusionFlamesChamber1980} A scheme of the configuration can be seen in \cref{fig:chamberedDifFlame}. Fuel is injected at a constant rate into the bottom of a small insulated chamber, while oxidant diffuses into the system against the direction of flow. Constant conditions at the outlet of the chamber are achieved by a rapid renewal of the flow of oxidant.  Under these conditions a planar flame forms far away from the walls, which allows a one-dimensional description of the flame structure.
 The fuel inlet into the chamber is modelled with a velocity inlet boundary condition \cref{eq:bc_d}, while the flow outlet at the top is considered an outlet as given by \cref{eq:bc_OD}. Since we are interested in the flame in wall distance, it is sufficient to set the remaining boundary conditions as periodic boundaries. This effectively transforms the problem into a pseudo two-dimensional configuration. 
 
@@ -1808,260 +641,12 @@ The fuel inlet into the chamber is modelled with a velocity inlet boundary condi
 \begin{figure}[t!]
 	\centering
 	\pgfplotsset{width=0.34\textwidth, compat=1.3}
-	\begin{tikzpicture}
-	\begin{groupplot}[
-	group style={
-		group name= group,
-		group size=2 by 2,
-		ylabels at=edge left,
-		horizontal sep = 2.5cm,
-		vertical sep = 1.5cm,
-	},
-	xtick={2^-8,2^-7,2^-6, 2^-5},
-	xticklabels = {$2^{-8}$,$2^{-7}$,$2^{-6}$,$2^{-5}$},
-	xlabel=Cell length $h$,
-	xmajorgrids,
-	ymajorgrids,
-	legend style={at={(1,0)}, anchor=south east},
-	]
-	\nextgroupplot[xmode=log, ymode=log,ylabel = $\LtwoNorm{ u_x - u_{x,\text{fine}}}$,]
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/VelocityXDG1Data.txt};
-	\addlegendentry{$k=1$};
-	\addplot[solid,  forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/VelocityXDG1Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXA{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor= west]
-	{\pgfmathprintnumber{\slopeXA}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/VelocityXDG2Data.txt};
-	\addlegendentry{$k=2$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}				
-	}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/VelocityXDG2Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXB{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=  west]
-	{\pgfmathprintnumber{\slopeXB}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/VelocityXDG3Data.txt};
-	\addlegendentry{$k=3$};			
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/VelocityXDG3Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXC{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXC}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/VelocityXDG4Data.txt};
-	\addlegendentry{$k=4$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/VelocityXDG4Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.9] (B)
-	;
-	\xdef\slopeXD{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXD}};				
-	\nextgroupplot[xmode=log, ymode=log,	ylabel = $ \LtwoNorm{T - T_{\text{fine}}}$,]
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/TemperatureDG1Data.txt};
-	\addlegendentry{$k=1$};
-	\addplot[solid,  forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/TemperatureDG1Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXA{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor= west]
-	{\pgfmathprintnumber{\slopeXA}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/TemperatureDG2Data.txt};
-	\addlegendentry{$k=2$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/TemperatureDG2Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.85] (B)
-	;
-	\xdef\slopeXB{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=  west]
-	{\pgfmathprintnumber{\slopeXB}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/TemperatureDG3Data.txt};
-	\addlegendentry{$k=3$};			
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/TemperatureDG3Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXC{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXC}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/TemperatureDG4Data.txt};
-	\addlegendentry{$k=4$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={100000,800000,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/TemperatureDG4Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.9] (B)
-	;
-	\xdef\slopeXD{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXD}};	
-	\nextgroupplot[ xmode=log, ymode=log,	ylabel=$\LtwoNorm{ Y_{\ch{CH4}} - Y_{{\ch{CH4}},\text{fine}} }$,]
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/MassFraction0DG1Data.txt};
-	\addlegendentry{$k=1$};
-	\addplot[solid,  forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/MassFraction0DG1Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXA{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor= west]
-	{\pgfmathprintnumber{\slopeXA}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/MassFraction0DG2Data.txt};
-	\addlegendentry{$k=2$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/MassFraction0DG2Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXB{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=  west]
-	{\pgfmathprintnumber{\slopeXB}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/MassFraction0DG3Data.txt};
-	\addlegendentry{$k=3$};			
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/MassFraction0DG3Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXC{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXC}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/MassFraction0DG4Data.txt};
-	\addlegendentry{$k=4$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/MassFraction0DG4Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.9] (B)
-	;
-	\xdef\slopeXD{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXD}};			
-	\nextgroupplot[xmode=log, ymode=log,ylabel=$\LtwoNorm{ p - p_{\text{fine}} }$,]
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/PressureDG1Data.txt};
-	\addlegendentry{$k'=0$};
-	\addplot[solid,  forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/PressureDG1Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXA{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor= west]
-	{\pgfmathprintnumber{\slopeXA}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/PressureDG2Data.txt};
-	\addlegendentry{$k'=1$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/PressureDG2Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXB{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=  west]
-	{\pgfmathprintnumber{\slopeXB}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/PressureDG3Data.txt};
-	\addlegendentry{$k'=2$};			
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/PressureDG3Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.90] (B)
-	;
-	\xdef\slopeXC{\pgfplotstableregressiona}			
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXC}};			
-	\addplot+[color=black, dashed] table {data/UnstrainedDiffFlame_ConvStudy/WithCombustion/PressureDG4Data.txt};
-	\addlegendentry{$k'=3$};
-	\addplot[solid, forget plot] table [   
-	x=x,
-	y={create col/linear regression={y=y,
-			variance list={10000,800,600,500,400,200,100}}}]
-	{data/UnstrainedDiffFlame_ConvStudy/WithCombustion/PressureDG4Data.txt}
-	coordinate [pos=0.75] (A)
-	coordinate [pos=0.9] (B)
-	;
-	\xdef\slopeXD{\pgfplotstableregressiona}
-	\draw (A) |- (B)
-	node [pos=0.55,anchor=south west]
-	{\pgfmathprintnumber{\slopeXD}};
-	\end{groupplot}
-	\end{tikzpicture}
+\inputtikz{ConvergenceDiffFlame}
 	\caption{Convergence study for the chambered diffusion flame configuration.}
 	\label{ConvergenceDiffFlame}
 \end{figure}
+
 In this test case we study the combustion of a \ch{CH4}-\ch{N2} mixture with air. The thermodynamic pressure $\hat p_0$ is set equal to an ambient pressure of $\SI{101325}{\pascal}$. The inlet velocity of the fuel jet is set to $\SI{0.025}{\meter \per \second}$ and its mass composition is $Y^0_{\ch{CH4}} = 0.2$ and $Y^0_{\ch{N2}} = 0.8$ while air has a composition $Y^0_{\ch{O2}} = 0.23$ and $Y^0_{\ch{N2}} = 0.77$. The temperature of the fuel and air feed streams is $\SI{300}{\kelvin}$. The length of the system $L$ is equal to $\SI{0.015}{\meter}$.
 For this configuration an $h$-convergence study is conducted, where uniform Cartesian meshes with  $5\times2^6$, $5\times2^7$, $5\times2^8$,  $5\times2^9$ and $5\times2^{10}$  cells are used. The polynomial degrees are varied from 1 to 4 for velocity, temperature and mass fractions, and from 0 to 3 for pressure.  Errors are calculated using the finest mesh as a reference solution.  The results are shown in \cref{ConvergenceDiffFlame} for variables $u_x$, $T$, $Y_{\ch{CH4}}$ and $p$. The convergence results for other variables are similar and not shown here. We observe the expected slope increase with increasing polynomial degrees. For low polynomial degrees the orders of convergence are very close to the theoretical values. However for higher polynomial degrees we observe a slight deterioration of the convergence rate.  
-
-\section{Conclusions}\label{sec5}
-In the present work we have shown the discretization using the DG method for the reactive low-Mach equations. A mixed order formulation has been used, where velocity, temperature and mass fractions are represented by polynomials of degree $k$, and pressure by polynomials of degree $k-1$. The system obtained from the discretization was solved by means of a Newton-Dogleg type method. Additionally, a homotopy strategy for solving highly nonlinear systems was introduced and used for some of the presented test cases . For the reactive test cases the concept of the flame sheet estimate was demonstrated to be a useful and computationally cheap way of initializing the finite reaction rate combustion calculations. 
-The solver was used to calculate three different benchmark configurations, one without combustion and two cases with combustion. The first of these is the differentially heated cavity. This benchmark case was solved for varying Rayleigh numbers, spanning from $\text{Ra} = 10^2$ to $\text{Ra} = 10^7$.  It was observed that for cases with Rayleigh number larger than $10^5$ the use of our homotopy strategy was necessary to ensure convergence. Velocity and temperature profiles as well as thermodynamic pressure and Nusselt number were compared with a reference solution, obtaining very satisfactory results, thus validating our implementation of the method for variable density systems. An $h$-convergence study was presented for the differentially heated cavity, obtaining the expected convergence rates up to $k = 4$, where some degeneration on the rates was observed. Furthermore the counterflow diffusion flame configuration was analyzed, with which we intended to test the implemented chemistry model in conjunction with our solver. The results obtained with \BoSSS were compared with results obtained by solving the self-similar one-dimensional representation of the counter diffusion flame configuration for varying strain rates. While for low strains some discrepancies between results were observed, the difference narrowed for high strains, which can be explained by the influence of the border effects on the centerline results for a two-dimensional configuration. Finally, the chambered diffusion flame configuration was used to study the convergence rates of our method. It was shown that, as expected, the convergence rates increase when using higher degree polynomials, but with some deterioration compared to the theoretical expected convergence. In future work the implemented solver is intended to be used in conjunction with our extended-DG solver \cite{kummerExtendedDiscontinuousGalerkin2017,kummerBoSSSPackageMultigrid2021,krauseIncompressibleImmersedBoundary2017}in order to study multiphase reactive systems such as droplets.
-%}
+\FloatBarrier
+	

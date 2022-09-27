@@ -1,0 +1,19 @@
+\begin{tikzpicture}
+	\begin{groupplot}[
+		group style={group size=2 by 3,		
+			horizontal sep = 1.5cm,
+			vertical sep = 2.0cm,
+			xlabels at=edge bottom,
+			ylabels at=edge left,
+		},
+		axis on top,
+		scale only axis,
+		enlargelimits=false,	
+		axis equal image,
+		xtick = {0.0, 0.5, 1},
+		ytick = {0.0, 0.5, 1},
+		]
+		\nextgroupplot
+		\addplot[thick,blue] graphics[	xmin=0,	xmax=1.0,	ymin=0.0,	ymax=1.0,]  {../plots/lidmesh.png};
+	\end{groupplot}	
+\end{tikzpicture}

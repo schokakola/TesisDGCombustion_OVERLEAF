@@ -1,0 +1,39 @@
+\begin{tikzpicture}[baseline]
+	\begin{axis}[
+		title = {\textbf{Case (b)}},
+		ylabel= Temperature ,
+		axis y line*=left,
+		ymin = 300,
+		y unit= K, 
+		change x base=true,
+		x SI prefix=centi,
+		xtick=\empty,
+		xticklabel=\empty,
+		]
+		\addplot+[color=cyan, no marks, thick] table {data/DataStrainSweep/5/FullTemperature_BOSSS.txt};
+		\addplot+[color=cyan, no marks, dashed]table {data/DataStrainSweep/5/FullTemperature_MATLAB.txt};
+	\end{axis} 	
+	\begin{axis}[
+		x tick label style={
+			/pgf/number format/.cd,
+			precision=3,
+			/tikz/.cd
+		},
+		ymin=0.0, ymax =0.25, 
+		ylabel= Mass fraction,
+		axis y line*=right,
+		change x base=true,
+		x SI prefix=centi,
+		xtick=\empty,
+		xticklabel=\empty,
+		] 	
+		\addplot+[color=black, no marks, thick,solid] table {data/DataStrainSweep/5/FullMassFraction0_BOSSS.txt};
+		\addplot+[color=blue,no marks,thick,solid] table {data/DataStrainSweep/5/FullMassFraction1_BOSSS.txt};
+		\addplot+[color=green, no marks,thick,solid] table {data/DataStrainSweep/5/FullMassFraction2_BOSSS.txt};
+		\addplot+[color=red, no marks,thick,solid] table {data/DataStrainSweep/5/FullMassFraction3_BOSSS.txt};
+		\addplot+[color=black,no marks, dashed] table {data/DataStrainSweep/5/FullMassFraction0_Matlab.txt};
+		\addplot+[color=blue,no marks, dashed] table {data/DataStrainSweep/5/FullMassFraction1_Matlab.txt};
+		\addplot+[color=green,no marks, dashed] table {data/DataStrainSweep/5/FullMassFraction2_Matlab.txt};
+		\addplot+[color=red,no marks, dashed] table {data/DataStrainSweep/5/FullMassFraction3_Matlab.txt};	
+	\end{axis}
+\end{tikzpicture}	 	

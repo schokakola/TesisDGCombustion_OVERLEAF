@@ -1,0 +1,15 @@
+	\begin{tikzpicture}
+	\begin{axis}[
+		width= 0.4\textwidth,
+		height= 0.3\textwidth ,
+		xlabel = $u$,
+		ylabel= $y$, 
+		legend style={at={(1,1)}, anchor=north east},
+		]
+		\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/VelXArr7.txt};%\addlegendentry{$x=7$, BoSSS}
+		\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/VelXArr15.txt};%\addlegendentry{$x=15$, BoSSS}
+		\addplot+[color=black, only marks, thick] table {data/HeatedBackwardFacingStep/VelXArr7_REF.txt}; \addlegendentry{$x=7$}
+		\addplot+[color=black, only marks, thick] table {data/HeatedBackwardFacingStep/VelXArr15_REF.txt};	\addlegendentry{$x=15$}
+		%	 \addlegendentry{Reference}y
+	\end{axis}
+\end{tikzpicture}

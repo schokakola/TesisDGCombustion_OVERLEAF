@@ -1,0 +1,16 @@
+	\begin{tikzpicture}
+	\begin{axis}[
+		axis on top,
+		scale only axis,
+		enlargelimits=false,	
+		axis equal image,
+		%	xlabel = $x$,
+		%	ylabel = $y$,
+		%	xtick = {0.0, 0.5, 1},
+		%	ytick = {0.0, 0.5, 1},
+		]
+		\addplot[thick,blue] graphics[	
+		xmin=0,	xmax=1.0,	ymin=0.0,	ymax=3.0,
+		] {../plots/visit0188.png};
+	\end{axis}	
+\end{tikzpicture}

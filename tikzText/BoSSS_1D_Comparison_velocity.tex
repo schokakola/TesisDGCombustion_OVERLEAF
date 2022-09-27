@@ -1,0 +1,32 @@
+	\begin{tikzpicture}
+	\begin{groupplot}[
+		group style={
+			group name=my plots,
+			group size=3 by 1,
+			x descriptions at=edge bottom,
+			ylabels at = edge left,
+		},
+		width= 0.21\textwidth ,
+		height= 0.21\textwidth ,
+		xlabel = $x$,
+		x unit=\meter,
+		y unit = \meter \per \second,
+		ylabel= Axial-velocity,
+		change x base=true,
+		x SI prefix=centi,	
+		change y base = true,
+		y SI prefix=centi,
+		max space between ticks=1000pt,
+		try min ticks=5,
+		]
+		\nextgroupplot[title = {\textbf{Case (a)}}]
+		\addplot+[color=black, no marks, thick] table {data/DataStrainSweep/2/FullVelocityX_BOSSS.txt}; \addlegendentry{\BoSSS}
+		\addplot+[color=black, no marks, dashed]table {data/DataStrainSweep/2/FullVelocityX_MATLAB2.txt};\addlegendentry{1D}
+		\nextgroupplot[title = {\textbf{Case (b)}}]
+		\addplot+[color=black, no marks, thick] table {data/DataStrainSweep/5/FullVelocityX_BOSSS.txt};\addlegendentry{\BoSSS}
+		\addplot+[color=black, no marks, dashed]table {data/DataStrainSweep/5/FullVelocityX_MATLAB.txt};\addlegendentry{1D}
+		\nextgroupplot [title = {\textbf{Case (c)}}]
+		\addplot+[color=black, no marks, thick] table {data/DataStrainSweep/11/FullVelocityX_BOSSS.txt};\addlegendentry{\BoSSS}
+		\addplot+[color=black, no marks, dashed]table {data/DataStrainSweep/11/FullVelocityX_MATLAB.txt};\addlegendentry{1D}
+	\end{groupplot}
+\end{tikzpicture}

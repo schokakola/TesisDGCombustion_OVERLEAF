@@ -1,0 +1,24 @@
+	\begin{tikzpicture}[baseline]
+	\pgfplotsset{width=0.35\textwidth, compat=1.3}
+	\begin{axis}[
+		name=plot1,%	
+		xlabel=1/$\Delta x$,
+		%			ylabel=$ \left\llbracket  u_x - u_{x,\text{fine}} \right\rrbracket_2$,
+		ylabel = Maximal temperature,
+		xmajorgrids,
+		ymajorgrids,
+		ymax =1945, 
+		x unit=1/cm,
+		y unit=K,
+		legend style={at={(1,1)}, anchor=north east},
+		]
+		%			\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg1.txt};
+		%			\addlegendentry{$k=1$};
+		\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg2.txt};
+		\addlegendentry{$k=2$};
+		\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg3.txt};
+		\addlegendentry{$k=3$};
+		\addplot+[color=black, dashed] table {data/MaxTemperatureStudy/data_dg4.txt};
+		\addlegendentry{$k=4$};
+	\end{axis}
+\end{tikzpicture}

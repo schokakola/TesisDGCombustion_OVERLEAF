@@ -1,2 +1,0 @@
-tikz/output1.pdf: data/MF_FULL_COMPARISON/Y0MF.txt
-tikz/output1.pdf: data/MF_FULL_COMPARISON/Y0Full.txt

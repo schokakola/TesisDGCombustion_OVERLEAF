@@ -1,0 +1,12 @@
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY0.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY0_REF.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY1.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY1_REF.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY2.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY2_REF.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY3.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY3_REF.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY4.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY4_REF.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY5.txt
+tikz/VelocityYProfile.pdf: data/HeatedSquareCavity_VelocityYComparison/VelocityY5_REF.txt

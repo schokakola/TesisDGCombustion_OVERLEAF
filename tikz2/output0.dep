@@ -1,2 +1,0 @@
-tikz/output0.pdf: data/LidDrivenCavity/uRe100.txt
-tikz/output0.pdf: data/LidDrivenCavity/uRe100_ref.txt

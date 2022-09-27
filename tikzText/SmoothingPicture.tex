@@ -1,0 +1,72 @@
+	\begin{tikzpicture}[
+	ausschnitt/.style={blue!50!red}
+	]
+	% Befehl für Teilbeschriftungen
+	\newcommand\teilbeschriftung[1]{
+		\node[below,text width=.45\textwidth] 
+		at (current axis.outer south){\subcaption{#1}};
+	}
+	% Einstellungen für Achsen
+	\pgfplotsset{
+		myaxis/.style={
+			width=0.4\textwidth,
+			height=0.3\textwidth,
+			xlabel=x,
+			ylabel=y,
+			yticklabel style={/pgf/number format/.cd,fixed,fixed zerofill,precision=1},
+		}
+	}
+	%
+	\begin{axis}[
+		myaxis,
+		xmin=0,
+		xmax=1,
+		xlabel = x,
+		ylabel = Temperature,
+		]
+		\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth0.txt}; %\addlegendentry{No smoothing}
+		\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth200.txt}; %\addlegendentry{$\sigma$=0.005}
+		\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth100.txt}; %\addlegendentry{$\sigma$=0.01}
+		\addplot [no markers, red]table {data/MF_FULL_COMPARISON/T_smooth50.txt}; %\addlegendentry{$\sigma$=0.02}
+		\draw[ausschnitt]
+		(axis cs:0.42,6.1)coordinate(ul)--
+		(axis cs:0.465,6.1)coordinate(ur)--
+		(axis cs:0.465,6.9)coordinate(or)--
+		(axis cs:0.42,6.9) -- cycle;
+	\end{axis}
+	%	\teilbeschriftung{Beschriftung 1}
+	% Ausschnitt
+	\begin{axis}[
+		axis on top, 	   
+		xshift=.5\textwidth,	
+		myaxis,
+		xmin = 0.440,xmax=0.460,
+		xlabel = x,
+		ylabel = Temperature,
+		legend pos=south west,
+		y tick label style={
+			/pgf/number format/.cd,
+			fixed,
+			fixed zerofill,
+			precision=1,
+			/tikz/.cd
+		},
+		x tick label style={
+			/pgf/number format/.cd,
+			fixed,
+			fixed zerofill,
+			precision=3,
+			/tikz/.cd
+		}
+		]
+		\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth0.txt}; \addlegendentry{No smoothing}
+		\addplot [no markers, green]table {data/MF_FULL_COMPARISON/T_smooth200.txt}; \addlegendentry{$\sigma$=0.005}
+		\addplot [no markers, blue]table {data/MF_FULL_COMPARISON/T_smooth100.txt}; \addlegendentry{$\sigma$=0.01}
+		\addplot [no markers, red]table {data/MF_FULL_COMPARISON/T_smooth50.txt}; \addlegendentry{$\sigma$=0.02}
+	\end{axis}
+	%	\teilbeschriftung{Beschriftung 2}
+	% Verbindungslinien
+	\draw[ausschnitt]
+	(current axis.north west)--(or)
+	(current axis.south west)--(ur);
+\end{tikzpicture}

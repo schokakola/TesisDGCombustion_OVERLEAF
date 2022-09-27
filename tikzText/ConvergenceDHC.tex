@@ -1,0 +1,247 @@
+	\begin{tikzpicture}
+	\begin{groupplot}[
+		group style={
+			group name= group,
+			group size=2 by 2,
+			ylabels at=edge left,
+			horizontal sep = 2.5cm,
+			vertical sep = 1.5cm,
+		},
+		xtick={2^-8,2^-7,2^-6, 2^-5, 2^-4,2^-3},
+		xticklabels = {$2^{-8}$,$2^{-7}$,$2^{-6}$,$2^{-5}$, $2^{-4}$, $2^{-3}$},
+		xlabel=Cell length $h$,
+		xmajorgrids,
+		ymajorgrids,
+		legend style={at={(1,0)}, anchor=south east},
+		]
+		\nextgroupplot[xmode=log, ymode=log,ylabel = $\LtwoNorm{ u_x - u_{x,\text{fine}}}$,]
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityXDG1Data.txt};
+		\addlegendentry{$k=1$};
+		\addplot[solid,  forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/VelocityXDG1Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.90] (B)
+		;
+		\xdef\slopeXA{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor= west]
+		{\pgfmathprintnumber{\slopeXA}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityXDG2Data.txt};
+		\addlegendentry{$k=2$};
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}				
+		}}]
+		{data/HSC_convstudy_XNSEC/VelocityXDG2Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.90] (B)
+		;
+		\xdef\slopeXB{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.15,anchor=  west]
+		{\pgfmathprintnumber{\slopeXB}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityXDG3Data.txt};
+		\addlegendentry{$k=3$};			
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/VelocityXDG3Data.txt}
+		coordinate [pos=0.80] (A)
+		coordinate [pos=0.95] (B)
+		;
+		\xdef\slopeXC{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0,anchor=east]
+		{\pgfmathprintnumber{\slopeXC}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityXDG4Data.txt};
+		\addlegendentry{$k=4$};
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/VelocityXDG4Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.9] (B)
+		;
+		\xdef\slopeXD{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor=south west]
+		{\pgfmathprintnumber{\slopeXD}};	
+		\nextgroupplot[xmode=log, ymode=log,	ylabel = $\LtwoNorm{ u_y - u_{y,\text{fine}}}$,]
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityYDG1Data.txt};
+		\addlegendentry{$k=1$};
+		\addplot[solid,  forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/VelocityYDG1Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.90] (B)
+		;
+		\xdef\slopeXA{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor= west]
+		{\pgfmathprintnumber{\slopeXA}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityYDG2Data.txt};
+		\addlegendentry{$k=2$};
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/VelocityYDG2Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.90] (B)
+		;
+		\xdef\slopeXB{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor=  west]
+		{\pgfmathprintnumber{\slopeXB}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityYDG3Data.txt};
+		\addlegendentry{$k=3$};			
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/VelocityYDG3Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.90] (B)
+		;
+		\xdef\slopeXC{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor=south west]
+		{\pgfmathprintnumber{\slopeXC}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/VelocityYDG4Data.txt};
+		\addlegendentry{$k=4$};
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/VelocityYDG4Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.9] (B)
+		;
+		\xdef\slopeXD{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor=south west]
+		{\pgfmathprintnumber{\slopeXD}};	
+		\nextgroupplot[ xmode=log, ymode=log,	ylabel=$ \LtwoNorm{T - T_{\text{fine}}}$,]
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/TemperatureDG1Data.txt};
+		\addlegendentry{$k=1$};
+		\addplot[solid,  forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/TemperatureDG1Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.90] (B)
+		;
+		\xdef\slopeXA{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor= west]
+		{\pgfmathprintnumber{\slopeXA}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/TemperatureDG2Data.txt};
+		\addlegendentry{$k=2$};
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/TemperatureDG2Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.85] (B)
+		;
+		\xdef\slopeXB{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor=  west]
+		{\pgfmathprintnumber{\slopeXB}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/TemperatureDG3Data.txt};
+		\addlegendentry{$k=3$};			
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/TemperatureDG3Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.90] (B)
+		;
+		\xdef\slopeXC{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor=south west]
+		{\pgfmathprintnumber{\slopeXC}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/TemperatureDG4Data.txt};
+		\addlegendentry{$k=4$};
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={100000,800000,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/TemperatureDG4Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.9] (B)
+		;
+		\xdef\slopeXD{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor=south west]
+		{\pgfmathprintnumber{\slopeXD}};
+		\nextgroupplot[xmode=log, ymode=log,ylabel=$\LtwoNorm{ p - p_{\text{fine}} }$,]
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/PressureDG1Data.txt};
+		\addlegendentry{$k'=0$};
+		\addplot[solid,  forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/PressureDG1Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.90] (B)
+		;
+		\xdef\slopeXA{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor= west]
+		{\pgfmathprintnumber{\slopeXA}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/PressureDG2Data.txt};
+		\addlegendentry{$k'=1$};
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/PressureDG2Data.txt}
+		coordinate [pos=0.80] (A)
+		coordinate [pos=0.95] (B)
+		;
+		\xdef\slopeXB{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0, anchor =east]
+		{\pgfmathprintnumber{\slopeXB}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/PressureDG3Data.txt};
+		\addlegendentry{$k'=2$};			
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/PressureDG3Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.90] (B)
+		;
+		\xdef\slopeXC{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor=south west]
+		{\pgfmathprintnumber{\slopeXC}};			
+		\addplot+[color=black, dashed] table {data/HSC_convstudy_XNSEC/PressureDG4Data.txt};
+		\addlegendentry{$k'=3$};
+		\addplot[solid, forget plot] table [   
+		x=x,
+		y={create col/linear regression={y=y,
+				variance list={10000,800,600,500,400,200,100}}}]
+		{data/HSC_convstudy_XNSEC/PressureDG4Data.txt}
+		coordinate [pos=0.75] (A)
+		coordinate [pos=0.9] (B)
+		;
+		\xdef\slopeXD{\pgfplotstableregressiona}			
+		\draw (A) |- (B)
+		node [pos=0.55,anchor=south west]
+		{\pgfmathprintnumber{\slopeXD}};		
+	\end{groupplot}
+\end{tikzpicture}

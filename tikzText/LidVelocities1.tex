@@ -1,0 +1,11 @@
+	\begin{tikzpicture}
+	\begin{axis}[
+		width= 0.4\textwidth ,
+		height= 0.3\textwidth ,
+		xlabel = $y$,
+		ylabel= $u$, 
+		]
+		\addplot+[color=black, only marks] table {data/LidDrivenCavity/uRe1000_ref.txt}; \addlegendentry{Reference}
+		\addplot[color=black, no marks] table {data/LidDrivenCavity/uRe1000.txt}; \addlegendentry{BoSSS}
+	\end{axis}
+\end{tikzpicture}

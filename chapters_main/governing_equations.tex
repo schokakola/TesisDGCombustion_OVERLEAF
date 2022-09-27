@@ -2,7 +2,8 @@
 \glsresetall
 In this work we present the methodology used to simulate reactive fluids in the low-Mach regime using the DG method. In this chapter we intend to show the governing equations, which will be discretized in the following chapters. First, in \cref{sec:GovEqLowMach} the equations for a flow in the low-Mach regime with finite reaction velocity are shown. A brief derivation of the set low-Mach equations is presented, which should also serve as a way of showing and justifying the assumptions made in this work. We restricted ourselves to a one-step chemical model, but the algorithm presented could also be used for more complex chemistry models.
 Subsequently, in \cref{sec:FlameSheet} the governing equations are shown for the case of assuming an irreversible chemical model with an infinite reaction rate. This case is often called the Burke–Schumann limit. These equations are used as part of the algorithm to solve the finite reaction rate case.%
-%
+%TODO incluir algun tipo de introduccion similar a lo que dice en
+%TODO Mathematical Models for Thermally Coupled Low Speed Flows
 
 \section{The low-Mach number equations for reactive flows} \label{sec:GovEqLowMach}
 Combustion processes can be modeled by a system of nonlinear partial differential equations, namely the balance equations for total mass, momentum, energy, and mass of individual species (usually expressed in terms of mass fractions). This system needs to be solved together with an equation of state and expressions for the transport properties as well as for the chemical reaction rates. 
@@ -345,53 +346,13 @@ Y_F^0\frac{W_P\nu_P}{W_F\nu_F}z & \text{if} \quad z < z_{st}
 	\pgfplotsset{
 		group/xticklabels at=edge bottom,
 		%		legend style = {
-		%			at ={ (1.0,1.0), anchor= north west}
-		%		},
+			%			at ={ (1.0,1.0), anchor= north west}
+			%		},
 		unit code/.code={\si{#1}}
 	}
 	\centering
-	\begin{tikzpicture} [spy using outlines={magnification=2.5,  width=2cm, height=1cm, connect spies}]
-	\begin{axis}[
-	axis on top, 	
-	width= 0.42\textwidth ,
-	height= 0.3\textwidth ,
-	xmin = 0,xmax=1,
-	xlabel = x,
-	ylabel = Temperature,
-	legend pos=north east,
-	]
-	\addplot [no markers, green]table {data/MF_FULL_COMPARISON/TMF.txt}; \addlegendentry{Infinite rate}
-	\addplot [no markers]table {data/MF_FULL_COMPARISON/TFull.txt}; \addlegendentry{Finite rate}
-	\coordinate (spypoint) at (axis cs:0.45,6.3);
-	\coordinate (magnifyglass) at (axis cs:0.72,3.5);
-	\begin{scope}
-	\spy [size=2cm] on (spypoint)
-	in node[fill=white] at (magnifyglass);
-	\end{scope}
-	\end{axis}
-	\end{tikzpicture}%
-	\begin{tikzpicture} [spy using outlines={chamfered rectangle, magnification=6,  width=2cm, height=1cm, connect spies}]
-	\begin{axis}[
-	axis on top,
-	width= 0.42\textwidth ,
-	height= 0.3\textwidth,
-	xmin = 0,xmax=1,
-	legend pos=north east,	
-	xlabel = x,
-	ylabel = Fuel mass fraction,
-	]
-	\addplot [no markers,green]table {data/MF_FULL_COMPARISON/Y0MF.txt}; \addlegendentry{Infinite rate}
-	\addplot [no markers]table {data/MF_FULL_COMPARISON/Y0Full.txt};  \addlegendentry{Finite rate}
-	%		\addplot [no markers,dashed]table {data/MF_FULL_COMPARISON/Y1MF.txt};
-	%		\addplot [no markers]table {data/MF_FULL_COMPARISON/Y1Full.txt};
-	\coordinate (spypoint) at (axis cs:0.455,0.0055);
-	\coordinate (magnifyglass) at (axis cs:0.7,0.07);
-	\begin{scope}
-	\spy [size=2cm] on (spypoint)
-	in node[fill=white] at (magnifyglass);
-	\end{scope}
-	\end{axis}
-	\end{tikzpicture}
+	\inputtikz{MFFRC1}%
+	\inputtikz{MFFRC2}%	
 	\caption{ Temperature and fuel mass fraction profiles calculated in the center-line of a counter-flow flame configuration using finite chemistry (black) and the flame sheet approximation (green). }
 	\label{fig:MixtureFraction_finiteRateComparison}
 \end{figure}

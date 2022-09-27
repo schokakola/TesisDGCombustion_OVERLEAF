@@ -1,0 +1,2 @@
+tikz/MFFRC1.pdf: data/MF_FULL_COMPARISON/TMF.txt
+tikz/MFFRC1.pdf: data/MF_FULL_COMPARISON/TFull.txt

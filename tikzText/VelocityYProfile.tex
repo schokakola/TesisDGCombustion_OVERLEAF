@@ -1,0 +1,41 @@
+\begin{tikzpicture}
+	\begin{groupplot}[
+		group style={
+			group name= group,
+			group size=3 by 2,
+			horizontal sep = 2.0cm,
+			vertical sep = 2.0cm,
+		},
+		xmin=0, xmax=1.0,
+		ymin=-0.4, ymax=0.4,
+		x tick label style={
+			/pgf/number format/.cd,
+			precision=3,
+			/tikz/.cd
+		},
+		xlabel=$x$,
+		ylabel= $u_y$,
+		xmajorgrids,
+		ymajorgrids,
+		legend style={at={(1,1)}, anchor=north east},
+		]
+		\nextgroupplot[title = {$\text{Ra} = 10^2$}]
+		\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY0.txt};
+		\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY0_REF.txt};
+		\nextgroupplot[title = {$\text{Ra} = 10^3$}]
+		\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY1.txt};
+		\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY1_REF.txt};
+		\nextgroupplot[title = {$\text{Ra} = 10^4$}]
+		\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY2.txt};
+		\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY2_REF.txt};
+		\nextgroupplot[title = {$\text{Ra} = 10^5$}]
+		\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY3.txt};
+		\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY3_REF.txt};
+		\nextgroupplot[title = {$\text{Ra} = 10^6$}]
+		\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY4.txt};
+		\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY4_REF.txt};
+		\nextgroupplot[title = {$\text{Ra} = 10^7$}]
+		\addplot+[color=black, no marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY5.txt};
+		\addplot+[color=black, only marks] table {data/HeatedSquareCavity_VelocityYComparison/VelocityY5_REF.txt};
+	\end{groupplot}
+\end{tikzpicture}

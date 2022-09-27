@@ -1,0 +1,22 @@
+	\begin{tikzpicture} [spy using outlines={chamfered rectangle, magnification=6,  width=2cm, height=1cm, connect spies}]
+	\begin{axis}[
+		axis on top,
+		width= 0.42\textwidth ,
+		height= 0.3\textwidth,
+		xmin = 0,xmax=1,
+		legend pos=north east,	
+		xlabel = x,
+		ylabel = Fuel mass fraction,
+		]
+		\addplot [no markers,green]table {data/MF_FULL_COMPARISON/Y0MF.txt}; \addlegendentry{Infinite rate}
+		\addplot [no markers]table {data/MF_FULL_COMPARISON/Y0Full.txt};  \addlegendentry{Finite rate}
+		%		\addplot [no markers,dashed]table {data/MF_FULL_COMPARISON/Y1MF.txt};
+		%		\addplot [no markers]table {data/MF_FULL_COMPARISON/Y1Full.txt};
+		\coordinate (spypoint) at (axis cs:0.455,0.0055);
+		\coordinate (magnifyglass) at (axis cs:0.7,0.07);
+		\begin{scope}
+			\spy [size=2cm] on (spypoint)
+			in node[fill=white] at (magnifyglass);
+		\end{scope}
+	\end{axis}
+\end{tikzpicture}

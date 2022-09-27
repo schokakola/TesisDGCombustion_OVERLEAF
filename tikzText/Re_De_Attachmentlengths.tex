@@ -1,0 +1,24 @@
+	\begin{tikzpicture}
+	\begin{groupplot}[
+		group style={
+			group name=my plots,
+			group size=3 by 1,
+			x descriptions at=edge bottom,
+			horizontal sep = 2cm,
+			%		ylabels at = edge left,
+		},
+		width= 0.4\textwidth ,
+		height= 0.3\textwidth ,
+		xlabel = \gls{Reynolds},
+		ylabel= x, 
+		]
+		\nextgroupplot%[title = {\textbf{Primary recirculation zone}}]
+		\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/BottomReatLength.txt}; \addlegendentry{$R_1$, BoSSS}
+		\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_BottomReatLength.txt}; \addlegendentry{$R_1$, Ref}
+		\nextgroupplot%[title = {\textbf{Secondary recirculation zone}}]
+		\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopSepLength.txt};  \addlegendentry{$R_2$, BoSSS}
+		\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopSepLength.txt}; \addlegendentry{$R_2$, Ref}
+		\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopReatLength.txt}; \addlegendentry{$R_3$, BoSSS}
+		\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopReatLength.txt}; \addlegendentry{$R_3$, Ref}
+	\end{groupplot}
+\end{tikzpicture}

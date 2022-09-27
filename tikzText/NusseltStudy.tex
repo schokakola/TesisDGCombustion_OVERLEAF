@@ -1,0 +1,70 @@
+\begin{tikzpicture}
+	\begin{groupplot}[
+		group style={
+			group name= group,
+			group size=3 by 2,
+			xlabels at=edge bottom,
+			ylabels at=edge left,
+			horizontal sep = 1.6cm,
+			vertical sep = 2.0cm,
+		},
+		grid = major,
+		width=3.5cm,
+		height=3.5cm,
+		xlabel= $\sqrt{\text{Number of cells}}$,
+		ylabel= Nusselt,
+		xtick=data,
+		max space between ticks=1000pt,
+		try min ticks=5,
+		y tick label style= {
+			/pgf/number format/.cd,
+			fixed,
+			fixed zerofill,
+			precision = 4,
+			legend style = {at={(1,0)},anchor = south east}
+		}
+		]
+		\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 2}$}]
+		\addplot [solid,mark = *, ]  table {data/NusseltStudy/NusseltReLeft100Dg2.txt};
+		\addlegendentry{$\text{Nu}_h$};
+		\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight100Dg2.txt};
+		\addlegendentry{$\text{Nu}_c$};
+		\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg2.txt};	
+		\addlegendentry{$\text{Nu}_{\text{ref}}$};	
+		\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 3}$}]
+		\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft100Dg3.txt};	
+		\addlegendentry{$\text{Nu}_h$};
+		\addplot [solid, mark = square,] table {data/NusseltStudy/NusseltReRight100Dg3.txt};
+		\addlegendentry{$\text{Nu}_c$};
+		\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg3.txt};	
+		\addlegendentry{$\text{Nu}_{\text{ref}}$};		
+		\nextgroupplot[title = {$\mathbf{Ra = 10^2, k = 4}$}]
+		\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft100Dg4.txt};	
+		\addlegendentry{$\text{Nu}_h$};
+		\addplot [solid, mark = square,] table {data/NusseltStudy/NusseltReRight100Dg4.txt};	
+		\addlegendentry{$\text{Nu}_c$};
+		\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt100Dg4.txt};	
+		\addlegendentry{$\text{Nu}_{\text{ref}}$};
+		\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 2}$},ymax=9]
+		\addplot [solid,mark = *,]  table {data/NusseltStudy/NusseltReLeft1000000Dg2.txt};	
+		\addlegendentry{$\text{Nu}_h$};
+		\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg2.txt};	
+		\addlegendentry{$\text{Nu}_c$};
+		\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg2.txt};	
+		\addlegendentry{$\text{Nu}_{\text{ref}}$};
+		\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 3}$}]
+		\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft1000000Dg3.txt};	
+		\addlegendentry{$\text{Nu}_h$};
+		\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg3.txt};	
+		\addlegendentry{$\text{Nu}_c$};
+		\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg3.txt};	
+		\addlegendentry{$\text{Nu}_{\text{ref}}$};
+		\nextgroupplot[title = {$\mathbf{Ra = 10^6, k = 4}$}]
+		\addplot [solid,mark = *, ] table {data/NusseltStudy/NusseltReLeft1000000Dg4.txt};	
+		\addlegendentry{$\text{Nu}_h$};
+		\addplot [solid, mark = square, ] table {data/NusseltStudy/NusseltReRight1000000Dg4.txt};	
+		\addlegendentry{$\text{Nu}_c$};
+		\addplot [dashed, very thick] table {data/NusseltStudy/ReferenceNusselt1000000Dg4.txt};	
+		\addlegendentry{$\text{Nu}_{\text{ref}}$};
+	\end{groupplot}
+\end{tikzpicture}

@@ -1,0 +1,4 @@
+tikz/uvelBFS.pdf: data/HeatedBackwardFacingStep/VelXArr7.txt
+tikz/uvelBFS.pdf: data/HeatedBackwardFacingStep/VelXArr15.txt
+tikz/uvelBFS.pdf: data/HeatedBackwardFacingStep/VelXArr7_REF.txt
+tikz/uvelBFS.pdf: data/HeatedBackwardFacingStep/VelXArr15_REF.txt

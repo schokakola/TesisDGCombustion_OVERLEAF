@@ -1,6 +1,0 @@
-tikz/output3.pdf: data/HeatedBackwardFacingStep/BottomReatLength.txt
-tikz/output3.pdf: data/HeatedBackwardFacingStep/REF_BottomReatLength.txt
-tikz/output3.pdf: data/HeatedBackwardFacingStep/TopSepLength.txt
-tikz/output3.pdf: data/HeatedBackwardFacingStep/TopReatLength.txt
-tikz/output3.pdf: data/HeatedBackwardFacingStep/REF_TopSepLength.txt
-tikz/output3.pdf: data/HeatedBackwardFacingStep/REF_TopReatLength.txt

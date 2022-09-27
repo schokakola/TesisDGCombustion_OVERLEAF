@@ -248,7 +248,10 @@ nopostdot=true	%remove the dot at the end of glossary descriptionsfsymbo
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{calc}
 \usetikzlibrary{positioning}
-
+\newcommand{\inputtikz}[1]{%
+	\tikzsetnextfilename{#1}%
+	\input{./tikzText/#1.tex}%
+}
 
 %%%%%%%%%
 %pgfplots
@@ -331,9 +334,9 @@ nopostdot=true	%remove the dot at the end of glossary descriptionsfsymbo
 %\tikzexternalize
 %\tikzsetexternalprefix{figures/}
 
-% \usetikzlibrary{external}
-% \tikzexternalize[prefix=tikz/]
-% \tikzsetfigurename{output} %% Necesary for Overleaf
+\usetikzlibrary{external}
+\tikzexternalize[prefix=tikz/]
+\tikzsetfigurename{output} %% Necesary for Overleaf
 %\tikzset{external/force remake} %up-to-date checks of all following figures (see: 50.4.3 Remaking Figures or Skipping Figures in pgf manual)
 %%%%%%%%%
 %Cleveref
@@ -423,7 +426,6 @@ noabbrev
 \begin{abstract}[ngerman]
 	\input{chapters_others/zusammenfassung}
 \end{abstract}
-
 \cleardoublepage
 \phantomsection
 \hypertarget{ackn}{}
@@ -460,9 +462,7 @@ noabbrev
 %Main part
 %%%%%%%%%%
 \mainmatter
-
 %
-
 \cleardoublepage
 \input{chapters_main/introduction}
 \cleardoublepage
@@ -471,8 +471,8 @@ noabbrev
 \input{chapters_main/numerical_method}
 \cleardoublepage
 \input{chapters_main/results}
-\cleardoublepage
-\input{chapters_main/conclusion}
+%\cleardoublepage
+%\input{chapters_main/conclusion}
 
 
 
@@ -480,7 +480,7 @@ noabbrev
 %%%%%%%%%%%%%%%%%%% TODO: Verificar si realmente todos los indices de las mass fractions ahora están referidos como k, y el numero total como N. Hacer lo mismo con M y W para los pesos moleculares.
 %
 %TODO still i need to check all the consistency between dimensionless and normal variables
-
+% TODO express in a formal way what actually the subscripts F, O, P, N mean in the context of combustion.
 
 \cleardoublepage
 \printbibliography[heading=bibintoc]

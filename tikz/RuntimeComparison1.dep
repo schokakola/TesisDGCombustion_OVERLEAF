@@ -1,0 +1,2 @@
+tikz/RuntimeComparison1.pdf: data/CouetteTempDifference_runtimes/xnsec_k1.txt
+tikz/RuntimeComparison1.pdf: data/CouetteTempDifference_runtimes/SIMPLE_k1.txt

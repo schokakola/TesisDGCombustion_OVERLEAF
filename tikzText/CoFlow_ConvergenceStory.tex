@@ -1,0 +1,21 @@
+	\begin{tikzpicture}	
+	\begin{axis}[
+		set layers=standard,
+		width=0.9\linewidth,
+		height=6cm,
+		ymode = log,
+		xlabel=Iteration number,
+		xmin = 0,
+		ylabel=Residual and trust region $\delta$,
+		xtick = {0,2,...,40},
+		ytickten = {-16,-12,...,12},
+		ymax = 1e11,
+		legend style = {at = {(0.1,0.1)}, anchor = south west},
+		]
+		\addplot[ orange, mark =o, mark size = 2.5pt] file{data/ConvergenceStory_CoFlow/residuals3.txt};\addlegendentry{$	\| \mathcal{A}(\myvector{U}_{n}) \|_2 $};	
+		\addplot[ blue, mark =square*, mark size = 2pt] file{data/ConvergenceStory_CoFlow/delta3.txt}; \addlegendentry{$\delta$};	
+		\node[draw, ] at (140,20) {Infinitely fast chemistry};
+		\draw [dashed,thick] (270, \pgfkeysvalueof{/pgfplots/ymin}) -- (270, \pgfkeysvalueof{/pgfplots/ymax});
+		\node[draw, ] at (340,20.0) {Finite rate chemistry};
+	\end{axis} 
+\end{tikzpicture}

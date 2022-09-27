@@ -1,0 +1,15 @@
+			\begin{tikzpicture}[baseline]
+	\begin{axis}[
+		width= 0.2\textwidth ,
+		height= 0.22\textwidth ,
+		xlabel = $\sqrt{\text{Number of cells}}$,
+		ylabel= Runtime{, (sec)}, 
+		legend style={at={(0,1)}, anchor=north west},
+		title = {$k=1$},
+		xtick={4,8,16},
+		%						title = {$\mathbf{k=1}$},
+		]
+		\addplot+[color=black, thick] table {data/CouetteTempDifference_runtimes/xnsec_k1.txt};\addlegendentry{XNSEC};
+		\addplot+[color=black, thick] table {data/CouetteTempDifference_runtimes/SIMPLE_k1.txt};\addlegendentry{SIMPLE};
+	\end{axis}
+\end{tikzpicture}%

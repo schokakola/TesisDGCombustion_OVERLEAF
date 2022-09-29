@@ -1,0 +1,135 @@
+\subsection{Differentially heated cavity problem}\label{ss:DHC}
+
+\begin{figure}[bt]
+	\begin{center}
+		\def\svgwidth{0.53\textwidth}
+		\import{./plots/}{diffheatedCavityGeometry.pdf_tex}
+		\caption{Schematic representation of the differentially heated cavity problem.}
+		\label{DHCGeom}
+	\end{center}
+\end{figure}
+
+
+
+The differentially heated cavity problem corresponds to a classical benchmark case often used to asses the capability of numerical codes to simulate variable density flows. \cite{paillereComparisonLowMach2000,vierendeelsBenchmarkSolutionsNatural2003,tyliszczakProjectionMethodHighorder2014} In this section, we show the basic set-up and compare our results with the ones presented in the work of Vierendeels et al. \cite{vierendeelsBenchmarkSolutionsNatural2003} where benchmark solutions for the differentially heated cavity are presented. They solve the fully compressible Navier-Stokes equations on a $1024\times1024$ stretched grid using a Finite Volume Method with quadratic convergence.
+
+The differentially heated cavity problem consists of a two-dimensional fully enclosed square cavity filled with fluid.  A sketch of the problem is shown in \cref{DHCGeom}. The left and right walls of the cavity have a constant temperature $\hat{T}_h$ and $\hat{T}_c$ respectively, with $\hat{T}_h >\hat{T}_c$, and the top and bottom walls are adiabatic. A gravity field induces fluid movement due to the density differences caused by the difference of temperature between the hot and cold walls.
+
+The natural convection phenomenon is characterized by the Rayleigh number, defined as
+\begin{equation}\label{eq:Rayleigh}
+	\text{Ra} = \Prandtl \frac{\hat g \RefVal{\rho}^2(\hat T_h-\hat T_c) \RefVal{L}^3}{\RefVal{T}\RefVal{\mu}^2},
+\end{equation}
+For small values of $\text{Ra}$, conduction dominates the heat transfer process, and a boundary layer covers the whole domain. On the other hand large values of $\text{Ra}$ represent a convection dominated flow. For increasing $\text{Ra}$ number, a thinner boundary layer is formed.
+
+\paragraph{Set-up}
+A reference velocity for buoyancy driven flows can be defined as\cite{vierendeelsBenchmarkSolutionsNatural2003}
+\begin{equation}
+	\RefVal{u} = \frac{\sqrt{\text{Ra}} \RefVal{\mu}}{\RefVal{\rho}\RefVal{L}}.
+\end{equation}
+The Rayleigh number is then related to the Reynolds number according to
+\begin{equation}
+	\text{Re} = \sqrt{\text{Ra}}.
+\end{equation}
+Thus it is sufficient to select a $\Reynolds$ number in our simulation, fixing the value of the $\text{Ra}$ number. The driving temperature difference $(\hat T_h - \hat T_c)$ appearing in \cref{eq:Rayleigh} can be represented as an non-dimensional parameter:
+\begin{equation}\label{eq:nondimensionalTemperature}
+	\varepsilon = \frac{\hat T_h - \hat T_c}{2\RefVal{T}}.
+\end{equation}
+Using these definitions, the Froude number can be calculated as
+\begin{equation}
+	\Froude = \sqrt{\Prandtl 2 \varepsilon}.
+\end{equation}
+All calculations assume a constant Prandtl number equal to 0.71. The viscosity and heat conductivity  dependence on temperature is calculated using \cref{eq:nondim_sutherland}.
+Our results are calculated and compared with those of the reference solution for $\RefVal{T} = 600\si{K}$  and $\varepsilon = 0.6$. The non-dimensional length of the cavity is $L=1$. The non-dimensional temperatures $T_h$ and $T_c$ are set to 1.6 and 0.4, respectively.
+Since the cavity contains a single species, it is governed by the equations for continuity, momentum and temperature (\crefrange{eq:LowMachConti}{eq:LowMachEnergy}) and no equation for species transport is needed. Thus $n_s = 1$ and  $Y_1 = 1$ in the whole domain.  Moreover, the non-dimensional equation of state (\cref{eq:ideal_gas}) only depends on the temperature and reduces to
+\begin{equation}
+	\rho = \frac{p_0}{T}.
+\end{equation}
+The thermodynamic pressure $p_0$ in a closed system and has to be adapted in order to ensure mass conservation. If $m_0$ is the initial total mass of the system, the thermodynamic pressure is given by
+\begin{equation}
+	p_0 = \frac{m_0}{\int_\Omega \frac{1}{T}\text{d}V}, \label{eq:p0Condition}
+\end{equation}
+where $\Omega$ represents the complete closed domain. The initial mass of the system $m_0$ is constant and we set $m_0 = 1.0$. Within the solution algorithm, \cref{eq:p0Condition} is used to update the value of the thermodynamic pressure after each Newton-Dogleg iteration.
+Moreover, the benchmark solution \cite{vierendeelsBenchmarkSolutionsNatural2003} also reports the Nusselt number and thermodynamic pressure associated with a given Rayleigh number. The Nusselt number is defined for a given wall $\Gamma$ in its averaged form as
+\begin{equation}\label{eq:Nusselt}
+	\text{Nu}_\Gamma = \frac{1}{T_h - T_c}\int_{\Gamma} k \pfrac{T}{x}\text{d}y.
+\end{equation}\begin{table}[t]
+	\begin{center}
+		\begin{tabular}{cccccc}
+			\hline
+			Rayleigh                           & $p_0$  & $p_{0,\text{ref}}$ & $\text{Nu}_{h}$ & $\text{Nu}_{c}$ & $\text{Nu}_{\text{ref}}$ \\ \hline
+			\parbox[0pt][13pt][c]{0pt}{}$10^2$ & 0.9574 & 0.9573             & 0.9787          & 0.9787          & 0.9787                   \\
+			$10^3$                             & 0.9381 & 0.9381             & 1.1077          & 1.1077          & 1.1077                   \\
+			$10^4$                             & 0.9146 & 0.9146             & 2.2180          & 2.2174          & 2.2180                   \\
+			$10^5$                             & 0.9220 & 0.9220             & 4.4801          & 4.4796          & 4.4800                   \\
+			$10^6$                             & 0.9245 & 0.9245             & 8.6866          & 8.6791          & 8.6870                   \\
+			$10^7$                             & 0.9225 & 0.9226             & 16.2411         & 16.1700         & 16.2400                  \\ \hline
+		\end{tabular}
+	\end{center}
+	\caption[Differentially heated cavity: Results of Nusselt number and Thermodynamic pressure]{Comparison of calculated Nusselt numbers of the hot and cold wall and Thermodynamic pressure $p_0$ reported values by \cite{vierendeelsBenchmarkSolutionsNatural2003} for the differentially heated cavity.}
+	\label{tab:p0_Nu_Results}
+\end{table}
+\paragraph{Comparison of results with the benchmark solution}
+The benchmark results \cite{vierendeelsBenchmarkSolutionsNatural2003} are presented for $\text{Ra} = \{10^2,10^3,10^4,10^5,10^6,10^7\}$. In this range of Rayleigh numbers, the problem has a steady-state solution, thus we are able to use our steady formulation of the problem. %TODO and the time derivatives are zero. de alguna forma dejar en claro que para steady state calculations se utiliza simplemente el mismo algoritmo pero con un deltaT muy grande
+The cavity is represented by the domain $[0,1]\times[0,1]$. We use an equidistant Cartesian mesh with $30 \times 30$ elements for each simulation. A polynomial degree of five is used for the velocities and temperature and a degree of four for the pressure.
+It is observed that for cases up to $\text{Ra} = 10^5$ the solution of the system using Newton's method is possible without further modifications, while for higher values the algorithm diverges. The homotopy strategy mentioned in \cref{sec:CompMethodology} is used to overcome this problem and obtain solutions for higher Rayleigh (and equivalently higher Reynolds) numbers. Here, the Reynolds number is selected as the homotopy parameter and continuously increased until the desired value is reached.
+In \cref{fig:TempProfile,fig:VelocityXProfile,fig:VelocityYProfile} temperature and velocity profiles for different Rayleigh numbers are shown. The profiles calculated with \BoSSS agree closely to the benchmark solution. As expected we observe
+an increase of the acceleration of the fluid in the vicinity of the walls for increasing Rayleigh numbers, forming a thin boundary layer.
+
+
+
+\begin{figure}
+	\centering
+	\pgfplotsset{width=0.35 \textwidth, compat=1.3}
+	\inputtikz{HSCStreamlines}
+	\caption{Streamlines of the heated cavity configuration with $\epsilon = 0.6$.}\label{fig:HSCStreamlines}
+\end{figure}
+
+
+\begin{figure}[!htb]
+	\centering
+	\pgfplotsset{width=0.20\textwidth, compat=1.3}
+	\inputtikz{VelocityXProfile}
+	\caption{ Profiles of the x-velocity component along the vertical line $x=0.5$. Solid lines represents our solution and the marks the benchmark solution. \cite{vierendeelsBenchmarkSolutionsNatural2003}}
+	\label{fig:VelocityXProfile}
+\end{figure}
+
+
+\begin{figure}[b!]
+	\centering
+	\pgfplotsset{width=0.20\textwidth, compat=1.3}
+	\inputtikz{VelocityYProfile}
+	\caption{ Profiles of the y-velocity component along the horizontal line $y=0.5$. Solid lines represents our solution and marks the benchmark solution. \cite{vierendeelsBenchmarkSolutionsNatural2003}}
+	\label{fig:VelocityYProfile}
+\end{figure}
+
+We also compare the thermodynamic pressure and the Nusselt numbers to the benchmark solution. The results are shown in \cref{tab:p0_Nu_Results}.  Results are obtained for polynomial degree of four for the velocities and temperature, three for the pressure in an equidistant $128\times128$ mesh. The thermodynamic pressure is obtained from \cref{eq:p0Condition}, and the Nusselt number is calculated with \cref{eq:Nusselt}. We observe that our results are in very good agreement with the reference results, and the thermodynamic pressure differ at most in the fourth decimal place. Note that the Nusselt number of the heated  wall $(\text{Nu}_\text{h})$ and the Nusselt number of the cold wall $(\text{Nu}_\text{c})$ are different.  As the Rayleigh number grows, this discrepancy becomes bigger, hinting that at such Rayleigh numbers the used mesh is not refined enough  to represent adequately the thin boundary layer and more complex flow structures appearing at high-Rayleigh cases. While for an energy conservative system $\text{Nu}_\text{h}$ and $\text{Nu}_c$ should be equal, for our formulation this is not the case and the values differ slightly. This discrepancy can be seen as a measure of the discretization error from the DG formulation.\cite{kleinHighorderDiscontinuousGalerkin2016} This hints that the discrepancy between Nusselt numbers should decrease when increasing the mesh resolution, which will be discussed in the next section.
+
+\begin{figure}[b!]
+	\centering
+	\pgfplotsset{width=0.20\textwidth, compat=1.3}
+	\inputtikz{TempProfile}
+	\caption{Temperature profiles for the differentially heated square cavity along different vertical levels. Solid lines represent our solution and marks the benchmark solution. \cite{vierendeelsBenchmarkSolutionsNatural2003}}
+	\label{fig:TempProfile}
+\end{figure}
+
+\begin{figure}[b!]
+	\centering
+	\inputtikz{NusseltStudy}
+	\caption{Nusselt numbers calculated with \cref{eq:Nusselt} at the hot wall ($\text{Nu}_h$) and the cold wall ($\text{Nu}_c$) for different number of cells and polynomial order $k$. The reference values from \cite{vierendeelsBenchmarkSolutionsNatural2003} are shown with dashed lines.}\label{fig:NusseltStudy}
+\end{figure}
+
+\paragraph{Convergence study}\label{ssec:ConvStudyHeatedCavity}
+An $h-$convergence study of the differentially heated cavity configuration was conducted. Calculations were performed for polynomial degrees $k = {1,2,3,4}$ and equidistant regular meshes with, respectively, $8, 16, 32, 64, 128$ and $256$ elements in each spatial coordinate.  The $L^2$-Norm was used for the calculation of the errors against the solution in the finest mesh. The results of the $h$-convergence study for varying polynomial orders $k$ are shown in \cref{fig:ConvergenceDHC}. Recall that, for increasing polynomial order, the expected order of convergence is given by the slope of the line curve when cell length and errors are presented in a log-log plot. Because we are using a mixed order formulation, the slopes should be equal to $k$ for the pressure and equal to $k+1$ for all other variables.  It is observed how the convergence rates scale approximately as $k+1$. Interestingly, for $k=2$ the rates are higher than expected. On the other hand, some degeneration in the convergence rates is observed for $k = 4$.
+
+As discussed in the previous section, the difference in the average values of the Nusselt number on the hot wall $\text{Nu}_\text{h}$  and the cold wall $\text{Nu}_\text{c}$ is a direct consequence of the spatial discretization error.
+
+In \cref{fig:NusseltStudy} the convergence behavior of the Nusselt number for different polynomial degrees $k$, different number of elements and for two different Ra numbers is presented. As expected, it can be observed that this discrepancy is smaller when a larger number of elements is used.
+
+
+\begin{figure}[t!]
+	\centering
+	\pgfplotsset{width=0.34\textwidth, compat=1.3}
+	\inputtikz{ConvergenceDHC}
+	\caption{Convergence study of the differentially heated cavity problem for $\text{Ra} = 10^3$.}\label{fig:ConvergenceDHC}
+\end{figure}
+

@@ -1,0 +1,92 @@
+
+\subsection{Couette flow with vertical temperature gradient} \label{ssec:CouetteFlowTempDiff}
+\begin{figure}[tb]
+	\begin{center}
+		\def\svgwidth{0.5\textwidth}
+		\import{./plots}{HeatedCouetteSketch.pdf_tex}
+		\caption{Schematic representation of the Couette flow with temperature difference test case.}
+		\label{fig:CouetteTempDiff_scheme}
+	\end{center}
+\end{figure}
+As a next test case for the low-Mach solver, we study a Couette flow with a vertical temperature gradient. This configuration was already studied in \citep{kleinHighorderDiscontinuousGalerkin2016}, where the SIMPLE algorithm in a DG framework was used. 
+In this section, we intend to reproduce the results from \citep{kleinHighorderDiscontinuousGalerkin2016} by using the fully coupled solver presented in \cref{sec:discretDGmethod}. Additionally, it will be shown how the implemented solver performs in relation to the SIMPLE based solver in terms of runtime.
+
+In \cref{fig:CouetteTempDiff_scheme} a schematic representation of the test case is shown. The top wall corresponds to a moving wall ($u = 1$) with a fixed temperature $T=T_h$. The bottom wall is static ($u = 0$), and has a constant temperature $T = T_c$.
+The domain is chosen as $\Omega = [0,1]\times[0,1]$, and Dirichlet boundary conditions are used for all boundaries. Additionally, the system is subjected to a gravitational field, where the gravity vector only has a component in the $y$ direction. Under these conditions, the x-component of velocity, pressure and temperature are only dependent on the $y$ coordinate, i.e. $u = u(y)$, $T = T(y)$ and $p = p(y)$. The governing equations (\cref{eq:NS-eq}) reduce to 
+\begin{align}
+	 & \frac{1}{\gls{Reynolds}} \pfrac{ }{y}\left(\mu\pfrac{u}{y}\right) = 0,                                  \\
+	 & \pfrac{p}{y} = -\frac{\gls{dens}}{\gls{Froude}^2},                                                      \\
+	 & \frac{1}{\gls{Reynolds}~\gls{Prandtl}} \pfrac{ }{y}\left(\gls{HeatConductivity}\pfrac{T}{y}\right) = 0.
+\end{align}
+
+By assuming a temperature dependence of the transport properties according to a Power Law ($\mu = \lambda = T^{2/3}$) it is possible to find an analytical solution for this problem.
+\begin{subequations}
+	\begin{align}
+		u(y) & = C_1 + C_2\left(y + \frac{T_c^{5/3}}{T_h^{5/3}-T_c^{5/3}} \right)^{3/5},\label{eq:CouetteU}                                                                \\
+		p(y) & = -\frac{5p_0}{2\gls{Froude}^2}\frac{\left(y\left(T_h^{5/3}-T_c^{5/3}\right)+T_c^{5/3}\right)^{2/5}}{\left(T_h^{5/3}-T_c^{5/3}\right)}+C,\label{eq:Couettep} \\
+		T(y) & = \left(C_3 - \frac{5}{3}C_4 y\right)^{3/5}\label{eq:CouetteT}.
+	\end{align}
+\end{subequations}
+Where the constants $C_1$, $C_2$, $C_3$ and $C_4$ are determined using the boundary conditions on the top and bottom walls, and are given by
+\begin{align}
+	C_1 & = \frac{\left(\frac{T_c^{5/3}}{T_h^{5/3}-T_c^{5/3}}\right)^{3/5}}{\left(\frac{T_c^{5/3}}{T_h^{5/3}-T_c^{5/3}}\right)^{3/5}-\left(\frac{T_h^{5/3}}{T_h^{5/3}-T_c^{5/3}}\right)^{3/5}} \\
+	C_2 & = \frac{1}{\left(\frac{T_h^{5/3}}{T_h^{5/3}-T_c^{5/3}}\right)^{3/5}-\left(\frac{T_c^{5/3}}{T_h^{5/3}-T_c^{5/3}}\right)^{3/5}}                                                        \\
+	C_3 & = T_c^{5/3},                                                                                                                                                                         \\
+	C_4 & = \frac{3}{5}\left(T_c^{5/3}-T_h^{5/3}\right)
+\end{align}
+and $C$ is a real-valued arbitrary constant for the pressure $p$.%
+\begin{center}
+	\begin{figure}[tb]
+		\pgfplotsset{
+			group/xticklabels at=edge bottom,
+		}
+		\inputtikz{CouetteSolution1}
+		\inputtikz{CouetteSolution2}
+		\inputtikz{CouetteSolution3}
+		\caption{Solution of the Couette flow with vertical temperature gradient. Viscosity and heat conductivity are calculated with a Power-Law.}
+		\label{fig:CouetteSolution}
+	\end{figure}
+\end{center}
+\FloatBarrier
+For all calculations of this configuration shown, the dimensionless parameters are set as $\gls{Reynolds} = 10$ and $\gls{Prandtl} =0.71$, $T_h = 1.6$ and $T_c = 0.4$. Since we are dealing with an open system, we set $p_0 =1.0$. The Froude number is calculated as
+\begin{equation}
+	\text{Fr} = \left( \frac{2\text{Pr}(T_h-T_c)}{(T_h+T_c)}\right)^{1/2}
+\end{equation}
+In \cref{fig:CouetteSolution} the solution for the velocity, pressure and temperature are shown. The results are for a mesh with $26\times26$ elements and a polynomial degree of three for $u$ and $T$, and a polynomial degree of two for $p$.
+\subsubsection{h-convergence study}
+The convergence properties of the DG method for this non-isothermal system was studied using the analytical solution described before. The domain is discretized and solved in uniform Cartesian meshes with $16\times16$, $32\times32$, $64\times64$ and $128\times128$ elements. The polynomial degrees for the velocity and temperature are changed from 1 to 4 and for the pressure from 0 to 3. The convergence criteria described in \cref{ssec:TerminationCriterion} was used for all calculations. The  analytical solution given by \cref{eq:CouetteU,eq:Couettep,eq:CouetteT} are used as Dirichlet boundary conditions on all boundaries of the domain. The error is calculated against the analytical solution using the $L^2$ norm. %TODO \todo[inline]{Comment more on the calculation of the l2norm}.
+In \cref{fig:ConvergenceDHC} the results of the h-convergence study are shown. We observe how the expected convergence rates are reached for all variables, namely a slope of the order $k+1$ for both velocity components and the temperature, and a slope of $k'+1$ for the pressure.
+\begin{figure}[t!]
+	\centering
+	\pgfplotsset{width=0.34\textwidth, compat=1.3}
+	\inputtikz{ConvergenceCFTD}
+	\caption{Convergence study of the Couette-flow with temperature difference. A power-law is used for the transport parameters.}\label{fig:ConvergenceCFTD}
+\end{figure}
+
+\subsubsection{Comparison with SIMPLE}
+As mentioned before, a solver for solving low-Mach flows based on the SIMPLE algorithm (presented in \cite{kleinHighorderDiscontinuousGalerkin2016}) has been already developed and implemented within the BoSSS framework.
+Though the solver was validated and shown to be useful for a wide variety of test cases, there were also disadvantages inherently associated with the SIMPLE algorithm. Within the solution algorithm, Picard-type iterations are used to search for a solution. This requires some prior knowledge from the user in order to select suitable relaxation factor values that provide stability to the algorithm, but at the same time do not slow down the computation substantially.
+It was also observed that the calculation times were prohibitively high for some test cases. This point motivated the development of the solver presented in the present work, where the system is solved in a monolytic way and  and the Newton method globalized with a Dogleg-type method is used to solve the system.
+%TODO \todo[inline]{what are exactly the advantages of the present solver? multigrid? Ortogonalization?} 
+We intend to show in this section a comparison of runtimes of the calculation of the Couette flow with vertical temperature gradient between the DG-SIMPLE algorithm \citep{kleinHighorderDiscontinuousGalerkin2016} and the present solver (denoted here as XNSEC). Calculations were performed on uniform Cartesian meshes with $16\times16$, $32\times32$, $64\times64$ and $128\times128$ elements, and with varying polynomial degrees between 1 and 3 for the velocity and temperature, and between 0 y 2 for the pressure. All calculations where initialized with a zero velocity and pressure field, and with a temperature equal to one in the whole domain. Are calculations were performed single-core and the convergence criteria is set to $10^{-8}$ for both solvers. The under-relaxation factors for the SIMPLE algorithm were set for all calculations to 0.8, 0.5 and 1.0 for the velocity, pressure and temperature, respectively.
+
+In figure \cref{fig:RuntimeComparison} a comparison of the runtimes from both solvers is shown. It is clearly  appreciated how the runtimes of the SIMPLE algorithm are higher for almost all of the cases studied. Obviously the under-relaxation parameters of the SIMPLE algorithm have an influence on the calculation times and an appropiate selection of them could decrease the runtimes. This is a clear disadvantage because the selection of adequate factors is highly problem dependent and requires some previous expertise from the user. On the other hand, the globalized Newton method used by the XNSEC avoid this problem by using a more sophisticated method and heuristics in order to find a better path to the solution.
+
+%TODO \todo[inline]{I have to somehow highlight even more the positive points of using this solver} 
+
+\begin{center}
+	\begin{table}[tb!]
+		\begin{tabular}{ccc}
+			\inputtikz{RuntimeComparison1}
+			 &
+			\inputtikz{RuntimeComparison2}
+			 &
+			\inputtikz{RuntimeComparison3}
+		\end{tabular}%
+		\caption{Runtime comparison of the DG-SIMPLE algorithm \citep{kleinHighorderDiscontinuousGalerkin2016} and the present solver (XNSEC) for the Couette flow with vertical temperature gradient configuration}
+		\label{fig:RuntimeComparison}
+	\end{table}
+\end{center}
+
+
+\FloatBarrier

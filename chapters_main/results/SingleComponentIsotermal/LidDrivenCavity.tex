@@ -1,0 +1,108 @@
+\subsection{Lid-driven cavity flow}
+\begin{figure}[b]
+	\begin{center}
+		\def\svgwidth{0.3\textwidth}
+		\import{./plots/}{LidDrivvenGeometry.pdf_tex}
+		\caption{Schematic representation of the Lid-Driven cavity flow.}
+		\label{fig:LidDrivenCavity}
+	\end{center}
+\end{figure}
+
+The lid-driven cavity flow is a test problem classically used for the validation of Navier-Stokes solvers. The system configuration is shown in \cref{fig:LidDrivenCavity}. It consists simply of a two-dimensional square cavity enclosed by walls whose upper boundary moves at constant velocity, causing the fluid to move. This provides a simple test case, which can be used for the validation of incompressible Navier-Stokes solvers. Benchmark results can be found widely in the literature for different Reynolds numbers. In this section, the results obtained with the DG-Solver are compared with those published by \cite{botellaBenchmarkSpectralResults1998}. 
+
+The problem is defined in the domain $\Omega = [0,1]\times [0,1]$. The system is solved for the velocity vector $\gls{velVec} = (u,v)$ and the pressure $p$. All boundary conditions are Dirichlet-type, particularly with $\gls{velVec} = (-1,0)$ for the boundary at $y = 1$ and $\gls{velVec} = (0,0)$ for all other sides. The gravity vector is set to $\gls{gravityVec} = (0,0)$.
+
+In \cref{fig:LiddrivenMesh} the mesh used is presented, which corresponds to a Cartesian mesh with extra refinement at both upper corners. This was done to be able to better represent the complex effects that take place there.  The streamlines plot presented in \cref{fig:LiddrivenMesh} shows the different vortex structures typical of this kind of system. In addition to the main vortex, smaller structures appear in the corners of the cavity, which requires an adequate mesh resolution.
+
+\begin{figure}[t]
+	\centering
+	\pgfplotsset{width=0.35 \textwidth, compat=1.3}
+	\inputtikz{LiddrivenMesh1}
+	\inputtikz{LiddrivenMesh2}
+	\caption{Used mesh and streamlines obtained for the lid-driven cavity flow with $\gls{Reynolds} = 1000$} \label{fig:LiddrivenMesh}
+\end{figure}
+
+ The lid-driven cavity was calculated for $\gls{Reynolds} = 1000$. For the calculations presented here, the polynomial degree is set to $k = 4$ and $k' = 3$. A regular Cartesian mesh with $16\times16$ elements is used with extra refinement in the corners. In \cref{fig:LidVelocities} a comparison of the calculated velocity with the DG-Solver and the velocities provided by the benchmark is shown. Clearly a very good agreement is obtained, even by using a relatively coarse mesh (the benchmark result uses a grid with $160\times160$ elements).
+
+A more rigorous comparison of results is presented in \cref{tab:LidCavityExtrema}, where the extreme values of the velocity components calculated through the centerline of the cavity are compared with the results presented by \cite{botellaBenchmarkSpectralResults1998}. Different mesh resolutions were used for this comparison, particularly meshes with $16\times16$, $32\times32$, $64\times64$, $128\times128$ and $256\times256$ elements, each with extra refinement at the corners. It can be clearly seen how for the finest mesh the results obtained with the DG-solver are extremely close to the reference, seeing a difference only at the fifth digit after the decimal point for the velocity components, and no difference for the spatial coordinates where the extrema are. It can also be appreciated that the results obtained with the coarser meshes are still very close to those of the reference. It is worth mentioning that this comparison here could be considered unfair, since the reference uses another method for solving the equations. One of the great advantages of the DG method is that choosing higher-order polynomials allows more information to be packed into each cell. A much fairer comparison would be achieved by comparing results based on the number of DOFs used in the simulation, as will be done later in section %TODO XXX.
+
+\newpage
+\begin{figure}[tb]
+	\pgfplotsset{
+		group/xticklabels at=edge bottom,
+		legend style = {
+				at ={ (0.09,0.3), anchor= north east}
+			},
+	}
+	\inputtikz{LidVelocities1}
+	\pgfplotsset{
+		group/xticklabels at=edge bottom,
+		legend style = {
+				at ={ (0.59,0.3), anchor= north east}
+			},
+	}
+	\inputtikz{LidVelocities2}
+	\caption{Calculated velocities along the centerlines of the cavity and reference values. Left plot shows the x-velocity for $x = 0.5$. Right plot shows the y-velocity for $y = 0.5$  }
+	\label{fig:LidVelocities}
+\end{figure}
+
+%	\begin{figure}[tb]
+%		\pgfplotsset{
+%			group/xticklabels at=edge bottom,
+%			legend style = {
+%				at ={ (0.09,0.2), anchor= north west}
+%			},
+%		}
+%		\begin{tikzpicture}
+%			\begin{axis}[
+%				width= 0.4\textwidth ,
+%				height= 0.3\textwidth ,
+%				xlabel = $y$,
+%				ylabel= $\omega$, 
+%				]
+%				\addplot+[color=black, only marks] table {data/LidDrivenCavity/omegaRe1000_x_ref.txt}; \addlegendentry{Reference}
+%				\addplot[color=black, no marks] table {data/LidDrivenCavity/omegaRe1000_x.txt}; \addlegendentry{BoSSS}
+%			\end{axis}
+%		\end{tikzpicture}
+%		\pgfplotsset{
+%			group/xticklabels at=edge bottom,
+%			legend style = {
+%				at ={ (0.59,1.0), anchor= north east}
+%			},
+%		}
+%		\begin{tikzpicture}
+%			\begin{axis}[
+%				width= 0.4\textwidth ,
+%				height= 0.3\textwidth ,
+%				xlabel = $x$,
+%				ylabel= $\omega$, 
+%				]
+%				\addplot+[color=black, only marks] table {data/LidDrivenCavity/omegaRe1000_y_ref.txt}; \addlegendentry{Reference}
+%				\addplot[color=black, no marks] table {data/LidDrivenCavity/omegaRe1000_y.txt}; \addlegendentry{BoSSS}
+%			\end{axis}
+%		\end{tikzpicture}
+%		\caption{Calculated vorticity along the centerlines of the cavity and reference values. Left plot shows the vorticity for $x = 0.5$. Right plot shows the vorticity for $y = 0.5$  }
+%		\label{fig:LidVorticities}
+%	\end{figure}
+
+
+
+%\subsection{ Taylor-Green vortex}
+%\blindtext[5]
+\begin{table}[]
+	\centering
+	\begin{tabular}{lllllrr}
+		\hline
+		Mesh           & $u_{\text{max}}$ & $y_{\text{max}}$ & $v_{\text{max}}$ & $x_{\text{max}}$ & \multicolumn{1}{l}{$v_{\text{min}}$} & \multicolumn{1}{l}{$x_{\text{min}}$} \\ \hline
+		$16\times16$   & 0.3852327        & 0.1820           & 0.3737295        & 0.8221           & -0.5056627                           & 0.0941                               \\
+		$32\times32$   & 0.3872588        & 0.1821           & 0.3760675        & 0.8227           & -0.5080496                           & 0.0943                               \\
+		$64\times64$   & 0.3897104        & 0.1748           & 0.3774796        & 0.8408           & -0.5248360                           & 0.0937                               \\
+		$128\times128$ & 0.3886452        & 0.1720           & 0.3770127        & 0.8422           & -0.5271487                           & 0.0907                               \\
+		$256\times256$ & 0.3885661        & 0.1717           & 0.3769403        & 0.8422           & -0.5270653                           & 0.0907                               \\\hline
+		Reference      & 0.3885698        & 0.1717           & 0.3769447        & 0.8422           & \multicolumn{1}{l}{-0.5270771}       & \multicolumn{1}{l}{0.0908}           \\ \hline
+	\end{tabular}
+	\caption{Extrema of velocity components through the centerlines of the cavity for $\gls{Reynolds} = 1000$. Reference values obtained from \cite{botellaBenchmarkSpectralResults1998} }
+	\label{tab:LidCavityExtrema}
+\end{table}
+\FloatBarrier
+\newpage

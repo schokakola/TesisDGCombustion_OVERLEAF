@@ -1,0 +1,70 @@
+
+\subsection{Backward-facing step}\label{ssec:BackwardFacingStep}
+The backward-facing step problem is another classical configuration widely used for validation of incompressible CFD codes. It has been widely studied theoretically, experimentally, and numerically by many authors in the last decades (see, for example, \cite{armalyExperimentalTheoreticalInvestigation1983,barkleyThreedimensionalInstabilityFlow2000,biswasBackwardFacingStepFlows2004} ).  In \cref{BFSsketch} a schematic representation of the problem is shown. It consists of a channel flow (usually considered fully developed) that is subjected to a sudden change in geometry that causes separation and reattachment phenomena. For these reasons, this case can be considered more challenging than the one presented in the previous section, since special care of the mesh used has to be taken in order to capture accurately all complex phenomena taking place.
+
+Although the backward-facing step problem is known to be inherently three-dimensional, it has been shown that it can be studied as a two-dimensional configuration along the symmetry plane for moderate Reynolds numbers. For the range of Reynolds numbers used in the calculations presented here, the two-dimensional assumption is justified \citep{barkleyThreedimensionalInstabilityFlow2000, biswasBackwardFacingStepFlows2004}.  The origin of the coordinate system is set at the bottom part of the step. The step height \gls{StepHeigth} and channel height \gls{ChannelHeight} characterize the system. The results in the literature are often reported as a function of the expansion ratio, defined as $\gls{ExpansionRatio} = (\gls{ChannelHeight}+\gls{StepHeigth})/\gls{ChannelHeight}$.
+A series of simulations were conducted with the objective of reproducing the results reported in \cite{biswasBackwardFacingStepFlows2004}, where the backward-facing step was calculated for Reynolds numbers up to $400$ and for an expansion ratio of $1.9423$.
+The Reynolds number for the backward-facing step configuration is defined in the literature in many forms. Here the definition based on the step height \gls{StepHeigth} and mean inlet velocity $U_{\text{mean}}$ as reference values is adopted, resulting in
+\begin{equation}
+	\gls{Reynolds}= \frac{\glsHat{StepHeigth}\hat U_{\text{mean}}}{\glsHat{kinVisc}}
+\end{equation}
+The system is isothermal, and the fluid is assumed to be air. The boundary at $ \hat x = -\hat L_0$ is a inlet boundary condition, where a parabolic profile is defined with %, with a kinematic viscosity  $\nu = \SI{15.52e-6 }{\meter \squared \per \second}$
+\begin{equation}
+	\hat u(y) = -6\hat U_{\text{mean}}\frac{(\hat y-\hat S)(\hat y-(\hat h+\hat S))}{\hat h^2}
+\end{equation}
+In order to minimize the effects of the outlet boundary condition in the system, the length $L$ of the domain was set to $L = 70 \gls{StepHeigth}$. All other boundaries are fixed walls. The effect of the domain length before the step was seen to have almost no impact on the calculation, and is just set to $L_0 = \gls{StepHeigth}$. For all calculations in this section a structured grid with 88400 elements is used. To better resolve the complex structures that occur in this configuration, smaller elements are used in the vicinity of the step, as seen in figure \cref{bfsmesh}.
+
+%Preliminary calculations showed that the calculated reattachment and detachment lengths are highly sensitivy to an adequate mesh.
+\begin{figure}[tb]
+	\begin{center}
+		\def\svgwidth{0.9\textwidth}
+		\import{./plots/}{BFS_sketch.pdf_tex}
+		\caption{Schematic representation of the backward-facing step. Both primary and secondary vortices are shown. Sketch is not to scale.}
+		\label{BFSsketch}
+	\end{center}
+\end{figure}
+
+\begin{figure}[tb]
+	\begin{center}
+		\def\svgwidth{0.8\textwidth}
+		\import{./plots/}{HBFS_MESH.pdf_tex}
+		\caption{Structured mesh used in all calculations. }
+		\label{bfsmesh}
+	\end{center}
+\end{figure}
+
+\begin{figure}[bt]
+	\centering
+	\pgfplotsset{
+		group/xticklabels at=edge bottom,
+		%		legend style = {
+		%			at ={ (1.0,1.0), anchor= north east}
+		%		},
+		unit code/.code={\si{#1}}
+	}
+	\inputtikz{uvelBFS}
+	\caption{Distribution of x-component of velocity in the backward-facing step configuration for a Reynolds number of 400. Solid lines correspond to results obtained with BoSSS}
+	\label{fig:uvelBFS}
+\end{figure}
+
+
+
+\begin{figure}[tb]
+	\pgfplotsset{
+		group/xticklabels at=edge bottom,
+		legend style = {
+				at ={ (0.05,0.9), anchor= north west}
+			},
+		unit code/.code={\si{#1}}
+	}
+	\centering
+	\inputtikz{Re_De_Attachmentlengths}
+	\caption{ Detachment and reattachment lengths of the primary (left figure) and secondary (right figure) recirculation zones after the backward-facing step compared to the reference solution \citep{biswasBackwardFacingStepFlows2004}.}
+	\label{fig:Re_De_Attachmentlengths}
+\end{figure}
+The backward-facing step configuration exhibits varying behavior as the number of Reynolds changes. For small Reynolds numbers, a single vortex, usually called the primary vortex, appears in the vicinity of the step. Furthermore, as the Reynolds number increases, a second vortex eventually appears on the top wall, as shown schematically in \cref{BFSsketch}.
+The detachment and reattachment lengths of the vortices are values usually reported in the literature. It is possible to determine the position of detachment by finding the point along the wall where the velocity gradient normal to the wall acquires a value equal to zero. Cubic splines were used to more accurately find this point.
+
+\cref{fig:Re_De_Attachmentlengths} shows the detachment and reattachment lengths of the primary and secondary vortices obtained with the DG-solver for different Reynolds numbers, which are also compared with the results presented in the reference paper from \cite{biswasBackwardFacingStepFlows2004}. It can be seen that the results for the detachment lengths of the primary vortex $R_1$ are in very good agreement with those of the reference. In the case of the secondary vortex, it is possible to see a very minimal deviation for the reattachment lengths $R_3$. It is interesting to note that, despite the fact that the reference does not report the existence of a secondary vortex for $\gls{Reynolds} = 200$, it was possible to observe it with the DG-solver. The results allow us to conclude that it is possible to study flows with complex behavior for low to moderate Reynolds numbers, at least in the isothermal case. In the next section, we will discuss what happens for the non-isothermal case.
+
+It is worth mentioning that the evaluation of the numerical accuracy of the solver using the two incompressible test cases presented in this section is problematic due to the presence of singularities, specifically at the corners at the coordinates $ \vec{x} = (0,1)$ and $\vec{x} =(1,1)$ of the Lid-driven cavity (where the pressure is not finite according to \cite{botellaBenchmarkSpectralResults1998}), and at the corner of the step $\vec{x} = (0,S)$ of the backward-facing step. The accuracy of the solver will be assessed in the following chapters.

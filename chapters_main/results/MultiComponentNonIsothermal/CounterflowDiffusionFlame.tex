@@ -1,0 +1,93 @@
+
+\subsection{Counterflow diffusion flame}\label{ss:CDF}
+
+\begin{figure}[b]
+	\begin{center}
+		\def\svgwidth{0.8\textwidth}
+		\import{./plots/}{CounterDiffusionFlame_sketch_rotated2.pdf_tex}
+		\caption{Schematic representation of the counterflow configuration.}
+		\label{fig:CDFScheme}
+	\end{center}
+\end{figure}
+
+The counterflow diffusion flame is a canonical configuration used to study the structure of non-premixed flames. In its most basic configuration it consists of two oppositely situated jets. The fuel (possibly mixed with some inert component such as nitrogen) is fed into the system by one of the jets, while the other jet feeds air to the system, thereby establishing a stagnation point flow. Upon contact, the reactants produce a flame which is located in the vicinity of the stagnation plane. A diagram of the setup can be seen in \cref{fig:CDFScheme}. This simple configuration has been subject of study for decades  because it provides a simple way of creating a strained diffusion flame, which proves to be useful when studying the flame structure, extinction limits or production of pollutants of flames \cite{pandyaStructureFlatCounterFlow1964} \cite{spaldingTheoryMixingChemical1961} \cite{keyesFlameSheetStarting1987}. By assuming an infinite injector diameter and self-similarity of the solution, it is possible to reduce the governing equations to a one-dimensional formulation (see e.g. the textbook of Kee \cite{keeChemicallyReactingFlow2003}). As a means of validating our implementation we compare the results with the solution of the one-dimensional self-similar problem calculated with \lstinline|BVP4|, a fourth order finite difference boundary value problem solver provided by \lstinline|MATLAB|.
+
+The combustion of a methane-nitrogen mixture with air was simulated using the \BoSSS code. The mass composition of the fuel inlet was assumed to be  $Y^0_{\ch{CH4}} = 0.2$ and $Y^0_{\ch{N2}} = 0.8$, and the oxidizer inlet corresponds to air with   $Y^0_{\ch{O2}} = 0.23$ and $Y^0_{\ch{N2}} = 0.77$. Because we are dealing with an open system, the thermodynamic pressure $\hat p_0$ is constant and set to the ambient pressure of $\SI{101325}{\pascal}$. As noted by Sung et al., \cite{sungStructuralResponseCounterflow1995} although the form of the inlet velocity profiles does have an influence on the solution of the problem, its effect on the solution near the flame zone is rather small. Nevertheless, as mentioned before the solution of the self-similar one-dimensional problem assumed an infinite injector diameter, which implies that the upstream velocity field has to be constant. Based on this fact we set the velocity profile of both inlets as a plug flow. Following combinations of inlet velocities were calculated:
+\begin{itemize}
+	\item  Low inlet velocities:  $u^0_{\text{fuel}} = \SI{0.048}{\meter \per \second}$ and  $u^0_{\text{oxidizer}} = \SI{0.144}{\meter \per \second}$,
+	\item Medium inlet velocities:  $u^0_{\text{fuel}} = \SI{0.12}{\meter \per \second}$ and  $u^0_{\text{oxidizer}} = \SI{0.36}{\meter \per \second}$
+	\item High inlet velocities: $u^0_{\text{fuel}}  = \SI{0.24}{\meter \per \second}$ and   $u^0_{\text{oxidizer}} = \SI{0.72}{\meter \per \second}$
+\end{itemize}
+By using as definition of the strain rate the maximum axial velocity gradient, the calculated strains for the three cases mentioned above are $\SI{34}{\per\second}$, $\SI{76}{\per\second}$ and $\SI{155}{\per\second}$, respectively. The temperature of both inlets is \SI{300}{\kelvin}. The separation between both jets $\hat L$ is equal to $\SI{0.02}{\meter}$, and the length of the inlet opening $\hat D$ is $\SI{0.02}{\meter}$. The left and right domain boundaries are selected to be at a distance $3\hat L$ of the center. A non-unity but constant Lewis number formulation is used,with
+$\Lewis_{\ch{CH4}} =  0.97 $ , $\Lewis_{\ch{O2}} = 1.11 $, $\Lewis_{\ch{H2O}} = 0.83 $ and $\Lewis_{\ch{CO2}} = 1.39 $.\cite{smookePremixedNonpremixedTest1991} The heat capacity of each component is evaluated locally from NASA polynomials, and the mixture heat capacity is calculated with \cref{eq:nondim_cpmixture}.
+%\tikzset{external/export next=false}
+\begin{figure}[t!]
+	\centering
+	\pgfplotsset{
+		compat=1.3,
+		tick align = outside,
+		yticklabel style={/pgf/number format/fixed},
+	}
+	\inputtikz{CDF_ConvergenceStory}
+	\caption{Convergence history of the diffusion flame in the counterflow configuration, with a maximum strain value of $165.1 $\si{s^{-1}}}
+	\label{fig:CDF_ConvergenceStory}
+\end{figure}
+
+In \cref{fig:CDF_ConvergenceStory} the convergence history obtained for a typical calculation of the counter diffusion flame is presented. The solution of the flame sheet calculation requires 17 iterations until convergence is reached. The obtained solution is used as a starting value for the finite chemical rate calculation, which only needs 10 iterations until convergence is reached. We note that because the flame sheet calculation is only used as an approximation of the final solution, a low polynomial degree can be used. For the flame sheet calculation $k = 2$ was chosen, resulting in a rather small system with 26,880 degrees of freedom. For the finite rate calculation $k = 4$ was used, which resulted in a system with 174,110 degrees of freedom.  With the above-mentioned another advantage of the approach of using the flame sheet calculation for two-dimensional simulations can be highlighted. The initial estimate can be found relatively easily for a system with few degrees of freedom. Using the solution found as the initial estimate has the consequence that Newton's algorithm for the complete problem (which has many more degrees of freedom) only needs a few iterations to find a solution.
+
+Because we are solving a two-dimensional configuration, in order to be able to compare our results with the ones obtained from the one-dimensional representation, the temperature, mass fractions and velocity profiles are extracted along the centerline of the system shown as the dashed line in \cref{fig:CDFScheme}. In \cref{fig:BoSSS_1D_Comparison_velocity} a comparison of the axial velocities calculated with \BoSSS and the one-dimensional solution is shown. While for the high strain case the results agree closely, for lower strains a discrepancy is observed. Recall that the derivation of the one-dimensional approximation assumes a constant velocity field incoming to the flame zone in order to obtain a self-similar solution. In the case of the two-dimensional configuration presented here, the border effects do have an influence on the centerline, which disrupts the self-similarity. This effect is more pronounced for low velocities, which explains the discrepancy between curves. Similarly, In \cref{fig:BoSSS_1D_Comparison} the temperature and mass fraction fields are presented. Again, a discrepancy is observed for low strains, but results show a good agreement for higher inlet velocities. It can also be observed how, as expected, \cite{fernandez-tarrazoSimpleOnestepChemistry2006} at higher strains a significant penetration (leakage) of oxygen across the flame is present. Finally, in \cref{fig:TempAndReacFields} the two-dimensional temperature, velocity and reaction rate fields for the case (a) are shown.
+
+Finally, in \Cref{fig:TemperatureConvergenceDiffFlame} we show how the maximum value of the temperature behaves for different mesh resolutions and polynomial degrees. The temperature tends to a limit value, and we observe how this value is reached already for coarse meshes when using a polynomial degree of three or four. We also observe that for $k=2$ the temperature tends to a limit value, but slower in comparison to $k =3$ or $4$. The values for $k=1$ are not displayed because for the mesh resolutions shown here, the values of the maximum temperature were of the order of 50 \si{K} bigger than the limit value. We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet. This fact made hard to realize a $h$-convergence study for the complete domain. Based on this we decided to analyse a flame configuration that doesn't exhibit this behaviour, as shown in the next section.
+
+
+We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet, which induces a pollution phenomenon on the accuracy of the solution. This fact made hard to realize an $h$-convergence study for the complete domain. Based on this fact we decided to analyze a flame configuration that does not exhibit this behaviour, as shown in the next section.
+\begin{figure}[t!]
+	\pgfplotsset{
+		group/xticklabels at=edge bottom,
+		legend style = {
+				at ={ (0.5,1), anchor= north east}
+			},
+		unit code/.code={\si{#1}}
+	}
+	\centering
+	\inputtikz{BoSSS_1D_Comparison_velocity}
+	\caption{ Comparison of the axial velocity calculated with \BoSSS and the one-dimensional approximation. }
+	\label{fig:BoSSS_1D_Comparison_velocity}
+\end{figure}
+\newpage
+\tikzexternaldisable
+%\tikzset{external/export next=false}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[b!]
+	\centering
+	\pgfplotsset{
+		width=0.85\textwidth,
+		height = 0.3\textwidth,
+		compat=1.3,
+		tick align = outside,
+		yticklabel style={/pgf/number format/fixed},
+	}
+	\inputtikz{BoSSS_1D_Comparison1}
+	\inputtikz{BoSSS_1D_Comparison2}
+	\inputtikz{BoSSS_1D_Comparison3}
+	\caption{Comparison of temperature and mass fraction fields obtained with \BoSSS and the one-dimensional approximation.}
+	\label{fig:BoSSS_1D_Comparison}
+\end{figure}
+\tikzexternalenable
+\newpage
+\begin{figure}[b]
+	\begin{center}
+		\def\svgwidth{0.8\textwidth}
+		\import{./plots/}{CDF_Results.pdf_tex}
+		\caption{Calculated temperature and velocity fields (top picture) and reaction rate (second picture) of the counter diffusion flame configuration, case (a). The unit of the temperature is \si{K} and of the reaction rate \si{\kilo\mole \per \meter \cubed \per \second}. }
+		\label{fig:TempAndReacFields}
+	\end{center}
+\end{figure}
+
+\begin{figure}[tbp]
+	\centering
+	\inputtikz{TemperatureConvergenceDiffFlame}
+	\caption{Maximum value of the temperature for the counter diffusion flame configuration, for different mesh sizes in the x-direction and polynomial degrees. Values for $k=1$ are not shown, because for this range of cell lengths the maximum temperature value was of the order of 50K higher than the ones depicted here.}
+	\label{fig:TemperatureConvergenceDiffFlame}
+\end{figure}
+\FloatBarrier
+\newpage

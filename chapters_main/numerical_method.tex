@@ -3,7 +3,7 @@
 
 \section{The Discontinous Galerkin method}
 \subsection{Spatial discretization} \label{ssec:SpatDiscretization}
-We start by introducing some standard definitions and notations in the context of DG methods:\cite{kummerExtendedDiscontinuousGalerkin2017} \cite{kikkerFullyCoupledHighorder}
+We start by introducing some standard definitions and notation in the context of DG methods:\cite{kummerExtendedDiscontinuousGalerkin2017} \cite{kikkerFullyCoupledHighorder}
 We define a computational domain $\Omega \subset \mathbb{R}^2$ with a polygonal and simply connected boundary $\partial \Omega$. Our numerical grid is then defined by the set of non-overlapping elements $\mathcal{K} = \{K_1, ..., K_N\}$ with a characteristic mesh size $h$, so that $\Omega$ is the union of all elements, i.e. $\Omega = \bigcup_{i=1}^N K_i$. We define  $\Gamma = \bigcup_j \partial K_j$ as the union of all edges (internal edges and boundary edges) and $\Gamma_I = \Gamma \setminus \partial \Omega$ as the union of all interior edges.
 For each edge of $\Gamma$ a normal field $\myvector{n}_{\Gamma}$ is defined. Particularly on $\partial \Omega$ is defined as an outer normal and $\vec{n}_\Gamma = \vec{n}_{\partial\Omega}$.
 For each field $\myvector{u} \in C^0\left(\Omega\setminus \Gamma_I\right)$ we define  $\myvector{u}^-$  and  $\myvector{u}^+$, which describe the information in the interior and exterior sides of the cell:
@@ -313,7 +313,9 @@ The relatively large linear system of equations for each Newton iteration is sol
 from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows'' library collection to solve the linear system.
 
 \textit{BoSSS} also features a method for solving highly nonlinear problems with a homotopy strategy.
-Further details on the used Newton method solver, the homotopy strategy and its implementation are given in the next sections, which are adapted from Kikker et al.\cite{kikkerFullyCoupledHighorder}  and are included for the sake of completeness. For information on the mentioned orthonormalization multigrid algorithm we refer the interested reader to the work of Kummer et al. \cite{kummerBoSSSPackageMultigrid2021}
+Further details on the used Newton method solver, the homotopy strategy and its implementation are given in the next sections, which are adapted from \cite{kikkerFullyCoupledHighorder}  and are included for the sake of completeness. For information on the mentioned orthonormalization multigrid algorithm we refer the interested reader to the work of \cite{kummerBoSSSPackageMultigrid2021}.
+
+From this point on, the solver presented in this work will be called XNSEC (e\textbf{X}tended \textbf{N}avier-\textbf{S}tokes for \textbf{C}ombustion). The term \textit{extended} refers to the framework on which the solver is built, which focuses on applications for multi-phase flows using a sharp interface approach using a level-set method. This point will be briefly discussed in the section %TODO future work chapter
 
 \subsubsection{Calculation of the Jacobian matrix}
 We start by introducing a few new elements to be able to describe the implemented Newton method.

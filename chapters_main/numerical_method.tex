@@ -302,8 +302,8 @@ Finally, the volumetric source term of the energy and mass fraction equations ar
 \end{gather}
 The heat release $\heatRelease$ is calculated with \cref{eq:heatReleaseOneStepNonDim}, the reaction rate $\rateReac$ is evaluated using \cref{eq:NonDimArr} and the mixture heat capacity with \cref{eq:nondim_cpmixture}.
 \subsection{Temporal discretization}
-\blindtext[7]
-
+Blabla
+%TODO and the time derivatives are zero. de alguna forma dejar en claro que para steady state calculations se utiliza simplemente el mismo algoritmo pero con un deltaT muy grande
 \section{Computational methodology} \label{sec:CompMethodology}
 
 The presented solver is embedded in the \textit{BoSSS} (Bounded Support Spectral Solver) code, which is under development at the chair of fluid dynamics of the Technical University of Darmstadt, and is available under \href{https://github.com/FDYdarmstadt/BoSSS}{https://github.com/FDYdarmstadt/BoSSS}. \BoSSS is a general framework for the discretization of conservation laws using the DG method and uses a modal DG approach with orthonormal Legendre polynomials as basis functions. The \BoSSS code features a variety of applications in the context of computational fluid dynamics, such as a solver for multiphase flows with a sharp interface approach, \cite{kummerExtendedDiscontinuousGalerkin2017} an incompressible Immersed Boundary Method solver for particle laden flows,\cite{krauseIncompressibleImmersedBoundary2017} a solver for viscoelastic fluid flows,\cite{kikkerFullyCoupledHighorder} and a solver for compressible flows, \cite{geisenhoferDiscontinuousGalerkinImmersed2019} among others.

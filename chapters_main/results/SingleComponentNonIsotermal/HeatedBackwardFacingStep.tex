@@ -8,21 +8,21 @@
 	\end{center}
 \end{figure}
 
-As an extension to the previous case, we seek to reproduce the results presented by \cite{xieFluidFlowHeat2016}, where the same backward-facing step configuration as presented in \cref{ssec:BackwardFacingStep} is studied, but with the particularity that in this case the bottom wall is heated to a constant temperature higher than the inlet temperature, thus featuring a non-isothermal system. The fluid entering the system has a temperature equal to $\hat T_0 = \SI{283}{\kelvin}$ and the bottom wall is set to a constant temperature of $\hat T_1 =\SI{313}{\kelvin}$
-In the work of \cite{xieFluidFlowHeat2016} results are reported for the local Nusselt numbers and local friction coefficients $f_d$  along the bottom wall ($y = 0$) for different expansion ratios and Reynolds numbers. By putting together the definition of the Nusselt number ( $\gls{Nusselt} = \frac{\gls{HeatTransCoef}\hat{L}}{\gls{HeatConductivity}}$), Newton's law of cooling ($\hat{\vec{q}} = \hat{h} (\hat{T}_0 - \hat{T}_W )$), and Fourier's law of heat conduction ($\hat{\vec{q}} = \hat \lambda \hat{\nabla} \glsHat{temp}$) a expression for the local Nusselt number is obtained.
+As an extension to the previous case, we seek to reproduce the results presented by \cite{xieFluidFlowHeat2016}, where the same backward-facing step configuration as presented in \cref{ssec:BackwardFacingStep} is studied, but with the particularity that in this case the bottom wall is heated to a constant temperature higher than the inlet temperature, thus featuring a non-isothermal system. The fluid entering the system has a temperature equal to $\hat T_0 = \SI{283}{\kelvin}$ and the bottom wall is set to a constant temperature of $\hat T_1 =\SI{313}{\kelvin}$. The inlet temperature is used as the reference temperature, obtaining $T_0 = 1.0$ and $T_1 = 1.106$.
+In the work of \cite{xieFluidFlowHeat2016} results are reported for the local Nusselt numbers and the local friction coefficients $f_d$  along the bottom wall ($y = 0$) for different expansion ratios and Reynolds numbers.
+By combining the definition of the Nusselt number ($\gls{Nusselt} = \gls{HeatTransCoef}\hat{L}/\glsHat{HeatConductivity}$), Newton's law of cooling ($\hat{\vec{q}} = \hat{h} (\hat{T}_0 - \hat{T}_1 )$), and Fourier's law of heat conduction ($\hat{\vec{q}} = \hat \lambda \hat{\nabla} \glsHat{temp}$) a expression for the local Nusselt number is obtained.
 \begin{equation}
-	\gls{NusseltLoc} = \frac{\hat L}{\hat T_0-\hat T_W}\hat \nabla \hat T \cdot \hat {\vec{n}}
+	\gls{NusseltLoc} = \frac{\hat L}{\hat T_0-\hat T_1}\hat \nabla \hat T \cdot \hat {\vec{n}}
 \end{equation}
-where $\hat L$ is a reference length. We choose $ \hat L = \hat S$ to be consistent with the definition of the Reynolds number of the reference. Furthermore, recognizing that the wall shear stress along the bottom wall $\tau_{\text{w}} = -\mu \nabla u \cdot \vec{n}$, the local friction factor can be written as
+where $\hat L$ is the reference length. We choose $ \hat L = \hat S$ to be consistent with the definition of the Reynolds number of the reference. Furthermore, the local friction factor can be written as % recognizing that the wall shear stress along the bottom wall $\tau_{\text{w}} = -\mu \nabla u \cdot \vec{n}$,
 \begin{equation}
-	f_d = \frac{8\nu} { (U_{\text{mean}})^2}  \nabla u \cdot \vec{n}
+	f_d = \frac{8\hat \nu} { (\hat U_{\text{mean}})^2}  \hat \nabla \hat u \cdot \hat {\vec{n}}
 \end{equation}
-It should be noted that for the range of temperature differences involved in this case, the variation of physical parameters such as density, viscosity, and thermal conductivity with respect to temperature has no appreciable influence on the calculated flow fields.
 
-Simulations were conducted for different Reynolds numbers and expansion ratios. In \cref{BFS_Streamlines} the temperature field and streamlines corresponding to a calculation with $\gls{Reynolds} = 700$ are shown. Here, the apparition of the secondary vortex is seen in the top wall.
+ Simulations were conducted for different Reynolds numbers and expansion ratios. In \cref{BFS_Streamlines} the temperature field and streamlines corresponding to a calculation with $\gls{Reynolds} = 700$ are shown. Here, the apparition of the secondary vortex is seen in the top wall. It must be noted here that the results obtained using the XNSEC-solver are substantially different from those reported by \cite{xieFluidFlowHeat2016}, and will not be shown here. However, in the work of \cite{henninkLowMachNumberFlow2022} the same is also observed, stating that with his method it was not possible to reproduce the results presented by \cite{xieFluidFlowHeat2016}. 
 
-It must be noted here that the results obtained by us are substantially different from those reported by \cite{xieFluidFlowHeat2016}, and will not be shown here. However, in the work of \cite{henninkLowMachNumberFlow2022} the same is also noted, saying that with his method it was not possible to reproduce the results presented by \cite{xieFluidFlowHeat2016}. Comparing our results with those of Hennink we can observe that the same results are obtained. as demonstrated in \cref{fig:fd_Nu_plot}.% We can conclude from these results that the solver is able to deal with non-isothermal flows adequately.
-
+In \cref{fig:fd_Nu_plot} the local friction factor and local Nusselt number along the wall $y = 0$ are plotted for $\gls{Reynolds} = 700$ and ER $= 2$. Comparing the results from the XNSEC-solver with those reported by Hennink we can observe a very good agreement.
+With this test it is possible to confirm that the XNSEC solver is able to deal with complex systems where heat transfer is present. However, for the range of temperature differences involved in this case, the variation of physical parameters such as density, viscosity and thermal conductivity with respect to temperature has no appreciable influence on the simulated flow fields. The next two test-cases will show how the XNSEC-solver is able to simulate low-Mach number flows with a considerable temperature difference.
 \begin{figure}[tb]
 	\pgfplotsset{
 		group/xticklabels at=edge bottom,
@@ -36,7 +36,4 @@ It must be noted here that the results obtained by us are substantially differen
 	\caption{Local friction factor and local Nusselt number along the bottom wall for $\gls{Reynolds} = 700$ and an expansion ratio of two. The solid lines corresponds to our solution and the marks to the reference \citep{henninkLowMachNumberFlow2022}}
 	\label{fig:fd_Nu_plot}
 \end{figure}
-
-
-
 \FloatBarrier

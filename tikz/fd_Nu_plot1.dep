@@ -1,2 +1,0 @@
-tikz/fd_Nu_plot1.pdf: data/HeatedBackwardFacingStep/fd700.txt
-tikz/fd_Nu_plot1.pdf: data/HeatedBackwardFacingStep/REF_fd700.txt

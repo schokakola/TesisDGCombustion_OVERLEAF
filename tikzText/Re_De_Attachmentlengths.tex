@@ -13,12 +13,12 @@
 		ylabel= x, 
 		]
 		\nextgroupplot%[title = {\textbf{Primary recirculation zone}}]
-		\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/BottomReatLength.txt}; \addlegendentry{$R_1$, BoSSS}
+		\addplot+[color=black, no marks, thick] table {data/HeatedBackwardFacingStep/BottomReatLength.txt}; \addlegendentry{$R_1$, XNSEC}
 		\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_BottomReatLength.txt}; \addlegendentry{$R_1$, Ref}
 		\nextgroupplot%[title = {\textbf{Secondary recirculation zone}}]
-		\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopSepLength.txt};  \addlegendentry{$R_2$, BoSSS}
+		\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopSepLength.txt};  \addlegendentry{$R_2$, XNSEC}
 		\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopSepLength.txt}; \addlegendentry{$R_2$, Ref}
-		\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopReatLength.txt}; \addlegendentry{$R_3$, BoSSS}
+		\addplot+[color=black, no marks, thick, solid] table {data/HeatedBackwardFacingStep/TopReatLength.txt}; \addlegendentry{$R_3$, XNSEC}
 		\addplot+[color=black, only marks, dashed]table {data/HeatedBackwardFacingStep/REF_TopReatLength.txt}; \addlegendentry{$R_3$, Ref}
 	\end{groupplot}
 \end{tikzpicture}

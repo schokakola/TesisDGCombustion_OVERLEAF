@@ -5,35 +5,35 @@ The following sections present a comprehensive solver validation using various t
 
 All calculations shown here were performed on an AMD EPYC 7543 32-core Processor, DDR4 %TODO \todo[inline]{which specifications of the cluster should i include?}
 Unless otherwise stated, all calculations use the termination criteria presented in \cref{ssec:TerminationCriterion}.
-
+%%%%%%%%
+%%%%%%%%
 \section{Single-component isothermal cases}\label{sec:SingleCompIsotCase}
+%%%%%%%%
+%%%%%%%%
 The solver presented in the previous chapter is initially validated for single-component isothermal cases. In these cases, only the continuity and momentum equations are used and solved. The energy equation and the species concentration equations are replaced by the conditions $T = 1.0$ and $Y_0 = 1.0$ in the whole domain. This means that the physical properties of the flow (density and viscosity) are constant and that the flow is fully incompressible because the density shows no thermodynamic or hydrodynamic dependence.
-
 \input{chapters_main/results/SingleComponentIsotermal/LidDrivenCavity}
 \input{chapters_main/results/SingleComponentIsotermal/BackwardFacingStep}
-
+%%%%%%%%
+%%%%%%%%
 \section{Single-component non-isothermal cases} \label{sec:SinCompNonIsothermCase}
-For the test cases presented in this section the equations for continuity, momentum and energy are solved. All systems are assumed to be single-component, thus $N = 1$ and $Y_0 = 1.0$. We start by showing in \cref{ssec:HeatedBackwardFacingStep} a extension of the backward-facing step configuration presented in the last section, considering now a non-isothermal system. Later in \cref{ssec:CouetteFlowTempDiff} a Couette flow configuration presenting a temperature gradient in the vertical direction is studied. Finally in \cref{ss:DHC} a heated square cavity configuration is studied in order to asses the capability of the solver for variable density flows in closed systems.
-
-
+%%%%%%%%
+%%%%%%%%
+For the test cases presented in this section, the equations for continuity, momentum and energy are solved. All systems are assumed to be single-component, thus $N = 1$ and $Y_0 = 1.0$. We start by showing in \cref{ssec:HeatedBackwardFacingStep} an extension of the backward-facing step configuration presented in the last section, considering now a non-isothermal system. Later in \cref{ssec:CouetteFlowTempDiff} a Couette flow configuration presenting a temperature gradient in the vertical direction is studied. Finally, in \cref{ss:DHC} a heated square cavity configuration is studied in order to assess the capability of the solver for variable density flows in closed systems.
 \input{chapters_main/results/SingleComponentNonIsotermal/HeatedBackwardFacingStep}
 \input{chapters_main/results/SingleComponentNonIsotermal/CouetteTemperatureGradient}
 \input{chapters_main/results/SingleComponentNonIsotermal/DifferentiallyHeatedCavity}
-
-
 \subsection{Poiseuille–Rayleigh–Bénard instability in a channel}
 \blindtext[5]
-
-
 \subsection{Flow around a heated cylinder}
 \subsubsection{Square cylinder}
 \blindtext[5]
 \subsubsection{Circle? cylinder}
 \blindtext[5]
-
-
-
+%%%%%%%%
+%%%%%%%%
 \section{Multi-component non-isothermal cases}\label{sec:MultCompNonIsothermCase}
+%%%%%%%%
+%%%%%%%%
 Later in in \cref{ss:CDF} and \cref{ss:CoFlowFlame} two different configurations for reactive flows are presented.
 In the following, we show results of the simulations of two test cases with combustion, namely the counterflow diffusion flame and the chambered diffusion flame. For both cases, the solution of the flame sheet problem described in \cref{ssec:FlameSheet} is calculated first. This solution is used subsequently as initial estimates for the solution of the finite chemistry rate problem (c.f. \cref{ssec:NonDimLowMachEquations}). In all test cases presented in this section, a smoothing parameter $\sigma = 50$ was used (c.f. \cref{ssec:FlameSheet}). For all test cases methane combustion according to the one-step model shown in \cref{sec:ChemModel} is considered. The mass fraction transport \cref{eq:LowMachMassBalance} is solved for the species \ch{CH4}, \ch{O2}, \ch{CO2} and \ch{H2O}, thus $\vec{Y}' = \left(Y_{\ch{CH4}},Y_{\ch{O2}},Y_{\ch{CO2}},Y_{\ch{H2O}}\right)$. The nitrogen mass fraction $Y_{\ch{N2}}$ is calculated according to \cref{eq:MassFractionConstraint}.
 

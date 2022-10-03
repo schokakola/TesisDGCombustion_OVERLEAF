@@ -1,6 +1,6 @@
 
-\subsection{Coflow laminar diffusion flame}
-As a first test for assessing basic behaviour related to combustion, a cofloing flame configuration used. This test case is the main prototype flame for diffusion regimes \cite{poinsotTheoreticalNumericalCombustion2005}. It is set up by sending a stream of fuel against a stream containing oxidizer. A diagram can be seen in X
+\subsection{Co-flow laminar diffusion flame}\label{ssec:coflowFlame}
+As a first test to assess basic combustion behavior, a co-flowing flame configuration was used. This test case is the main prototype flame for diffusion regimes \cite{poinsotTheoreticalNumericalCombustion2005}.  A diagram can be seen in X. It basically consists on a fuel jet enterin Among the possible configurations, it is possible to distinguish systems where the fuel comes from a circular, square and long slot burnersIt is set up by sending a stream of fuel against a stream containing oxidizer.
 %TODO ACA VA UN sketch del coflowing flame con las boundary conditions 
 \begin{figure}[t!]
 	\centering
@@ -23,10 +23,10 @@ As a first test for assessing basic behaviour related to combustion, a cofloing 
 % \end{figure}
 The area where the chemical reaction takes place is usually a thin region, which thickness is defined by the availability of reactants, which at the same time are controled by the velocity which the chemical reaction happens. This factor is governed by the $Da$ number in the non-dimensional formulation (sure??). It is of critical importance for the numerical simulation that the flame is resolved accordingly, which can demand a very fine mesh. Not doing so can provoke non-physically effects to occur, as for example negative values of the reaction term $\omega$ (in the present formulation the reaction is irreversible, and thus only positive values of $\omega$ make sense).
 
-For avoiding over-resolving in zones where actually no reaction is taking place (or very slowly), an adaptive mesh refinement strategy  (see section X) within a pseudo-time-stepping framework was used.  Here a  suitable strategy for choosing cells to be refined is necesary . For reactive flows, this strategy is based on the variable $\omega$.
+For avoiding over-resolving in zones where actually no reaction is taking place (or very slowly), an adaptive mesh refinement strategy  (see section X) within a pseudo-time-stepping framework was used.  Here a suitable strategy for choosing cells to be refined. For reactive flows, this strategy is based on the variable $\omega$.
 Before each refinement step the values of $\omega$ are normalized by the biggest value of the domain, and according to this normalized effects the cells are refined. %In Figure \ref{fig:AMR} the refined meshes can be seen. The legend of the pseudocolor plots is not shown, because for each plot the magnitude scales are different, and just the normalized value accounts for the AMR. 
 
-
+Set up parameters: 
 \begin{figure}
 	\centering
 	\pgfplotsset{width=0.75 \textwidth, compat=1.3}

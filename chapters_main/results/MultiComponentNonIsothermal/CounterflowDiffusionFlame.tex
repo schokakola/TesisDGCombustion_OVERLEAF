@@ -9,7 +9,7 @@
 		\label{fig:CDFScheme}
 	\end{center}
 \end{figure}
-
+%This test case is the main prototype flame for diffusion regimes \cite{poinsotTheoreticalNumericalCombustion2005}.
 The counterflow diffusion flame is a canonical configuration used to study the structure of non-premixed flames. In its most basic configuration it consists of two oppositely situated jets. The fuel (possibly mixed with some inert component such as nitrogen) is fed into the system by one of the jets, while the other jet feeds air to the system, thereby establishing a stagnation point flow. Upon contact, the reactants produce a flame which is located in the vicinity of the stagnation plane. A diagram of the setup can be seen in \cref{fig:CDFScheme}. This simple configuration has been subject of study for decades  because it provides a simple way of creating a strained diffusion flame, which proves to be useful when studying the flame structure, extinction limits or production of pollutants of flames \cite{pandyaStructureFlatCounterFlow1964} \cite{spaldingTheoryMixingChemical1961} \cite{keyesFlameSheetStarting1987}. By assuming an infinite injector diameter and self-similarity of the solution, it is possible to reduce the governing equations to a one-dimensional formulation (see e.g. the textbook of Kee \cite{keeChemicallyReactingFlow2003}). As a means of validating our implementation we compare the results with the solution of the one-dimensional self-similar problem calculated with \lstinline|BVP4|, a fourth order finite difference boundary value problem solver provided by \lstinline|MATLAB|.
 
 The combustion of a methane-nitrogen mixture with air was simulated using the \BoSSS code. The mass composition of the fuel inlet was assumed to be  $Y^0_{\ch{CH4}} = 0.2$ and $Y^0_{\ch{N2}} = 0.8$, and the oxidizer inlet corresponds to air with   $Y^0_{\ch{O2}} = 0.23$ and $Y^0_{\ch{N2}} = 0.77$. Because we are dealing with an open system, the thermodynamic pressure $\hat p_0$ is constant and set to the ambient pressure of $\SI{101325}{\pascal}$. As noted by Sung et al., \cite{sungStructuralResponseCounterflow1995} although the form of the inlet velocity profiles does have an influence on the solution of the problem, its effect on the solution near the flame zone is rather small. Nevertheless, as mentioned before the solution of the self-similar one-dimensional problem assumed an infinite injector diameter, which implies that the upstream velocity field has to be constant. Based on this fact we set the velocity profile of both inlets as a plug flow. Following combinations of inlet velocities were calculated:
@@ -43,6 +43,7 @@ Finally, in \Cref{fig:TemperatureConvergenceDiffFlame} we show how the maximum v
 We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet, which induces a pollution phenomenon on the accuracy of the solution. This fact made hard to realize an $h$-convergence study for the complete domain. Based on this fact we decided to analyze a flame configuration that does not exhibit this behaviour, as shown in the next section.
 \begin{figure}[t!]
 	\pgfplotsset{
+    	width=0.9\textwidth,
 		group/xticklabels at=edge bottom,
 		legend style = {
 				at ={ (0.5,1), anchor= north east}

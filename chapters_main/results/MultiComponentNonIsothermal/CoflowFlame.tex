@@ -13,6 +13,7 @@ As a first test to assess basic combustion behavior, a co-flowing flame configur
 	\caption{Typical convergence history of a diffusion flame in the coflowing flame configuration with mesh refinement.}
 	\label{fig:CoFlow_ConvergenceStory}
 \end{figure}
+%C:\Users\jfgj8\AppData\Local\BoSSS\plots\sessions\CoFlowFlameIntentoParaTesis2__Full_CoFlowFlamerP3K12smoothfactor0velMult2__e1120753-addc-4671-a7d4-7443132981fb
 % \begin{figure}[t!]
 % 	\begin{center}
 % 		\def\svgwidth{0.5\textwidth}
@@ -27,11 +28,13 @@ For avoiding over-resolving in zones where actually no reaction is taking place 
 Before each refinement step the values of $\omega$ are normalized by the biggest value of the domain, and according to this normalized effects the cells are refined. %In Figure \ref{fig:AMR} the refined meshes can be seen. The legend of the pseudocolor plots is not shown, because for each plot the magnitude scales are different, and just the normalized value accounts for the AMR. 
 
 Set up parameters: 
-\begin{figure}
+\begin{figure}[t]
 	\centering
-	\pgfplotsset{width=0.75 \textwidth, compat=1.3}
-	\inputtikz{CoFlowFlameFig1}
+	\pgfplotsset{width=0.75\textwidth, compat=1.3}
+	\inputtikz{CoFlowFlameFig3}
 	\inputtikz{CoFlowFlameFig2}
+	\inputtikz{CoFlowFlameFig1}	
 	\caption{Coflowing Flame.} \label{fig:CoFlowFlameFig}
 \end{figure}
+
 

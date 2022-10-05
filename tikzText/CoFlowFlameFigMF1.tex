@@ -1,0 +1,24 @@
+\subcaptionbox{Mass fraction \ch{O2}\label{fig:CoFlowO2}}{
+	\begin{tikzpicture}%[scale=0.90]
+		\begin{axis}[
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			colormap name=visit,
+			colorbar, 
+			colorbar style={
+				yticklabel style={
+					/pgf/number format/.cd,
+					fixed,
+					fixed zerofill
+				},
+				point meta max= 0.23,%6.73,
+				point meta min= 0,
+			}]
+			\addplot[thick,blue] graphics[	
+			xmin=-12.4,	xmax=12.4,	ymin=-4.0,	ymax=63.0,
+			] {../plots/CoFlowMF1.png};
+		\end{axis}		
+	\end{tikzpicture}
+}

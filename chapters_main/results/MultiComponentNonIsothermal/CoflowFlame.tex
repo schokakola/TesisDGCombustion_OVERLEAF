@@ -23,12 +23,29 @@ Set up parameters:
 \end{figure}
 \begin{figure}[t]
 	\centering
-	\pgfplotsset{width=0.65\textwidth, compat=1.3}
-	\inputtikz{CoFlowFlameFig3}
-	\inputtikz{CoFlowFlameFig2}
-	\inputtikz{CoFlowFlameFig1}	
-	\caption{Coflowing Flame.} \label{fig:CoFlowFlameFig}
+	\def\svgwidth{0.43\textwidth}
+	\subcaptionbox{Sketch\label{fig:CoFlowSketch}}{
+		\import{./plots/}{CoFlowSketch_NoBC.pdf_tex}
+	}
+	\qquad\quad
+	\def\svgwidth{0.35\textwidth}
+	\subcaptionbox{Refined mesh \label{fig:CoFlowMesh}}{
+		\import{./plots/}{CoFlowMesh.pdf_tex}
+	}
+	%	\inputtikz{CoFlowFlameFigVelMag}		
+	\caption{Geometry of a coflowing flame configuration.} \label{fig:CoFlowGeometry}
 \end{figure}
 
+
+\begin{figure}[t]
+	\centering
+	\pgfplotsset{width=0.6\textwidth, compat=1.3}
+	\inputtikz{CoFlowFlameFigTemperature}	
+	\inputtikz{CoFlowFlameFigVelMag}	
+	\par\bigskip
+	\inputtikz{CoFlowFlameFigMF0}	
+	\inputtikz{CoFlowFlameFigMF1}	
+	\caption{Solution field of a coflowing flame configuration.} \label{fig:CoFlowFlameFig}
+\end{figure}
 
 \FloatBarrier

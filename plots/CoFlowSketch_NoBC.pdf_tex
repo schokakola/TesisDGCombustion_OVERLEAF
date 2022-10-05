@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{86.99999171bp}%
+    \setlength{\unitlength}{290.92205618bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,10 +50,19 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,2.98275854)%
+  \begin{picture}(1,1.58192062)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{CoFlowSketch_NoBC.pdf}}%
-    \put(0.20899722,0.05679906){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$a$\end{tabular}}}}%
+    \put(0.65179445,0.28521209){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x$\end{tabular}}}}%
+    \put(0.56578541,0.39733495){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{CoFlowSketch_NoBC.pdf}}%
+    \put(0.58523005,0.15794593){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$X_1$\end{tabular}}}}%
+    \put(0.58089587,0.0979535){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$X_2$\end{tabular}}}}%
+    \put(0.58457875,0.03203006){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$X_3$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{CoFlowSketch_NoBC.pdf}}%
+    \put(-0.00313859,0.78108777){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$L$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{CoFlowSketch_NoBC.pdf}}%
+    \put(0.34584339,0.12553684){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$R$\end{tabular}}}}%
   \end{picture}%
 \endgroup%

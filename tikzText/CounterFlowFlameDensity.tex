@@ -1,0 +1,26 @@
+\subcaptionbox{Density\label{fig:CounterFlowDensity}}{
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			y dir = reverse,
+			colormap name=turbo,
+			colorbar, 
+			colorbar style={
+				yticklabel style={
+					/pgf/number format/.cd,
+					fixed,
+					fixed zerofill
+				},
+				point meta max= 1.0,%6.73,
+				point meta min= 0.1626,				
+				ytick={0.1626,1.0},
+			}]
+			\addplot[thick,blue] graphics[	
+			xmin=-3,	xmax=3,	ymin=1,	ymax=0,
+			] {../plots/CDF_Density.png};
+		\end{axis}		
+	\end{tikzpicture}
+}

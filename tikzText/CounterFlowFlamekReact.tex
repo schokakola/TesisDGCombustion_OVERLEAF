@@ -1,0 +1,29 @@
+\subcaptionbox{Reaction rate \label{fig:CounterFlowReactionRate}}{
+	\begin{tikzpicture}%[scale=0.90]
+		\begin{axis}[
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			y dir = reverse,
+			colormap name=turbo,
+			colorbar, 
+			colorbar style={
+				yticklabel style={
+					/pgf/number format/.cd,
+					fixed,
+					fixed zerofill,
+%					   precision=2,
+				    /tikz/.cd
+				},
+				point meta max= 0.0000000004757,%6.73,
+				point meta min= 0,				
+				ytick={0,0.0000000004757},%0.0000000004757
+%				scaled y ticks={base 10:2}
+			}]
+			\addplot[thick,blue] graphics[	
+			xmin=-3,	xmax=3,	ymin=1,	ymax=0,
+			] {../plots/CDF_Kreact.png};
+		\end{axis}		
+	\end{tikzpicture}
+}

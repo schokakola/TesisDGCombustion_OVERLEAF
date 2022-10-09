@@ -1,0 +1,79 @@
+%% Creator: Inkscape 1.0.1 (3bc2e813f5, 2020-09-07), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'CoFlowSketch_withBC.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{298.30359271bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.68038691)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{CoFlowSketch_withBC.pdf}}%
+    \put(0.63566576,0.41576549){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x$\end{tabular}}}}%
+    \put(0.55178502,0.52511387){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{CoFlowSketch_withBC.pdf}}%
+    \put(0.5707485,0.29164854){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$X_1$\end{tabular}}}}%
+    \put(0.56652157,0.23314062){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$X_2$\end{tabular}}}}%
+    \put(0.57011332,0.16884846){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$X_3$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{CoFlowSketch_withBC.pdf}}%
+    \put(-0.00306093,0.8993707){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$L$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{CoFlowSketch_withBC.pdf}}%
+    \put(0.33728548,0.26004142){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$R$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{CoFlowSketch_withBC.pdf}}%
+    \put(0.53996697,0.0222485){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Fuel \end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{CoFlowSketch_withBC.pdf}}%
+    \put(0.19567116,0.0222485){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Oxidizer\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{CoFlowSketch_withBC.pdf}}%
+    \put(0.79413146,0.0222485){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Oxidizer\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{CoFlowSketch_withBC.pdf}}%
+    \put(0.79701459,0.47908863){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Adiabatic\\wall\end{tabular}}}}%
+    \put(0.23023085,1.0466623){\rotatebox{-90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Pressure outlet\end{tabular}}}}}%
+    \put(0.91833842,1.04561383){\rotatebox{-90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Pressure outlet\end{tabular}}}}}%
+    \put(0.44937176,1.62600389){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Pressure outlet\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

@@ -1,46 +1,52 @@
 
 \subsection{Co-flow laminar diffusion flame}\label{ssec:coflowFlame}
 %C:\Users\jfgj8\AppData\Local\BoSSS\plots\sessions\CoFlowFlameIntentoParaTesis2__Full_CoFlowFlamerP3K12smoothfactor0velMult2__e1120753-addc-4671-a7d4-7443132981fb
-The co-flowing flame configuration is used as a first test to assess the behavior of the solver for reactive flows applications. It basically consists of two concentric ducts that emit fuel and oxidant into the system, creating a flame. This configuration has been widely studied. In the seminal work of \cite{burkeDiffusionFlames1928} analytical expressions for the flame height and flame shape are obtained by studying a very simplified problem (constant density and velocity field, infinitely fast chemistry, among others). Later, \cite{smookeNumericalModelingAxisymmetric1992} and later works solved this configuration using a 2D-axisymmetric system and also used the flame sheet estimates to find adequate initial conditions for their Newton algorithm. It should be noted that the solution of the axisymmetric system of equations presents numerical difficulties that are not the main concern of the present work. For this reason, it was decided to solve a system with similar characteristics but which is possible to represent in Cartesian coordinates. This is possible if an infinitely long slot burner is considered. A schematic diagram of the configuration can be seen in \cref{fig:CoFlowSketch}. The lengths are set as $X_1 = 0.635$, $X_2 = 0.762$, and $X_3 = 7.747$. The lengths $R$ and $L$ are set with arbitrarily large values.  $R = 2.54$ and $L = 40$. Setting a higher value of $L$ did not significantly change the calculations.  % TODO CHECK 
-The boundary conditions are set as: 
-$y = -R$
+The co-flowing flame configuration is used as a first test to assess the behavior of the solver for reactive flows applications. It basically consists of two concentric ducts that emit fuel and oxidant into the system, creating a flame. This configuration has been widely studied. In the seminal work of \cite{burkeDiffusionFlames1928} analytical expressions for the flame height and flame shape are obtained by studying a very simplified problem (constant density and velocity field, infinitely fast chemistry, among others). Later, \cite{smookeNumericalModelingAxisymmetric1992} and later works solved this configuration using a 2D-axisymmetric system and also used the flame sheet estimates to find adequate initial conditions for their Newton algorithm. 
 
+It should be noted that the solution of the axisymmetric system of equations presents numerical difficulties that are not the main concern of the present work. For this reason, it was decided to solve a system with similar characteristics but which is possible to represent in Cartesian coordinates. This is possible if an infinitely long slot burner is considered. A schematic diagram of the configuration can be seen in \cref{fig:CoFlowSketch}. Note that the system also includes the tips that separate both oxidizer and fuel inlets. Altought the system is clearly symmetric around the axis $x = 0$, no symmetry assumption is made and the whole domain is considered.   The lengths are set as $X_1 = \SI{0.635}{\centi \meter}$, $X_2 = \SI{0.762}{\centi \meter}$, and $X_3 = \SI{7.747}{\centi \meter}$. The lengths $R$ and $L$ are set with arbitrarily large values,  $R = \SI{2.54}{\centi \meter}$ and $L = \SI{40}{\centi \meter}$. Setting a higher value of $L$ did not significantly change the calculations. 
+The inlet boundary conditions are set as: 
+\begin{itemize}
+\item Fuel Inlet: $\{\forall (x,y): y = -R \land x \in [-X_1,X_1]\} $ \\
+\begin{equation*}
+	u = 0,\qquad v= v_F(x)), \qquad T = T^F, \qquad \vec{Y}' = (Y^F_{\ch{CH4}},0,0,0)
+\end{equation*}
+\item Oxidizer inlet: $\{\forall (x,y): y = -R \land x \in [-X_3,-X_2]\cup[X_2,X_3]\}$\\
+\begin{equation*}
+ 	u = 0,\qquad v= v_O, \qquad T = T^O, \qquad \vec{Y}' = (0,Y^O_{\ch{O2}},0,0)
+\end{equation*}
+%\item Pressure outlet  $\forall (x,y): y = -R \land x \in [-X_3,-X_2]\cup[X_2,X_3]$\\
+%\item Adiabatic wall:
+\end{itemize}
+ where $v_F$ is a a parabolic profile given by
+\begin{equation}
+	v_F(x) = \left[1-\left(\frac{x}{X_1}\right)^2\right]v_m
+\end{equation}
+with $v^F_m = \SI{2.427}{\centi \meter \per \second}$. The oxidizer enters the system as a plug flow with a constant velocity of $v_O = \SI{4.1}{\centi \meter \per \second}$. The inlet temperatures of both streams is  $T^F = T^O = \SI{300}{K}$. Combustion diluted methane on air is considered, with $Y^F_{\ch{CH4}} = 0.2$, $Y^F_{\ch{N2}} = 0.8$, $Y^O_{\ch{O2}} = 0.23$ and $Y^O_{\ch{N2}} = 0.77$. The superindexes $F$ and $O$ represent the fuel and oxidizer inlet respectively. The pressure outlet boundary condition is the same as \cref{eq:bc_O}. Finally, the boundary conditions at the tips correspond to adiabatic walls, which are defined as in \cref{eq:bc_dn}, with $\vec{u}_{\text{D}} = (0,0)$.             
 
-
-The area where the chemical reaction takes place is usually a thin region, whose thickness is defined by the availability of reactants. It is of critical importance for the numerical simulation to have an adequate mesh that allows to solve the flame appropriately. Not doing so can lead to non-physical effects and the apparition of unwanted numerical artifacts.  
-
-Tres tipos de refinement han sido utilizados. En primer lugar, anterior a cualquier tipo de calculo, el mallado base es refinado en las cercanias de los tips 
-To avoid over-resolving in zones where actually no reaction is taking place, an adaptive mesh refinement strategy (see \cref{ssec:MeshRefinement} ) in a pseudo-time-stepping framework was used.  Here, a suitable strategy for choosing cells to be refined. 
-
-For reactive flows, this strategy is based on the variable $\omega$.
-Before each refinement step the values of $\omega$ are normalized by the highest value of the domain, and according to this normalized effects the cells are refined. %In Figure \ref{fig:AMR} the refined meshes can be seen. The legend of the pseudocolor plots is not shown, because for each plot the magnitude scales are different, and just the normalized value accounts for the AMR. 
-
-Set up parameters: 
-\begin{figure}[t!]
-	\centering
-	\pgfplotsset{
-		compat=1.3,
-		tick align = outside,
-		yticklabel style={/pgf/number format/fixed},
-	}
-	\inputtikz{CoFlow_ConvergenceStory}
-	\caption{Typical convergence history of a diffusion flame in the coflowing flame configuration with mesh refinement.}
-	\label{fig:CoFlow_ConvergenceStory}
-\end{figure}
+The variables are nondimensionalized in the usual way. The reference length $\RefVal{L} = \hat{X}_1$ and the reference velocity $\RefVal{u} =v^F_m$. The reference temperature is $\RefVal{T} = T^F$, which gives to the nondimensional numbers $\Reynolds = 16.5$ $Da = 4.3\cdot 10^9$. The Prandtl number is assumed constant with $\Prandtl = 0.71$. For this calculation all lewis numbers are set to unity. Gravity effects are not taken into acount.
 \begin{figure}[t]
 	\centering
 	\def\svgwidth{0.43\textwidth}
 	\subcaptionbox{Sketch\label{fig:CoFlowSketch}}{
-		\import{./plots/}{CoFlowSketch_NoBC.pdf_tex}
+		\import{./plots/}{CoFlowSketch_withBC.pdf_tex}\vspace{0.5cm}
 	}
 	\qquad\quad
 	\def\svgwidth{0.35\textwidth}
 	\subcaptionbox{Refined mesh \label{fig:CoFlowMesh}}{
+		\vspace{1.2cm}
 		\import{./plots/}{CoFlowMesh.pdf_tex}
 	}
-	%	\inputtikz{CoFlowFlameFigVelMag}		
-	\caption{Geometry of a coflowing flame configuration.} \label{fig:CoFlowGeometry}
+	
+	\caption{Geometry of a coflowing flame configuration (not to scale).} \label{fig:CoFlowGeometry}
 \end{figure}
+The area where the chemical reaction takes place is usually a thin region, whose thickness is defined by the availability of reactants. It is of critical importance for the numerical simulation to have an adequate mesh that allows to solve the flame appropriately. Not doing so can lead to non-physical effects and the apparition of unwanted numerical artifacts. 
+
+To avoid over-resolving in zones where actually no reaction is taking place, an adaptive mesh refinement strategy (see \cref{ssec:MeshRefinement} ) in a pseudo-time-stepping framework was used.  Here, a suitable strategy for choosing cells to be refined. Two refinement strategies have been used for this simulation. First, prior to any type of calculation, the base mesh is refined in the vicinity of the tips.  Second, several pseudo-timesteps are performed for the flame-sheet calculation. After each of these is refined in the vicinity of the flame sheet, i.e., in the cells where $z = z_{\text{st}}$. 
+ 
+
+
+For reactive flows, this strategy is based on the variable $\omega$.
+Before each refinement step the values of $\omega$ are normalized by the highest value of the domain, and according to this normalized effects the cells are refined. %In Figure \ref{fig:AMR} the refined meshes can be seen. The legend of the pseudocolor plots is not shown, because for each plot the magnitude scales are different, and just the normalized value accounts for the AMR. 
 
 
 \begin{figure}[t]
@@ -53,5 +59,15 @@ Set up parameters:
 	\inputtikz{CoFlowFlameFigMF1}	
 	\caption{Solution field of a coflowing flame configuration.} \label{fig:CoFlowFlameFig}
 \end{figure}
-
+\begin{figure}[t!]
+	\centering
+	\pgfplotsset{
+		compat=1.3,
+		tick align = outside,
+		yticklabel style={/pgf/number format/fixed},
+	}
+	\inputtikz{CoFlow_ConvergenceStory}
+	\caption{Typical convergence history of a diffusion flame in the coflowing flame configuration with mesh refinement.}
+	\label{fig:CoFlow_ConvergenceStory}
+\end{figure}
 \FloatBarrier

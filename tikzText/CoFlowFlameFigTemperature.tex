@@ -5,7 +5,7 @@
 			scale only axis,
 			enlargelimits=false,	
 			axis equal image,
-			colormap name=visit,
+			colormap name=turbo,
 			colorbar, 
 			colorbar style={
 				yticklabel style={
@@ -13,8 +13,9 @@
 					fixed,
 					fixed zerofill
 				},
-				point meta max= 7,%6.73,
-				point meta min= 0,
+				point meta max= 6.731,%6.73,
+				point meta min= 1,
+%				ytick={1, 6.731},
 			}]
 			\addplot[thick,blue] graphics[	
 			xmin=-12.4,	xmax=12.4,	ymin=-4.0,	ymax=63.0,

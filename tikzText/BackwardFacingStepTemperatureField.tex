@@ -1,0 +1,26 @@
+\subcaptionbox{Temperature field\label{fig:BackwardFacingStepTempField}}{
+	\begin{tikzpicture}%[scale=0.90]
+		\begin{axis}[
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+						y dir = reverse,
+			colormap name=turbo,
+			colorbar, 
+			colorbar style={
+				yticklabel style={
+					/pgf/number format/.cd,
+					fixed,
+					fixed zerofill
+				},
+				point meta max= 1.106,%6.73,
+				point meta min= 1,	%$T_0 = 1.0$ and $T_1 = 1.106$.			
+				ytick={1,1.106},
+			}]
+			\addplot[thick,blue] graphics[	
+			xmin=-1,	xmax=20,	ymin=0,	ymax=2,
+			] {../plots/BFS_Temperature.png};
+		\end{axis}		
+	\end{tikzpicture}
+}

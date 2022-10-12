@@ -132,9 +132,9 @@ Here, the subscripts $F$ and $O$ refer to fuel and oxidizer, respectively. The p
 \end{equation}
 With this definition, the heat release $\hat \omega_T$ (\cref{eq:heatRelDef}) is
 \begin{equation}
-	\hat \omega_T = - \hat W_F \hat \omega_F\hat Q^m.
+	\hat \omega_T = - \hat W_F \hat \omega_F\hat Q^m = - \hat \omega_F\hat Q .
 \end{equation}
-Here is $\hat Q^m$ the molar heat of reaction of the one-step reaction. $\hat W_F$ and $ \hat \omega_F$ are the molar mass of the fuel species and the reaction rate of the fuel species.
+Here is $\hat Q^m$ the molar heat of reaction of the one-step reaction and $\hat Q$ is the mass heat of reaction. $\hat W_F$ and $ \hat \omega_F$ are the molar mass of the fuel species and the reaction rate of the fuel species respectively.
 
 \begin{table}[!btp]
 	\centering
@@ -273,8 +273,9 @@ with $\phi$ evaluated according to \cref{eq:equivalenceRatio}. In the low-Mach l
 \end{align}
 As mentioned above, the thermodynamic pressure of a closed system is a parameter that has to be determined (for an open system is equal to the atmospheric pressure). Defining the initial mass of the fluid inside the closed system as $m_0$, and by integrating \cref{eq:ideal_gas} on the whole domain $\Omega$, one obtains
 \begin{equation}
-	p_0(T, \vec{Y}) == \frac{m_0}{\int_\Omega \frac{W_{\text{avg}}}{T}\text{d}V}, \label{eq:p0Condition}
+	p_0(T, \vec{Y}) = \frac{m_0}{\int_\Omega \frac{W_{\text{avg}}}{T}\text{d}V}, \label{eq:p0Condition}
 \end{equation}
+TODO: porque tengo escrito aca la cosa con Wavg???
 Similarly, the non-dimensional specific heat capacity of the mixture $c_p$ is calculated as
 \begin{equation}\label{eq:nondim_cpmixture}
 	c_p(T,\mathbf{Y}) = \SumOvAllns Y_k c_{p,\alpha}(T),

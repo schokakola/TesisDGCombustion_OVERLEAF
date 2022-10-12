@@ -1,6 +1,6 @@
 
 \subsection{Counterflow diffusion flame}\label{ss:CDF}
-
+mencionar lo de que la malla fue manualmente creada de tal forma que  la zona central tiene mas elementos 
 \begin{figure}[b]
 	\begin{center}
 		\def\svgwidth{0.8\textwidth}
@@ -40,6 +40,8 @@ Because we are solving a two-dimensional configuration, in order to be able to c
 
 Finally, in \Cref{fig:TemperatureConvergenceDiffFlame} we show how the maximum value of the temperature behaves for different mesh resolutions and polynomial degrees. The temperature tends to a limit value, and we observe how this value is reached already for coarse meshes when using a polynomial degree of three or four. We also observe that for $k=2$ the temperature tends to a limit value, but slower in comparison to $k =3$ or $4$. The values for $k=1$ are not displayed because for the mesh resolutions shown here, the values of the maximum temperature were of the order of 50 \si{K} bigger than the limit value. We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet. This fact made hard to realize a $h$-convergence study for the complete domain. Based on this we decided to analyse a flame configuration that doesn't exhibit this behaviour, as shown in the next section.
 % Finally, for the finite reaction rate calculation also several pseudo-timestep were done, and after each one of them the cells with high temperature gradients are refined (ser mas especifico con esto.)
+% For reactive flows, this strategy is based on the variable $\omega$.
+% Before each refinement step the values of $\omega$ are normalized by the highest value of the domain, and according to this normalized effects the cells are refined. %In Figure \ref{fig:AMR} the refined meshes can be seen. The legend of the pseudocolor plots is not shown, because for each plot the magnitude scales are different, and just the normalized value accounts for the AMR. 
 
 We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet, which induces a pollution phenomenon on the accuracy of the solution. This fact made hard to realize an $h$-convergence study for the complete domain. Based on this fact we decided to analyze a flame configuration that does not exhibit this behaviour, as shown in the next section.
 \begin{figure}[t!]

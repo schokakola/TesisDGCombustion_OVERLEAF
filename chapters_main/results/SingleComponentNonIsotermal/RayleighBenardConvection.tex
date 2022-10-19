@@ -1,0 +1,105 @@
+\subsection{Rayleigh-Bénard Convection}
+
+The Rayleigh-Bénard convection is a configuration similar to the heated cavity presented in the last section, as the flow is also induced by bouyancy effects. La configuracion consiste en un fluido el ubicado entre dos placas horizontales mantenidas a distintas temperaturas, siendo la temperatura abajo mayor que la temperatura superior. Es sabido que bajo cierto numero de Rayleigh el flujo presenta un comportamiento macroscopicamente estable y el calor es simplemente transferido por fenomenos conductivos. Cuando el numero de Rayleigh supera cierto valor critico $\text{Ra}_{\text{crit}}$, el sistema se vuelve inestable, lo que implica que una perturbación de este da lugar a movimiento del fluido, creando las llamadas convection cells -tambien referidas usualmente como Bénard cells-.
+
+En las siguientes secciones dos aspectos de esta situación serán tratados. Promero en \cref{ssec:SingleCellConv} se estudiará la estabilidad del sistema en base a la determinación del valor crítico RaC y será comparado con valores teoricos. Posteriormente en \cref{ssec:MultipleCellConv} una simulación transiente de esta configuración es realizada. This section is based on the work by Chen Miao %TODO cita
+\subsubsection{Single convection cell case}\label{ssec:SingleCellConv}
+En esta seccion se analizará el comportamiento del fluido estudiando un sistema en donde una unica convection-cell aparece. Como ya se menciono anteriormente, la naturaleza de las ecuaciones governantes da lugar a un comportamiento complejo del sistema. Haciendo uso de la linear stability theory para las ecuaciones governantes bajo la asumpcion de boussinesq, es posible determinar que para un sistema con boundaries rigidos el numero critico de Rayleigh es $\text{Ra}_{\text{crit}} = 1707.762$  \citep{chandrasekharHydrodynamicHydromagneticStability1961}. Ademas el wave number es $a_c =3.117$, lo cual implica que los rolls convectivos se desarrollan en un aspect ratio de $2\pi/a_c = 2.016$. Para las simulaciones presentadas en esta seccion un aspect ratio $L/H = 2$ es utilizado, como es hecho en \cite{kaoSimulatingOscillatoryFlows2007}. La geometría y condiciones de borde del problema analizado se encuentran en \cref{fig:RayBenGeometryPeriodic}. La pared superior corresponde a una no-slip wall que es mantenida a una temperatura constante $T_c$. Similarmente, la pared inferior también es una no-slip wall con una temperatura $T_h$, siendo $T_h > T_c$. Las condiciones de borde a la izquierda y derecha del computational domain son periodic boundary conditions. La configuracion escogida hace posible el estudio de un single convection roll. La gravedad tiene solo una componente en la direccion negativa de $y$. 
+
+Para el rango de Rayleigh numbers tratados acá, las simulaciones se tratan de steady state simulations. Para todas las simulaciones en esta seccion se utilizo un mayado regular cartesiano consistente de $32\times64$ cells, with adimensional lengths $L = 2$ and $H = 1$. El polynomial degree de ambos componentes de la velocidad y la temperatura es cuatro, y para la presion es tres. Se asume un sistema abierto, y $p_0 = 1.0$ durante toda la simulación.
+
+En primer lugar se estudiará la estabilidad del XNSEC-solver buscando el valor crítico $\text{Ra}_{\text{crit}}$. Como ya se menciono anteriormente, el valor teorico $\text{Ra}_{\text{crit}} = 1707.762$ fue determinado haciendo uso de la asumpcion de Bousinessq en las ecuaciones governantes. Esto implica que la variacion de densidades dentro del sistema es suficientemente pequeña. Por este motivo, se realiza un analisis  para una diferencia de temperaturas adimensionales $\epsilon = (T_h-T_c)/(T_h+T_c) = 0.0001$, lo que se traduce en $T_h = 1.0001$ y $T_c = 0.9999$. La temperatura de referencia es seleccionada como $\RefVal{T} = \SI{600}{\kelvin}$. Ya que el XNSEC-solver está basado en el set de ecuaciones de low-Mach, esta eleccion de baja diferencia de temperatura permite comparar los resultados presentes con los obtenidos toricamente bajo la asumpcion de bousinesq. La definicion de los numeros adimensionales, asi como de la velocidad de referencia son exactamente los mismos que los mencionados en \cref{ss:DHC}. Los coeficientes de transporte son calculados con Sutherlands Law. 
+
+Similarmente al caso expuesto en \cref{ssec:FlowCircCyl}, se utiliza
+\begin{subequations} 
+	\begin{align}
+		&u(t=0) = 1 + u^{\text{vortex-left}} + u^{\text{vortex-right}},  \\
+		&v(t=0) = 0 + v^{\text{vortex-left}}+ v^{\text{vortex-right}},  \\
+		&T(t=0) = 1,\\
+		&p(t=0) = -\frac{\rho y}{\text{Fr}^2}.
+	\end{align}
+\end{subequations}
+
+
+\begin{figure}[bt]
+	\begin{center}
+		\def\svgwidth{0.83\textwidth}
+		\import{./plots/}{RayleighBen_Geometry.pdf_tex}
+		\caption{Geometry of the Rayleigh-Bénard convection problem. Convection rolls are sketched}
+		\label{fig:RayBenGeometryPeriodic}
+	\end{center}
+\end{figure}
+
+\begin{figure}[bt]
+	\centering
+	%	\pgfplotsset{
+		%		group/xticklabels at=edge bottom,
+		%		unit code/.code={\si{#1}}
+		%	}
+	\pgfplotsset{width=0.31\textwidth, compat=1.3}
+	\inputtikz{RayBerStability_a}%
+	\hspace{0.2cm}
+	\inputtikz{RayBerStability_r}
+	\caption{Maximum x-velocity in the Rayleigh-Bénard convection configuration for different $a$ and $r$.}
+	\label{fig:uvelBFS}
+\end{figure}
+%TODO decir que esto se calculo con un metodo de biseccion
+
+\begin{figure}
+	\centering
+	\inputtikz{RayBerCalculationRa}
+	\caption{Stability behaviour of the Rayleigh-Bénard convection with $\epsilon = 0.0001$.}
+\end{figure}
+
+
+\begin{figure}[t]
+	\centering
+	\pgfplotsset{width=0.31\textwidth, compat=1.3}
+	\inputtikz{RayBerTemperature2e3}%
+	\inputtikz{RayBerTemperature3e3}%
+	\inputtikz{RayBerTemperature5e3}%
+	\par\bigskip
+	\inputtikz{RayBerTemperature1e4}%
+	\inputtikz{RayBerTemperature5e4}%
+	\inputtikz{RayBerTemperature1e5}%
+	\caption{Temperature field and contours of a Rayleigh-Bénard convection roll}
+\end{figure}
+
+
+\begin{figure}[t]
+	\centering
+	\pgfplotsset{width=0.31\textwidth, compat=1.3}
+	\inputtikz{RayBerStreamLine2e3}%
+	\inputtikz{RayBerStreamLine3e3}%
+	\inputtikz{RayBerStreamLine5e3}%
+	\par\bigskip
+	\inputtikz{RayBerStreamLine1e4}%
+	\inputtikz{RayBerStreamLine5e4}%
+	\inputtikz{RayBerStreamLine1e5}%
+	\caption{Streamlines of a Rayleigh-Bénard convection roll}
+\end{figure}
+
+\subsubsection{Multiple convection cell case}\label{ssec:MultipleCellConv}
+
+
+
+\begin{figure}[bt]
+	\begin{center}
+		\def\svgwidth{0.93\textwidth}
+		\import{./plots/}{RayleighBen_Geometry_PressOutlet.pdf_tex}
+		\caption{Geometry of the Rayleigh-Bénard convection problem with pressure outlet boundary conditions. }
+		\label{fig:RayBenGeometry}
+	\end{center}
+\end{figure}
+
+\begin{figure}[t]
+	\centering
+	\pgfplotsset{width=0.96\textwidth, compat=1.3}
+	\inputtikz{RayBerPressureOutlet_Temperature}
+	\par\bigskip%
+	\inputtikz{RayBerPressureOutlet_Streamline}
+	\par\bigskip%
+	\inputtikz{RayBerPressureOutlet_Vorticity}%
+	\caption{Temperature, streamlines and vorticity of the Rayleigh-Bénard flow with pressure outlets.}
+\end{figure}
+\FloatBarrier

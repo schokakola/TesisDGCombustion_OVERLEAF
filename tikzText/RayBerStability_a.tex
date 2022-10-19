@@ -1,0 +1,16 @@
+	\begin{tikzpicture}
+	\begin{axis}[
+		%		width= 0.4\textwidth,
+		%		height= 0.3\textwidth ,
+		xlabel = $a$,
+		ylabel= $u_{\text{max}}$, 
+		legend style={at={(1.1,1)}, anchor=north west},
+		]
+		\addplot+[color=black, thick] table {data/RayleighBenard/RayBerRa1_a.txt};\addlegendentry{$\text{Ra}=1000$}
+		\addplot+[color=black, thick] table {data/RayleighBenard/RayBerRa2_a.txt};\addlegendentry{$\text{Ra}=2000$}
+		\addplot+[color=black, thick] table {data/RayleighBenard/RayBerRa3_a.txt};\addlegendentry{$\text{Ra}=3000$}
+		\addplot+[color=black, thick] table {data/RayleighBenard/RayBerRa4_a.txt};\addlegendentry{$\text{Ra}=5000$}
+		\addplot+[color=black, thick] table {data/RayleighBenard/RayBerRa5_a.txt};\addlegendentry{$\text{Ra}=8000$}
+		%	 \addlegendentry{Reference}y
+	\end{axis}%
+\end{tikzpicture}%

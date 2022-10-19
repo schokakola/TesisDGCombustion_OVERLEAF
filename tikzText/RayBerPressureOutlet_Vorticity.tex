@@ -1,0 +1,18 @@
+\subcaptionbox{Vorticity contour \label{fig:RayBerVortCont}}{
+	\begin{tikzpicture}%[scale=0.90]
+		\begin{axis}[
+			%			view={0}{90},
+			axis line style = thick,
+			ticks=none,
+			%			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=0,	xmax=3902,	ymin=0,	ymax=392,
+			] {../plots/RayleighBenard_VorticityContour_PressureOulet.png};
+		\end{axis}%	
+		%		\hspace{-1cm}	
+	\end{tikzpicture}%
+}%

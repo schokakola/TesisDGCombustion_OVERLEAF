@@ -1,0 +1,5 @@
+tikz/RayBerStability_r.pdf: data/RayleighBenard/RayBerRa1_r.txt
+tikz/RayBerStability_r.pdf: data/RayleighBenard/RayBerRa2_r.txt
+tikz/RayBerStability_r.pdf: data/RayleighBenard/RayBerRa3_r.txt
+tikz/RayBerStability_r.pdf: data/RayleighBenard/RayBerRa4_r.txt
+tikz/RayBerStability_r.pdf: data/RayleighBenard/RayBerRa5_r.txt

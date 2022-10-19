@@ -37,7 +37,8 @@
 \documentclass[
 %	draft,
 	USenglish,
-	ruledheaders=chapter,% Ebene bis zu der die Überschriften mit Linien abgetrennt werden, vgl. DEMO-TUDaPub
+%	ruledheaders=chapter,% Ebene bis zu der die Überschriften mit Linien abgetrennt werden, vgl. DEMO-TUDaPub
+	ruledheaders=all,% Ebene bis zu der die Überschriften mit Linien abgetrennt werden, vgl. DEMO-TUDaPub
 	class=book,% Basisdokumentenklasse. Wählt die Korrespondierende KOMA-Script Klasse
 	thesis={
 		% Für kleinere Abschlussarbeiten Siehe DEMO-TUDaThesis
@@ -136,7 +137,7 @@ sorting=anyt,
 
 %\addbibresource{bibliography.bib}
 
-\bibliography{bibliography}
+\bibliography{bibliography3}
 %\nocite{*}  
 %\bibliography{DEMO-TUDaBibliography}
 
@@ -480,6 +481,12 @@ noabbrev
 \input{chapters_main/results}
 \cleardoublepage
 \input{chapters_main/conclusion}
+%
+%
+
+
+
+
 
 
 
@@ -497,6 +504,10 @@ noabbrev
 %TODO: pregunta abierta: basta con definir el poly deg k, y con eso esta ya definido k'?
 %TODO: agregar puta imagen con los errores de P en la convergencestudy seccion
 %TODO: corregir los limites de los colorbar de tal forma que aparezcan los minimos/maximos y que tengan los formatos correctos
+%TODO Question: Que implicancias tiene el utilizar un mallado curvo dentro del DG method? es particularmente complicado/beneficioso?
+%TODO Idea: Quizas calcular el contorno de vorticidad para el square cavity y asi argumentar que en las esquinas existen fenomenos muy complicados para Ra alto.
+%TODO Mencionar en la conclusion que realmente la asumpcion de 2D fue realizada por motivos de ahorro de costos computacionales. En teoria el solver deberia ser posible de hacer calculos tridimensionales, lo cual podria ser futuro trabajo.
+%argumentar con DOFs que la MF calculation es mucho mas facil y eficiente que la otra.
 \cleardoublepage
 \printbibliography[heading=bibintoc]
 \label{bibref}

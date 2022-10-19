@@ -1,0 +1,16 @@
+	\begin{tikzpicture}
+	\begin{axis}[
+		width= 0.7\textwidth,
+		height= 0.3\textwidth ,
+		xlabel = Ra,
+		ylabel= $u_{\text{max}}$,
+		xmin=1707,
+		xmax=1708.4, 
+		legend style={at={(0.02,0.95)}, anchor=north west},
+		]
+		\addplot+[color=black,  only marks] table {data/RayleighBenard/RayBenardStabilityStudy.txt};\addlegendentry{XNSEC results}
+		\addplot[draw=black, thick][domain=1707.922:1708.4 ]{0.008015*sqrt(x-1707.922)}; \addlegendentry{$u_{\text{max}}  = 0.008015\sqrt{\text{Ra} - 1707.922}$, stable}
+		\addplot[dotted, thick][domain=1707.0:1707.922]{0};\addlegendentry{$u_{\text{max}}  = 0$, stable}
+		\addplot[dashed][domain=1707.922:1708.4]{0};\addlegendentry{$u_{\text{max}}  = 0$, unstable}
+	\end{axis}
+\end{tikzpicture}

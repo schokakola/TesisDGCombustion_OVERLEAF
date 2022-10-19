@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{298.30359271bp}%
+    \setlength{\unitlength}{256.9095954bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,30 +50,30 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,1.68038691)%
+  \begin{picture}(1,1.93357345)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{CoFlowSketch_withBC.pdf}}%
-    \put(0.63566576,0.41576549){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x$\end{tabular}}}}%
-    \put(0.55178502,0.52511387){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y$\end{tabular}}}}%
+    \put(0.61128102,0.46948607){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x$\end{tabular}}}}%
+    \put(0.51388517,0.59645296){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{CoFlowSketch_withBC.pdf}}%
-    \put(0.5707485,0.29164854){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$X_1$\end{tabular}}}}%
-    \put(0.56652157,0.23314062){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$X_2$\end{tabular}}}}%
-    \put(0.57011332,0.16884846){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$X_3$\end{tabular}}}}%
+    \put(0.6734597,0.27900138){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$r_2$\end{tabular}}}}%
+    \put(0.83817186,0.18890596){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$r_3$\end{tabular}}}}%
+    \put(-0.00355412,1.03248561){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$H$\end{tabular}}}}%
+    \put(0.30518482,0.27345291){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$h$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{CoFlowSketch_withBC.pdf}}%
-    \put(-0.00306093,0.8993707){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$L$\end{tabular}}}}%
+    \put(0.49432435,0.00060625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Fuel \end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{CoFlowSketch_withBC.pdf}}%
-    \put(0.33728548,0.26004142){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$R$\end{tabular}}}}%
+    \put(0.16547403,0.00060625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Oxidizer\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{CoFlowSketch_withBC.pdf}}%
-    \put(0.53996697,0.0222485){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Fuel \end{tabular}}}}%
+    \put(0.80167721,0.00060625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Oxidizer\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=6]{CoFlowSketch_withBC.pdf}}%
-    \put(0.19567116,0.0222485){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Oxidizer\end{tabular}}}}%
+    \put(0.75512976,0.53858836){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Adiabatic\\wall\end{tabular}}}}%
+    \put(0.14052129,1.20203475){\rotatebox{-90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Pressure outlet\end{tabular}}}}}%
+    \put(0.93949869,1.20081734){\rotatebox{-90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Pressure outlet\end{tabular}}}}}%
+    \put(0.3949708,1.87472149){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Pressure outlet\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=7]{CoFlowSketch_withBC.pdf}}%
-    \put(0.79413146,0.0222485){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Oxidizer\end{tabular}}}}%
+    \put(0.65594379,0.34322611){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$r_1$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=8]{CoFlowSketch_withBC.pdf}}%
-    \put(0.79701459,0.47908863){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Adiabatic\\wall\end{tabular}}}}%
-    \put(0.23023085,1.0466623){\rotatebox{-90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Pressure outlet\end{tabular}}}}}%
-    \put(0.91833842,1.04561383){\rotatebox{-90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Pressure outlet\end{tabular}}}}}%
-    \put(0.44937176,1.62600389){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Pressure outlet\end{tabular}}}}%
   \end{picture}%
 \endgroup%

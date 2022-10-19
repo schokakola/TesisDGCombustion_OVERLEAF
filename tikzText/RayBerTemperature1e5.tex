@@ -1,0 +1,27 @@
+\subcaptionbox{Ra$ = 100000$ \label{fig:RayBerTemp_Ra1}}{
+	\begin{tikzpicture}%[scale=0.90]
+		\begin{axis}[
+			axis line style = thick,
+			ticks=none,
+%			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+%			colormap name=turbo,
+%			colorbar, 
+%			colorbar style={
+%				yticklabel style={
+%					/pgf/number format/.cd,
+%					fixed,
+%					fixed zerofill
+%				},
+%				point meta max= 1.5,%6.73,
+%				point meta min= 0.5,
+%			}
+		]
+			\addplot[thick,blue] graphics[	
+			xmin=0,	xmax=3694,	ymin=0,	ymax=1842,
+			] {../plots/RayBer_Re1e5.png};
+		\end{axis}%		
+	\end{tikzpicture}%
+}%

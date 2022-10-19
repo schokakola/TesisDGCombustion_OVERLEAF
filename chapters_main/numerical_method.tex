@@ -303,6 +303,11 @@ Finally, the volumetric source term of the energy and mass fraction equations ar
 The heat release $\heatRelease$ is calculated with \cref{eq:heatReleaseOneStepNonDim}, the reaction rate $\rateReac$ is evaluated using \cref{eq:NonDimArr} and the mixture heat capacity with \cref{eq:nondim_cpmixture}.
 \subsection{Temporal discretization}
 Blabla
+second order backward difference scheme
+\begin{equation}
+\left(\frac{\partial \rho}{\partial t} \right)^n= \frac{1}{2\Delta t}\left(3\rho^n-2\rho^{n-1}\rho^{n-2}\right)
+\end{equation}
+
 %TODO and the time derivatives are zero. de alguna forma dejar en claro que para steady state calculations se utiliza simplemente el mismo algoritmo pero con un deltaT muy grande
 \section{Computational methodology} \label{sec:CompMethodology}
 
@@ -676,7 +681,7 @@ Cases involving combustion are initialized with the solution of the flame sheet 
 	\item The system of  \cref*{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} possesses multiple solutions. One is the pure mixing (frozen) solution, where no chemical reaction has taken place, and the other one is the ignited solution, where the flame is present. Using the flame sheet solution as initial estimate ensures that the path taken by Newton's algorithm will tend towards the ignited solution.
 \end{itemize}
 
-Regarding the solution of the flame sheet problem (cf. \cref{sec:FlameSheet}), it should be noted that the sharp change in the primitive variables around $z = z_{st}$  could be problematic. In particular, the non-smoothness of the derived variables could lead to Gibbs phenomenon-type problems. This inconvenient can be remedied by using a regularized form of the equations. We define the smoothing function $\mathcal{H}$
+It should be noted regarding the solution of the flame sheet problem (cf. \cref{sec:FlameSheet}) that the sharp change in the primitive variables around $z = z_{st}$  is problematic in certain scenarios. In particular, the non-smoothness of the derived variables could lead to Gibbs phenomenon-type problems. This inconvenient can be remedied by using a regularized form of the equations. The smoothing function $\mathcal{H}$ is defined as
 \begin{equation}\label{eq:regularization_MF}
 	\mathcal{H}(z) \approx \frac{1}{2}(1+\tanh(\frac{z - z_{st} }{\sigma} )),
 \end{equation}

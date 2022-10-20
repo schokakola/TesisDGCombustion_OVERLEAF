@@ -3,7 +3,13 @@
 The following sections present a comprehensive solver validation using various test cases. In \cref{sec:SingleCompIsotCase} the applicability of the solver is analyzed for isothermal single-component systems. Later in \cref{sec:SinCompNonIsothermCase} several single-component non-isothermal configurations are studied. Finally, in \cref{sec:MultCompNonIsothermCase} test cases for multicomponent non-isothermal systems are presented, with a particular emphasis on systems where combustion is present.
 %Additionally the convergence properties of the DG-method will be analyzed for some of the systems.
 
-All calculations shown here were performed on an AMD EPYC 7543 32-core Processor, DDR4 %TODO \todo[inline]{which specifications of the cluster should i include?}
+All calculations shown here were performed on a cluster with following speficiations
+\begin{itemize}
+    \item \textbf{CPU} 4x8 cores (Intel(R) Xeon(R) CPU E5-4627 v2)
+    \item \textbf{CPU vector extension} Intel® AVX
+    \item \textbf{CPU speed} basis 3.30 GHz, turbo 3.6 GHz
+    \item \textbf{memory} 512 GByte (DDR3-1600)
+\end{itemize}
 Unless otherwise stated, all calculations use the termination criteria presented in \cref{ssec:TerminationCriterion}.
 Some of the results presented in the next sections has been published \citep{gutierrez-jorqueraFullyCoupledHighorder2022}.
 %%%%%%%%

@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+	\begin{axis}[
+	%		width= 0.4\textwidth,
+	%		height= 0.3\textwidth ,
+	xlabel = $\epsilon$,
+	ylabel= $\text{Ra}_{\text{crit}}$, 
+	%				axis y line*=right,
+	legend style={at={(0.03,0.97)}, anchor=north west},
+	]
+	\addplot+[color=black, thick] table {data/RayleighBenard/RayBerTemperatureStudy1.txt}; \addlegendentry{$\RefVal{T} = \SI{110.5}{\kelvin}$}
+	\addplot+[color=black, thick] table {data/RayleighBenard/RayBerTemperatureStudy2.txt};\addlegendentry{$\RefVal{T} = \SI{273.15}{\kelvin}$}
+	\addplot+[color=black, thick] table {data/RayleighBenard/RayBerTemperatureStudy3.txt};\addlegendentry{$\RefVal{T} = \SI{300}{\kelvin}$}
+	\addplot+[color=black, thick] table {data/RayleighBenard/RayBerTemperatureStudy4.txt};\addlegendentry{$\RefVal{T} = \SI{600}{\kelvin}$}
+	\draw [dashed,thick] (0, 1707.762) -- (0.35, 1707.762);
+\end{axis}
+\end{tikzpicture}

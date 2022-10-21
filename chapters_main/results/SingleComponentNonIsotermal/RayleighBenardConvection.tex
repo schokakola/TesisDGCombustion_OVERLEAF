@@ -91,6 +91,14 @@ In relation to the above, it is interesting to analyze the influence of the temp
 Finally, in \cref{fig:RayBenTemperatureField} and \cref{fig:RayBenStreamlines} the temperature fields and streamlines obtained with the XNSEC-solver for $\epsilon = 0.5$ and $\RefVal{T} = \SI{600}{\kelvin}$ for different Rayleigh number are shown. An interesting point to mention is the difference between the results obtained using the Bousinesq and the low-Mach approximation. Comparing the results reported here with publications that use the Boussinesq approximation ( \cite{shishkinaRayleighBenardConvectionContainer2021,zhouNumericalSimulationLaminar2004}), a clear difference in the streamlines is observed. In particular, the centers of the streamlines obtained with the low-Mach solver are slightly shifted towards the colder zones, while the streamlines obtained with the Boussinesq approximation do not present this deviation and remain close to the center. A possible explanation for this is that with the Boussinesq approximation the expansion effects of the fluid are ignored, whereas in the low-Mach equations this is not the case. When the latter is used, the hot fluid moves the center of the streamline towards the cold fluid.
 \FloatBarrier
 \subsubsection{Pressure outlet boundary condition}\label{ssec:MultipleCellConv}
+\begin{figure}[t!]
+	\begin{center}
+		\def\svgwidth{0.93\textwidth}
+		\import{./plots/}{RayleighBen_Geometry_PressOutlet.pdf_tex}
+		\caption{Geometry of the Rayleigh-Bénard convection with pressure outlet boundary conditions. }
+		\label{fig:RayBenGeometry}
+	\end{center}
+\end{figure}
 A transient calculation of the Rayleigh-Bénard configuration is show in this subsection. The configuration is similar to the one described in the last subsection. A sketch showing the system is shown in \cref{fig:RayBenGeometry}. The difference is that the barriers to the left and right are now considered pressure outlet boundary conditions and the length $L$ of the system is chosen considerably longer. Theoretically, if the interest of the simulation is focused on the study of the behavior of convection rolls, an infinitely long system should be used to avoid the influence of the boundary condition. The adimensional lengths are chosen as $H=1$ and $L=10$. A grid with $32\times320$ cells is used. The polynomial degrees for the velocity components and temperature are set to four, and for the hydrodinamic pressure is three. The time discretization is again done with a BDF-3 scheme and the calculation time is 150, using timesteps of $\Delta t = 0.5$. The temperatures are set to $T_h = 1.5$ and $T_c = 0.5$, with a reference temperature of $\RefVal{T} = \SI{600}{\kelvin}$. The Rayleigh number is $\Ra = 5659$. The initial conditions are chosen as
 \begin{subequations} 
 	\begin{align}
@@ -104,14 +112,7 @@ Note that a resting fluid was given as a initial condition, as it was observed t
 
 
 
-\begin{figure}[bt]
-	\begin{center}
-		\def\svgwidth{0.93\textwidth}
-		\import{./plots/}{RayleighBen_Geometry_PressOutlet.pdf_tex}
-		\caption{Geometry of the Rayleigh-Bénard convection problem with pressure outlet boundary conditions. }
-		\label{fig:RayBenGeometry}
-	\end{center}
-\end{figure}
+
 
 \begin{figure}[t]
 	\centering

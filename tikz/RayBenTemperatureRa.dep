@@ -1,0 +1,4 @@
+tikz/RayBenTemperatureRa.pdf: data/RayleighBenard/RayBerTemperatureStudy1.txt
+tikz/RayBenTemperatureRa.pdf: data/RayleighBenard/RayBerTemperatureStudy2.txt
+tikz/RayBenTemperatureRa.pdf: data/RayleighBenard/RayBerTemperatureStudy3.txt
+tikz/RayBenTemperatureRa.pdf: data/RayleighBenard/RayBerTemperatureStudy4.txt

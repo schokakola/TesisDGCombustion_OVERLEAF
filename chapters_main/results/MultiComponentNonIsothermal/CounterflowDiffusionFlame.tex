@@ -21,26 +21,10 @@ The combustion of a methane-nitrogen mixture with air was simulated using the \B
 \end{itemize}
 By using as definition of the strain rate the maximum axial velocity gradient, the calculated strains for the three cases mentioned above are $\SI{34}{\per\second}$, $\SI{76}{\per\second}$ and $\SI{155}{\per\second}$, respectively. The temperature of both inlets is \SI{300}{\kelvin}. The separation between both jets $\hat L$ is equal to $\SI{0.02}{\meter}$, and the length of the inlet opening $\hat D$ is $\SI{0.02}{\meter}$. The left and right domain boundaries are selected to be at a distance $3\hat L$ of the center. A non-unity but constant Lewis number formulation is used,with
 $\Lewis_{\ch{CH4}} =  0.97 $ , $\Lewis_{\ch{O2}} = 1.11 $, $\Lewis_{\ch{H2O}} = 0.83 $ and $\Lewis_{\ch{CO2}} = 1.39 $.\cite{smookePremixedNonpremixedTest1991} The heat capacity of each component is evaluated locally from NASA polynomials, and the mixture heat capacity is calculated with \cref{eq:nondim_cpmixture}.
-%\tikzset{external/export next=false}
-%\begin{figure}[t!]
-%	\centering
-%	\pgfplotsset{
-%		compat=1.3,
-%		tick align = outside,
-%		yticklabel style={/pgf/number format/fixed},
-%	}
-%	\inputtikz{CDF_ConvergenceStory}
-%	\caption{Convergence history of the diffusion flame in the counterflow configuration, with a maximum strain value of $165.1 $\si{s^{-1}}}
-%	\label{fig:CDF_ConvergenceStory}
-%\end{figure}
-
 In \cref{fig:CDF_ConvergenceStory} the convergence history obtained for a typical calculation of the counter diffusion flame is presented. The solution of the flame sheet calculation requires 17 iterations until convergence is reached. The obtained solution is used as a starting value for the finite chemical rate calculation, which only needs 10 iterations until convergence is reached. We note that because the flame sheet calculation is only used as an approximation of the final solution, a low polynomial degree can be used. For the flame sheet calculation $k = 2$ was chosen, resulting in a rather small system with 26,880 degrees of freedom. For the finite rate calculation $k = 4$ was used, which resulted in a system with 174,110 degrees of freedom.  With the above-mentioned another advantage of the approach of using the flame sheet calculation for two-dimensional simulations can be highlighted. The initial estimate can be found relatively easily for a system with few degrees of freedom. Using the solution found as the initial estimate has the consequence that Newton's algorithm for the complete problem (which has many more degrees of freedom) only needs a few iterations to find a solution.
-
-Because we are solving a two-dimensional configuration, in order to be able to compare our results with the ones obtained from the one-dimensional representation, the temperature, mass fractions and velocity profiles are extracted along the centerline of the system shown as the dashed line in \cref{fig:CDFScheme}. In \cref{fig:BoSSS_1D_Comparison_velocity} a comparison of the axial velocities calculated with \BoSSS and the one-dimensional solution is shown. While for the high strain case the results agree closely, for lower strains a discrepancy is observed. Recall that the derivation of the one-dimensional approximation assumes a constant velocity field incoming to the flame zone in order to obtain a self-similar solution. In the case of the two-dimensional configuration presented here, the border effects do have an influence on the centerline, which disrupts the self-similarity. This effect is more pronounced for low velocities, which explains the discrepancy between curves. Similarly, In \cref{fig:BoSSS_1D_Comparison} the temperature and mass fraction fields are presented. Again, a discrepancy is observed for low strains, but results show a good agreement for higher inlet velocities. It can also be observed how, as expected, \cite{fernandez-tarrazoSimpleOnestepChemistry2006} at higher strains a significant penetration (leakage) of oxygen across the flame is present. Finally, in \cref{fig:TempAndReacFields} the two-dimensional temperature, velocity and reaction rate fields for the case (a) are shown.
-\newpage
-\begin{figure}[t]
+\begin{figure}[h]
 	\centering
-	\pgfplotsset{width=0.81\textwidth, compat=1.3}
+	\pgfplotsset{width=0.73\textwidth, compat=1.3}
 	\inputtikz{CounterFlowFlameMesh}	
 	\inputtikz{CounterFlowFlameStreamlines}
 	\inputtikz{CounterFlowFlameTemperature}
@@ -48,12 +32,10 @@ Because we are solving a two-dimensional configuration, in order to be able to c
 	\inputtikz{CounterFlowFlameDensity}		
 	\caption{Nondimensional solution and derived fields of the counterflow flame configuration for case (a).} \label{fig:CoFlowFlameFig1}
 \end{figure}
-%\newpage
-
-\begin{figure}[t]
+\begin{figure}[h]
 	\ContinuedFloat
 	\centering
-	\pgfplotsset{width=0.81\textwidth, compat=1.3}	
+	\pgfplotsset{width=0.73\textwidth, compat=1.3}	
 	\inputtikz{CounterFlowFlamePressure}	
 	\inputtikz{CounterFlowFlameCpMixture}	
 	\inputtikz{CounterFlowFlameMF0}
@@ -63,6 +45,8 @@ Because we are solving a two-dimensional configuration, in order to be able to c
 	%	\inputtikz{CounterFlowFlameDensity}	
 	\caption{Solution and derived fields of the counterflow flame configuration with a strain of \SI{34}{\per \second} (continued).}% \label{fig:CoFlowFlameFig1}
 \end{figure}
+Because we are solving a two-dimensional configuration, in order to be able to compare our results with the ones obtained from the one-dimensional representation, the temperature, mass fractions and velocity profiles are extracted along the centerline of the system shown as the dashed line in \cref{fig:CDFScheme}. In \cref{fig:BoSSS_1D_Comparison_velocity} a comparison of the axial velocities calculated with \BoSSS and the one-dimensional solution is shown. While for the high strain case the results agree closely, for lower strains a discrepancy is observed. Recall that the derivation of the one-dimensional approximation assumes a constant velocity field incoming to the flame zone in order to obtain a self-similar solution. In the case of the two-dimensional configuration presented here, the border effects do have an influence on the centerline, which disrupts the self-similarity. This effect is more pronounced for low velocities, which explains the discrepancy between curves. Similarly, In \cref{fig:BoSSS_1D_Comparison} the temperature and mass fraction fields are presented. Again, a discrepancy is observed for low strains, but results show a good agreement for higher inlet velocities. It can also be observed how, as expected, \cite{fernandez-tarrazoSimpleOnestepChemistry2006} at higher strains a significant penetration (leakage) of oxygen across the flame is present. Finally, in \cref{fig:TempAndReacFields} the two-dimensional temperature, velocity and reaction rate fields for the case (a) are shown.
+
 Finally, in \Cref{fig:TemperatureConvergenceDiffFlame} we show how the maximum value of the temperature behaves for different mesh resolutions and polynomial degrees. The temperature tends to a limit value, and we observe how this value is reached already for coarse meshes when using a polynomial degree of three or four. We also observe that for $k=2$ the temperature tends to a limit value, but slower in comparison to $k =3$ or $4$. The values for $k=1$ are not displayed because for the mesh resolutions shown here, the values of the maximum temperature were of the order of 50 \si{K} bigger than the limit value. We note that the solution of this configuration showed singularities in the boundary points where the inlet and wall meet. This fact made hard to realize a $h$-convergence study for the complete domain. Based on this we decided to analyse a flame configuration that doesn't exhibit this behaviour, as shown in the next section.
 % Finally, for the finite reaction rate calculation also several pseudo-timestep were done, and after each one of them the cells with high temperature gradients are refined (ser mas especifico con esto.)
 % For reactive flows, this strategy is based on the variable $\omega$.

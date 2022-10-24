@@ -2,9 +2,11 @@
 	\begin{axis}[
 		xmin = 0, xmax = 1, ymin =0.4, ymax=1.6,
 		width= 0.2\textwidth ,
-		height= 0.22\textwidth ,
+		height= 0.2\textwidth ,
 		xlabel = y,
 		ylabel= T, 
+		xmajorgrids,
+		ymajorgrids,
 		]
 		\addplot+[color=black, no marks, thick] table {data/CouetteTempDifferenceData/T.txt};
 	\end{axis}

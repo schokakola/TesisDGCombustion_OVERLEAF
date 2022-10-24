@@ -1,3 +1,0 @@
-tikz/TemperatureConvergenceDiffFlame.pdf: data/MaxTemperatureStudy/data_dg2.txt
-tikz/TemperatureConvergenceDiffFlame.pdf: data/MaxTemperatureStudy/data_dg3.txt
-tikz/TemperatureConvergenceDiffFlame.pdf: data/MaxTemperatureStudy/data_dg4.txt

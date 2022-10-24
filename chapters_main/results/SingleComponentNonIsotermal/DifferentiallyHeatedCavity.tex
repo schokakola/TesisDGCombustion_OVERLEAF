@@ -8,9 +8,9 @@
 	\end{center}
 \end{figure}
 The differentially heated cavity problem is a classical benchmark case that is often used to assess the ability of numerical codes to simulate variable density flows \citep{paillereComparisonLowMach2000,vierendeelsBenchmarkSolutionsNatural2003,tyliszczakProjectionMethodHighorder2014}.
-The test case has the particularity that it is a closed system, where the thermodynamic pressure $p_0$ is a parameter that must be adjusted so that the mass is conserved. This point presents a special difficulty for the solution, since the calculation of $p_0$ requires knowledge of the entire temperature field, 
+The test case has the particularity that deals with a closed system, where the thermodynamic pressure $p_0$ is a parameter that must be adjusted so that the mass is conserved.The thermodynamic pressure $p_0$ determines the density field, which in turn appears in the momentum equation and the energy equation, making it necessary to use an adequate algorithm to solve the system. This point presents a special difficulty for the solution, since the calculation of $p_0$ requires knowledge of the temperature field on the whole computational domain, inducing a global coupling of the variables. 
 
-The problem consists of a fully enclosed two-dimensional square cavity filled with fluid.  A sketch of the problem is shown in \cref{DHCGeom}. The left and right walls of the cavity have constant temperatures $\hat{T}_h$ and $\hat{T}_c$, respectively, with $\hat{T}_h >\hat{T}_c$, and the top and bottom walls are adiabatic. A gravity field induces fluid movement because of density differences caused by the difference in temperature between the hot and cold walls.
+The system is a fully enclosed two-dimensional square cavity filled with fluid.  A sketch of the problem is shown in \cref{DHCGeom}. The left and right walls of the cavity have constant temperatures $\hat{T}_h$ and $\hat{T}_c$, respectively, with $\hat{T}_h >\hat{T}_c$, and the top and bottom walls are adiabatic. A gravity field induces fluid movement because of density differences caused by the difference in temperature between the hot and cold walls.
 The natural convection phenomenon is characterized by the Rayleigh number, defined as
 \begin{equation}\label{eq:Rayleigh}
 	\text{Ra} = \Prandtl \frac{\hat g \RefVal{\rho}^2(\hat T_h-\hat T_c) \RefVal{L}^3}{\RefVal{T}\RefVal{\mu}^2},
@@ -24,7 +24,7 @@ The Rayleigh number is then related to the Reynolds number according to
 \begin{equation}
 	\text{Re} = \sqrt{\text{Ra}}.
 \end{equation}
-Thus, it is sufficient to select a $\Reynolds$ number in our simulation, fixing the value of the $\text{Ra}$ number. The driving temperature difference $(\hat T_h - \hat T_c)$ appearing in \cref{eq:Rayleigh} can be represented as a non-dimensional parameter:
+Thus, it is sufficient to select a $\Reynolds$ number in the simulation, fixing the value of the $\text{Ra}$ number. The driving temperature difference $(\hat T_h - \hat T_c)$ appearing in \cref{eq:Rayleigh} can be represented as a non-dimensional parameter:
 \begin{equation}\label{eq:nondimensionalTemperature}
 	\varepsilon = \frac{\hat T_h - \hat T_c}{2\RefVal{T}}.
 \end{equation}

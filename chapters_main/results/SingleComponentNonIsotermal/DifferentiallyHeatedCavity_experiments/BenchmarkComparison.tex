@@ -2,15 +2,20 @@
 
 Here a comparison of the results obtained with the XNSEC-solver and the results presented in the work of \cite{vierendeelsBenchmarkSolutionsNatural2003} is made. They solved the fully compressible Navier-Stokes equations on a stretched grid with $1024\times1024$ using a finite-volume method with quadratic convergence, providing very accurate results that can be used as reference.
 The benchmark results are presented for $\text{Ra} = \{10^2,10^3,10^4,10^5,10^6,10^7\}$. In this range of Rayleigh numbers, the problem has a steady-state solution. 
-The cavity is represented by the domain $[0,1]\times[0,1]$. An equidistant Cartesian mesh with $30 \times 30$ elements is used for each simulation. A polynomial degree of five is used for the velocities and temperature, and a degree of four is used for the pressure.
+The cavity is represented by the domain $[0,1]\times[0,1]$. For all calculations in this subsection an equidistant Cartesian mesh with $30 \times 30$ elements is used and a polynomial degree of five for the velocities and temperature, and a degree of four for the pressure is set.
 %
-\begin{figure}
+
+
+Preliminar calculations showed that for cases up to $\text{Ra} = 10^5$ the solution of the system using Newton's method presented in \cref{sec:newton} is possible without further modifications, while for higher values the algorithm couldnt find a solution and stagnates after certain number of iterations. The homotopy strategy mentioned in \cref{sec:CompMethodology} is used to overcome this problem and obtain solutions for higher Rayleigh numbers. Here, the Reynolds number is selected as the homotopy parameter and continuously increased until the desired value is reached.
+
+In \cref{fig:TempProfile,fig:VelocityXProfile,fig:VelocityYProfile} the temperature and velocity profiles across the cavity for different Rayleigh numbers are shown. The profiles calculated with the XNSEC-solver agree closely to the benchmark solution. As expected, an increase of the acceleration of the fluid in the vicinity of the walls for increasing Rayleigh numbers is observed.
+\begin{figure}[h]
 	\centering
 	\pgfplotsset{width=0.3 \textwidth, compat=1.3}
 	\inputtikz{HSCStreamlines}
 	\caption{Streamlines of the heated cavity configuration with $\epsilon = 0.6$.}\label{fig:HSCStreamlines}
 \end{figure}
-% \FloatBarrier
+
 
 \begin{figure}[h]
 	\centering
@@ -35,13 +40,9 @@ The cavity is represented by the domain $[0,1]\times[0,1]$. An equidistant Carte
 	\caption{Profiles of the y-velocity component along the horizontal line $y=0.5$. Solid lines represents the XNSEC-solver solution and marks the benchmark solution.}
 	\label{fig:VelocityYProfile}
 \end{figure}
-
-It was observed that for cases up to $\text{Ra} = 10^5$ the solution of the system using Newton's method presented in \cref{sec:newton} is possible without further modifications, while for higher values the algorithm diverges. The homotopy strategy mentioned in \cref{sec:CompMethodology} is used to overcome this problem and obtain solutions for higher Rayleigh numbers. Here, the Reynolds number is selected as the homotopy parameter and continuously increased until the desired value is reached.
-
-In \cref{fig:TempProfile,fig:VelocityXProfile,fig:VelocityYProfile} the temperature and velocity profiles across the cavity for different Rayleigh numbers are shown. The profiles calculated with the XNSEC-solver agree closely to the benchmark solution. As expected, an increase of the acceleration of the fluid in the vicinity of the walls for increasing Rayleigh numbers is observed.
-
+\FloatBarrier
 A comparison of the thermodynamic pressure and the Nusselt numbers to the benchmark solution was also made. The results are shown in \cref{tab:p0_Nu_Results}. The simulations are done with a polynomial degree of four for the velocities and temperature, three for the pressure in an equidistant $128\times128$ mesh. The thermodynamic pressure is obtained from \cref{eq:p0Condition}, and the average Nusselt number is calculated with \cref{eq:Nusselt}. The results obtained with the XNSEC-solver agree very well with the reference results, as can be seen for the thermodynamic pressure, which differs at most in the fourth decimal place. Note that the average Nusselt number of the heated wall $(\text{Nu}_\text{h})$ and the Nusselt number of the cold wall $(\text{Nu}_\text{c})$ are different. As the Rayleigh number grows, this discrepancy becomes larger, hinting that, at such Rayleigh numbers, the mesh used is not refined enough to adequately represent the thin boundary layer and more complex flow structures appearing in high-Rayleigh number cases. While for an energy conservative system $\text{Nu}_\text{h}$ and $\text{Nu}_c$ should be equal, for the DG-formulation this is not the case, since conservation is only ensured locally and the global values can differ. This discrepancy can be seen as a measure of the discretization error of the DG formulation and should decrease as the mesh resolution increases. This point will be discussed in the next section.
-\begin{table}[tb]
+\begin{table}[t!]
 	\begin{center}
 		\begin{tabular}{cccccc}
 			\hline

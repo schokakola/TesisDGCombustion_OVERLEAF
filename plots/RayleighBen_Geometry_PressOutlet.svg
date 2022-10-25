@@ -209,9 +209,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="318.45262"
-     inkscape:cy="117.03648"
+     inkscape:zoom="7.9195959"
+     inkscape:cx="328.52879"
+     inkscape:cy="124.19569"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -250,12 +250,14 @@
      transform="translate(8.6683315,-58.208334)">
     <path
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1242);stop-color:#000000;stop-opacity:1"
-       d="M 74.083332,84.666666 V 82.020832"
-       id="path856" />
+       d="m 74.083332,84.666666 0,-5.291664"
+       id="path856"
+       sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Send)"
-       d="m 74.083332,84.666666 h 2.645834"
-       id="path858" />
+       d="m 74.083332,84.666666 5.291669,0"
+       id="path858"
+       sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 10.583333,68.791666 H 137.58333"
@@ -277,24 +279,24 @@
     <text
        xml:space="preserve"
        style="font-size:2.11667px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
-       x="76.515289"
-       y="86.671188"
+       x="80.424103"
+       y="86.570961"
        id="text1288"><tspan
          sodipodi:role="line"
          id="tspan1286"
-         x="76.515289"
-         y="86.671188"
+         x="80.424103"
+         y="86.570961"
          style="font-size:2.11667px;stroke-width:0.264583">$x$</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:2.11667px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
-       x="71.503983"
-       y="81.553108"
+       x="68.564018"
+       y="78.880409"
        id="text1288-4"><tspan
          sodipodi:role="line"
          id="tspan1286-9"
-         x="71.503983"
-         y="81.553108"
+         x="68.564018"
+         y="78.880409"
          style="font-size:2.11667px;stroke-width:0.264583">$y$</tspan></text>
     <text
        xml:space="preserve"

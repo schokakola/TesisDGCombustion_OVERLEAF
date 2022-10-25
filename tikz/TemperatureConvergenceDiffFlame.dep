@@ -1,0 +1,3 @@
+tikz/TemperatureConvergenceDiffFlame.pdf: data/MaxTemperatureStudy/CDF_MaxTempK2.txt
+tikz/TemperatureConvergenceDiffFlame.pdf: data/MaxTemperatureStudy/CDF_MaxTempK3.txt
+tikz/TemperatureConvergenceDiffFlame.pdf: data/MaxTemperatureStudy/CDF_MaxTempK4.txt

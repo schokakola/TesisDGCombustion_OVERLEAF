@@ -5,10 +5,12 @@ An $h-$convergence study of the XNSEC solver was conducted using the heated cavi
 -similar to the problem previously exposed for the lid-driven cavity -, which causes global pollution in the convergence behavior of the algorithm. %Figure XXX shows in an elevated plane the difference obtained by subtracting the pressure field for a simulation with $k=3$ and the meshes of $64times64$ and $128times128$ elements,  which can be understood as a measure of the error in the simulation. It is clearly seen that the corners of the system present a very high error, which could be explained by the inconsistency between boundary conditions in that area. 
  
 As discussed in the previous section, the difference in the average values of the Nusselt number on the hot wall $\text{Nu}_\text{h}$  and the cold wall $\text{Nu}_\text{c}$ is a direct consequence of the spatial discretization error and should decrease for finer meshes. In \cref{fig:NusseltStudy} the convergence behavior of the Nusselt number is presented for different polynomial degrees $k$, different number of elements and for two different Ra numbers. As expected, it can be observed that this discrepancy is smaller when a larger number of elements is used. It can also be seen that  $\text{Nu}_\text{h}$ reaches the expected solution of cells for a much smaller number of elements. This can be explained if one thinks that more complex phenomena take place near the cold wall (see \cref{fig:HSCStreamlines}), which makes necessary a finer mesh resolution in that area.
-%
+
+The results presented in this section allow us to conclude that the implemented solver is capable of dealing with flows with variable densities, and in particular in closed spaces. Additionally, it was observed that even for this complex test, convergence properties close to those expected from the DG-method are obtained. In this section only systems with a steady state solution were treated. In the next section the ability of the solver to compute flows with varying densities in non-steady state will be shown.
+
 \begin{figure}[tb]
 	\centering
-	%\pgfplotsset{width=0.34\textwidth, compat=1.3}
+	\pgfplotsset{width=0.34\textwidth, compat=1.3}
 	\inputtikz{ConvergenceDHC}
 	\caption{Convergence study of the differentially heated cavity problem for $\text{Ra} = 10^3$.}\label{fig:ConvergenceDHC}
 \end{figure}

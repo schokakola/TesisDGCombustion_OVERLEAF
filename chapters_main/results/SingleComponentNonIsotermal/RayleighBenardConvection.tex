@@ -106,15 +106,26 @@ The initial conditions are chosen as
 	\end{align}
 \end{subequations}
 
-Note that no vortex is included in the initial conditions and that only a fluid at rest is considered. A perturbation-like effect caused by the pressure outlet boundaries triggers the movement of the fluid. In the first timesteps the perturbations induce a vortex-like structure close to the left and right boundaries, and start gradually filling the whole domain, reaching finally a steady solution, which can be seen in \cref{fig:RayBerUnsteadySol}. Clearly in the center of the domain (far away from the outlet boundary conditions), the structure of the solution is very similar to the ones shown in the last subsection. In fact, if the domain length is chosen sufficiently large, they are equal. 
+Note that no vortex is included in the initial conditions and that only a fluid at rest is considered. A perturbation-like effect caused by the pressure outlet boundaries triggers the movement of the fluid. At the first stages of the simulation the perturbations induce a vortex-like structure close to the left and right boundaries, and start gradually filling the whole domain, reaching finally a steady solution. This can be seen in \cref{fig:RayBerUnsteadySol}. Clearly in the center of the domain (far away from the outlet boundary conditions), the structure of the solution is very similar to the ones shown in the last subsection. In fact, if the domain length is chosen sufficiently large, they should be equal. 
 \begin{figure}[t]
 	\centering
 	\pgfplotsset{width=0.96\textwidth, compat=1.3}
-	\inputtikz{RayBerPressureOutlet_Temperature}
+	\inputtikz{RayBerPressureOutlet_Temperature10}
 	\par\bigskip%
-	\inputtikz{RayBerPressureOutlet_Streamline}
+	\inputtikz{RayBerPressureOutlet_Streamline10}
 	\par\bigskip%
-	\inputtikz{RayBerPressureOutlet_Vorticity}%
-	\caption{Temperature, streamlines and vorticity of the Rayleigh-Bénard flow with pressure outlets.}\label{fig:RayBerUnsteadySol}
+	\inputtikz{RayBerPressureOutlet_Temperature30}
+	\par\bigskip%
+	\inputtikz{RayBerPressureOutlet_Streamline30}
+	\par\bigskip%
+	\inputtikz{RayBerPressureOutlet_Temperature50}
+	\par\bigskip%
+	\inputtikz{RayBerPressureOutlet_Streamline50}
+	\par\bigskip%
+	\inputtikz{RayBerPressureOutlet_Temperature100}
+	\par\bigskip%		
+	\inputtikz{RayBerPressureOutlet_Streamline100}
+	\par\bigskip%
+	\caption{Temperature and streamlines of the Rayleigh-Bénard flow with pressure outlets.}\label{fig:RayBerUnsteadySol}
 \end{figure}
 \FloatBarrier

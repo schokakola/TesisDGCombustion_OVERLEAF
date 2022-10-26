@@ -1,0 +1,17 @@
+	\subcaptionbox{Streamlines ($t = 50$) \label{fig:RayBerStream}}{
+	\begin{tikzpicture}%[scale=0.90]
+		\begin{axis}[
+			%			view={0}{90},
+			axis line style = thick,
+			ticks=none,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,		
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=0,	xmax=3298,	ymin=0,	ymax=334,
+			] {../plots/SL0050.png};
+		\end{axis}%	
+		%		\hspace{-1cm}	
+	\end{tikzpicture}%
+}%

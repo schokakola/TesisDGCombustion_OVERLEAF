@@ -1,0 +1,28 @@
+	\subcaptionbox{Temperature ($t = 10$) \label{fig:RayBerPOTemp}}{
+	\begin{tikzpicture}%[scale=0.90]
+		\begin{axis}[
+			%			view={0}{90},
+			axis line style = thick,
+			ticks=none,
+			%			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			colormap name=turbo,
+			colorbar horizontal,
+			colorbar style={		
+				%xticklabel pos=upper,
+				xtick={0.5,1.0,1.5},
+				at={(0.2,1.8)},anchor=north west,
+				width=0.6*	\pgfkeysvalueof{/pgfplots/parent axis width},
+				point meta max= 1.5,%6.73,
+				point meta min= 0.5,
+			}
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=0,	xmax=3296,	ymin=0,	ymax=330,
+			] {../plots/T0010.png};
+		\end{axis}%	
+		%		\hspace{-1cm}	
+	\end{tikzpicture}%
+}%

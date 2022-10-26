@@ -34,26 +34,15 @@ First in \cref{ssec:HeatedBackwardFacingStep} an extension of the backward-facin
 \input{chapters_main/results/SingleComponentNonIsotermal/DifferentiallyHeatedCavity}
 \input{chapters_main/results/SingleComponentNonIsotermal/FlowOverHeatedCylinder}
 \input{chapters_main/results/SingleComponentNonIsotermal/RayleighBenardConvection}
-
-
-
-
-
-
-
-
-
 %%%%%%%%
 %%%%%%%%
 \section{Multi-component non-isothermal cases}\label{sec:MultCompNonIsothermCase}
 %%%%%%%%
 %%%%%%%%
-In this section, test cases for combustion applications will be shown. For all the cases treated here, the solution of the flame sheet problem described in \cref{ssec:FlameSheet} is calculated first. Subsequently, this solution is used as an initial estimate for the solution of the finite chemistry rate problem (c.f. \cref{ssec:NonDimLowMachEquations}). In \cref{ssec:coflowFlame} a co-flow laminar diffusion flame configuration is calculated and some remarks about the convergence of the solving algorithm of the XNSEC-solver using this case are done. Next in \cref{ss:CDF} a diffusion flame in a counterflow configuration is simulated and validated by comparing it with results from a one-dimensional configuration. Finally in \cref{ss:UDF} a pseudo-one-dimensional diffusion flame configuration is used to show the convergence ratios of the fully coupled solver. In all the test cases presented in this section, a smoothing parameter $\sigma = 0.02$ was used (cf. \cref{ssec:FlameSheet}). Furthermore, methane combustion according to the one-step model shown in \cref{sec:ChemModel} is considered, therefore, the relevant chemical components are \ch{CH4}, \ch{O2}, \ch{CO2}, \ch{H2O} and \ch{N2}, thus $N = 5$ and $\vec{Y}' = \left(Y_{\ch{CH4}},Y_{\ch{O2}},Y_{\ch{CO2}},Y_{\ch{H2O}}\right)$. The nitrogen mass fraction $Y_{\ch{N2}}$ is calculated according to \cref{eq:MassFractionConstraint}.
+Finally in this section, test cases where the whole operator presented in \cref{ch:NumericalMethods} is used, meaning that the balance equations of continuity, momentum, energy and species are considered and solved in a coupled manner. Here mainly applications for combustion systems will be shown. For all the cases treated here, the solution of the flame sheet problem described in \cref{ssec:FlameSheet} is calculated first and Subsequently, this solution is used as an initial estimate for the solution of the finite chemistry rate problem (c.f. \cref{ssec:NonDimLowMachEquations}). In all the test cases presented in this section, a smoothing parameter $\sigma = 0.02$ was used (see \cref{ssec:MethodCombustion}). Furthermore, methane combustion according to the one-step model shown in \cref{sec:ChemModel} is considered, therefore, the relevant chemical components are \ch{CH4}, \ch{O2}, \ch{CO2}, \ch{H2O} and \ch{N2}, thus $N = 5$ and $\vec{Y}' = \left(Y_{\ch{CH4}},Y_{\ch{O2}},Y_{\ch{CO2}},Y_{\ch{H2O}}\right)$. The nitrogen mass fraction $Y_{\ch{N2}}$ is calculated according to \cref{eq:MassFractionConstraint}.%
 
-
+In \cref{ssec:coflowFlame} a co-flow laminar diffusion flame configuration is calculated and some remarks about the convergence of the solving algorithm of the XNSEC-solver using this case are done. Next in \cref{ss:CDF} a diffusion flame in a counterflow configuration is simulated and validated by comparing it with results from a one-dimensional configuration. Finally in \cref{ss:UDF} a pseudo-one-dimensional diffusion flame configuration is used to show the convergence ratios of the fully coupled solver. 
 \input{chapters_main/results/MultiComponentNonIsothermal/CoflowFlame}
 \input{chapters_main/results/MultiComponentNonIsothermal/CounterflowDiffusionFlame}
 \input{chapters_main/results/MultiComponentNonIsothermal/ChamberedDiffFlame}
-
-
 \FloatBarrier

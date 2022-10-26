@@ -1,4 +1,4 @@
-\chapter{Numerical methods}	\label{ch:introduction}
+\chapter{Numerical methods}	\label{ch:NumericalMethods}
 %\glsresetall
 
 \section{The Discontinous Galerkin method}
@@ -674,7 +674,7 @@ An approximate solution for the target homotopy-parameter is found by the follow
 \end{itemize}
 An exemplary run of the method is shown in \cref{fig:Homotopyevolution}. The homotopy parameter $\mathrm{hp}$ in this particular case is the Reynolds number. The homotopy-parameter hp was increased for iterations 10, 18, 22 and 24, causing an increase of the residuals $\| \mathcal{A}_{\mathrm{hp}^*}(\myvector{U}_{n}) \|_2 $, leading to a convergent solution after 34 Newton iterations. The presented algorithm offers a robust method for finding steady-state solutions of highly nonlinear systems.
 
-\subsection{Initialization of combustion applications}
+\subsection{Initialization of combustion applications}\label{ssec:MethodCombustion}
 Cases involving combustion are initialized with the solution of the flame sheet problem, \cref{DiscretizedConti2,DiscretizedMomentum2,DiscretizedEnergy2}. This idea has been already employed in various works. \cite{smookeNumericalSolutionTwoDimensional1986,smookeNumericalModelingAxisymmetric1992} The reason for the use of this pre-step is twofold:
 \begin{itemize}
 	\item Solving \cref{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} using a Newton-type method requires adequate starting estimates in order to converge. Using the flame sheet solution as initial estimate improves the convergence properties of the method.

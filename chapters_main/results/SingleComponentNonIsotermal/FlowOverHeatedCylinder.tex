@@ -2,7 +2,8 @@
 
 A further thest case of the XNSEC solver is the simulation of flow over a circular cylinder. The results shown section are based on the work by \cite{miaoHighOrderSimulationLowMachFlows2022}
 
-The simulation of a 2D flow over an obstacle exhibits different flows states depending on the Reynolds number. For low Reynolds numbers the flow is laminar and stationary. When the Reynolds number reaches a critical value, the flow becomes non-stationary and eventually turbulent. In particular, for $50 \leq \Reynolds \leq 160$ the behavior of the fluid is laminar with an unstationary periodic character, and the well-known vortex shedding phenomenon appears 	\citep{sharmaHEATFLUIDFLOW2004}. In this section the ability of the XNSEC-solver for dealing with isothermal and non-isothermal unsteady flow will be assesed. 
+The simulation of a 2D flow over an obstacle exhibits different flows states depending on the Reynolds number. For low Reynolds numbers, the flow is laminar and stationary. When the Reynolds number reaches a critical value, the flow becomes non-stationary and eventually turbulent. In particular, for $50 \leq \Reynolds \leq 160$ the behavior of the fluid is laminar with an unstationary periodic character, and the well-known vortex shedding phenomenon appears \citep{sharmaHEATFLUIDFLOW2004}. In this section the ability of the XNSEC-solver for dealing with isothermal and non-isothermal unsteady flow will be assesed. 
+THis is done by calculating the Strouhal number, average drag and lift coefficients and the Nusselt number and comparing them to reference solutions.
 \begin{figure}[t!]
 	\begin{center}
 		\def\svgwidth{0.88\textwidth}
@@ -12,13 +13,13 @@ The simulation of a 2D flow over an obstacle exhibits different flows states dep
 	\end{center}%
 \end{figure}%
 \subsubsection{Set-up}
-\cref{fig:CircularCylinderGeom} shows the geometry of the problem. In the center of the domain is located a heated cylinder of diameter $d = 1$, which is subjected to a flow of constant velocity magnitude. The size of the computational domain is chosen as $D = 59d$, which is large enough so that the outlet boundary conditions have no influence on the solution. The left half of the boundaries of the computational domain correspond to a velocity inlet with constant velocity $(u,v) = (1,0)$ and temperature $T = T_\infty$. The right half of the domain corresponds to a pressure outlet. Finally, the boundary condition corresponding to the heated cylinder is no-slip wall, with a constant temperature $T = T_h$. The system is an open system, and the thermodynamic pressure has a constant value set to $p_0 = 1$.
+\cref{fig:CircularCylinderGeom} shows the geometry of the problem. In the center of the domain is located a heated cylinder of diameter $d = 1$, which is subjected to a flow of constant velocity magnitude. The size of the computational domain is chosen as $D = 59d$, which is large enough so that the outlet boundary conditions do not influence the solution. The left half of the boundaries of the computational domain corresponds to a velocity inlet with constant velocity $(u,v) = (1,0)$ and temperature $T = T_\infty$. The right half of the domain corresponds to a pressure outlet. The boundary condition corresponding to the heated cylinder is a no-slip wall ($(u,v) = (0,0)$), with a constant temperature $T = T_h$. The system is an open system, and the thermodynamic pressure has a constant value set to $p_0 = 1$.
 
-A reference temperature of $\RefVal{T} = \SI{298.15}{\kelvin}$ is taken. The conditions for the velocity inlet are for the isothermal case a dimensionless temperature of $T_h = 1.0$ and $T_\infty = 1$, while for the non-isothermal $T_h = 1.5$ and $T_\infty = 1.0$ . A Reynolds number of 100 is used, for which the flow is unsteady and periodic. Gravity effects are taken as negligible. The prandtl number has a constant value of $\text{Pr} = 0.71$ and the heat capacity ratio $\gamma = 1.4$. The transport parameters are calculated with Sutherlands law which is given by \cref{eq:nondim_sutherland} and the equation of state for the density is \cref{eq:ideal_gas}.
+As mentioned, a isothermal and non-isothermal system is considered in this section. A reference temperature of $\RefVal{T} = \SI{298.15}{\kelvin}$ is selected. The conditions for the velocity inlet are for the isothermal case a dimensionless temperature of $T_h = 1.0$ and $T_\infty = 1$, while for the non-isothermal $T_h = 1.5$ and $T_\infty = 1.0$ . A Reynolds number of 100 is used, for which the flow is known to be unsteady and periodic. Gravity effects are taken as negligible. The prandtl number has a constant value of $\text{Pr} = 0.71$ and the heat capacity ratio $\gamma = 1.4$. The transport parameters are calculated with Sutherlands law which is given by \cref{eq:nondim_sutherland} and the equation of state for the density is \cref{eq:ideal_gas}.
 
-6A polynomial degree of order three is used for both velocity components and the temperature, and two for pressure. In this simulations a curved mesh consisting of 64 elements in the radial direction, and 64 elements in the angular direction is used. The use of a curved mesh for this problem was done primarily to adequately represent the geometry of the heated cylinder . Another possibility could have been to use a method such as a Immersed Boundary Method, but it is beyond the scope of this work.
+For all calculations a polynomial degree of order three is used for both velocity components and the temperature, and two for pressure. In this simulation a curved mesh consisting of 64 elements in the radial direction and 64 elements in the angular direction is used. The use of a curved mesh for this problem was done primarily to adequately represent the geometry of the heated cylinder. Another possibility could have been to use a method such as a Immersed Boundary Method (which is also possible to do in the BoSSS-framework), but it is beyond the scope of this work.
 
- One point to note regarding the use of curved meshes within the DG-method (and in all High-order methods), is that special care has to be taken in the representation of curved elements \citep{bassiHighOrderAccurateDiscontinuous1997} in order to use correctly cuadrature rules. This is critical to preserve the convergence properties of DG-methods. In particular, since the highest degree of the polynomials used in this simulation is three, elements of the bi-cubic type are used, where 16 nodes are used per element for the discretization for a two-dimensional element. Moreover, the time discretization is performed with a BDF-3 scheme , and the time derivative of the continuity equation is calculated with a second order backward difference scheme (see \cref{ssec:TemporalDiscretization}). The simulation time corresponds to $t= 100$, and constant timesteps of $\Delta t = 0.2$ are used. The initial conditions are
+One point to note regarding the use of curved meshes within the DG-method (and in all High-order methods), is that special care has to be taken in the representation of curved elements in order to use correctly cuadrature rules \citep{bassiHighOrderAccurateDiscontinuous1997}. This is critical to preserve the convergence properties of DG-methods. In particular, since the highest degree of the polynomials used in this simulation is three, elements of the bi-cubic type are used, where 16 nodes are used per element for the discretization for a two-dimensional element. Furthermore, the time discretization is performed with a BDF-3 scheme, and the time derivative of the continuity equation is calculated with a second order backward difference scheme (see \cref{ssec:TemporalDiscretization}). The simulation time corresponds to $t= 100$, and constant timesteps of $\Delta t = 0.2$ are used. The initial conditions are
 \begin{subequations} 
 \begin{align}
 &u(t=0) = 1 + u^{\text{vortex}},  \\
@@ -27,7 +28,7 @@ A reference temperature of $\RefVal{T} = \SI{298.15}{\kelvin}$ is taken. The con
 &p(t=0) = 0.
 \end{align}
 \end{subequations}
-Here, $u^{\text{vortex}}$ and $u^{\text{vortex}}$ are the velocity component of a vortex field of radius $r$ and central point $(x^o,y^o)$ defined by 
+Here, $u^{\text{vortex}}$ and $u^{\text{vortex}}$ are the velocity component of a vortex field of radius $r$, strength $a$  and central point $(x^o,y^o)$ defined by 
 {
 \begin{subequations}
 \begin{equation}
@@ -46,9 +47,9 @@ Here, $u^{\text{vortex}}$ and $u^{\text{vortex}}$ are the velocity component of 
 \end{equation}	\label{eq:VortexV}
 \end{subequations}
 }%
-where $a$ corresponds to the vortex force. The reason for placing a vortex in the initial conditions is to include a perturbation on the system which triggers the vortex schedding phenomenon.  The vortex moves with the flow and is eventually advected from the calculation domain. Specifically for this simulation a vortex of radius $r=1$ and strength $a = 1$ is placed at $(x^o,y^o) = ( 2,0)$. It is  worth mentioning that the inclusion of the vortex in the initial conditions is not imperative to make the vortex shedding phenomenon emerge, but it is a way to accelerate its appearance. For the range of Reynolds numbers mentioned, even instabilities of the numerical method should be enough to make the phenomenon arise, but in a much slower way. 
+The reason for placing a vortex in the initial conditions is to include a perturbation in the system that triggers the vortex schedding phenomenon. The vortex moves with the flow and is eventually advected from the calculation domain. Specifically, for this simulation, a vortex of radius $r=1$ and strength $a = 1$ is placed at $(x^o,y^o) = ( 2,0)$. It is worth mentioning that the inclusion of the vortex in the initial conditions is not imperative to make the vortex-shedding phenomenon emerge, but it is a way to accelerate its appearance. For the range of Reynolds numbers mentioned, even instabilities of the numerical method should be enough to cause the phenomenon to arise, but in a much slower way. 
 
-In the nextx sections a validation of the results will be shown. For this, the variables lift coefficient $C_L$, drag coefficient $C_D$, Strouhal number St, and Nusselt number Nu are calculated and compared with reference results. These characteristic quantities are defined as
+The variables lift coefficient $C_L$, drag coefficient $C_D$, Strouhal number St, and Nusselt number Nu are calculated and compared with reference results. These characteristic quantities are defined as
 \begin{equation} 
 	C_L = \frac{2F_L}{\rho_\infty u^2_\infty d}
 \end{equation}
@@ -67,7 +68,7 @@ $F_L$ and $F_D$ are the lift and drag force respectively, $f$ is the vortex shed
 \begin{figure}[t]
 	\centering	
 	\inputtikz{HeatedCylinderCl}	
-	\inputtikz{HeatedCylinderCd}	
+	\inputtikz{HeatedCylinderCd}	    
 	\inputtikz{HeatedCylinderNu}
 	\caption{Temporal evolution of average Nusselt number, lift coefficient and drag coefficient of the heated cylinder}	\label{fig:HeatedCylinderResults}
 \end{figure}

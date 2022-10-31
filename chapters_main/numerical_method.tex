@@ -685,7 +685,42 @@ It should be noted regarding the solution of the flame sheet problem (cf. \cref{
 \begin{equation}\label{eq:regularization_MF}
 	\mathcal{H}(z) \approx \frac{1}{2}(1+\tanh(\frac{z - z_{st} }{\sigma} )),
 \end{equation}
-This function is useful for creating a smooth transition between two functions, since it returns values close to -1 for $z \ll z_{st}$ and values close to 1 for $z \gg z_{st}$. The sharpness of the transition at the point $z = z_{st}$   is dictated by the parameter $\sigma$. In \cref{fig:smoothings} the effect of the smoothing factor $\sigma$ on calculations of a flame in a counter-flow configuration are shown. It can be clearly observed how for increasing $\sigma$ the solution becomes smoother. Using \cref{eq:regularization_MF} the temperature and mass fraction fields can be written as
+
+\begin{figure}[t]
+    \centering
+	\begin{tikzpicture} 
+	% Einstellungen für Achsen
+	\pgfplotsset{
+		myaxis/.style={
+			width=0.4\textwidth,
+			height=0.3\textwidth,
+			xlabel=x,
+			ylabel=y,
+			yticklabel style={/pgf/number format/.cd,fixed,fixed zerofill,precision=1},
+		}
+	}
+	%
+	\begin{axis}[
+		myaxis,
+		xmin=0,
+		xmax=1,
+		xlabel = z,
+		ylabel = H,
+		legend style={at={(0.9,0.12)},anchor=south east,},
+		]
+%		\addplot+[no markers, ]table {data/smoothing/Smooth0.001.txt}; \addlegendentry{No smoothing}
+		\addplot+ [no markers, ]table {data/smoothing/Smooth10.txt}; \addlegendentry{$\sigma$=0.1}
+		\addplot+[no markers, ]table {data/smoothing/Smooth12.5.txt}; \addlegendentry{$\sigma$=0.08}
+		\addplot+[no markers, ]table {data/smoothing/Smooth20.txt}; \addlegendentry{$\sigma$=0.05}
+		\addplot+[no markers, ]table {data/smoothing/Smooth50.txt}; \addlegendentry{$\sigma$=0.02}
+		\addplot+[no markers, ]table {data/smoothing/Smooth100.txt}; \addlegendentry{$\sigma$=0.01}
+%		\addplot+[no markers, ]table {data/smoothing/Smooth1000.txt}; \addlegendentry{$\sigma$=0.001}	 
+	\end{axis} 
+\end{tikzpicture}
+\caption{Smoothing function for different $\sigma$ and $z_{\text{st}}$}
+\end{figure}
+
+This function is useful for creating a smooth transition between two functions, since it returns values close to 0 for $z \ll z_{st}$ and values close to 1 for $z \gg z_{st}$. The sharpness of the transition at the point $z = z_{st}$ is dictated by the parameter $\sigma$. In \cref{fig:smoothings} the effect of the smoothing factor $\sigma$ on calculations of a flame in a counter-flow configuration are shown. It can be clearly observed how for increasing $\sigma$ the solution becomes smoother. Using \cref{eq:regularization_MF} the temperature and mass fraction fields can be written as
 \begin{subequations}
 	\begin{align}
 		T(z)   & = z T_F^0 + (1-z)T_O^0 + \frac{Q Y_F^0}{c_p} z_{st}\frac{1- z}{1-z_{st}}\mathcal{H}(z) +  \frac{Q Y_F^0}{c_p}z\left(1-\mathcal{H}(z)\right),  \label{eq:BS-TR} \\[1ex]
@@ -703,11 +738,7 @@ One problem that arises when using the flame sheet estimate is the selection of 
 
 It should also be noted that cref{eq:heatReleaseOneStep} yields unphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep} (we use $\phi = 1.2$). In practice however, this should not have a significant effect, because the unphysical values of $\hat Q$ appear at zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. Nevertheless, setting an upper bound for $\phi$ is helpful to avoid possible numerical instabilities.
 
+
+%TODO 
 \subsubsection{Adaptive Mesh Refinement}\label{ssec:MeshRefinement}
 The area where the chemical reaction takes place is usually a thin region whose thickness is defined by the availability of reactants.
-\begin{figure}
-	\centering
-	\inputtikz{SmoothingPicture}
-	\caption{Temperature profile calculated in the center-line of a counter-flow flame configuration for different smoothing parameters $\sigma$.}
-	\label{fig:smoothings}
-\end{figure}

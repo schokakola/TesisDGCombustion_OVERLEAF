@@ -1,0 +1,2 @@
+tikz/DGCombustion-figure3.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y20.txt
+tikz/DGCombustion-figure3.pdf: data/CoFlowFS_FullComparison/T_full_y20.txt

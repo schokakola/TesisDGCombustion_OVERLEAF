@@ -1,1 +1,2 @@
-tikz/DGCombustion-figure2.pdf: data/RayleighBenard/RayBenardStabilityStudy.txt
+tikz/DGCombustion-figure2.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y15.txt
+tikz/DGCombustion-figure2.pdf: data/CoFlowFS_FullComparison/T_full_y15.txt

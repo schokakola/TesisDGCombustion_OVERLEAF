@@ -1,7 +1,8 @@
 
 \subsection{Co-flow laminar diffusion flame}\label{ssec:coflowFlame}
 %C:\Users\jfgj8\AppData\Local\BoSSS\plots\sessions\CoFlowFinal_Mult3__Full_CoFlowFlamerP4K12smoothfactor0velMult3LF1__5b10173f-65b1-484a-bfd9-1dc089c3571e
-The co-flowing flame configuration is used as a first test to assess the behavior of the solver for reactive flows applications. It basically consists of two concentric ducts that emit fuel and oxidant into the system, creating a flame. This configuration has been widely studied. In the seminal work of \cite{burkeDiffusionFlames1928} analytical expressions for the flame height and flame shape are obtained by studying a very simplified problem (constant density and velocity field, infinitely fast chemistry, among others). Later, \cite{smookeNumericalModelingAxisymmetric1992} and later works solved this configuration using a 2D-axisymmetric system and also used the flame sheet estimates to find adequate initial conditions for their Newton algorithm. 
+The co-flowing flame configuration is used as a first test to assess the behavior of the solver for reactive flows applications. It basically consists of two concentric ducts that emit fuel and oxidant into the system, creating a flame. This configuration has been widely studied, starting in the seminal work of \cite{burkeDiffusionFlames1928} %analytical expressions for the flame height and flame shape are obtained by studying a very simplified problem (constant density and velocity field, infinitely fast chemistry, among others).
+and followed by many others (see, for example, \cite{smookeNumericalModelingAxisymmetric1992, smookeNumericalSolutionTwoDimensional1986,braackAdaptiveFiniteElement1997}). In particular, the work from \cite{smookeNumericalModelingAxisymmetric1992} and later publications solved this configuration using a 2D-axisymmetric system and also used the flame sheet estimates to find adequate initial conditions for their Newton algorithm. 
 \begin{figure}[t]
 	\centering
 	\def\svgwidth{0.38\textwidth}
@@ -16,7 +17,8 @@ The co-flowing flame configuration is used as a first test to assess the behavio
 	}
 	\caption{Geometry of a coflowing flame configuration (not to scale).} \label{fig:CoFlowGeometry}
 \end{figure}
-It should be noted that the solution of the axisymmetric system of equations presents numerical difficulties that are not the main concern of the present work. For this reason, it was decided to solve a system with similar characteristics but which is possible to represent in Cartesian coordinates. This is possible if an infinitely long slot burner is considered.
+
+It should be noted that the solution of the axisymmetric system of equations presents numerical difficulties that are not the main concern of the present work, which deals with systems in cartesian coordinates. Because of this, the infinitely long slot burner configuration is considered in this work.
 \subsubsection{Set-up of the slot coflowing flame configuration}
 A schematic diagram of the configuration can be seen in \cref{fig:CoFlowSketch}, and consists of a fuel inlet with two oxygen inlets on its sides. Note that the system also includes the tips that separate both oxidizer and fuel inlets. The inclusion of this separation was seen to be necesary to be able to obtain a converged solution. Altought the system is clearly symmetric around the axis $x = 0$, no symmetry assumption is made and the whole domain is considered for the simulation. The lengths  depicted on \cref{fig:CoFlowSketch} are set as $r_1 = \SI{0.635}{\centi \meter}$, $r_2 = \SI{0.762}{\centi \meter}$, and $r_3 = \SI{7.747}{\centi \meter}$. Aditionally $h = \SI{2.54}{\centi \meter}$ and $H = \SI{40}{\centi \meter}$.  The lengths $r_3$ and $L$ are set with arbitrarily large values in order to avoid influence on the outer boundary conditions on the solution of the flame zone. Setting a higher value of $r_3$ or $L$ did not significantly affect the results.  %The thickness of the tips didnt seem to have an impact on the convergence behaviour of the algorithm.   sure?
 The inlet boundary conditions are set as: 
@@ -39,11 +41,6 @@ The oxidizer enters the system as a plug flow with a constant velocity of $v_O =
 with $v^F_m = \SI{2.427}{\centi \meter \per \second}$.  The inlet temperatures of both streams is  $T^F = T^O = \SI{300}{K}$. Combustion of diluted methane on air is considered, with $Y^F_{\ch{CH4}} = 0.2$, $Y^F_{\ch{N2}} = 0.8$, $Y^O_{\ch{O2}} = 0.23$ and $Y^O_{\ch{N2}} = 0.77$. The superindexes $F$ and $O$ represent the fuel and oxidizer inlet respectively. The pressure outlet boundary condition is the same as \cref{eq:bc_O}. Finally, the boundary conditions at the tips correspond to adiabatic walls, which are defined as in \cref{eq:bc_dn}, with $\vec{u}_{\text{D}} = (0,0)$.             
 
 The variables are nondimensionalized in the usual way. The reference length $\RefVal{L} = \hat{r}_1$ and the reference velocity $\RefVal{u} =v^F_m$. The reference temperature is $\RefVal{T} = T^F$.  All derived variables are nondimensionalized using the air stream as a reference condition, i.e. $\RefVal{\rho} = \SI{1.17}{\kilo \gram \per \cubic \meter}$, $\RefVal{\mu} = \SI{1.85e-5}{\kilo \gram \per \meter \per \second}$,$\RefVal{W} = \SI{28.82}{\kilo \gram \per \kilo\mole}$. This gives the non-dimensional numbers $\Reynolds = 16.5$ $\text{Da} = 4.3\cdot 10^9$. The Prandtl number is assumed to be constant with $\Prandtl = 0.71$. The reference heat capacity is set $\hat{c}_{p,\text{ref}}= \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$. Obviously the solution of a nondimensionalized system of equations should be independent of the reference values selected. Nevertheless, the choice of this value for the heat capacity is important because it gives a solution of the flame-sheet which is similar to the actual solution of the full problem. For this calculation, all Lewis numbers are set to unity. Gravity effects are not taken into account. The transport parameters are calculated using Sutherland law with $\hat{S} = \SI{110.5}{\kelvin}$. The mixture heat capacity $c_p$ is calculated with \cref{eq:nondim_cpmixture} and using NASA polynomials for the heat capacity of each component.
-
-\subsubsection{Numerical results}
-Numerical experiments using the XNSEC-solver showed that the solution of the problem is highly mesh-dependent. The presence of very high gradients in some areas of the problem requires a higher density of cells around these regions to obtain a well-resolved solution. For the solution of the coflow flame, a stretched base mesh is used, with smaller elements in the vicinity of the inlets and larger elements farther away from the inlets. It was observed that the complex mixing phenomena that occur in the vicinity of the inlets have a critical effect on the convergence of the solution. For this reason, a special refinement of the base mesh was necessary in the vicinity of the tips. 
-Furthermore, an adequate mesh resolution on the areas where the flame is located is also critical. To avoid over-solving in zones where actually no reaction is taking place, an adaptive mesh refinement strategy in a pseudo-time-stepping framework was used (see \cref{ssec:MeshRefinement}). After obtaining a steady state solution, the mesh is refined and the calculation is started again. In particular, for this case, several pseudo-timesteps were performed for the flame-sheet calculation. After each of these, the mesh is refined in the vicinity of the flame sheet, i.e., in the cells where $z = z_{\text{st}}$. In \cref{fig:CoFlowMesh} the actual mesh used for the solution of the full problem is shown. Clearly, the mentioned refinement strategy works for the cases where the Lewis number corresponds to unity and the $c_p$ of the mixture has a constant value (assumptions made for the flame-sheet estimate). In case these conditions are not met, the solution obtained for the case with finite reaction rate will be slightly different from the flame-sheet solution.  However, experiments with the XNSEC-solver have shown that this refinement strategy is still beneficial for the convergence of the complete problem, but the selection of a good representative constant value for the heat capacity is important. 
-% C:\Users\jfgj8\AppData\Local\BoSSS\plots\sessions\CoFlowFinal_Mult3__Full_CoFlowFlamerP4K12smoothfactor0velMult3LF1__5b10173f-65b1-484a-bfd9-1dc089c3571e
 \begin{figure}[t!]
 	\centering
 	\pgfplotsset{
@@ -56,15 +53,55 @@ Furthermore, an adequate mesh resolution on the areas where the flame is located
 	\label{fig:CoFlow_ConvergenceStory}
 \end{figure}
 
-In \cref{fig:CoFlow_ConvergenceStory} the convergence history using the newton algorithm presented in \cref{sec:newton} is shown. The flame-sheet calculation requires 20 Newton iterations to find a solution. It is clearly seen how the residuals $\| \mathcal{A}(\myvector{U}_{n}) \|_2 $  for about the first 14 iterations decrease very slowly, while the $delta$ parameter of the globalized Newton method is adapted to find an optimal value to reduce the residuals. Around iteration 13 the algorithm starts to increase $delta$, obtaining a faster reduction of the residuals and the solution to the problem is found in iteration number 20. Then mesh refinement is used, and 6 iterations are required to find a converged solution. Finally, in iteration number 27 the flame-sheet solution is used as the initial estimate for the full problem, which requires only 11 iterations to find a solution. 
+\subsubsection{Numerical results}
+Numerical experiments using the XNSEC-solver showed that the solution of the problem is highly mesh-dependent. The presence of very high gradients in some areas of the problem requires a higher density of cells around these regions to obtain a well-resolved solution. For the solution of the coflow flame, a stretched base mesh is used, with smaller elements in the vicinity of the inlets and larger elements farther away from the inlets. It was observed that the complex mixing phenomena that occur in the vicinity of the inlets have a critical effect on the convergence of the solution. For this reason, a special refinement of the base mesh was necessary in the vicinity of the tips. 
+Furthermore, an adequate mesh resolution on the areas where the flame is located is also critical. To avoid over-solving in zones where actually no reaction is taking place, an adaptive mesh refinement strategy in a pseudo-time-stepping framework was used (see \cref{ssec:MeshRefinement}). After obtaining a steady state solution, the mesh is refined and the calculation is started again. In particular, for this case, several pseudo-timesteps were performed for the flame-sheet calculation. After each of these, the mesh is refined in the vicinity of the flame sheet, i.e., in the cells where $z = z_{\text{st}}$. In \cref{fig:CoFlowMesh} the actual mesh used for the solution of the full problem is shown. Clearly, the mentioned refinement strategy works for the cases where the Lewis number corresponds to unity and the $c_p$ of the mixture has a constant value (assumptions made for the flame-sheet estimate). In case these conditions are not met, the solution obtained for the case with finite reaction rate will be slightly different from the flame-sheet solution.  However, experiments with the XNSEC-solver have shown that this refinement strategy is still beneficial for the convergence of the complete problem, but the selection of a good representative constant value for the heat capacity is important. 
+% C:\Users\jfgj8\AppData\Local\BoSSS\plots\sessions\CoFlowFinal_Mult3__Full_CoFlowFlamerP4K12smoothfactor0velMult3LF1__5b10173f-65b1-484a-bfd9-1dc089c3571e
 
-In \cref{fig:CoFlowFlameFig} solution fields of the coflow flame configuration are shown. Since for the selected inlet velocities the flame corresponds to a overventilated one, the typical jet form is observed. It can also clearly be seen from \cref{fig:CoFlowCH4} that all the fuel entering the system reacts with the oxygen. The exothermic reaction produces an acceleration on the flow field, as shown in  \cref{fig:CoFlowVelMag}
-The maximum temperature reached corresponds to X (X Kelvin). %TODO
+\begin{figure}
+		\centering
+		\pgfplotsset{width=0.23\textwidth, compat=1.3} 
+\begin{tikzpicture}
+	\begin{groupplot}[
+		group style={
+			group name= group,
+			group size=3 by 1,
+			horizontal sep = 1.3cm,
+			vertical sep = 2.0cm,
+			xlabels at= edge bottom,
+			ylabels at= edge left,
+		},
+		x tick label style={
+			/pgf/number format/.cd,
+			precision=3,
+			/tikz/.cd
+		},
+		xlabel=$x$,
+		ylabel= Temperature,
+%		xmajorgrids,
+%		ymajorgrids,
+		legend style={at={(0,0)}, anchor=south west},
+		]
+\nextgroupplot[title = {$y = 5$}]		
+\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/T_full_y5.txt}; 
+\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/T_flamesheet_y5.txt};
+\nextgroupplot[title = {$y = 10$}]		
+\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/T_full_y10.txt}; 
+\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/T_flamesheet_y10.txt}; 
+\nextgroupplot[title = {$y = 15$}]		
+\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/T_full_y15.txt};
+\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/T_flamesheet_y15.txt}; 
+% \nextgroupplot[title = {$y = 20$}]		
+% \addplot+[no markers, ]table {data/CoFlowFS_FullComparison/T_full_y20.txt}; 
+% \addplot+[no markers, ]table {data/CoFlowFS_FullComparison/T_flamesheet_y20.txt};
+	\end{groupplot}
+\end{tikzpicture}
+\caption{Temperature profile at different heights $y$ of the coflow flame. Solid lines correspond to the full solution, and dashed lines correspond to the flame-sheet solution.}
+\end{figure}
 
-From this test case it is concluded that the strategy of using the flame-sheet as an initial condition presents an efficient way to obtain steady state solutions of combustion problems. Since the flame-sheet is only an estimate, it is possible to perform the calculations on relatively coarse grids, and use low order polynomial degrees. The obtained solution can be used as an estimate for calculations with higher polynomial degrees to find a more accurate solution of the full problem in a few iterations. A disadvantage, as already mentioned, is the choice of the $c_p$ parameter, since an inappropriate choice of it gives a solution of the flame-sheet problem far away from the solution of the full problem. However, the user's experience and access to experimental information allows estimating this value relatively easily. It is worth mentioning that the value chosen in this section ($\hat{c}_{p,\text{ref}}= \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$)  served as an adequate estimate for all the simulations presented in this thesis.  
+In \cref{fig:CoFlow_ConvergenceStory} the convergence history using the newton algorithm presented in \cref{sec:newton} is shown. The flame-sheet calculation requires 20 Newton iterations to find a solution. It is clearly seen how the residuals $\| \mathcal{A}(\myvector{U}_{n}) \|_2 $  for about the first 14 iterations decrease very slowly, while the $\delta$ parameter of the globalized Newton method is adapted to find an optimal value to reduce the residuals. Around iteration 13 the algorithm starts to increase $delta$, obtaining a faster reduction of the residuals and the solution to the problem is found in iteration number 20. Then mesh refinement is used, and 6 iterations are required to find a converged solution. Finally, in iteration number 27 the flame-sheet solution is used as the initial estimate for the full problem, which requires only 11 iterations to find a solution. 
 
-
-\begin{figure}[t]
+\begin{figure}[t!]
 	\centering
 	\pgfplotsset{width=0.6\textwidth, compat=1.3}
 	\inputtikz{CoFlowFlameFigTemperature}	
@@ -75,4 +112,14 @@ From this test case it is concluded that the strategy of using the flame-sheet a
 	\caption{Solution field of a coflow flame configuration.} \label{fig:CoFlowFlameFig}
 \end{figure}
 
-\FloatBarrier
+
+In \cref{fig:CoFlowFlameFig} solution fields of the coflow flame configuration are shown. Since for the selected inlet velocities the flame corresponds to a overventilated one, the typical jet form is observed. It can also clearly be seen from \cref{fig:CoFlowCH4} that all the fuel entering the system reacts with the oxygen. The exothermic reaction produces an acceleration on the flow field, as shown in  \cref{fig:CoFlowVelMag}
+The maximum temperature reached corresponds to X (X Kelvin). %TODO
+
+
+
+
+From this test case it is concluded that the strategy of using the flame-sheet as an initial condition presents an efficient way to obtain steady state solutions of combustion problems. Since the flame-sheet is only an estimate, it is possible to perform the calculations on relatively coarse grids, and use low order polynomial degrees. The obtained solution can be used as an estimate for calculations with higher polynomial degrees to find a more accurate solution of the full problem in a few iterations. A disadvantage, as already mentioned, is the choice of the $c_p$ parameter, since an inappropriate choice of it gives a solution of the flame-sheet problem far away from the solution of the full problem. However, the user's experience and access to experimental information allows estimating this value relatively easily. It is worth mentioning that the value chosen in this section ($\hat{c}_{p,\text{ref}}= \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$)  served as an adequate estimate for all the simulations presented in this thesis.  
+
+
+

@@ -30,8 +30,8 @@
 %% <path to your LaTeX distribution>/doc/latex/tuda-ci
 %% ============================================================================
 %%
-% !TeX program = pdflatex
-%% TeX program = lualatex
+%% TeX program = pdflatex
+%% !TeX program = lualatex
 %%
 
 \documentclass[
@@ -472,23 +472,91 @@ noabbrev
 \mainmatter
 %
 \cleardoublepage
-\input{chapters_main/introduction}
-\cleardoublepage
-\input{chapters_main/governing_equations}
-\cleardoublepage
-\input{chapters_main/numerical_method}
-\cleardoublepage
-\input{chapters_main/results}
-\cleardoublepage
-\input{chapters_main/conclusion}
-
-
+%\input{chapters_main/introduction}
+%\cleardoublepage
+%\input{chapters_main/governing_equations}
+%\cleardoublepage
+%\input{chapters_main/numerical_method}
+%\cleardoublepage
+%\input{chapters_main/results}
+%\cleardoublepage
+%\input{chapters_main/conclusion}
  
 
 
+\begin{figure}
+		\centering
+		\pgfplotsset{width=0.35\textwidth, compat=1.3} 
+\begin{tikzpicture}
+	\begin{groupplot}[
+		group style={
+			group name= group,
+			group size=2 by 2,
+			horizontal sep = 1.3cm,
+			vertical sep = 2.0cm,
+			xlabels at= edge bottom,
+			ylabels at= edge left,
+		},
+		x tick label style={
+			/pgf/number format/.cd,
+			precision=3,
+			/tikz/.cd
+		},
+		xlabel=$x$,
+		ylabel= Temperature3,
+%		xmajorgrids,
+%		ymajorgrids,
+		legend style={at={(0,1)}, anchor=south west},
+		]
+		\nextgroupplot[title = {$y = 5$}]		
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction0_flamesheet_y10.txt};%\addlegendentry{Flame sheet1}
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction0_full_y10.txt}; %\addlegendentry{Finite Chemistry, Le=1}
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction0_full_y10.txt}; %\addlegendentry{Finite Chemistry, Le!=1}
+		\nextgroupplot[title = {$y = 5$}]		
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction1_flamesheet_y10.txt};%\addlegendentry{Flame sheet1}
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction1_full_y10.txt}; %\addlegendentry{Finite Chemistry, Le=1}
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction1_full_y10.txt}; %\addlegendentry{Finite Chemistry, Le!=1}
+		\nextgroupplot[title = {$y = 5$}]		
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction2_flamesheet_y10.txt};%\addlegendentry{Flame sheet1}
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction2_full_y10.txt};% \addlegendentry{Finite Chemistry, Le=1}
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction2_full_y10.txt}; %\addlegendentry{Finite Chemistry, Le!=1}
+		\nextgroupplot[title = {$y = 5$}]		
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_flamesheet_y10.txt};%\addlegendentry{Flame sheet1}
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt}; %\addlegendentry{Finite Chemistry, Le=1}
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction3_full_y10.txt};% \addlegendentry{Finite Chemistry, Le!=1}
+	\end{groupplot}
+\end{tikzpicture}
+\caption{}
+\end{figure}
 
 
 
+\begin{figure}
+	\centering
+	\pgfplotsset{width=0.5\textwidth, compat=1.3} 
+	\begin{tikzpicture} [spy using outlines={chamfered rectangle, magnification=3,  width=4cm, height=4cm, connect spies}]
+	\begin{axis}[
+		axis on top,
+		width= 0.42\textwidth ,
+		height= 0.3\textwidth,
+%		xmin = 0,xmax=1,
+		legend pos=north east,	
+		xlabel = x,
+		ylabel = Fuel mass fraction13,
+		]
+	\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_flamesheet_y10.txt};%\addlegendentry{Flame sheet1}
+	\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt}; %\addlegendentry{Finite Chemistry, Le=1}
+	\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction3_full_y10.txt};% \addlegendentry{Finite Chemistry, Le!=1}
+		\coordinate (spypoint) at (axis cs:3,0.08);
+		\coordinate (magnifyglass) at (axis cs:24.7,0.00);
+		\begin{scope}
+			\spy [size=4cm] on (spypoint)
+			in node[fill=white] at (magnifyglass);
+		\end{scope}
+	\end{axis}
+\end{tikzpicture}
+
+\end{figure}
 
 
 %C:\Users\jfgj8\AppData\Local\BoSSS\plots\sessions\CounterFlowFlame_MF_FullComparison_ForThesis3__Full_CounterDifFlameP3K10mult2_c0__90434a33-abe4-45a2-8e8e-2383a9c72d31

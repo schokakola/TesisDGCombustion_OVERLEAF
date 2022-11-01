@@ -1,25 +1,36 @@
 \subcaptionbox{Temperature \label{fig:CoFlowTemperatureField}}{
-	\begin{tikzpicture}%[scale=0.90]
+	\begin{tikzpicture}[spy using outlines={chamfered rectangle, magnification=12,  width=2cm, height=4cm, connect spies}]
 		\begin{axis}[
 			axis on top,
 			scale only axis,
 			enlargelimits=false,	
 			axis equal image,
 			colormap name=turbo,
-			colorbar, 
+			colorbar horizontal,			 
 			colorbar style={
 				yticklabel style={
 					/pgf/number format/.cd,
 					fixed,
 					fixed zerofill
 				},
-				point meta max= 6.181,%6.73,
+				point meta max= 6.04,%6.73,
 				point meta min= 1,
-%				ytick={1, 6.731},
-			}]
+				xtick={1, 6.041},
+				at={(0,1.1)},
+				anchor = north west,
+				xticklabel pos=upper,
+			},
+			]
 			\addplot[thick,blue] graphics[	
 			xmin=-12.4,	xmax=12.4,	ymin=-4.0,	ymax=63.0,
 			] {../plots/CoFlowTemp.png};
+			\coordinate (spypoint) at (axis cs:1.5,0.25);
+			\coordinate (magnifyglass) at (axis cs:28,16);
+			\begin{scope}
+%				\spy [size=2cm] on (spypoint)
+	\spy [  width=2cm, height=3cm,] on (spypoint)
+				in node[fill=white] at (magnifyglass);
+			\end{scope}
 		\end{axis}		
 	\end{tikzpicture}
 }

@@ -1,0 +1,35 @@
+\subcaptionbox{Reaction rate \label{fig:CoFlowTemperatureField}}{
+	\begin{tikzpicture}[spy using outlines={chamfered rectangle, magnification=12,  width=2cm, height=2cm, connect spies}]
+		\begin{axis}[
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			colormap name=turbo,
+			colorbar horizontal,			 
+			colorbar style={
+				yticklabel style={
+					/pgf/number format/.cd,
+					fixed,
+					fixed zerofill
+				},
+			point meta max= 0.0000000001357,%6.73,
+			point meta min= 0,			
+				xtick={0, 0.0000000001357},
+				at={(0,1.1)},
+				anchor = north west,
+				xticklabel pos=upper,
+			},
+		]
+			\addplot[thick,blue] graphics[	
+			xmin=-12.4,	xmax=12.4,	ymin=-4.0,	ymax=63.0,
+			] {../plots/CoFlowkReact.png};
+			\coordinate (spypoint) at (axis cs:1.5,0.25);
+			\coordinate (magnifyglass) at (axis cs:-32,44);
+			\begin{scope}
+	\spy [  width=2cm, height=3cm,] on (spypoint)
+				in node[fill=white] at (magnifyglass);
+			\end{scope}
+		\end{axis}		
+	\end{tikzpicture}
+}

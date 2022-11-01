@@ -1,3 +1,6 @@
-tikz/DGCombustion-figure1.pdf: data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_flamesheet_y10.txt
-tikz/DGCombustion-figure1.pdf: data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt
-tikz/DGCombustion-figure1.pdf: data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction3_full_y10.txt
+tikz/DGCombustion-figure1.pdf: data/CoFlowFS_FullComparison/T_full_y5.txt
+tikz/DGCombustion-figure1.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y5.txt
+tikz/DGCombustion-figure1.pdf: data/CoFlowFS_FullComparison/T_full_y10.txt
+tikz/DGCombustion-figure1.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y10.txt
+tikz/DGCombustion-figure1.pdf: data/CoFlowFS_FullComparison/T_full_y15.txt
+tikz/DGCombustion-figure1.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y15.txt

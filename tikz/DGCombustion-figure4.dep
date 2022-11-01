@@ -1,8 +1,6 @@
-tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y5.txt
 tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_full_y5.txt
-tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y10.txt
+tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y5.txt
 tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_full_y10.txt
-tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y15.txt
+tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y10.txt
 tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_full_y15.txt
-tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y20.txt
-tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_full_y20.txt
+tikz/DGCombustion-figure4.pdf: data/CoFlowFS_FullComparison/T_flamesheet_y15.txt

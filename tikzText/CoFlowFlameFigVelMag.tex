@@ -1,12 +1,12 @@
 \subcaptionbox{Velocity magnitude\label{fig:CoFlowVelMag}}{
-	\begin{tikzpicture}%[scale=0.90]
+	\begin{tikzpicture}[scale=1.10]
 		\begin{axis}[
 			axis on top,
 			scale only axis,
 			enlargelimits=false,	
 			axis equal image,
 			colormap name=turbo,
-			colorbar, 
+			colorbar horizontal, 
 			colorbar style={
 				yticklabel style={
 					/pgf/number format/.cd,
@@ -15,6 +15,10 @@
 				},
 				point meta max= 1.581,%6.73,
 				point meta min= 0,
+				xtick={0, 1.581},
+				at={(0,1.1)},
+				anchor = north west,
+				xticklabel pos=upper,
 			}]
 			\addplot[thick,blue] graphics[	
 			xmin=-12.4,	xmax=12.4,	ymin=-4.0,	ymax=63.0,

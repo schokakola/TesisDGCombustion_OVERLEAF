@@ -1,6 +1,5 @@
 
 \subsection{Counterflow diffusion flame}\label{ss:CDF}
-mencionar lo de que la malla fue manualmente creada de tal forma que  la zona central tiene mas elementos 
 \begin{figure}[b]
 	\begin{center}
 		\def\svgwidth{0.8\textwidth}
@@ -11,9 +10,34 @@ mencionar lo de que la malla fue manualmente creada de tal forma que  la zona ce
 \end{figure}
 %TODO INCLUDE coordinate system. Si lo pongo 
 %This test case is the main prototype flame for diffusion regimes \cite{poinsotTheoreticalNumericalCombustion2005}.
-The counterflow diffusion flame is a canonical configuration used to study the structure of non-premixed flames. In its most basic configuration it consists of two oppositely situated jets. The fuel (possibly mixed with some inert component such as nitrogen) is fed into the system by one of the jets, while the other jet feeds air to the system, thereby establishing a stagnation point flow. Upon contact, the reactants produce a flame which is located in the vicinity of the stagnation plane. A diagram of the setup can be seen in \cref{fig:CDFScheme}. This simple configuration has been subject of study for decades  because it provides a simple way of creating a strained diffusion flame, which proves to be useful when studying the flame structure, extinction limits or production of pollutants of flames \cite{pandyaStructureFlatCounterFlow1964} \cite{spaldingTheoryMixingChemical1961} \cite{keyesFlameSheetStarting1987}. By assuming an infinite injector diameter and self-similarity of the solution, it is possible to reduce the governing equations to a one-dimensional formulation (see e.g. the textbook of Kee \cite{keeChemicallyReactingFlow2003}). As a means of validating our implementation we compare the results with the solution of the one-dimensional self-similar problem calculated with \lstinline|BVP4|, a fourth order finite difference boundary value problem solver provided by \lstinline|MATLAB|.
+The counterflow diffusion flame is a canonical configuration used to study the structure of non-premixed flames. It consists of two oppositely situated jets. The fuel (possibly mixed with some inert component such as nitrogen) is fed into the system by one of the jets, while the other jet feeds air to the system, thereby establishing a stagnation point flow. Upon contact and after ignition, the reactants produce a flame which is located in the vicinity of the stagnation plane. A diagram of the setup can be seen in \cref{fig:CDFScheme}. This simple configuration has been subject of study for decades  because it provides a simple way of creating a strained diffusion flame, which proves to be useful when studying the flame structure, extinction limits or production of pollutants of flames \cite{pandyaStructureFlatCounterFlow1964} \cite{spaldingTheoryMixingChemical1961} \cite{keyesFlameSheetStarting1987}. By assuming an infinite injector diameter and self-similarity of the solution, it is possible to reduce the governing equations to a one-dimensional formulation \citep{keeChemicallyReactingFlow2003}. 
+As a means of verificating the solver for combustion applications, the results obtained with the XNSEC-solver are compared with the solution of the one-dimensional self-similar problem calculated with \lstinline|BVP4|, a fourth order finite difference boundary value problem solver provided by \lstinline|MATLAB| \citep{kierzenkaBVPSolverBased2001}.
 
-The combustion of a methane-nitrogen mixture with air was simulated using the \BoSSS code. The mass composition of the fuel inlet was assumed to be  $Y^0_{\ch{CH4}} = 0.2$ and $Y^0_{\ch{N2}} = 0.8$, and the oxidizer inlet corresponds to air with   $Y^0_{\ch{O2}} = 0.23$ and $Y^0_{\ch{N2}} = 0.77$. Because we are dealing with an open system, the thermodynamic pressure $\hat p_0$ is constant and set to the ambient pressure of $\SI{101325}{\pascal}$. As noted by Sung et al., \cite{sungStructuralResponseCounterflow1995} although the form of the inlet velocity profiles does have an influence on the solution of the problem, its effect on the solution near the flame zone is rather small. Nevertheless, as mentioned before the solution of the self-similar one-dimensional problem assumed an infinite injector diameter, which implies that the upstream velocity field has to be constant. Based on this fact we set the velocity profile of both inlets as a plug flow. Following combinations of inlet velocities were calculated:
+
+\subsubsection{The one-dimensional diffusion flame}
+Fick's law. One step combustion. One-dimensional.
+\begin{gather}
+	%%%%%%%%%%
+	\frac{\partial\rho u}{\partial x} + 2 \rho V = 0\\%
+	%%%%%%%%%%
+	\rho u \frac{\partial V}{\partial x} + \rho V^2 =
+	- \Lambda
+	+ \frac{\partial}{\partial x}\left(\mu \frac{\partial V}{\partial x}\right)\\%
+	%%%%%%%%%%
+	\rho c_p u \frac{\partial T}{\partial x} =
+	\frac{\partial}{\partial x}\left(\lambda \frac{\partial T}{\partial x}\right)
+	%	- \sum_k j_k c_{p,k} \frac{\partial T}{\partial x}
+	+\heatRelease~\mathcal{Q}\\
+	%%%%%%%%%%%
+	\rho u \frac{\partial Y_k}{\partial x} = 
+	\frac{\partial}{\partial x}\left(\partial \rho D \frac{\partial Y_k}{\partial x}\right)
+	+ W_k \stoicCoef_k \mathcal{Q}
+	%%%%%%%%%%%
+\end{gather}
+
+\subsubsection{Set-up}
+The combustion of a methane-nitrogen mixture with air was simulated. The mass composition of the fuel inlet was assumed to be  $Y^0_{\ch{CH4}} = 0.2$ and $Y^0_{\ch{N2}} = 0.8$, and the oxidizer inlet corresponds to air with   $Y^0_{\ch{O2}} = 0.23$ and $Y^0_{\ch{N2}} = 0.77$. Because we are dealing with an open system, the thermodynamic pressure $\hat p_0$ is constant and set to the ambient pressure of $\SI{101325}{\pascal}$. 
+ although the form of the inlet velocity profiles does have an influence on the solution of the problem, its effect on the solution near the flame zone is rather small. Nevertheless, the solution of the self-similar one-dimensional problem assumed an infinite injector diameter, which implies that the upstream velocity field has to be constant. Based on this fact we set the velocity profile of both inlets as a plug flow. Following combinations of inlet velocities were calculated:
 \begin{itemize}
 	\item  Low inlet velocities:  $u^0_{\text{fuel}} = \SI{0.048}{\meter \per \second}$ and  $u^0_{\text{oxidizer}} = \SI{0.144}{\meter \per \second}$,
 	\item Medium inlet velocities:  $u^0_{\text{fuel}} = \SI{0.12}{\meter \per \second}$ and  $u^0_{\text{oxidizer}} = \SI{0.36}{\meter \per \second}$
@@ -103,10 +127,19 @@ We note that the solution of this configuration showed singularities in the boun
 %	\end{center}
 %\end{figure}
 
+
+
+
+\subsubsection{Comparison with one-dimensional flame}
+
+ 
+\subsubsection{Temperature convergence study}
+Un estudio de convergencia global para esta configuracion presenta resulta problematica. Similarmente a problemas presentados anteriormente, la presencia de singularidades provoca un efecto de pululacion que degenera los valores de error global. Sin embargo, es de todas formas posible observar que algun valor puntual caracteristico si converge a un valor fijo. En \cref{fig:TemperatureConvergenceDiffFlame} se muestra como varía la temperatura máxima obtenida para la configuracion (b), cuando se varía el numero de elementos, y para diferentes grados de polinomio.  Values for $k=1$ are not shown, because for this range of cell lengths the maximum temperature value was of the order of (50K higher than the ones depicted here
+
 \begin{figure}[tbp]
 	\centering
 	\inputtikz{TemperatureConvergenceDiffFlame}
-	\caption{Maximum value of the temperature for the counter diffusion flame configuration, for different mesh sizes in the x-direction and polynomial degrees. Values for $k=1$ are not shown, because for this range of cell lengths the maximum temperature value was of the order of 50K higher than the ones depicted here.}
+	\caption{Maximum value of the temperature for the counter diffusion flame configuration, for different mesh sizes in the x-direction and polynomial degrees..}
 	\label{fig:TemperatureConvergenceDiffFlame}
 \end{figure}
 \FloatBarrier

@@ -1,2 +1,0 @@
-tikz/CDF_ConvergenceStory.pdf: data/ConvergenceStory_CounterDiffusionFlame/residuals3.txt
-tikz/CDF_ConvergenceStory.pdf: data/ConvergenceStory_CounterDiffusionFlame/delta3.txt

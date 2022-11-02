@@ -18,8 +18,8 @@ The co-flowing flame configuration is used as a first test to assess the behavio
 \end{figure}
 
 Since the solution of the axisymmetric system of equations presents numerical difficulties that are not the main concern of the present work, in this section an infinitely long slot burner configuration is considered. For that kind of configuration, cartesian coordinates describe naturally the problem. 
-\subsubsection{Set-up of the slot coflowing flame configuration}
-A schematic diagram of the configuration can be seen in \cref{fig:CoFlowSketch}. The system consists of a fuel inlet with two oxygen inlets on its sides. Note that the geometry also includes the tips that separate both oxidizer and fuel inlets. The inclusion of this separation was seen to be necesary to be able to obtain a converged solution, which makes sense, since a finite separation between both inlets eases the big gradients due to strong mixing and reaction in that area. Altought the system is clearly symmetric around the axis $x = 0$, no symmetry assumption is made and the whole domain is considered for the simulation.
+\subsubsection{Set-up}
+A schematic diagram of the configuration can be seen in \cref{fig:CoFlowSketch}. The system consists of a fuel inlet with two oxygen inlets on its sides. These inlets are separated by a finite wall thickness. The inclusion of this separation was observed to be necesary to be able to obtain a converged solution, which makes sense, since a finite separation between both inlets eases the big gradients due to strong mixing and reaction in that area. Altought the system is clearly symmetric around the axis $x = 0$, no symmetry assumption is made and the whole domain is considered for the simulation.
 %The lengths  depicted on \cref{fig:CoFlowSketch} are set as $\hat r_1 = \SI{0.635}{\centi \meter}$, $\hat r_2 = \SI{0.762}{\centi \meter}$, and $\hat r_3 = \SI{7.747}{\centi \meter}$. Aditionally $\hat h = \SI{2.54}{\centi \meter}$ and $\hat H = \SI{40}{\centi \meter}$. 
 The lengths  depicted on \cref{fig:CoFlowSketch} are set as $ r_1 = 1$, $ r_2 = 1.2$, and $ r_3 = 11.763$. Aditionally $ h = 4$ and $ H = 63$. The lengths $ r_3$ and $\hat L$ are set with arbitrarily large values in order to avoid influence of the outer boundary conditions on the solution of the flame zone. Setting a higher value of $ r_3$ or $ L$ did not significantly affect the results. The inlet boundary conditions are set as: 
 \begin{itemize}
@@ -38,7 +38,7 @@ The oxidizer enters the system as a plug flow with a constant velocity of $v_O =
 \end{equation}
 with $v^F_m =0.592$.  The inlet temperatures of both streams is  $T^F = T^O = 1$. Combustion of diluted methane on air is considered, with $Y^F_{\ch{CH4}} = 0.2$ and $Y^F_{\ch{N2}} = 0.8$ for the fuel stream, and  $Y^O_{\ch{O2}} = 0.23$ and $Y^O_{\ch{N2}} = 0.77$ for the oxidyzer stream. The superindexes $F$ and $O$ represent the fuel and oxidizer inlet respectively. The pressure outlet boundary condition is the same as \cref{eq:bc_O}. Finally, the boundary conditions at the tips correspond to adiabatic walls, which are defined as in \cref{eq:bc_dn}, with $\vec{u}_{\text{D}} = (0,0)$.             
 
-The variables are nondimensionalized in the usual way. The reference length is set $\RefVal{L} =  \SI{0.635}{\centi \meter}$ and the reference velocity $\RefVal{u} =\SI{8.19}{\centi \meter \per \second}$. The reference temperature is $\RefVal{T} =\SI{300}{K}$.  All derived variables are nondimensionalized using the air stream as a reference condition, i.e. $\RefVal{\rho} = \SI{1.17}{\kilo \gram \per \cubic \meter}$, $\RefVal{\mu} = \SI{1.85e-5}{\kilo \gram \per \meter \per \second}$,$\RefVal{W} = \SI{28.82}{\kilo \gram \per \kilo\mole}$. This gives the non-dimensional numbers $\Reynolds = 33.02$ and $\text{Da} = 2.17\cdot 10^9$. The Prandtl number is assumed to be constant with $\Prandtl = 0.71$. The reference heat capacity is set $\hat{c}_{p,\text{ref}}= \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$, which is also the constant value used for the flame-sheet calculation (i.e. $c_p = 1$). The choice of this value for the heat capacity is important because it gives a solution of the flame-sheet which is similar to the actual solution of the full problem. Gravity effects are not taken into account. The transport parameters are calculated using Sutherland law with $\hat{S} = \SI{110.5}{\kelvin}$. The mixture heat capacity $c_p$ is calculated with \cref{eq:nondim_cpmixture} and using NASA polynomials for the heat capacity of each component. A non-unity but constant Lewis number formulation is used, with
+The variables are nondimensionalized in the usual way. The reference length is set $\RefVal{L} =  \SI{0.635}{\centi \meter}$ and the reference velocity $\RefVal{u} =\SI{8.19}{\centi \meter \per \second}$. The reference temperature is $\RefVal{T} =\SI{300}{K}$.  All derived variables are nondimensionalized using the air stream as a reference condition, i.e. $\RefVal{\rho} = \SI{1.17}{\kilo \gram \per \cubic \meter}$, $\RefVal{\mu} = \SI{1.85e-5}{\kilo \gram \per \meter \per \second}$,$\RefVal{W} = \SI{28.82}{\kilo \gram \per \kilo\mole}$. This gives the non-dimensional numbers $\Reynolds = 33.02$ and $\text{Da} = 2.17\cdot 10^9$. The Prandtl number is assumed to be constant with $\Prandtl = 0.71$. The reference heat capacity is set $\hat{c}_{p,\text{ref}}= \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$, which is also the constant value used for the flame-sheet calculation (i.e. $c_p = 1$). The choice of this value for the heat capacity is important because it gives a solution of the flame-sheet which is similar to the actual solution of the full problem. Gravity effects are not taken into account. The transport parameters are calculated using Sutherland law with $\hat{S} = \SI{110.5}{\kelvin}$. The mixture heat capacity $c_p$ is calculated with \cref{eq:nondim_cpmixture} and using NASA polynomials for the heat capacity of each component. Finally. a non-unity but constant Lewis number formulation is used, with
 $\Lewis_{\ch{CH4}} =  0.97 $ , $\Lewis_{\ch{O2}} = 1.11 $, $\Lewis_{\ch{H2O}} = 0.83 $ and $\Lewis_{\ch{CO2}} = 1.39 $ \citep{smookePremixedNonpremixedTest1991}
 \begin{figure}[b!]
 	\centering
@@ -54,14 +54,10 @@ $\Lewis_{\ch{CH4}} =  0.97 $ , $\Lewis_{\ch{O2}} = 1.11 $, $\Lewis_{\ch{H2O}} = 
 \subsubsection{Numerical results}
 The purpose for simulating this case is to test the XNSEC-solver in a real-application configuration, with realistic physical parameter values. In particular, it is intended to demonstrate that the strategy of using the flame-sheet solution as the initial estimate is adequate for obtaining a converged solution, even for a case where the physical properties of the system ($\rho, \mu, c_p$) are composition and temperature dependent, and for non-unity Lewis numbers. 
 
-Numerical experiments using the XNSEC-solver showed that the solution of the problem is highly mesh-dependent. The presence of very high gradients in some areas requires a higher density of cells to obtain a well-resolved solution.  In \cref{fig:CoFlowMesh} the actual mesh used for the solution of the full problem is shown.  A base mesh with smaller elements in the vicinity of the inlets and larger elements further away from them is used. It was observed that the complex mixing and combustion phenomena that occur in the vicinity of the inlets have a critical effect on the convergence of the solution. For this reason, a special refinement of the base mesh was done in the vicinity of the tips. Furthermore, an adequate mesh resolution flame location is critical. In order to avoid over-solving, an adaptive mesh refinement strategy in a pseudo-time-stepping framework was used. After obtaining a steady state solution, the mesh is refined and the calculation is started again (see \cref{ssec:MeshRefinement}). In particular, for this case, three pseudo-timesteps were performed for the flame-sheet calculation. After each pseudo-timestep, the mesh is refined in the vicinity of the flame sheet, i.e., in the cells where $z = z_{\text{st}}$.
+Numerical experiments using the XNSEC-solver showed that the solution of the problem is highly mesh-dependent. The presence of very high gradients in some areas requires a higher density of cells to obtain a well-resolved solution.  In \cref{fig:CoFlowMesh} the actual mesh used for the solution of the full problem is shown.  A base mesh with smaller elements in the vicinity of the inlets and larger elements further away from them is used. It was observed that the complex mixing and combustion phenomena that occur in the vicinity of the inlets have a critical effect on the convergence of the solution. For this reason, a special refinement of the base mesh was done in the vicinity of the tips. Furthermore, an adequate mesh resolution  at the flame location is critical. In order to avoid over-solving, an adaptive mesh refinement strategy in a pseudo-time-stepping framework was used. After obtaining a steady state solution, the mesh is refined and the calculation is started again (see \cref{ssec:MeshRefinement}). In particular, for this case, three pseudo-timesteps were performed for the flame-sheet calculation. After each pseudo-timestep, the mesh is refined in the vicinity of the flame sheet, i.e., in the cells where $z = z_{\text{st}}$.
 
 
-In \cref{fig:CoFlow_ConvergenceStory} the convergence history using the newton algorithm presented in \cref{sec:newton} is shown. The flame-sheet calculation requires 20 Newton iterations to find a solution. It is clearly seen how the residuals $\| \mathcal{A}(\myvector{U}_{n}) \|_2 $  for about the first 14 iterations decrease very slowly, while the $\delta$ parameter of the globalized Newton method is adapted to find an optimal value to reduce the residuals. Around iteration 14 the algorithm starts to increase $\delta$, leading  to a faster reduction of the residuals and the solution to the problem is found in iteration number 20. In iteration 21 mesh refinement based in the strategy mentioned above is used, and 6 iterations are required to find a converged solution. Finally, in iteration number 27 the flame-sheet solution is used as the initial estimate for the full problem, which requires only 11 iterations to find a solution.  
-
-
-
-
+In \cref{fig:CoFlow_ConvergenceStory} the convergence history using the newton algorithm presented in \cref{sec:newton} is shown. The flame-sheet calculation requires 20 Newton iterations to find a solution. It is clearly seen how the residuals $\| \mathcal{A}(\myvector{U}_{n}) \|_2 $  decrease very slowly  for about the first 14 iterations, while the $\delta$ parameter of the globalized Newton method is adapted to find an optimal value to reduce the residuals. Around iteration 14 the algorithm starts to increase $\delta$, leading  to a faster reduction of the residuals. A solution to the problem according to the termination criteria \cref{ssec:TerminationCriterion} is found in iteration number 20. In iteration 21 mesh refinement based in the strategy mentioned above is used, and 6 iterations are required to find a converged solution. Finally, in iteration number 27 the flame-sheet solution is used as the initial estimate for the full problem, which requires only 11 iterations to find a solution.  
 \begin{figure}[t!]
 	\centering
 	\pgfplotsset{width=0.6\textwidth, compat=1.3}
@@ -71,10 +67,7 @@ In \cref{fig:CoFlow_ConvergenceStory} the convergence history using the newton a
 	\caption{Temperature and reaction rate fields of the coflow configuration.} \label{fig:CoFlowFlameFig}
 \end{figure}
 
-
-
-
-In \cref{fig:CoFlowFlameFig} the obtained temperature and reaction rate fields are shown. Since for the selected inlet velocities the flame corresponds to a overventilated one, the typical jet form is observed. The maximum temperature reached corresponds to 6.08 ($\SI{1824}{\kelvin}$). The magnified plots show that the bottom part of the flame sits on the outside part of the tips. It is also appreciated the high reaction rates appearing in the area close to the inlets. 
+In \cref{fig:CoFlowFlameFig} the obtained temperature and reaction rate fields are shown. Since for the selected inlet velocities the flame corresponds to a overventilated one, the typical jet form is observed. The maximum temperature reached corresponds to 6.04 (meaning $\SI{1812}{\kelvin}$). The magnified plots show that the bottom part of the flame sits on the outside part of the tips. It is also appreciated the high reaction rates appearing in the area close to the inlets. This is probably the reason why it was crucial  to obtain a solution that the meshing in the vicinity of the inlets is finer.
 
 
 
@@ -111,8 +104,8 @@ In \cref{fig:CoFlowFlameFig} the obtained temperature and reaction rate fields a
 			\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt}; %\addlegendentry{Finite Chemistry, Le=1}
 			\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction3_full_y10.txt};% \addlegendentry{Finite Chemistry,
 				\draw[ausschnitt]
-				(axis cs:0.0,0.05)coordinate(ul)--
-				(axis cs:5.5,0.05)coordinate(ur)--
+				(axis cs:0.0,0.06)coordinate(ul)--
+				(axis cs:5.5,0.06)coordinate(ur)--
 				(axis cs:5.5,0.11)coordinate(or)--
 				(axis cs:0.0,0.11) -- cycle;
 			\end{axis}
@@ -130,16 +123,16 @@ In \cref{fig:CoFlowFlameFig} the obtained temperature and reaction rate fields a
 					/pgf/number format/.cd,
 					fixed,
 					fixed zerofill,
-					precision=1,
+					precision=2,
 					/tikz/.cd
 				},
-				x tick label style={
-					/pgf/number format/.cd,
-					fixed,
-					fixed zerofill,
-					precision=1,
-					/tikz/.cd
-				}
+%				x tick label style={
+%					/pgf/number format/.cd,
+%					fixed,
+%					fixed zerofill,
+%					precision=1,
+%					/tikz/.cd
+%				}
 				]
 				\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_flamesheet_y10.txt};\addlegendentry{Flame sheet}
 				\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt}; \addlegendentry{Finite Chemistry, $\text{Le}_k = 1$}
@@ -152,13 +145,13 @@ In \cref{fig:CoFlowFlameFig} the obtained temperature and reaction rate fields a
 			(current axis.south west)--(ur);
 		\end{tikzpicture}
 		\caption{Mass fraction field of  \ch{H2O} over the line $y = 10$}
-		\label{fig:smoothings}
+		\label{fig:CoFlowMF3_infiniteFinite}
 	\end{figure}
 
 
 
 
-Obviously, the mentioned refinement strategy works for the cases where the Lewis number corresponds to unity and the $c_p$ of the mixture has a constant value (assumptions made for the flame-sheet estimate). In case these conditions are not met, the solution obtained for the case with finite reaction rate will be slightly different from the flame-sheet solution. However, experiments with the XNSEC-solver have shown that this refinement strategy is still beneficial for the convergence of the complete problem, but the selection of a good representative constant value for the heat capacity is important. 
+Obviously, the mentioned refinement strategy works for the cases where the Lewis number corresponds to unity and the $c_p$ of the mixture has a constant value (assumptions made for the flame-sheet estimate). In case these conditions are not met, the solution obtained for the case with finite reaction rate will be slightly different from the flame-sheet solution. However, experiments with the XNSEC-solver have shown that this refinement strategy is still beneficial for the convergence of the complete problem. In \cref{fig:CoFlowMF3_infiniteFinite} the profile of the mass fraction of \ch{H2O} along the line $y = 10$ is shown. The similarity of the solutions can be clearly apreciated. Both finite chemistry calculations use the same initial estimate and both calculations find the converged solution after 11 Newton iterations.
 
  
  From this test case it is concluded that the strategy of using the flame-sheet as an initial condition presents an efficient way to obtain steady state solutions of combustion problems. Since the flame-sheet is only an estimate, it is possible to perform the calculations on relatively coarse grids, and use low order polynomial degrees. The obtained solution can be used as an estimate for calculations with higher polynomial degrees to find a more accurate solution of the full problem in a few iterations. A disadvantage, as already mentioned, is the choice of the $c_p$ parameter, since an inappropriate choice of it gives a solution of the flame-sheet problem far away from the solution of the full problem. However, the user's experience and access to experimental information allows estimating this value relatively easily. It is worth mentioning that the value chosen in this section ($\hat{c}_{p,\text{ref}}= \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$)  served as an adequate estimate for all the simulations presented in this thesis.  

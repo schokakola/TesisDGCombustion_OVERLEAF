@@ -73,19 +73,14 @@ In figure \cref{fig:RuntimeComparison} a comparison of the runtimes from both so
 
 %TODO \todo[inline]{I have to somehow highlight even more the positive points of using this solver} 
 
-\begin{center}
-	\begin{table}[tb!]
-		\begin{tabular}{ccc}
-			\inputtikz{RuntimeComparison1}
-			 &
-			\inputtikz{RuntimeComparison2}
-			 &
-			\inputtikz{RuntimeComparison3}
-		\end{tabular}%
-		\caption{Runtime comparison of the DG-SIMPLE solver and the XNSEC-solver for the Couette flow with vertical temperature gradient}
-		\label{fig:RuntimeComparison}
-	\end{table}
-\end{center}
+
+
+\begin{figure}	
+\centering
+    \inputtikz{RuntimeComparisonCouetteFlow}
+	\caption{Runtime comparison of the DG-SIMPLE solver and the XNSEC-solver for the Couette flow with vertical temperature gradient for different polynomial degrees $k$ and number of cells.}
+	\label{fig:RuntimeComparison}
+\end{figure}
 
 
 % \FloatBarrier

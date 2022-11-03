@@ -10,30 +10,54 @@
 \end{figure}
 %TODO INCLUDE coordinate system. Si lo pongo 
 %This test case is the main prototype flame for diffusion regimes \cite{poinsotTheoreticalNumericalCombustion2005}.
-The counterflow diffusion flame is a canonical configuration used to study the structure of non-premixed flames. It consists of two oppositely situated jets. The fuel (possibly mixed with some inert component such as nitrogen) is fed into the system by one of the jets, while the other jet feeds air to the system, thereby establishing a stagnation point flow. Upon contact and after ignition, the reactants produce a flame which is located in the vicinity of the stagnation plane. A diagram of the setup can be seen in \cref{fig:CDFScheme}. This simple configuration has been subject of study for decades  because it provides a simple way of creating a strained diffusion flame, which proves to be useful when studying the flame structure, extinction limits or production of pollutants of flames \cite{pandyaStructureFlatCounterFlow1964} \cite{spaldingTheoryMixingChemical1961} \cite{keyesFlameSheetStarting1987}. By assuming an infinite injector diameter and self-similarity of the solution, it is possible to reduce the governing equations to a one-dimensional formulation \citep{keeChemicallyReactingFlow2003}. 
-As a means of verificating the solver for combustion applications, the results obtained with the XNSEC-solver are compared with the solution of the one-dimensional self-similar problem calculated with \lstinline|BVP4|, a fourth order finite difference boundary value problem solver provided by \lstinline|MATLAB| \citep{kierzenkaBVPSolverBased2001}.
+The counterflow diffusion flame is a canonical configuration used to study the structure of nonpremixed flames. This simple configuration has been a subject of study for decades because it provides a simple way of creating a strained diffusion flame, which proves to be useful when studying the flame structure, extinction limits or production of pollutants of flames \citep{pandyaStructureFlatCounterFlow1964,spaldingTheoryMixingChemical1961,keyesFlameSheetStarting1987}. It consists of two oppositely situated jets. The fuel (possibly mixed with some inert component, such as nitrogen) is fed into the system by one of the jets, while the other jet feeds oxidyzer to the system, thereby establishing a stagnation point flow. On contact and after ignition, the reactants produce a flame that is located in the vicinity of the stagnation plane. A diagram of the setup can be seen in \cref{fig:CDFScheme}. In this section, the solution of a two-dimensional flame formed in an infinitely long slot burner will be treated. Simirlarly to the coflow configuration treated before, the infintely long slot burner configuration can be calculated naturally using cartesian coordinates.
+
+As a first result, as a means of verificating the solver for combustion applications, the results obtained with the XNSEC-solver for steady two-dimensional counterflow diffusion flames at different strains are compared with the solution of a simplified system of equations for a steady and quasi one-dimensional flame. Aditionally some remarks concerning the convergence behaviour of the case counter diffusion flame are given. 
 
 
 \subsubsection{The one-dimensional diffusion flame}
-Fick's law. One step combustion. One-dimensional.
+By assuming an infinite injector diameter and self-similarity of the solution, it is possible to reduce the three-dimensional governing equations to a one-dimensional formulation along the stagnation streamline $x = 0$ \citep{keeChemicallyReactingFlow2003}. The governing equations for a steady planar stagnation flow reduce to
 \begin{gather}
 	%%%%%%%%%%
-	\frac{\partial\rho u}{\partial x} + 2 \rho V = 0\\%
+	\frac{\partial\rho v}{\partial y} +  \rho U = 0\\ \label{eq:OneDimCont}%
 	%%%%%%%%%%
-	\rho u \frac{\partial V}{\partial x} + \rho V^2 =
+	\rho v \frac{\partial U}{\partial y} + \rho U^2 =
 	- \Lambda
-	+ \frac{\partial}{\partial x}\left(\mu \frac{\partial V}{\partial x}\right)\\%
+	+ \frac{\partial}{\partial y}\left(\mu \frac{\partial U}{\partial y}\right)\\ \label{eq:OneDimMom}%
 	%%%%%%%%%%
-	\rho c_p u \frac{\partial T}{\partial x} =
-	\frac{\partial}{\partial x}\left(\lambda \frac{\partial T}{\partial x}\right)
+	\rho c_p v \frac{\partial T}{\partial y} =
+	\frac{\partial}{\partial y}\left(\lambda \frac{\partial T}{\partial y}\right)
 	%	- \sum_k j_k c_{p,k} \frac{\partial T}{\partial x}
 	+\heatRelease~\mathcal{Q}\\
 	%%%%%%%%%%%
-	\rho u \frac{\partial Y_k}{\partial x} = 
-	\frac{\partial}{\partial x}\left(\partial \rho D \frac{\partial Y_k}{\partial x}\right)
+	\rho v \frac{\partial Y_k}{\partial y} = 
+	\frac{\partial}{\partial y}\left(\rho D \frac{\partial Y_k}{\partial y}\right)
 	+ W_k \stoicCoef_k \mathcal{Q}
 	%%%%%%%%%%%
-\end{gather}
+\end{gather}\label{eqs:OneDimEquations}
+where $U$ is the scaled velocity and $\Lambda$ is the pressure eigenvalue which is independant of $y$. These equations are written assuming a valid Fick's law and a one-step combustion model. Aditionally an equation of state and expressions for the heat capacity $c_p$ and transport parameters $\mu, \lambda, (\rho D)$ have to be given. This system of equations is the starting point for many studies. In order to compare the ability of the XNSEC-solver to simulate a system such as the counter diffusion flame, the quasi one-dimensional equations are solved with \lstinline|BVP4|, a fourth order finite difference boundary value problem solver provided by \lstinline|MATLAB| \citep{kierzenkaBVPSolverBased2001}. The  \lstinline|BVP4| solver provides automatic meshing and error control based on the residuals of the solution. 
+
+It is interesting to mention some points regarding the solution of these equations using the \lstinline|BVP4| solver. To obtain a convergent solution of the equations, several difficulties had first to be solved. Analogous to the problem mentioned in \cref{ssec:MethodCombustion}, the solution of the system of equations \cref{eqs:OneDimEquations} presents the particularity that it is possible to find multiple solutions. One of them is clearly the cold solution and another solution is the one that presents a flame. The same idea mentioned in  \cref{ssec:MethodCombustion} is obviously also valid for the quasi one-dimensional configuration. In particular this means, that as a first step for finding a converged solution of \cref{eqs:OneDimEquations},  the system
+
+\begin{gather}
+	%%%%%%%%%%
+	\frac{\partial\rho v}{\partial y} +  \rho U = 0\\ \label{eq:OneDimCont2}%
+	%%%%%%%%%%
+	\rho v \frac{\partial U}{\partial y} + \rho U^2 =
+	- \Lambda
+	+ \frac{\partial}{\partial y}\left(\mu \frac{\partial U}{\partial y}\right)\\ \label{eq:OneDimMom2}%
+	%%%%%%%%%%
+    	\rho v \frac{\partial Z}{\partial y} = 
+	\frac{\partial}{\partial y}\left(\rho D \frac{\partial Z}{\partial y}\right)
+	%%%%%%%%%%%
+\end{gather}\label{eqs:OneDimEquationsMixtureFraction}
+is solved together  with the equation of state \cref{eq:ideal_gas} and expressions for the transport parameters. Obviously the dependence of these parameters with the temperature and mass fractions is still given by \cref{eq:BS-T, eq:BS-YF, eq:BS-YO, eq:BS-YP}. 
+An inconvenience is that an initial estimate for the $c_p$ has to be chosen. It was observed that if the value of $c_p$ was chosen too big, the solver delivered the no-flame solution. For the calculations treated here $c_p = 1.3$ was an adequate value that delivered the ignited solution. However, it was observed that this flamesheet solution wasnt directly useful as an initial estimation for the solution of the full system of equations. In order to help  the \lstinline|BVP4| solver to find a coverged solution, an intermediate step was necesary. First, the flamesheet solution was used as an initial estimate
+
+
+
+A second issue was that the flamesheet solution wasnt directly useful as an initial estimation of the full system. As an intermediate step, it was observed tha
+
 
 \subsubsection{Set-up}
 The combustion of a methane-nitrogen mixture with air was simulated. The mass composition of the fuel inlet was assumed to be  $Y^0_{\ch{CH4}} = 0.2$ and $Y^0_{\ch{N2}} = 0.8$, and the oxidizer inlet corresponds to air with   $Y^0_{\ch{O2}} = 0.23$ and $Y^0_{\ch{N2}} = 0.77$. Because we are dealing with an open system, the thermodynamic pressure $\hat p_0$ is constant and set to the ambient pressure of $\SI{101325}{\pascal}$. 

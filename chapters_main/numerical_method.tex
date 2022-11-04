@@ -254,7 +254,7 @@ The viscosity $\mu$ is evaluated as a function of temperature according to \cref
 \begin{equation}
 	\eta = \eta_0 \frac{A(\partial K)}{V(K)},
 \end{equation}
-where for a two-dimensional problem $A$ is the perimeter and $V$ the area of the element. Parameter $\eta_0$ is a safety factor and is set $\eta_0 = 4$ in all calculations. Further information on the determination of the penalty term can be found in  \cite{hillewaertDevelopmentDiscontinuousGalerkin2013b}.
+where for a two-dimensional problem $A$ is the perimeter and $V$ the area of the element. Parameter $\eta_0$ is a safety factor. If not stated otherwise, the value  $\eta_0 = 4$ is  set in all calculations. Further information on the determination of the penalty term can be found in  \cite{hillewaertDevelopmentDiscontinuousGalerkin2013b}.
 The source term arising due to body forces is:
 \begin{equation}
 	\mathcal{U}^S\left(\rho, \vec{v}\right) =  \int_{\Omega}{  \rho \frac{\vec{g}}{\Vert \vec{g} \Vert}\cdot \vec{v}} \dV.  \label{eq:Mom_source}

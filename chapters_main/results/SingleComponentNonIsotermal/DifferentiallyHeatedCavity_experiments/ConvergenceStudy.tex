@@ -19,5 +19,32 @@ The results presented in this section allow us to conclude that the implemented 
 	\inputtikz{NusseltStudy}
 	\caption{Nusselt numbers calculated with \cref{eq:Nusselt} at the hot wall ($\text{Nu}_h$) and the cold wall ($\text{Nu}_c$) for different number of cells and polynomial order $k$. The reference values from \cite{vierendeelsBenchmarkSolutionsNatural2003} are shown with dashed lines.}\label{fig:NusseltStudy}
 \end{figure}
-
 \FloatBarrier
+\subsubsection{Influence of the penalty factor}
+\begin{table}[h]
+\centering
+\begin{tabular}{lllllll}
+	\hline \vspace{0.1cm}
+		$\mu$                  & DoFs & $k$ & $\text{Nu}_c$ &  $\frac{\text{Nu}_c - \text{Nu}_{c,\text{ref}}} {\text{Nu}_{c,\text{ref}}}\times 10^2 $   & $p_0$    & $\frac{p_0 - p_{0,\textbf{ref}}} {p_{0,\textbf{ref} }}\times 10^4 $ \\ \hline
+\multirow{3}{*}{0.01} & 2 & 6804 & 0.549483* & 50.39424 & 0.899757* & 408.7292 \\
+                      & 3 & 7056 & 0.722593* & 34.76637 & 0.936085* & 21.48436 \\
+                      & 4 & 6655 & -0.50954* & 146      & 1.016691* & 837.7683 \\ \hline
+\multirow{3}{*}{1}    & 2 & 6804 & 1.090047 & 1.593667 & 0.938192 & 0.980674 \\
+                      & 3 & 7056 & 1.102072 & 0.508037 & 0.938057 & 0.453674 \\
+                      & 4 & 6655 & 1.105225 & 0.22348  & 0.938046 & 0.570494 \\ \hline
+\multirow{3}{*}{4}    & 2 & 6804 & 1.089332 & 1.65817  & 0.93843  & 3.521926 \\
+                      & 3 & 7056 & 1.102261 & 0.491027 & 0.938076 & 0.25384  \\
+                      & 4 & 6655 & 1.105359 & 0.211372 & 0.938047 & 0.561709 \\ \hline
+\multirow{3}{*}{16}   & 2 & 6804 & 1.08694  & 1.874166 & 0.939109 & 10.75641 \\
+                      & 3 & 7056 & 1.102266 & 0.490563 & 0.938124 & 0.251627 \\
+                      & 4 & 6655 & 1.105439 & 0.204153 & 0.93805  & 0.537265 \\ \hline
+\end{tabular}
+\caption{Thermodynamic pressure and cold-side Nusselt number for different penalty safety factors in a heated cavity with Ra $=10^3$. Values marked with an asterisk are from problems not converged after 100 iterations.}
+\end{table}
+A point not still discussed is the choice of the safety parameter $\mu_0$ of the penalty terms from the SIP discretization.  Table X shows results obtained for Ra $=10^3$, for different polynomial degrees and penalty safety factor.  For the tests presented here, the penalty terms of the difussive terms from the momentum and energy equations are considered equal. Furthermore, the number of elements in the mesh is selected in such a way that the number of degrees of freedom remains approximately constant for each simulation. 
+
+It is possible to see that the penalty safety factor (and therefore the penalty term) can have a great influence on the solution. If the value chosen is very small, as in the case of the table for $\mu = 0.01$, the algorithm is not able to find a solution. On the other hand, if the chosen value is too high, the error also increases. It can be concluded that an optimal value for the penalty factor exists.
+
+It is also noticeable that, maintaining a constant penalty safety factor, increasing the polynomial degree for an approximately constant number of dofs gives an improvement in the results compared to the literature. Although for this testcase the effect of the penalty factor on the solution is not very large, the effect could be considerable, especially when dealing with more complex geometries and coarser meshes. The value $\mu_0 = 4$ has shown to be a value that gives stability to the scheme and is used for all simulations in this thesis, as already has been done in many works \citep{krauseIncompressibleImmersedBoundary2017,kummerExtendedDiscontinuousGalerkin2017,smudamartinDirectNumericalSimulation2021}.
+ 
+

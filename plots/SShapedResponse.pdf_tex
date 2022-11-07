@@ -1,0 +1,71 @@
+%% Creator: Inkscape 1.0.1 (3bc2e813f5, 2020-09-07), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'SShapedResponse.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{366.68314776bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.89427389)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{SShapedResponse.pdf}}%
+    \put(0.11857784,0.25623447){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}weakly reacting branch\end{tabular}}}}%
+    \put(0.42492582,0.67766301){\rotatebox{-46.123753}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}unstable branch\end{tabular}}}}}%
+    \put(0.35514954,0.81512212){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}stable burning branch\end{tabular}}}}%
+    \put(0.78260446,0.30633542){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}ignition\end{tabular}}}}%
+    \put(0.0997803,0.7693349){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}extinction\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{SShapedResponse.pdf}}%
+    \put(0.9305708,0.09511239){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Da\end{tabular}}}}%
+    \put(0.68921854,0.09797594){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\text{Da}_{\text{ign}}$\end{tabular}}}}%
+    \put(0.26232204,0.09797594){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\text{Da}_{\text{ext}}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{SShapedResponse.pdf}}%
+    \put(0.02279197,0.26776311){\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Maximum flame temperature\end{tabular}}}}}%
+    \put(0.36517463,0.00348617){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Strain rate, a\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{SShapedResponse.pdf}}%
+  \end{picture}%
+\endgroup%

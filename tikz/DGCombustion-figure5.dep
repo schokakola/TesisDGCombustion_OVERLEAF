@@ -1,0 +1,3 @@
+tikz/DGCombustion-figure5.pdf: data/CDF_BC_COMPARISON/FullVelocityX_plug.txt
+tikz/DGCombustion-figure5.pdf: data/CDF_BC_COMPARISON/FullVelocityX_parab.txt
+tikz/DGCombustion-figure5.pdf: data/DataStrainSweep2/2/FullVelocityX_MATLAB.txt

@@ -738,6 +738,24 @@ One problem that arises when using the flame sheet estimate is the selection of 
 
 It should also be noted that cref{eq:heatReleaseOneStep} yields unphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep} (we use $\phi = 1.2$). In practice however, this should not have a significant effect, because the unphysical values of $\hat Q$ appear at zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. Nevertheless, setting an upper bound for $\phi$ is helpful to avoid possible numerical instabilities.
 
+\begin{figure}[t!]
+	\begin{center}
+		\def\svgwidth{0.5\textwidth}
+		\import{./plots/}{SShapedResponse.pdf_tex}
+		\caption{Schematic representation of the heated circular cylinder.}
+		\label{fig:Sshaped}%
+	\end{center}%
+\end{figure}%
+
+% Extracted from here https://www.frontiersin.org/articles/10.3389/fmech.2019.00072/full
+%Damköhler number is a non-dimensionalized number indicative of time available for a reaction to proceed at a specified rate. As Damköhler number tends to ∞, τm must be very large and/or τc very small, indicating that the system must have reached an equilibrium state with a very fast reaction occurring in a long flow timespan. Conversely, a null Damköhler number describes a system with a very short residence time and comparatively long reaction time; the system is chemically frozen. In counterflow non-premixed systems, the flow may be characterized by the strain rate, A, a parameter describing the velocity gradient between the counterflowing streams. Systems with high rates of strain have very low associated reaction zone residence times, making them analogous to low Damköhler number systems. Low rates of strain allow for relatively long residence times allowing reactions to proceed, often to completion. Low strain rate counterflowing systems have a high Damköhler number.
+
+\begin{figure}
+	\centering
+	\inputtikz{SmoothingPicture}
+	\caption{Temperature profile calculated in the center-line of a counter-flow flame configuration for different smoothing parameters $\sigma$.}
+	\label{fig:smoothings}
+\end{figure}
 
 %TODO 
 \subsubsection{Adaptive Mesh Refinement}\label{ssec:MeshRefinement}

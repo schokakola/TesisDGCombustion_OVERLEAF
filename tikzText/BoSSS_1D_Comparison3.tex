@@ -1,4 +1,4 @@
-\begin{tikzpicture}[baseline]
+\begin{tikzpicture} [spy using outlines={magnification=2.5,  width=4cm, height=2cm, connect spies}]
 	\begin{axis}[
 		title = {\textbf{Case (c)}},
 		xlabel=$x$,
@@ -10,8 +10,8 @@
 		change x base=true,
 		x SI prefix=centi
 		]
-		\addplot[color=cyan, no marks, thick] table {data/DataStrainSweep2/11/FullTemperature_BOSSS.txt}; \label{TemperatureBosss}
-		\addplot[color=cyan, no marks, dashed]table {data/DataStrainSweep2/11/FullTemperature_MATLAB.txt}; \label{TemperatureMatlab}
+		\addplot[color=violet, no marks, thick] table {data/DataStrainSweep2/11/FullTemperature_BOSSS.txt}; \label{TemperatureBosss}
+		\addplot[color=violet, no marks, dashed]table {data/DataStrainSweep2/11/FullTemperature_MATLAB.txt}; \label{TemperatureMatlab}
 	\end{axis} 	
 	\begin{axis}[
 		x tick label style={
@@ -25,16 +25,9 @@
 		x unit=m,
 		axis y line*=right,
 		change x base=true,
-		x SI prefix=centi
+		x SI prefix=centi,
+		restrict x to domain=0:2
 		]
-%		\addplot[color=black, no marks, thick,solid] table {data/DataStrainSweep/11/FullMassFraction0_BOSSS.txt}; \label{MF0_BOSSS}
-%		\addplot[color=blue,no marks,thick,solid] table {data/DataStrainSweep/11/FullMassFraction1_BOSSS.txt}; 	\label{MF1_BOSSS}
-%		\addplot[color=green, no marks,thick,solid] table {data/DataStrainSweep/11/FullMassFraction2_BOSSS.txt}; 	\label{MF2_BOSSS}
-%		\addplot[color=red, no marks,thick,solid] table {data/DataStrainSweep/11/FullMassFraction3_BOSSS.txt}; 	\label{MF3_BOSSS}
-%		\addplot[color=black,no marks, dashed] table {data/DataStrainSweep/11/FullMassFraction0_Matlab.txt};\label{MF0_MATLAB}
-%		\addplot[color=blue,no marks, dashed] table {data/DataStrainSweep/11/FullMassFraction1_Matlab.txt};\label{MF1_MATLAB}	
-%		\addplot[color=green,no marks, dashed] table {data/DataStrainSweep/11/FullMassFraction2_Matlab.txt};\label{MF2_MATLAB}	
-%		\addplot[color=red,no marks, dashed] table {data/DataStrainSweep/11/FullMassFraction3_Matlab.txt};\label{MF3_MATLAB}
 		\addplot[color=black, no marks, thick,solid] table {data/DataStrainSweep2/11/FullMassFraction0_BOSSS.txt}; \label{MF0_BOSSS}
 \addplot[color=blue,no marks,thick,solid] table {data/DataStrainSweep2/11/FullMassFraction1_BOSSS.txt}; 	\label{MF1_BOSSS}
 \addplot[color=green, no marks,thick,solid] table {data/DataStrainSweep2/11/FullMassFraction2_BOSSS.txt}; 	\label{MF2_BOSSS}
@@ -42,15 +35,21 @@
 \addplot[color=black,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction0_Matlab.txt};\label{MF0_MATLAB}
 \addplot[color=blue,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction1_Matlab.txt};\label{MF1_MATLAB}	
 \addplot[color=green,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction2_Matlab.txt};\label{MF2_MATLAB}	
-\addplot[color=red,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction3_Matlab.txt};\label{MF3_MATLAB}		
+\addplot[color=red,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction3_Matlab.txt};\label{MF3_MATLAB}
+	\coordinate (spypoint) at (axis cs:0.0062,0.03);
+\coordinate (magnifyglass) at (axis cs:0.015,0.1);
+\begin{scope}
+	\spy  on (spypoint)
+	in node[fill=white] at (magnifyglass);
+\end{scope}
 	\end{axis}
-	\node[draw,anchor=south east] at (12.0cm,0.5cm) {
-		\begin{tabular}{ccl}
-			$T$:& XNSEC \ref{TemperatureBosss} ;& 1D \tikz{\ref{TemperatureMatlab}}  \\
-			$Y_{\ch{CH4}}$:& XNSEC \tikz{\ref{MF0_BOSSS}} ;& 1D \tikz{\ref{MF0_MATLAB}} \\
-			$Y_{\ch{O2}}$:& XNSEC \tikz{\ref{MF1_BOSSS}} ;& 1D \tikz{\ref{MF1_MATLAB}} \\
-			$Y_{\ch{CO2}}$:& XNSEC \tikz{\ref{MF2_BOSSS}} ;& 1D \tikz{\ref{MF2_MATLAB}}  \\
-			$Y_{\ch{H2O}}$:& XNSEC \tikz{\ref{MF3_BOSSS}} ;& 1D \tikz{\ref{MF3_MATLAB}}  
-		\end{tabular}
-	};
+%	\node[draw,anchor=south east] at (12.0cm,0.45cm) {
+%		\begin{tabular}{ccl}
+%			$T$:& XNSEC \ref{TemperatureBosss} ;& 1D \tikz{\ref{TemperatureMatlab}}  \\
+%			$Y_{\ch{CH4}}$:& XNSEC \tikz{\ref{MF0_BOSSS}} ;& 1D \tikz{\ref{MF0_MATLAB}} \\
+%			$Y_{\ch{O2}}$:& XNSEC \tikz{\ref{MF1_BOSSS}} ;& 1D \tikz{\ref{MF1_MATLAB}} \\
+%			$Y_{\ch{CO2}}$:& XNSEC \tikz{\ref{MF2_BOSSS}} ;& 1D \tikz{\ref{MF2_MATLAB}}  \\
+%			$Y_{\ch{H2O}}$:& XNSEC \tikz{\ref{MF3_BOSSS}} ;& 1D \tikz{\ref{MF3_MATLAB}}  
+%		\end{tabular}
+%	};
 \end{tikzpicture}

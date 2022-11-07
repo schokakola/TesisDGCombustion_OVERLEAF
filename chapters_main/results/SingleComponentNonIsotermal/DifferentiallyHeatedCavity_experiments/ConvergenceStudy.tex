@@ -17,7 +17,7 @@ The results presented in this section allow us to conclude that the implemented 
 \begin{figure}[tb]
 	\centering
 	\inputtikz{NusseltStudy}
-	\caption{Nusselt numbers calculated with \cref{eq:Nusselt} at the hot wall ($\text{Nu}_h$) and the cold wall ($\text{Nu}_c$) for different number of cells and polynomial order $k$. The reference values from \cite{vierendeelsBenchmarkSolutionsNatural2003} are shown with dashed lines.}\label{fig:NusseltStudy}
+	\caption[Nusselt numbers of the differentially heated square cavity at the hot wall ($\text{Nu}_h$) and the cold wall ($\text{Nu}_c$) for different number of cells and polynomial order $k$.]{Nusselt numbers of the differentially heated square cavity at the hot wall ($\text{Nu}_h$) and the cold wall ($\text{Nu}_c$) for different number of cells and polynomial order $k$. The reference values from \cite{vierendeelsBenchmarkSolutionsNatural2003} are shown with dashed lines.}\label{fig:NusseltStudy}
 \end{figure}
 \FloatBarrier
 \subsubsection{Influence of the penalty factor}
@@ -39,7 +39,7 @@ The results presented in this section allow us to conclude that the implemented 
                       & 3 & 7056 & 1.102266 & 0.490563 & 0.938124 & 0.251627 \\
                       & 4 & 6655 & 1.105439 & 0.204153 & 0.93805  & 0.537265 \\ \hline
 \end{tabular}
-\caption{Thermodynamic pressure and cold-side Nusselt number for different penalty safety factors in a heated cavity with Ra $=10^3$. Values marked with an asterisk are from problems not converged after 100 iterations.}
+\caption[Thermodynamic pressure and cold-side Nusselt number for different penalty safety factors in a heated cavity with Ra $=10^3$.]{Thermodynamic pressure and cold-side Nusselt number for different penalty safety factors in a heated cavity with Ra $=10^3$. Values marked with an asterisk are from problems not converged after 100 iterations.}
 \end{table}
 A point not still discussed is the choice of the safety parameter $\mu_0$ of the penalty terms from the SIP discretization.  Table X shows results obtained for Ra $=10^3$, for different polynomial degrees and penalty safety factor.  For the tests presented here, the penalty terms of the difussive terms from the momentum and energy equations are considered equal. Furthermore, the number of elements in the mesh is selected in such a way that the number of degrees of freedom remains approximately constant for each simulation. 
 

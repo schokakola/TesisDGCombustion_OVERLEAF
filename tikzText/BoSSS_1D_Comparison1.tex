@@ -10,8 +10,8 @@
 		xtick=\empty,
 		xticklabel=\empty,
 		]
-		\addplot+[color=cyan, no marks, thick] table {data/DataStrainSweep2/2/FullTemperature_BOSSS.txt};
-		\addplot+[color=cyan, no marks, dashed]table {data/DataStrainSweep2/2/FullTemperature_MATLAB.txt};
+		\addplot+[color=violet, no marks, thick] table {data/DataStrainSweep2/2/FullTemperature_BOSSS.txt};
+		\addplot+[color=violet, no marks, dashed]table {data/DataStrainSweep2/2/FullTemperature_MATLAB.txt};
 	\end{axis}
 	
 	\begin{axis}[
@@ -38,4 +38,22 @@
 		\addplot+[color=green,no marks, dashed] table {data/DataStrainSweep2/2/FullMassFraction2_Matlab.txt};
 		\addplot+[color=red,no marks, dashed] table {data/DataStrainSweep2/2/FullMassFraction3_Matlab.txt};	
 	\end{axis}
+\node[draw,anchor=south east] at (12.0cm,0.45cm) {
+	\begin{tabular}{crl}
+		& \ref{TemperatureBosss}&$T$ \\
+ 	    & \tikz{\ref{MF0_BOSSS}}&$Y_{\ch{CH4}}$\\
+		& \tikz{\ref{MF1_BOSSS}}&$Y_{\ch{O2}}$  \\
+		& \tikz{\ref{MF2_BOSSS}}&$Y_{\ch{CO2}}$  \\
+		& \tikz{\ref{MF3_BOSSS}}&$Y_{\ch{H2O}}$  
+	\end{tabular}
+};
+%\node[draw,anchor=south east] at (12.0cm,0.45cm) {
+%\begin{tabular}{ccl}
+%	$T$:& XNSEC \ref{TemperatureBosss} ;& 1D \tikz{\ref{TemperatureMatlab}}  \\
+%	$Y_{\ch{CH4}}$:& XNSEC \tikz{\ref{MF0_BOSSS}} ;& 1D \tikz{\ref{MF0_MATLAB}} \\
+%	$Y_{\ch{O2}}$:& XNSEC \tikz{\ref{MF1_BOSSS}} ;& 1D \tikz{\ref{MF1_MATLAB}} \\
+%	$Y_{\ch{CO2}}$:& XNSEC \tikz{\ref{MF2_BOSSS}} ;& 1D \tikz{\ref{MF2_MATLAB}}  \\
+%	$Y_{\ch{H2O}}$:& XNSEC \tikz{\ref{MF3_BOSSS}} ;& 1D \tikz{\ref{MF3_MATLAB}}  
+%\end{tabular}
+%};
 \end{tikzpicture}	

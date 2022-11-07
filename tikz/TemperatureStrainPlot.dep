@@ -1,0 +1,2 @@
+tikz/TemperatureStrainPlot.pdf: data/MaxTemperatureStudy/Strain_MaxTempPlot.txt
+tikz/TemperatureStrainPlot.pdf: data/MaxTemperatureStudy/Strain_MaxTempPlot_matlab.txt

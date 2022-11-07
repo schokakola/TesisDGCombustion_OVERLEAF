@@ -21,7 +21,7 @@ The system is isothermal, and the fluid is assumed to be air. The step length is
 	\begin{center}
 		\def\svgwidth{0.9\textwidth}
 		\import{./plots/}{BFS_sketch.pdf_tex}
-		\caption{Schematic representation of the backward-facing step. Both primary and secondary vortices are shown. Sketch is not to scale.}
+		\caption[Schematic representation of the backward-facing step.]{Schematic representation (not to scale) of the backward-facing step. Both primary and secondary vortices are shown.}
 		\label{BFSsketch}
 	\end{center}
 \end{figure}
@@ -30,7 +30,7 @@ The system is isothermal, and the fluid is assumed to be air. The step length is
 	\begin{center}
 		\def\svgwidth{0.8\textwidth}
 		\import{./plots/}{HBFS_MESH.pdf_tex}
-		\caption{Structured mesh used in all calculations. }
+		\caption{Mesh used for the backward-facing step configuration.}
 		\label{bfsmesh}
 	\end{center}
 \end{figure}
@@ -45,7 +45,7 @@ The system is isothermal, and the fluid is assumed to be air. The step length is
 		unit code/.code={\si{#1}}
 	}
 	\inputtikz{uvelBFS}
-	\caption{Distribution of x-component of velocity in the backward-facing step configuration for a Reynolds number of 400. Solid lines correspond to results obtained with the XNSEC solver}
+	\caption[Distribution of x-component of velocity in the backward-facing step configuration for a Reynolds number of 400.]{Distribution of x-component of velocity in the backward-facing step configuration for a Reynolds number of 400. Solid lines correspond to results obtained with the XNSEC solver.}
 	\label{fig:uvelBFS}
 \end{figure}
 
@@ -61,7 +61,7 @@ The system is isothermal, and the fluid is assumed to be air. The step length is
 	}
 	\centering
 	\inputtikz{Re_De_Attachmentlengths}
-	\caption{ Detachment and reattachment lengths of the primary (left figure) and secondary (right figure) recirculation zones after the backward-facing step compared to the reference solution \citep{biswasBackwardFacingStepFlows2004}.}
+	\caption[Detachment and reattachment lengths of the primary and secondary recirculation zones after the backward-facing step compared to the reference solution]{ Detachment and reattachment lengths of the primary (left figure) and secondary (right figure) recirculation zones after the backward-facing step compared to the reference solution \citep{biswasBackwardFacingStepFlows2004}.}
 	\label{fig:Re_De_Attachmentlengths}
 \end{figure}
 The backward-facing step configuration exhibits varying behavior as the number of Reynolds changes. For small Reynolds numbers, a single vortex, usually called the primary vortex, appears in the vicinity of the step. Furthermore, as the Reynolds number increases, a second vortex eventually appears on the top wall, as shown schematically in \cref{BFSsketch}.

@@ -1,0 +1,8 @@
+tikz/RuntimeComparisonCouetteFlow.pdf: data/CouetteTempDifference_runtimes/xnsec_nc4.txt
+tikz/RuntimeComparisonCouetteFlow.pdf: data/CouetteTempDifference_runtimes/Simple_nc4.txt
+tikz/RuntimeComparisonCouetteFlow.pdf: data/CouetteTempDifference_runtimes/xnsec_nc8.txt
+tikz/RuntimeComparisonCouetteFlow.pdf: data/CouetteTempDifference_runtimes/Simple_nc8.txt
+tikz/RuntimeComparisonCouetteFlow.pdf: data/CouetteTempDifference_runtimes/xnsec_nc12.txt
+tikz/RuntimeComparisonCouetteFlow.pdf: data/CouetteTempDifference_runtimes/Simple_nc12.txt
+tikz/RuntimeComparisonCouetteFlow.pdf: data/CouetteTempDifference_runtimes/xnsec_nc16.txt
+tikz/RuntimeComparisonCouetteFlow.pdf: data/CouetteTempDifference_runtimes/Simple_nc16.txt

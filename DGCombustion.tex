@@ -181,6 +181,7 @@ sorting=anyt,
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{multirow}
+%\usepackage[stable]{footmisc}
 %%%%%%%%%
 %Commands
 %%%%%%%%%
@@ -280,7 +281,7 @@ nopostdot=true	%remove the dot at the end of glossary descriptionsfsymbo
 	dotted, every mark/.append style={solid, fill=gray}, line width=0.8pt, mark=diamond*\\%
 	dashdotted, every mark/.append style={solid, fill=gray, rotate=180},mark=triangle*\\%	
 	densely dashed, every mark/.append style={solid, fill=gray}, mark=otimes*\\%
-	loosely dashed, every mark/.append style={solid, fill=gray}, mark=triangle*\\%
+	loosely dashed, every  mark/.append style={solid, fill=gray}, mark=triangle*\\%
 	loosely dotted, every mark/.append style={solid, fill=gray}, mark=oplus*\\%
 	densely dotted, every mark/.append style={solid, fill=gray}, mark=pentagon*\\%
 }
@@ -476,7 +477,6 @@ noabbrev
 %Main part
 %%%%%%%%%%
 \mainmatter
-%
 \cleardoublepage
 \input{chapters_main/introduction}
 \cleardoublepage
@@ -487,93 +487,7 @@ noabbrev
 \input{chapters_main/results}
 \cleardoublepage
 \input{chapters_main/conclusion}
-% 
-
-
-
-%
-%
-%\begin{figure}
-%	\centering
-%	\begin{tikzpicture}[
-%	ausschnitt/.style={blue!50!red}
-%	]
-%	% Befehl für Teilbeschriftungen
-%	\newcommand\teilbeschriftung[1]{
-%		\node[below,text width=.45\textwidth] 
-%		at (current axis.outer south){\subcaption{#1}};
-%	}
-%	% Einstellungen für Achsen
-%	\pgfplotsset{
-%		myaxis/.style={
-%			width=0.4\textwidth,
-%			height=0.3\textwidth,
-%			xlabel=x,
-%			ylabel=y,
-%			yticklabel style={/pgf/number format/.cd,fixed,fixed zerofill,precision=1},
-%		}
-%	}
-%	%
-%	\begin{axis}[
-%		myaxis,
-%		xmin=0,
-%		xmax=1,
-%		xlabel = x,
-%		ylabel = Temperature,
-%		]
-%		\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth0.txt}; %\addlegendentry{No smoothing}
-%		\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth200.txt}; %\addlegendentry{$\sigma$=0.005}
-%		\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth100.txt}; %\addlegendentry{$\sigma$=0.01}
-%		\addplot [no markers, red]table {data/MF_FULL_COMPARISON/T_smooth50.txt}; %\addlegendentry{$\sigma$=0.02}
-%		\draw[ausschnitt]
-%		(axis cs:0.42,6.1)coordinate(ul)--
-%		(axis cs:0.465,6.1)coordinate(ur)--
-%		(axis cs:0.465,6.9)coordinate(or)--
-%		(axis cs:0.42,6.9) -- cycle;
-%	\end{axis}
-%	%	\teilbeschriftung{Beschriftung 1}
-%	% Ausschnitt
-%	\begin{axis}[
-%		axis on top, 	   
-%		xshift=.5\textwidth,	
-%		myaxis,
-%		xmin = 0.440,xmax=0.460,
-%		xlabel = x,
-%		ylabel = Temperature,
-%		legend pos=south west,
-%		y tick label style={
-%			/pgf/number format/.cd,
-%			fixed,
-%			fixed zerofill,
-%			precision=1,
-%			/tikz/.cd
-%		},
-%		x tick label style={
-%			/pgf/number format/.cd,
-%			fixed,
-%			fixed zerofill,
-%			precision=3,
-%			/tikz/.cd
-%		}
-%		]
-%		\addplot [no markers, black]table {data/MF_FULL_COMPARISON/T_smooth0.txt}; \addlegendentry{No smoothing}
-%		\addplot [no markers, green]table {data/MF_FULL_COMPARISON/T_smooth200.txt}; \addlegendentry{$\sigma$=0.005}
-%		\addplot [no markers, blue]table {data/MF_FULL_COMPARISON/T_smooth100.txt}; \addlegendentry{$\sigma$=0.01}
-%		\addplot [no markers, red]table {data/MF_FULL_COMPARISON/T_smooth50.txt}; \addlegendentry{$\sigma$=0.02}
-%	\end{axis}
-%	%	\teilbeschriftung{Beschriftung 2}
-%	% Verbindungslinien
-%	\draw[ausschnitt]
-%	(current axis.north west)--(or)
-%	(current axis.south west)--(ur);
-%\end{tikzpicture}
-%	\caption{Temperature profile calculated in the center-line of a counter-flow flame configuration for different smoothing parameters $\sigma$.}
-%	\label{fig:smoothings}
-%\end{figure}
-
-
-%C:\Users\jfgj8\AppData\Local\BoSSS\plots\sessions\CounterFlowFlame_MF_FullComparison_ForThesis3__Full_CounterDifFlameP3K10mult2_c0__90434a33-abe4-45a2-8e8e-2383a9c72d31
-
+ 
 %%%%%%%%%%%%%TODOOOOOOOOOOOOOOOOOO debo establecer de forma consistente si me refiero a las coordenadas como (x,y) o (x1,x2), similarmente si la velocidad es (u,v)o (u1,u2) 
 %%%%%%%%%%%%%%%%%%% TODO: Verificar si realmente todos los indices de las mass fractions ahora están referidos como k, y el numero total como N. Hacer lo mismo con M y W para los pesos moleculares.
 %
@@ -583,15 +497,12 @@ noabbrev
 % Cambiar en todos lados donde se hace referencia a mi solver, y referirse a el consistentemente como XNSEC
 %TODO: acortar usando \caption[]{} los nombres de las figuras que apareceran en la lista de imagenes/tablas
 %TODO: pregunta abierta: basta con definir el poly deg k, y con eso esta ya definido k'?
-%TODO: agregar puta imagen con los errores de P en la convergencestudy seccion
-%TODO: corregir los limites de los colorbar de tal forma que aparezcan los minimos/maximos y que tengan los formatos correctos
+
 %TODO Question: Que implicancias tiene el utilizar un mallado curvo dentro del DG method? es particularmente complicado/beneficioso?
-%TODO Idea: Quizas calcular el contorno de vorticidad para el square cavity y asi argumentar que en las esquinas existen fenomenos muy complicados para Ra alto.
 %TODO Mencionar en la conclusion que realmente la asumpcion de 2D fue realizada por motivos de ahorro de costos computacionales. En teoria el solver deberia ser posible de hacer calculos tridimensionales, lo cual podria ser futuro trabajo.
 %argumentar con DOFs que la MF calculation es mucho mas facil y eficiente que la otra.
 %TODO Creo que en realidad nunca hice validacion , solo verificación => cambiar la palaba
 %TODO Verificar que realmente en la discretizacion de las ecuaciones tengo el Cp termino pasado al lado derecho (osea que el termino cp solo aparece en realidad en el termino fuente, porque estamos asumiento Nu constante(por eso no entra en las ecuaciones para el termino difusivo, porque ya esta incluido))
-%TODO INCLUDE coordinate system de la counter dif flame
 \cleardoublepage
 \printbibliography[heading=bibintoc]
 \label{bibref}

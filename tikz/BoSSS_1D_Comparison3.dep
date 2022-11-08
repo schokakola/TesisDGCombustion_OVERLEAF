@@ -1,0 +1,4 @@
+tikz/BoSSS_1D_Comparison3.pdf: data/StudyVariableParameters/11/FullMassFraction0_vp0.txt
+tikz/BoSSS_1D_Comparison3.pdf: data/StudyVariableParameters/11/FullMassFraction0_vp1.txt
+tikz/BoSSS_1D_Comparison3.pdf: data/StudyVariableParameters/11/FullMassFraction1_vp0.txt
+tikz/BoSSS_1D_Comparison3.pdf: data/StudyVariableParameters/11/FullMassFraction1_vp1.txt

@@ -1,2 +1,4 @@
-tikz/DGCombustion-figure1.pdf: data/CDF_BC_COMPARISON/FullVelocityX_plug.txt
-tikz/DGCombustion-figure1.pdf: data/CDF_BC_COMPARISON/FullVelocityX_parab.txt
+tikz/DGCombustion-figure1.pdf: data/StudyVariableParameters/11/FullMassFraction0_vp0.txt
+tikz/DGCombustion-figure1.pdf: data/StudyVariableParameters/11/FullMassFraction1_vp0.txt
+tikz/DGCombustion-figure1.pdf: data/StudyVariableParameters/11/FullMassFraction0_vp1.txt
+tikz/DGCombustion-figure1.pdf: data/StudyVariableParameters/11/FullMassFraction1_vp1.txt

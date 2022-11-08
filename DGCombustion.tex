@@ -488,6 +488,12 @@ noabbrev
 \cleardoublepage
 \input{chapters_main/conclusion}
  
+   
+
+
+
+
+
 %%%%%%%%%%%%%TODOOOOOOOOOOOOOOOOOO debo establecer de forma consistente si me refiero a las coordenadas como (x,y) o (x1,x2), similarmente si la velocidad es (u,v)o (u1,u2) 
 %%%%%%%%%%%%%%%%%%% TODO: Verificar si realmente todos los indices de las mass fractions ahora están referidos como k, y el numero total como N. Hacer lo mismo con M y W para los pesos moleculares.
 %
@@ -503,6 +509,10 @@ noabbrev
 %argumentar con DOFs que la MF calculation es mucho mas facil y eficiente que la otra.
 %TODO Creo que en realidad nunca hice validacion , solo verificación => cambiar la palaba
 %TODO Verificar que realmente en la discretizacion de las ecuaciones tengo el Cp termino pasado al lado derecho (osea que el termino cp solo aparece en realidad en el termino fuente, porque estamos asumiento Nu constante(por eso no entra en las ecuaciones para el termino difusivo, porque ya esta incluido))
+
+%TODO debo  corregir en todos lados: En realidad para la deduccion de las ecuaciones de la mixture farction nunca se asume un cp constante. solo se asume que el cp de todos los componentes es el mismo. Las consecuencias siguen siendo las mismas, puesto que aunque °
+
+% Hablvar de porque es bacan el modelo de fernandez terrazo. Yo diria que representa una forma simple de representar fenomenos que solo serian posibles de predecir utilizando modelos quimicos muchos mas complejos, como por ejemplo el leakage. Entonces haciendo uso de una unica ecuacion quimica, es posible estudiar fenomenos complejos de combustionn, disminuyendo sustancialmente el costo computacional.  La idea es implementar un modelo versatil, pero a su vez que no brinde mayores complejidades tanto numericas como computacionales. 
 \cleardoublepage
 \printbibliography[heading=bibintoc]
 \label{bibref}

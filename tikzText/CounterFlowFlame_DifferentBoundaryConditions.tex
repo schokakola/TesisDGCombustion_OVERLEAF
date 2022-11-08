@@ -6,7 +6,7 @@
 		ylabel= {Axial-velocity [cm]},		 
 		x filter/.code={\pgfmathparse{#1*100}\pgfmathresult},
 		y filter/.code={\pgfmathparse{#1*100}\pgfmathresult},
-		legend style={at={(0.05,0.05)}, anchor=south west},
+		legend style={at={(0.04,0.05)}, anchor=south west},
 		]
 		\addplot+[color=black, no marks]  table {data/CDF_BC_COMPARISON/FullVelocityX_plug.txt};
 		\addlegendentry{Plug};

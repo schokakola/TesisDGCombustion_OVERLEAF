@@ -732,17 +732,30 @@ This function is useful for creating a smooth transition between two functions, 
 \end{subequations}
 The use of this regularized form of the equations results in practice on a spreading of the flame front, which eases the numerical calculation \citep{braackAdaptiveFiniteElement1997}.
 
-Some remarks regarding the use of the infinite rection-rate solution (also called flame-sheet solution in the following) as initial condition for a finite-rate problem should be done. Although for the solution of the infinite reaction rate system the mixture heat capacity has been assumed to be constant, it remains an adequate estimate for the finite reaction-rate problem, where the heat capacity is a function of temperature and local concentration. In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with non-unity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method. 
+
+One question one could certainly ask is under what flame conditions is the infinite rection-rate solution (also called flame-sheet solution in the following) effectively a good initial estimate for Newton's algorithm.  Recall that for the derivation of the 
+
+Although for the solution of the infinite reaction rate system the mixture heat capacity has been assumed to be constant, it remains an adequate estimate for the finite reaction-rate problem, where the heat capacity is a function of temperature and local concentration. In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with non-unity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method. 
 
 One problem that arises when using the flame sheet estimate is the selection of a suitable $c_p$, since the flame temperature - and therefore all other solution fields - are highly dependent on the selection of the heat capacity. \cite{xuApplicationPrimitiveVariable1993} suggests estimating it simply on the basis of experimental measurements, or also by selecting some representative value.
 
 It should also be noted that cref{eq:heatReleaseOneStep} yields unphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep} (we use $\phi = 1.2$). In practice however, this should not have a significant effect, because the unphysical values of $\hat Q$ appear at zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. Nevertheless, setting an upper bound for $\phi$ is helpful to avoid possible numerical instabilities.
 
+
+
+
+% Hablar sobre:
+
+
+
+
+
+
 \begin{figure}[t!]
 	\begin{center}
 		\def\svgwidth{0.5\textwidth}
 		\import{./plots/}{SShapedResponse.pdf_tex}
-		\caption{Schematic representation of the heated circular cylinder.}
+		\caption{S-shaped bifurcation curve of a combustion process.}
 		\label{fig:Sshaped}%
 	\end{center}%
 \end{figure}%

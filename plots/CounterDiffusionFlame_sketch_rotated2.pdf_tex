@@ -58,10 +58,10 @@
     \put(0,0){\includegraphics[width=\unitlength,page=1]{CounterDiffusionFlame_sketch_rotated2.pdf}}%
     \put(0.49773978,0.00263306){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$L$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{CounterDiffusionFlame_sketch_rotated2.pdf}}%
-    \put(0.27101044,0.45686639){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}%
-    \put(0.76683945,0.45380585){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}%
-    \put(0.76683945,0.17939506){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}%
-    \put(0.27213451,0.17594947){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}%
+    \put(0.27101044,0.45686639){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Wall}\end{tabular}}}}%
+    \put(0.76683945,0.45380585){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Wall}\end{tabular}}}}%
+    \put(0.76683945,0.17939506){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Wall}\end{tabular}}}}%
+    \put(0.27213451,0.17594947){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Wall}\end{tabular}}}}%
     \put(0.41138047,0.35949453){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Flame}\\\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{CounterDiffusionFlame_sketch_rotated2.pdf}}%
     \put(0.05560608,0.22520044){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\text{Pressure outlet}\end{tabular}}}}}%

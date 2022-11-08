@@ -1,4 +1,4 @@
-\begin{tikzpicture} [spy using outlines={magnification=2.5,  width=4cm, height=2cm, connect spies}]
+\begin{tikzpicture} [spy using outlines={magnification=2.0,  width=1.5cm, height=1.5cm, connect spies}, every pin/.style={fill=white}]
 	\begin{axis}[
 		title = {\textbf{Case (c)}},
 		xlabel=$x$,
@@ -29,27 +29,35 @@
 		restrict x to domain=0:2
 		]
 		\addplot[color=black, no marks, thick,solid] table {data/DataStrainSweep2/11/FullMassFraction0_BOSSS.txt}; \label{MF0_BOSSS}
-\addplot[color=blue,no marks,thick,solid] table {data/DataStrainSweep2/11/FullMassFraction1_BOSSS.txt}; 	\label{MF1_BOSSS}
-\addplot[color=green, no marks,thick,solid] table {data/DataStrainSweep2/11/FullMassFraction2_BOSSS.txt}; 	\label{MF2_BOSSS}
-\addplot[color=red, no marks,thick,solid] table {data/DataStrainSweep2/11/FullMassFraction3_BOSSS.txt}; 	\label{MF3_BOSSS}
-\addplot[color=black,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction0_Matlab.txt};\label{MF0_MATLAB}
-\addplot[color=blue,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction1_Matlab.txt};\label{MF1_MATLAB}	
-\addplot[color=green,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction2_Matlab.txt};\label{MF2_MATLAB}	
-\addplot[color=red,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction3_Matlab.txt};\label{MF3_MATLAB}
-	\coordinate (spypoint) at (axis cs:0.0062,0.03);
-\coordinate (magnifyglass) at (axis cs:0.015,0.1);
-\begin{scope}
-	\spy  on (spypoint)
-	in node[fill=white] at (magnifyglass);
-\end{scope}
+		\addplot[color=blue,no marks,thick,solid] table {data/DataStrainSweep2/11/FullMassFraction1_BOSSS.txt}; 	\label{MF1_BOSSS}
+		\addplot[color=green, no marks,thick,solid] table {data/DataStrainSweep2/11/FullMassFraction2_BOSSS.txt}; 	\label{MF2_BOSSS}
+		\addplot[color=red, no marks,thick,solid] table {data/DataStrainSweep2/11/FullMassFraction3_BOSSS.txt}; 	\label{MF3_BOSSS}
+		\addplot[color=black,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction0_Matlab.txt};\label{MF0_MATLAB}
+		\addplot[color=blue,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction1_Matlab.txt};\label{MF1_MATLAB}	
+		\addplot[color=green,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction2_Matlab.txt};\label{MF2_MATLAB}	
+		\addplot[color=red,no marks, dashed] table {data/DataStrainSweep2/11/FullMassFraction3_Matlab.txt};\label{MF3_MATLAB}
+		\coordinate (spypoint) at (axis cs:0.0064,0.222);
 	\end{axis}
-%	\node[draw,anchor=south east] at (12.0cm,0.45cm) {
-%		\begin{tabular}{ccl}
-%			$T$:& XNSEC \ref{TemperatureBosss} ;& 1D \tikz{\ref{TemperatureMatlab}}  \\
-%			$Y_{\ch{CH4}}$:& XNSEC \tikz{\ref{MF0_BOSSS}} ;& 1D \tikz{\ref{MF0_MATLAB}} \\
-%			$Y_{\ch{O2}}$:& XNSEC \tikz{\ref{MF1_BOSSS}} ;& 1D \tikz{\ref{MF1_MATLAB}} \\
-%			$Y_{\ch{CO2}}$:& XNSEC \tikz{\ref{MF2_BOSSS}} ;& 1D \tikz{\ref{MF2_MATLAB}}  \\
-%			$Y_{\ch{H2O}}$:& XNSEC \tikz{\ref{MF3_BOSSS}} ;& 1D \tikz{\ref{MF3_MATLAB}}  
-%		\end{tabular}
-%	};
+    \node[pin={[pin distance=2.5cm]357:{%
+		\begin{tikzpicture}[baseline,trim axis left,trim axis right]
+			\begin{axis}[
+				no markers,
+				height = 0.14\linewidth,
+				width = 0.14\linewidth,
+%				grid=major,
+				every axis plot post/.append style={thick},
+				xlabel=$x$,
+				ylabel= $T$,
+				xmin=0.0062,xmax=0.0066801,
+				x unit=m,
+				y unit= K, 
+%				axis y line*=right,
+				change x base=true,
+				x SI prefix=centi,
+				]
+		\addplot[color=violet, no marks, thick] table {data/DataStrainSweep2/11/FullTemperature_BOSSS.txt}; \label{TemperatureBosss}
+		\addplot[color=violet, no marks, dashed]table {data/DataStrainSweep2/11/FullTemperature_MATLAB.txt}; \label{TemperatureMatlab}
+			\end{axis}
+		\end{tikzpicture}%
+}},draw,circle,minimum size=0.5cm] at (spypoint) {};
 \end{tikzpicture}

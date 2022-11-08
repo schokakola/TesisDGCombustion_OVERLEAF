@@ -1,6 +1,6 @@
 
 \subsection[Counterflow diffusion flame]{Counterflow diffusion flame \footnotemark}\label{ss:CDF}
-\footnotetext{Modified version from \cite{gutierrez-jorqueraFullyCoupledHigh2022}}
+\footnotetext{Modified version from \cite{gutierrez-jorqueraFullyCoupledHighorder2022}}
 \begin{figure}[h!]
 	\begin{center}
 		\def\svgwidth{0.8\textwidth}
@@ -127,12 +127,13 @@ The boundary condition of the inlets are,
 \end{figure} 
 
 
-The pressure outlet boundary condition is the same as \cref{eq:bc_O}. The pressure outlet boundaries are placed far away of the center of the domain, in order to decrease the effect on the centerline. Placing the boundary further away did not change appreciably the results. Finally the adiabatic walls are defined as in \cref{eq:bc_dn}, with $\vec{u}_{\text{D}} = (0,0)$.          
+The pressure outlet boundary condition is the same as \cref{eq:bc_O}. The pressure outlet boundaries are placed far away of the center of the domain, in order to decrease the effect on the centerline. Placing the boundary further away did not change appreciably the results. Finally the bundary conditions at the walls are defined as in \cref{eq:bc_dn}, with $\vec{u}_{\text{D}} = (0,0)$ and a constant temperature $T = 1.0$.          
  
 In \cref{fig:CoFlowFlameFig1} the solution profiles for the case (a) are shown. The used mesh was obtained by a process of mesh refinement. The base mesh is initially created with a larger concentration of elements in the center of the domain. The points of intersection from the velocity inlet and wall boundary conditions are also refined, which was observed to improve the robustness of the algoritm. Similarly to the coflowing flame (\cref{ssec:coflowFlame}), during the solution algorithm of the flame sheet problem, mesh is aditionally refined around the flame sheet making use of a pseudo-timestepping setting.
 As expected, a stagnation flow develops and a flame forms close to it. For this strain rate, a maximum temperature of $T = 6.05$ is obtained (1815 $\si{\kelvin}$). This big increase in the temperature is also reflected in a big decrease in the density field, where a decrease of almost six times on the density values is apreciated. This change of density also provokes the acceleration of fluid, as observed in \cref{fig:CounterFlowStreamlines}. 
 
 In \cref{fig:CounterFlowReactionRate} the reaction rate given by \cref{eq:NonDimArr} is ploted. It is interesting to see that the actual reacting zone is very small, which clearly demonstrates why adequate meshing is necessary to capture the steep gradients resulting from the strong and highly localized heat sources. Finally, and as expected, the fuel and oxidizers field seem to only be found on either side of the flame. Altought it can not be seen here, some reactant leaking occurs, meaning that there exists a small zone where both especies coexist. This point will be adressed later. 
+
 
 \subsubsection{Comparison of two-dimensional and the quasi one-dimensional counterflow flames}
 In this section a comparison of the results obtained with the XNSEC-solver for a two dimensional counterflow diffusion flame, and the results obtained with the \lstinline|BVP4| solver for a quasi one-dimensional flame is done. The comparison of both set of results is done along the centerline of the domain (see \cref{fig:CDFScheme}). In this section, only dimensional variables will be considered. The transport parameters, chemical model and the equation of state are exactly the same for both formulations. For all calculations in this section, a polynomial degree of four is used for the velocity components, temperature and mass fractions. A polynomial degree of three is used for the pressure. This resulted on systems with approximately 439000 degrees of freedom. 
@@ -142,7 +143,7 @@ In this section a comparison of the results obtained with the XNSEC-solver for a
 	\inputtikz{CounterFlowFlame_DifferentBoundaryConditions}
 	\caption{Velocity profiles of the counterflow diffusion flame for parabolic and plug inlet boundary conditions.}\label{fig:CounterFlowFlame_DifferentBoundaryConditions}
 \end{figure}
-
+%TODO Still calculating => same plot but with vel mult 11 '\\hpccluster\hpccluster-scratch\gutierrez\CounterFlowFlame_BCComparison6'.
 The choice of the type of velocity boundary conditions for the inlets requires some attention. Different possiblities exist to describe the velocity profiles. One posibility is to characterize the velocity boundary conditions by assuming a Hiemenz potential flow, where a single parameter defines the flow field. Other posibilities are also a constant velocity value (plug flow) or a parabolic profile, allowing to define different velocity values for each jet inlet.
 The effect of boundary conditions on the flame structure has been estudied by \cite{chelliahExperimentalTheoreticalInvestigation1991} and \cite{johnsonAxisymmetricCounterflowFlame2015}, where it was concluded that both plug and potential are able to adequately describe experimental data. 
 
@@ -171,7 +172,7 @@ The question whether a plug or parabolic flow profile allows a better representa
  	\centering
  	\pgfplotsset{
  		width=0.85\textwidth,
- 		height = 0.23\textwidth,
+ 		height = 0.33\textwidth,
  		compat=1.3,
  		tick align = outside,
  		yticklabel style={/pgf/number format/fixed},
@@ -183,29 +184,73 @@ The question whether a plug or parabolic flow profile allows a better representa
  	\label{fig:BoSSS_1D_Comparison}
  \end{figure}
  \tikzexternalenable
-Similarly, In \cref{fig:BoSSS_1D_Comparison} the temperature and mass fraction fields are presented. Again, a discrepancy is observed for low strains, but results show a good agreement for higher inlet velocities. It can also be observed how, as expected, at higher strains a significant leakage of oxygen across the flame is present. This is a typical behaviour of a flame that is getting closer to its extintion point \cite{fernandez-tarrazoSimpleOnestepChemistry2006}.  This is a drawback from usual one-step models with constant activation temperature, because they tend to overpredict fuel leakage. This behaviour is not appreciated in the one-step model with variable activation temperature used here. 
- 
- 
-%TODO mostrar acá como se ven de diferentes las soluciones con y sin parametros variables ?
- 
-In \cref{fig:TemperatureStrainPlot} the maximum temperature obtained in the centerline for different strain rates is ploted. Qualitatively speaking, the solution obtained with the XNSEC-solver agrees with the expectations. As the strain rate increases, the maximum temperature decreases (see \cref{fig:Sshaped}). On the other hand, the comparison of values obtained with the XNSEC-solver and those of the quasi one-dimensional approximation clearly shows a discrepancy in the results. For low strain rates this discrepancy is small, being for $a = \SI{20}{\per\second}$ only 10K, approximately a difference of 0.5\%. As the strain rate increases so does the discrepancy. For $a = \SI{200}{\per\second}$ the difference is almost 50K, which is a 9\% disagreement. A similar behaviour is also reported in \cite{frouzakisTwodimensionalDirectNumerical1998}, where a difference of 50K was reported. It is worth noting that the XNSEC-solver wasnt able to find a converged solution for $a > \SI{202}{\per\second}$. 
+Similarly, In \cref{fig:BoSSS_1D_Comparison} the temperature and mass fraction fields are presented. Again, a discrepancy is observed for low strains, but results show a good agreement for higher inlet velocities. It can also be observed how, as expected, at higher strains a significant leakage of oxygen across the flame is present. This is a typical behaviour of a flame that is getting closer to its extintion point \cite{fernandez-tarrazoSimpleOnestepChemistry2006}.  
 
-The difference between the results obtained for the two-dimensional configuration and the quasi-one dimensional approximation could be explained by some condition within the 1D system assumptions being violated in the 2D configuration. It is known that in addition to the boundary conditions, the ratio between the slot width and the separation between the two slots ($D/H$) also has an influence on the solution, and that a high ratio is desirable. \cite{frouzakisTwodimensionalDirectNumerical1998}. Another point that was not addressed here is whether the boundary conditions chosen for the adabatic walls have an effect on the solution along the centerline. Other posibilities could have been using a wall with a fixed temperature as done by \cite{frouzakisTwodimensionalDirectNumerical1998}, or outlet boundary conditions. The points mentioned here should be adressed in future work.
+This is a drawback from usual one-step models with constant activation temperature, because they tend to overpredict fuel leakage. This behaviour is not appreciated in the one-step model with variable activation temperature used here.  In \cref{fig:VarParams} the comparison is shown for the configuration (c) between the mass fractions fields obtained using a chemical model with variable kinetic parameters given by \cref{eq:ActivationTemperatureOneStep,eq:heatReleaseOneStep} and other with constant kinetic parameters using $\hat T_a = \hat T_{a0}$ and  $\hat Q = \hat Q_{0}$.  The oxygen leakage obtained by using the chemical model with variable parameters is evident, confirming 
+ 
+ 
+ \begin{figure}[h]
+ 	\centering
+ 	\begin{tikzpicture} 
+ 		\pgfplotsset{width=0.35\textwidth, compat=1.3}
+ 		\begin{axis}[
+ 			name=plot1,%	
+ 			xlabel = {$x$ [cm]},
+ 			ylabel= {Mass fraction},		 
+ 			x filter/.code={\pgfmathparse{#1*100}\pgfmathresult},
+ 			%		y filter/.code={\pgfmathparse{#1*100}\pgfmathresult},
+ 			legend style={at={(0.95,0.65)}, anchor=north east},
+ 			]
+ 			\addplot+[no marks] table {data/StudyVariableParameters/11/FullMassFraction0_vp0.txt}; \addlegendentry{\ch{CH4}, CK}
+ 			\addplot+[no marks] table {data/StudyVariableParameters/11/FullMassFraction0_vp1.txt};\addlegendentry{\ch{CH4}, VK}
+ 			\addplot+[no marks] table {data/StudyVariableParameters/11/FullMassFraction1_vp0.txt};\addlegendentry{\ch{O2}, CK}
+ 			\addplot+[no marks] table {data/StudyVariableParameters/11/FullMassFraction1_vp1.txt};\addlegendentry{\ch{O2}, VK}	
+ 		\end{axis}
+ 	\end{tikzpicture}
+ 	\begin{tikzpicture} 
+ 		\pgfplotsset{width=0.35\textwidth, compat=1.3}
+ 		\begin{axis}[
+ 			name=plot1,%	
+ 			xlabel = {$x$[cm]},
+ 			ylabel= {Mass fraction},		 
+ 			x filter/.code={\pgfmathparse{#1*100}\pgfmathresult},
+ 			%		y filter/.code={\pgfmathparse{#1*100}\pgfmathresult},
+ 			%		legend style={at={(0.84,0.45)}, anchor=south west},
+ 			xmin = 0.4,xmax=0.80,
+ 			ymax = 0.05,
+ 			]
+ 			\addplot+[no marks] table {data/StudyVariableParameters/11/FullMassFraction0_vp0.txt}; 
+ 			\addplot+[no marks] table {data/StudyVariableParameters/11/FullMassFraction1_vp0.txt};
+ 			\addplot+[no marks] table {data/StudyVariableParameters/11/FullMassFraction0_vp1.txt};
+ 			\addplot+[no marks] table {data/StudyVariableParameters/11/FullMassFraction1_vp1.txt};
+ 		\end{axis}
+ 	\end{tikzpicture}
+ 	\caption[Comparison of fuel and oxidizer mass fraction profiles using constant kinetic parameters and variable kinetic parameters]{Mass fraction profiles of methane and oxygen along the centerline of a counterflow diffusion flame configuration  using variable kinetic parameters (VK) and constant kinetic parameters (CK). Right picture is zoomed in near the flame zone.} \label{fig:VarParams}
+ \end{figure}
 
-\begin{figure}[tbp]
+ 
+In \cref{fig:TemperatureStrainPlot} the maximum temperature obtained in the centerline for different strain rates is ploted. Qualitatively speaking, the solution obtained with the XNSEC-solver agrees with the expectations. As the strain rate increases, the maximum temperature decreases (see \cref{fig:Sshaped}). On the other hand, the comparison of values obtained with the XNSEC-solver and those of the quasi one-dimensional approximation clearly shows a discrepancy in the results. For low strain rates this discrepancy is small, being for $a = \SI{20}{\per\second}$ only 10K, approximately a difference of 0.5\%. As the strain rate increases so does the discrepancy. For $a = \SI{200}{\per\second}$ the difference is almost 50K, which is a 9\% disagreement. A similar behaviour is also reported in \cite{frouzakisTwodimensionalDirectNumerical1998}, where a difference of 50K was reported. 
+
+It is worth noting that the XNSEC-solver wasnt able to find a converged solution for $a > \SI{202}{\per\second}$, and the newton algorithm stagnates. This is most probably a sign of underresolution of the mesh, and that the used refinement strategy did not help for such high strain rates. A better mesh refinement strategy is necesary for calculating the flame at conditions near the extintion point. 
+Moreover, for high strain rates the flame will be far from the thermochemical equilibrium, and it is likely that the solution obtained for the flame sheet will be far away from the solution with finite rates. A posibility would be to use one of the well-known continuation methods (see for example \cite{nishiokaFlamecontrollingContinuationMethod1996}) to progressively move in the direction of the extinction point. Obviously, the Homotopy Methodology presented in \cref{sec:HomotopyMethod} can be visualized as one of those methods, and would be useful when looking for solutions of systems that are close to the extinction point. A complexity that arises then is how to create a dynamical mesh that is suitable for obtaining the intermediate solutions while searching for the final result in a robust way. This issue is beyond the scope of this thesis, and may be the subject of future research.
+
+
+The difference between the results obtained for the two-dimensional configuration and the quasi-one dimensional approximation could be explained by some condition within the 1D system assumptions being violated in the 2D configuration. It is known that in addition to the boundary conditions, the ratio between the slot width and the separation between the two slots ($D/H$) also has an influence on the solution, and that a high ratio is desirable \citep{frouzakisTwodimensionalDirectNumerical1998}. Another point that was not addressed here is whether the boundary conditions chosen for cold walls have an effect on the solution along the centerline. Other posibilities could have been using outlet boundary conditions or an adiabatic wall. It is nevertheless expected that its effect on the centerline would not be big. The points mentioned here should be adressed in future work.
+
+\begin{figure}[h]
 	\centering
 	\inputtikz{TemperatureStrainPlot}
-	\caption{Maximum centerline temperature for different strains.}
+	\caption{Maximum centerline temperature of a counterflow flame for different strains.}
 	\label{fig:TemperatureStrainPlot}
 \end{figure}
 \subsubsection{Temperature convergence study}
-\begin{figure}[tbp]
+\begin{figure}[h]
 	\centering
 	\inputtikz{TemperatureConvergenceDiffFlame}
 	\caption{Convergence study of the maximum value of the temperature for the counterflow diffusion flame configuration.}
 	\label{fig:TemperatureConvergenceDiffFlame}
 \end{figure}
-Similar to problems presented earlier, the presence of singularities causes a degenerative effect on the global error values, making a global convergence study for this configuration is problematic. However, it is still possible to study the behaviour of some characteristic point value under different conditions to prove the mesh independence of the solution.
+Similar to problems presented in earlier sections, the presence of singularities caused by non-consistent boundary conditions causes a degenerative effect on the global error values, making a global convergence study for this configuration is problematic. However, it is still possible to study the behaviour of some characteristic point value under different conditions to prove the mesh independence of the solution.
 
 In \cref{fig:TemperatureConvergenceDiffFlame} it is shown how the maximum temperature along the centerline obtained for configuration (b)  behaves under different mesh resolutions and polynomial degrees. Values for $k=1$ are not shown, because for this range of cell elements the maximum temperature value was of the order of 60K higher than the ones depicted here. The temperature tends to a limit value, and its posible to observe how this value is reached already for coarse meshes when using a polynomial degree of three or four. For $k=2$ the temperature also tends to a limit value, but at a slower rate when compared to $k =3$ or $k = 4$. 
 

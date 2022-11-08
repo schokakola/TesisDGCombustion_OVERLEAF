@@ -1,0 +1,2 @@
+tikz/DGCombustion-figure6.pdf: data/StudyVariableParameters/11/FullMassFraction0_vp0.txt
+tikz/DGCombustion-figure6.pdf: data/StudyVariableParameters/11/FullMassFraction1_vp0.txt

@@ -57,9 +57,9 @@ The purpose for simulating this case is to test the XNSEC-solver in a real-appli
 \begin{figure}[t!]
 	\centering
 	\pgfplotsset{width=0.6\textwidth, compat=1.3}
-	\inputtikzTEST{CoFlowFlameFigTemperature}%
+	\inputtikz{CoFlowFlameFigTemperature}%
 	\hspace{-2.4cm} 	
-	\inputtikzTEST{CoFlowkReact}
+	\inputtikz{CoFlowkReact}
 	\caption{Temperature and reaction rate fields of the coflow configuration.} \label{fig:CoFlowFlameFig}
 \end{figure}
 Numerical experiments using the XNSEC-solver showed that the solution of the problem is highly mesh-dependent. The presence of very high gradients in some areas requires a higher density of cells to obtain a well-resolved solution.  In \cref{fig:CoFlowMesh} the actual mesh used for the solution of the full problem is shown.  A base mesh with smaller elements in the vicinity of the inlets and larger elements further away from them is used. It was observed that the complex mixing and combustion phenomena that occur in the vicinity of the inlets have a critical effect on the convergence of the solution. For this reason, a special refinement of the base mesh was done in the vicinity of the tips. Furthermore, an adequate mesh resolution  at the flame location is critical. In order to avoid over-solving, an adaptive mesh refinement strategy in a pseudo-time-stepping framework was used. After obtaining a steady state solution, the mesh is refined and the calculation is started again (see \cref{ssec:MeshRefinement}). In particular, for this case, three pseudo-timesteps were performed for the flame-sheet calculation. After each pseudo-timestep, the mesh is refined in the vicinity of the flame sheet, that is, in the cells where $z = z_{\text{st}}$. 
@@ -75,76 +75,7 @@ In \cref{fig:CoFlowFlameFig} the obtained temperature and reaction rate fields a
 \begin{figure}[h]
 	\centering
 	\pgfplotsset{width=0.6\textwidth, compat=1.3}
-	\begin{tikzpicture}[
-		ausschnitt/.style={blue!50!red}
-		]
-		% Befehl für Teilbeschriftungen
-		\newcommand\teilbeschriftung[1]{
-			\node[below,text width=.45\textwidth] 
-			at (current axis.outer south){\subcaption{#1}};
-		}
-		% Einstellungen für Achsen
-		\pgfplotsset{
-			myaxis/.style={
-				width=0.4\textwidth,
-				height=0.3\textwidth,
-				xlabel=x,
-				ylabel=y,
-				yticklabel style={/pgf/number format/.cd,fixed,fixed zerofill,precision=2},
-			}
-		}
-		%
-		\begin{axis}[
-			myaxis,
-			%		xmin=0,
-			%		xmax=1,
-			xlabel = x,
-			ylabel = Mass fraction \ch{H2O},
-			]
-			\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_flamesheet_y10.txt};%\addlegendentry{Flame sheet1}
-			\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt}; %\addlegendentry{Finite Chemistry, Le=1}
-			\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction3_full_y10.txt};% \addlegendentry{Finite Chemistry,
-				\draw[ausschnitt]
-				(axis cs:0.0,0.06)coordinate(ul)--
-				(axis cs:5.5,0.06)coordinate(ur)--
-				(axis cs:5.5,0.11)coordinate(or)--
-				(axis cs:0.0,0.11) -- cycle;
-			\end{axis}
-			%	\teilbeschriftung{Beschriftung 1}
-			% Ausschnitt
-			\begin{axis}[
-				axis on top, 	   
-				xshift=.5\textwidth,	
-				myaxis,
-				xmin = 0.0,xmax=4,
-				xlabel = x,
-				ylabel = Mass fraction \ch{H2O},
-				legend pos=south west,
-				y tick label style={
-					/pgf/number format/.cd,
-					fixed,
-					fixed zerofill,
-					precision=2,
-					/tikz/.cd
-				},
-				%				x tick label style={
-					%					/pgf/number format/.cd,
-					%					fixed,
-					%					fixed zerofill,
-					%					precision=1,
-					%					/tikz/.cd
-					%				}
-				]
-				\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_flamesheet_y10.txt};\addlegendentry{Flame sheet}
-				\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt}; \addlegendentry{Finite Chemistry, $\text{Le}_k = 1$}
-				\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction3_full_y10.txt}; \addlegendentry{Finite Chemistry, $\text{Le}_k \neq 1$}
-			\end{axis}
-			%	\teilbeschriftung{Beschriftung 2}
-			% Verbindungslinien
-			\draw[ausschnitt]
-			(current axis.north west)--(or)
-			(current axis.south west)--(ur);
-		\end{tikzpicture}
+
 		\caption{Mass fraction field of  \ch{H2O} over the line $y = 10$}
 		\label{fig:CoFlowMF3_infiniteFinite}
 	\end{figure}

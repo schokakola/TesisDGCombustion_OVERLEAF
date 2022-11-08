@@ -1,0 +1,70 @@
+	\begin{tikzpicture}[
+	ausschnitt/.style={blue!50!red}
+	]
+	% Befehl für Teilbeschriftungen
+	\newcommand\teilbeschriftung[1]{
+		\node[below,text width=.45\textwidth] 
+		at (current axis.outer south){\subcaption{#1}};
+	}
+	% Einstellungen für Achsen
+	\pgfplotsset{
+		myaxis/.style={
+			width=0.4\textwidth,
+			height=0.3\textwidth,
+			xlabel=x,
+			ylabel=y,
+			yticklabel style={/pgf/number format/.cd,fixed,fixed zerofill,precision=2},
+		}
+	}
+	%
+	\begin{axis}[
+		myaxis,
+		%		xmin=0,
+		%		xmax=1,
+		xlabel = x,
+		ylabel = Mass fraction \ch{H2O},
+		]
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_flamesheet_y10.txt};%\addlegendentry{Flame sheet1}
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt}; %\addlegendentry{Finite Chemistry, Le=1}
+		\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction3_full_y10.txt};% \addlegendentry{Finite Chemistry,
+			\draw[ausschnitt]
+			(axis cs:0.0,0.06)coordinate(ul)--
+			(axis cs:5.5,0.06)coordinate(ur)--
+			(axis cs:5.5,0.11)coordinate(or)--
+			(axis cs:0.0,0.11) -- cycle;
+		\end{axis}
+		%	\teilbeschriftung{Beschriftung 1}
+		% Ausschnitt
+		\begin{axis}[
+			axis on top, 	   
+			xshift=.5\textwidth,	
+			myaxis,
+			xmin = 0.0,xmax=4,
+			xlabel = x,
+			ylabel = Mass fraction \ch{H2O},
+			legend pos=south west,
+			y tick label style={
+				/pgf/number format/.cd,
+				fixed,
+				fixed zerofill,
+				precision=2,
+				/tikz/.cd
+			},
+			%				x tick label style={
+				%					/pgf/number format/.cd,
+				%					fixed,
+				%					fixed zerofill,
+				%					precision=1,
+				%					/tikz/.cd
+				%				}
+			]
+			\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_flamesheet_y10.txt};\addlegendentry{Flame sheet}
+			\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt}; \addlegendentry{Finite Chemistry, $\text{Le}_k = 1$}
+			\addplot+[no markers, ]table {data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction3_full_y10.txt}; \addlegendentry{Finite Chemistry, $\text{Le}_k \neq 1$}
+		\end{axis}
+		%	\teilbeschriftung{Beschriftung 2}
+		% Verbindungslinien
+		\draw[ausschnitt]
+		(current axis.north west)--(or)
+		(current axis.south west)--(ur);
+	\end{tikzpicture}

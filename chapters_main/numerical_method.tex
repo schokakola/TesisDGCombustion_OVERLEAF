@@ -688,36 +688,8 @@ It should be noted regarding the solution of the flame sheet problem (cf. \cref{
 
 \begin{figure}[t]
     \centering
-	\begin{tikzpicture} 
-	% Einstellungen für Achsen
-	\pgfplotsset{
-		myaxis/.style={
-			width=0.4\textwidth,
-			height=0.3\textwidth,
-			xlabel=x,
-			ylabel=y,
-			yticklabel style={/pgf/number format/.cd,fixed,fixed zerofill,precision=1},
-		}
-	}
-	%
-	\begin{axis}[
-		myaxis,
-		xmin=0,
-		xmax=1,
-		xlabel = z,
-		ylabel = H,
-		legend style={at={(0.9,0.12)},anchor=south east,},
-		]
-%		\addplot+[no markers, ]table {data/smoothing/Smooth0.001.txt}; \addlegendentry{No smoothing}
-		\addplot+ [no markers, ]table {data/smoothing/Smooth10.txt}; \addlegendentry{$\sigma$=0.1}
-		\addplot+[no markers, ]table {data/smoothing/Smooth12.5.txt}; \addlegendentry{$\sigma$=0.08}
-		\addplot+[no markers, ]table {data/smoothing/Smooth20.txt}; \addlegendentry{$\sigma$=0.05}
-		\addplot+[no markers, ]table {data/smoothing/Smooth50.txt}; \addlegendentry{$\sigma$=0.02}
-		\addplot+[no markers, ]table {data/smoothing/Smooth100.txt}; \addlegendentry{$\sigma$=0.01}
-%		\addplot+[no markers, ]table {data/smoothing/Smooth1000.txt}; \addlegendentry{$\sigma$=0.001}	 
-	\end{axis} 
-\end{tikzpicture}
-\caption{Smoothing function for different $\sigma$ and $z_{\text{st}}$}
+	\inputtikz{SmoothingFunc}
+	\caption{Smoothing function for different $\sigma$ and $z_{\text{st}}$}\label{fig:SmoothingFunc}
 \end{figure}
 
 This function is useful for creating a smooth transition between two functions, since it returns values close to 0 for $z \ll z_{st}$ and values close to 1 for $z \gg z_{st}$. The sharpness of the transition at the point $z = z_{st}$ is dictated by the parameter $\sigma$. In \cref{fig:smoothings} the effect of the smoothing factor $\sigma$ on calculations of a flame in a counter-flow configuration are shown. It can be clearly observed how for increasing $\sigma$ the solution becomes smoother. Using \cref{eq:regularization_MF} the temperature and mass fraction fields can be written as

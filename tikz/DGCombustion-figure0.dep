@@ -1,5 +1,0 @@
-tikz/DGCombustion-figure0.pdf: data/smoothing/Smooth10.txt
-tikz/DGCombustion-figure0.pdf: data/smoothing/Smooth12.5.txt
-tikz/DGCombustion-figure0.pdf: data/smoothing/Smooth20.txt
-tikz/DGCombustion-figure0.pdf: data/smoothing/Smooth50.txt
-tikz/DGCombustion-figure0.pdf: data/smoothing/Smooth100.txt

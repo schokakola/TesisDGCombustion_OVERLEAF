@@ -704,19 +704,17 @@ This function is useful for creating a smooth transition between two functions, 
 \end{subequations}
 The use of this regularized form of the equations results in practice on a spreading of the flame front, which eases the numerical calculation \citep{braackAdaptiveFiniteElement1997}.
 
+One question one could certainly ask is under what flame conditions the infinite rection-rate solution (also called flame-sheet solution in the following) effectively is a good initial estimate for Newton's algorithm.  Obviously for systems that respect the assumptions done for the flame-sheet the obtained solution will be very close to the finite-rate solution (see \cref{fig:MixtureFraction_finiteRateComparison}). 
 
-One question one could certainly ask is under what flame conditions is the infinite rection-rate solution (also called flame-sheet solution in the following) effectively a good initial estimate for Newton's algorithm.  Recall that for the derivation of the 
-
-Although for the solution of the infinite reaction rate system the mixture heat capacity has been assumed to be constant, it remains an adequate estimate for the finite reaction-rate problem, where the heat capacity is a function of temperature and local concentration. In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with non-unity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method. 
-
-One problem that arises when using the flame sheet estimate is the selection of a suitable $c_p$, since the flame temperature - and therefore all other solution fields - are highly dependent on the selection of the heat capacity. \cite{xuApplicationPrimitiveVariable1993} suggests estimating it simply on the basis of experimental measurements, or also by selecting some representative value.
-
-It should also be noted that cref{eq:heatReleaseOneStep} yields unphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep} (we use $\phi = 1.2$). In practice however, this should not have a significant effect, because the unphysical values of $\hat Q$ appear at zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. Nevertheless, setting an upper bound for $\phi$ is helpful to avoid possible numerical instabilities.
+The assumption of an infinitely fast chemical reaction implies that the time scales associated with the chemical reaction are infinitely smaller than the flow scales, or in other words, $\text{Da} \to \infty$. For this reason, the flame sheet solution is expected to give a similar solution for cases close to equilibrium (where the Damköhler number is large). On the other hand, in cases that are far from equilibrium, as, for example, in the case of a flame in conditions close to extinction, it is expected that the flame sheet solution will depart considerably from the solution with a finite reaction rate.
 
 
 
+It should be noted that within the derivation of the equations for the flame sheet it is only assumed that the heat capacity is the same for all components ,$c_{kp} = c_p$, but it is still possible to consider a dependence on temperature. However, this introduces a difficulty, since the evaluation of the temperature with \cref{eq:BS-YF} requires $c_p$, which according to \cref{eq:nondim_cpmixture}, depends in turn on the temperature. Solving the system of equations required to obtain $c_p$ and $T$ is very expensive, since it would require solving it every time the temperature must be evaluated -in particular for the evaluation of the density $\rho$ and transport parameters $\mu$ and $\rho D$-.  This problem can be solved by simply assuming a constant representative value of $c_p$. 
 
-% Hablar sobre:
+The problem that now arises is the selection of a suitable $c_p$. In the work by \cite{xuApplicationPrimitiveVariable1993} it is suggested to estimate it simply on the basis of experimental measurements, or also by selecting some representative value, such as $c_p$ evaluated at the adiabatic temperature and stoichiometric conditions. In particular, in this work the value $\hat c_p = \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$ was adequate for all calculations. This constant value of the heat capacity proved to be an adequate estimate for finite-rate simulations, even for cases with a nonconstant heat capacity.
+
+ In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with non-unity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method. 
 
 
 
@@ -732,8 +730,6 @@ It should also be noted that cref{eq:heatReleaseOneStep} yields unphysical value
 	\end{center}%
 \end{figure}%
 
-% Extracted from here https://www.frontiersin.org/articles/10.3389/fmech.2019.00072/full
-%Damköhler number is a non-dimensionalized number indicative of time available for a reaction to proceed at a specified rate. As Damköhler number tends to ∞, τm must be very large and/or τc very small, indicating that the system must have reached an equilibrium state with a very fast reaction occurring in a long flow timespan. Conversely, a null Damköhler number describes a system with a very short residence time and comparatively long reaction time; the system is chemically frozen. In counterflow non-premixed systems, the flow may be characterized by the strain rate, A, a parameter describing the velocity gradient between the counterflowing streams. Systems with high rates of strain have very low associated reaction zone residence times, making them analogous to low Damköhler number systems. Low rates of strain allow for relatively long residence times allowing reactions to proceed, often to completion. Low strain rate counterflowing systems have a high Damköhler number.
 
 \begin{figure}
 	\centering

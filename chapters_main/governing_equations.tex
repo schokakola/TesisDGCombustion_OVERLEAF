@@ -193,6 +193,9 @@ The activation energy and molar heat release depend on $\phi$ as
 \end{equation}
 
 The parameter $\alpha$ is a constant that depends on the hydrocarbon being considered. In particular $\alpha = 0.21$ for the combustion of methane.
+
+
+It should also be noted that \cref{eq:heatReleaseOneStep} yields unphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep}. In practice however, this should not have a significant effect because the nonphysical values of $\hat Q$ appear in zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. However, setting an upper bound for $\phi$ is helpful in avoiding possible numerical instabilities.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -287,7 +290,7 @@ and the non-dimensional viscosity as
 As mentioned before, the model for the transport parameters can be simplified by assuming constant values for the Prandtl and Lewis numbers. \citep{smokeFormulationPremixedNonpremixed1991} and we can write $\mu(T) = k/c_p(T) = \rho D_k(T)$.
 \section{The flame sheet approximation} \label{sec:FlameSheet}
 Here we introduce the concept of the flame sheet approximation, which is used in our solution algorithm for solving the finite reaction rate system given by \cref{eq:NS_Conti,eq:NS_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}. We follow the ideas proposed in the work from \cite{keyesFlameSheetStarting1987}.
-Assuming that all species have the same constant heat capacity $c_p$ and mass diffusion coefficient $D_k=D$, that the Lewis number is unity for all species, and that combustion can be described by a single-step chemical reaction, it is possible to obtain an equation for a scalar without source terms, taking a linear combination of the energy \cref{eq:LowMachEnergy} and mass fraction \cref{eq:LowMachMassBalance}. A commonly used scalar is the mixture fraction $z$, which per definition is equal to unity in the fuel feed stream, and equal to zero in the oxidizer feed stream. Thus, the system of \cref{eq:NS_Conti,eq:NS_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance} can be simplified to solving the low-Mach Navier-Stokes equations together with an equation for the passive scalar $z$:
+Assuming that all species have the same  heat capacity $c_{p,k} = c_p$ and mass diffusion coefficient $D_k=D$, that the Lewis number is unity for all species, and that combustion can be described by a single-step chemical reaction, it is possible to obtain an equation for a scalar without source terms, taking a linear combination of the energy \cref{eq:LowMachEnergy} and mass fraction \cref{eq:LowMachMassBalance}. A commonly used scalar is the mixture fraction $z$, which per definition is equal to unity in the fuel feed stream, and equal to zero in the oxidizer feed stream. Thus, the system of \cref{eq:NS_Conti,eq:NS_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance} can be simplified to solving the low-Mach Navier-Stokes equations together with an equation for the passive scalar $z$:
 \begin{subequations}
 	\begin{align}
 		\pfrac{\rho}{t}+	\nabla \cdot (\rho \vec{u})                          & = 0, \label{eq:MixtFracConti2}                                                                                                                                                                    \\
@@ -338,10 +341,9 @@ and finally, the mass fraction field of product species $P$ is:
 		Y_F^0\frac{W_P\nu_P}{W_F\nu_F}z     & \text{if} \quad z < z_{st}
 	\end{dcases}
 \end{equation}
+Once the mixture fraction field $z$ is obtained, the temperature and mass fraction fields are uniquely defined by \cref{eq:BS-T,eq:BS-YF,eq:BS-YO,eq:BS-YP}, which are used to evaluate the density and the transport properties. 
 
-Once the mixture fraction field $z$ is obtained, the temperature and mass fraction fields are uniquely defined by \cref{eq:BS-T,eq:BS-YF,eq:BS-YO,eq:BS-YP}, which are used to evaluate the density and the transport properties. This coupling between variables and the associated nonlinear system leads to the need for an iterative solution scheme.
-
-The main idea of introducing this additional system (\cref{eq:MixtFracConti2,eq:MixtFracMom,eq:MixtFracMF}) is to find an approximate solution to the system where a finite reaction-rate is used (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}). In \cref{fig:MixtureFraction_finiteRateComparison} temperature and fuel mass fraction fields across the center-line of a counterflow flame configuration is shown. Clearly, both solutions are very similar, differing only in the area near the flame. However, this similarity is only valid under the assumptions made to derive \cref{eq:MixtFracMF}. In the case that the Lewis number is not equal to one, or that the heat capacities are not equal for each species, the finite-rate solution will differ slightly from that obtained with the infinite-reaction rate.
+The main idea of introducing system of equations presented in this section is to find an adequate initial estimate to find a solution to the system with finte finite reaction-rate  (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}). Under certain conditions, the approximation is indeed very good. In \cref{fig:MixtureFraction_finiteRateComparison} temperature and fuel mass fraction fields obtained with infinite and finite reaction rate across the center-line of a counterflow flame configuration is shown. Clearly, both solutions are very similar, differing only in the area near the flame. However, this similarity is only valid under the assumptions made to derive \cref{eq:MixtFracMF}. In the case that the Lewis number is not equal to one, or that the heat capacities are not equal for each species, the finite-rate solution will differ slightly from that obtained with the infinite-reaction rate.
 \newpage
 \begin{figure}[tb]
 	\pgfplotsset{

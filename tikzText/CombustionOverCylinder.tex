@@ -1,0 +1,142 @@
+\begin{tikzpicture}
+	\begin{axis}[
+		hide axis,
+		scale only axis,
+		%height=0pt,
+		%width=0pt,
+%		colormap/jet,
+		colorbar horizontal,
+		point meta min=0,
+		point meta max=30,
+		colormap name=turbo,
+		point meta max= 6.05,%6.73,
+		point meta min= 1,			
+		colorbar style={
+			width=11.156cm,
+%			xtick={0,5,...,30},
+			ylabel style={},
+			xticklabel pos=upper,
+			at={(0.252,0.68)},anchor=north west,               
+%			title={Symbol4},
+			title style={xshift=0cm} 
+		}
+		]
+		\addplot[draw=none] coordinates {(0,0)};
+	\end{axis}
+\end{tikzpicture}
+	\subcaptionbox{t=100 }{
+	\begin{tikzpicture}
+		\begin{axis}[
+			width=0.475\textwidth,
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			xmin=0,
+			xmax=3000,
+			ymin=0,
+			ymax=1581,
+			ticks=none,
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=0,	xmax=3000,	ymin=0,	ymax=1581,
+			] {../plots/SquareCylComb/VariableDensity/t100_temperature.png};
+		\end{axis}		
+	\end{tikzpicture}
+	\begin{tikzpicture}
+		\begin{axis}[
+			width=0.475\textwidth,
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			xmin=0,
+			xmax=3000,
+			ymin=0,
+			ymax=1581,
+			ticks=none,
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=0,	xmax=3000,	ymin=0,	ymax=1581,
+			] {../plots/SquareCylComb/VariableDensity/t100_mesh.png};
+		\end{axis}		
+	\end{tikzpicture}
+}
+	\par\bigskip%
+\subcaptionbox{t=300}{
+	\begin{tikzpicture}
+		\begin{axis}[
+			width=0.475\textwidth,
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			xmin=0,
+			xmax=3000,
+			ymin=0,
+			ymax=1581,
+			ticks=none,
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=0,	xmax=3000,	ymin=0,	ymax=1581,
+			] {../plots/SquareCylComb/VariableDensity/t300_temperature.png};
+		\end{axis}		
+	\end{tikzpicture}
+	\begin{tikzpicture}
+		\begin{axis}[
+			width=0.475\textwidth,
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			xmin=0,
+			xmax=3000,
+			ymin=0,
+			ymax=1581,
+			ticks=none,
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=0,	xmax=3000,	ymin=0,	ymax=1581,
+			] {../plots/SquareCylComb/VariableDensity/t300_mesh.png};
+		\end{axis}		
+	\end{tikzpicture}
+}
+	\par\bigskip%
+\subcaptionbox{t=800 }{
+	\begin{tikzpicture}
+		\begin{axis}[
+			width=0.475\textwidth,
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			xmin=0,
+			xmax=3000,
+			ymin=0,
+			ymax=1581,
+			ticks=none,
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=0,	xmax=3000,	ymin=0,	ymax=1581,
+			] {../plots/SquareCylComb/VariableDensity/t800_temperature.png};
+		\end{axis}		
+	\end{tikzpicture}
+	\begin{tikzpicture}
+		\begin{axis}[
+			width=0.475\textwidth,
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			xmin=0,
+			xmax=3000,
+			ymin=0,
+			ymax=1581,
+			ticks=none,
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=0,	xmax=3000,	ymin=0,	ymax=1581,
+			] {../plots/SquareCylComb/VariableDensity/t800_mesh.png};
+		\end{axis}		
+	\end{tikzpicture}
+}

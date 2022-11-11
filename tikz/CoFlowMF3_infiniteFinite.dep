@@ -1,0 +1,6 @@
+tikz/CoFlowMF3_infiniteFinite.pdf: data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_flamesheet_y10.txt
+tikz/CoFlowMF3_infiniteFinite.pdf: data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt
+tikz/CoFlowMF3_infiniteFinite.pdf: data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction3_full_y10.txt
+tikz/CoFlowMF3_infiniteFinite.pdf: data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_flamesheet_y10.txt
+tikz/CoFlowMF3_infiniteFinite.pdf: data/CoFlowFS_FullComparison/UnityLewis/MassFraction3_full_y10.txt
+tikz/CoFlowMF3_infiniteFinite.pdf: data/CoFlowFS_FullComparison/NoUnityLewis/MassFraction3_full_y10.txt

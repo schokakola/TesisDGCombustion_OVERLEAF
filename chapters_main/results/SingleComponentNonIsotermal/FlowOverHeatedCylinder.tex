@@ -8,7 +8,7 @@ THis is done by calculating the Strouhal number, average drag and lift coefficie
 	\begin{center}
 		\def\svgwidth{0.88\textwidth}
 		\import{./plots/}{HeatedCylinderGeom.pdf_tex}
-		\caption{Schematic representation of the heated circular cylinder.}
+		\caption{Schematic representation of the heated circular cylinder. Figure adapted from \citep{miaoHighOrderSimulationLowMachFlows2022}} 
 		\label{fig:CircularCylinderGeom}%
 	\end{center}%
 \end{figure}%
@@ -76,7 +76,9 @@ $F_L$ and $F_D$ are the lift and drag force respectively, $f$ is the vortex shed
 The isothermal case results are compared with the work of \cite{sharmaHEATFLUIDFLOW2004}. They reported results for the case $\Reynolds = 100$ and $T_h = T_\infty$. The Strouhal number and average drag coefficient calculated with the XNSEC-solver are $\text{St} = 0.1639$ and $C_{D,\textbf{avg}} = 1.3103$, while the reference values $\text{St} = 0.164$ and $C_{D,\textbf{avg}} = 1.3183$, which means a error of less than a 0.6\% on both quantities. Its worth noting that preliminar calculations with a implicit Euler scheme for the discretization of the temporal terms didnt cause the vortex shedding phenomenom to appear, making necesary a BDF-3 scheme.
 \subsubsection{Non-isothermal case.}
 A comparison of the calculation results for the non-isothermal case was performed based on the results reported in \cite{shiHeatingEffectSteady2004}, \cite{wangRelationshipEffectiveReynolds2000} and \cite{henninkLowMachNumberFlow2022}.
-The temporal evolution of the characteristic quantities $C_D$, $C_L$ and Nu is shown in \cref{fig:HeatedCylinderResults}. The results agree very good with the references. The average Nusselt number is  $\text{Nu} = 3.8434$, while the reference value from \cite{henninkLowMachNumberFlow2022} is $\text{Nu} = 3.804$, which corresponds to a difference of 1.04\%. The Strouhal number is $\text{St} = 0.1538$ and the references report values of $\text{St} = 0.152$ and $\text{St} = 0.1536$, a difference of approximately 1\%. It is possible then to conclude that the XNSEC-solver allows to simulate adequately unsteady non-isothermal flows, where the fluid properties do present a scalar dependence (in this case, on the temperature). It is important to note that the temperature variation in this test-case causes only a moderate variation in the density. As will be seen later, the temporal term appearing in the continuity equation is problematic in the case of larger density differences \citep{knikkerComparativeStudyHighorder2011}, as it is a cause of numerical instabilities.
+The temporal evolution of the characteristic quantities $C_D$, $C_L$ and Nu is shown in \cref{fig:HeatedCylinderResults}. The results agree very good with the references. The average Nusselt number is  $\text{Nu} = 3.8434$, while the reference value from \cite{henninkLowMachNumberFlow2022} is $\text{Nu} = 3.804$, which corresponds to a difference of 1.04\%. The Strouhal number is $\text{St} = 0.1538$ and the references report values of $\text{St} = 0.152$ and $\text{St} = 0.1536$, a difference of approximately 1\%. It is possible then to conclude that the XNSEC-solver allows to simulate adequately unsteady non-isothermal flows, where the fluid properties do present a scalar dependence (in this case, on the temperature). 
+
+It is worth noting that in this test-case the temperature changes causes only a moderate variation in the density. As will be seen later, the temporal term appearing in the continuity equation, as implemented in the present solver, is problematic in the case of larger density differences \citep{knikkerComparativeStudyHighorder2011}, as it is a cause of numerical instabilities.
 
 %TODO mencionarlo más adelante
 

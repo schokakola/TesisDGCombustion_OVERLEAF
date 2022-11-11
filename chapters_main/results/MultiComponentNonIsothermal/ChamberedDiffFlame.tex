@@ -1,18 +1,9 @@
-
 \subsection{Chambered diffusion flame}\label{ss:UDF}
-\begin{figure}[b]
-	\begin{center}
-		\def\svgwidth{0.4\textwidth}
-		\import{./plots/}{UnstrainedFlameConfig.pdf_tex}
-		\caption{Schematic representation of the chambered diffusion flame configuration. }
-		\label{fig:chamberedDifFlame}
-	\end{center}
-\end{figure}
 In this chapter a h-convergence study for a quasi-one-dimensional configuration is shown. This is done by using a planar unstrained diffusion flame in the so-called chambered diffusion flame. This configuration has served as a model for many theoretical studies related to diffusion flames (\cite{matalonEffectThermalExpansion2010,rameauNumericalBifurcationChambered1985,matalonDiffusionFlamesChamber1980}). 
 
 A sketch of the configuration can be seen in \cref{fig:chamberedDifFlame}. Fuel is injected at a constant rate into the bottom of a small insulated chamber, while oxidant diffuses into the system against the direction of flow. Constant conditions at the outlet of the chamber are achieved in an experimental setting by a rapid renewal of the flow of the oxidant. Under these conditions, an unstrained planar flame is formed.
 
-The fuel inlet into the chamber is modeled with a constant velocity inlet boundary condition \cref{eq:bc_d}, while the flow outlet at the top is considered an outlet as given by \cref{eq:bc_OD}. Since the interest is in the flame far away from the containing walls, it is sufficient to set the remaining boundary conditions as periodic boundaries. This effectively transforms the problem into a pseudo-two-dimensional configuration.
+The fuel inlet into the chamber is modeled with a constant velocity inlet boundary condition \cref{eq:bc_d}, while the flow outlet at the top is considered an outlet as given by \cref{eq:bc_OD}. Since the interest is in the flame far away from the container walls, it is sufficient to set the remaining boundary conditions as periodic boundaries. This effectively transforms the problem into a pseudo-two-dimensional configuration.
 
 \begin{figure}[t!]
 	\centering
@@ -21,8 +12,16 @@ The fuel inlet into the chamber is modeled with a constant velocity inlet bounda
 	\caption{Convergence study for the chambered diffusion flame configuration.}
 	\label{ConvergenceDiffFlame}
 \end{figure}
-The 
+The inlet velocity of the fuel jet is set to $\SI{2.5}{\centi\meter \per \second}$ and its mass composition is $Y^0_{\ch{CH4}} = 0.2$ and $Y^0_{\ch{N2}} = 0.8$ while air has a composition $Y^0_{\ch{O2}} = 0.23$ and $Y^0_{\ch{N2}} = 0.77$. The temperature of the fuel and air feed streams is $\SI{300}{\kelvin}$. The length of the system $L$ is equal to $\SI{0.015}{\meter}$. The Reynolds number is $\Reynolds = 2$
 
-The inlet velocity of the fuel jet is set to $\SI{2.5}{\centi\meter \per \second}$ and its mass composition is $Y^0_{\ch{CH4}} = 0.2$ and $Y^0_{\ch{N2}} = 0.8$ while air has a composition $Y^0_{\ch{O2}} = 0.23$ and $Y^0_{\ch{N2}} = 0.77$. The temperature of the fuel and air feed streams is $\SI{300}{\kelvin}$. The length of the system $L$ is equal to $\SI{0.015}{\meter}$.
+For this configuration, a $h$ convergence study is conducted, where uniform Cartesian meshes with $5\times2^6$, $5\times2^7$, $5\times2^8$,  $5\times2^9$ and $5\times2^{10}$  cells are used. The polynomial degrees are varied from one to four for velocity, temperature and mass fractions, and from 0 to 3 for pressure.  Errors are calculated using the finest mesh as a reference solution.  
 
-For this configuration, a $h$ convergence study is conducted, where uniform Cartesian meshes with $5\times2^6$, $5\times2^7$, $5\times2^8$,  $5\times2^9$ and $5\times2^{10}$  cells are used. The polynomial degrees are varied from one to four for velocity, temperature and mass fractions, and from 0 to 3 for pressure.  Errors are calculated using the finest mesh as a reference solution.  The results are shown in \cref{ConvergenceDiffFlame} for variables $u_x$, $T$, $Y_{\ch{CH4}}$ and $p$. The convergence results for other variables are similar and not shown here. We observe the expected slope increase with increasing polynomial degrees. For low polynomial degrees the orders of convergence are very close to the theoretical values. However for higher polynomial degrees  a slight deterioration of the convergence rate is observed.
+The results are shown in \cref{ConvergenceDiffFlame} for variables $u$, $T$, $Y_{\ch{CH4}}$ and $p$. The convergence results for other variables are similar and not shown here. The expected convergence rates characteristic from the DG-method are observed. For low polynomial degrees the orders of convergence are very close to the theoretical values. However for higher polynomial degrees  a slight deterioration of the convergence rate is observed.
+\begin{figure}[h]
+	\begin{center}
+		\def\svgwidth{0.4\textwidth}
+		\import{./plots/}{UnstrainedFlameConfig.pdf_tex}
+		\caption{Schematic representation of the chambered diffusion flame configuration. }
+		\label{fig:chamberedDifFlame}
+	\end{center}
+\end{figure}

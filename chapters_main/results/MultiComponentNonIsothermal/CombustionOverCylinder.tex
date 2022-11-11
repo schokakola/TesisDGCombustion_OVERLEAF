@@ -1,0 +1,59 @@
+\FloatBarrier
+As a last testcase of the XNSEC solver, a configuration very similar to the one previously shown for the flow over a cylinder was simulated, but now extending the case to a system where combustion exists. The simulation is considered non-stationary. Unlike \cref{ssec:FlowCircCyl}, here the flow over a square cylinder is considered, from which fuel is expelled at a constant rate and homogeneously in all directions. A constant flow of air in the horizontal direction comes in contact with the fuel forming a flame.  A sketch of the configuration is shown in Figure \cref{fig:CombustionSquareCylinder}. The objective of this testcase is to test the ability of the XNSEC-code to simulate non-stationary flows with combustion present. 
+\begin{figure}[h]
+	\begin{center}
+		\def\svgwidth{0.8\textwidth}
+		\import{./plots/}{CombustionSquareCylinder.pdf_tex}
+		\caption{Temperature field and mesh of the unsteady combustion over a square cylinder.}
+		\label{fig:CombustionSquareCylinder}
+	\end{center}
+\end{figure}
+
+
+\subsubsection{Flow over a heated square cylinder}
+In the work from \cite{miaoHighOrderSimulationLowMachFlows2022} the XNSEC-solver was used for calculating the flow around a heated square cylinder. The results were compared with the data published by \cite{sharmaHEATFLUIDFLOW2004}. Simulations for the testcase with Reynolds numbers ranging from $\Reynolds = 5$ to $\Reynolds = 40$ where calculated. In this case the square cylinder is modeled by no-slip walls with $(u,v) = (0,0)$ and the incoming flow field (air inlet in \cref{fig:CombustionSquareCylinder}) is $(u,v) = (1,0)$. The fluid considered is air. 
+\begin{figure}[h!]
+	\centering
+	\inputtikz{HeatedSquareCylinderLenghts}
+	\caption{Recirculation lengths for different Reynolds numbers.}
+	\label{fig:RecirculationLength}
+\end{figure}
+In \cref{fig:RecirculationLength} a comparison of the normalized recirculation length $L_r/B$ obtained with the XNSEC-solver and the reference is shown. The results agree very well, deviating slightly at higher Reynolds numbers.
+
+\subsubsection{Unsteady combustion over a square cylinder}
+
+The last test of the XNSEC-solver intended to calculate a unsteady case with combustion present.  As will be explained later, this was not possible with the current solver implementation, and only some simplified cases will be shown. Nevertheless, they allowed to 
+First, an artifitial configuration where 
+
+
+In order to make the problem more challenging
+
+
+Air enters with an uniform velocity to the system $(u,v) =(1,0)$, and an uniform temperature $T = 1$. Its composition is $Y^O_{\ch{O2}} = 0.23$ and $Y^O_{\ch{N2}} = 0.77$. The fuel inlet enters with a velocity field $(u,v) = (0.2x/B,0.2y/B)$, has a uniform temperature $T = 1$ and composition $Y^F_{\ch{CH4}} = 0.2$ and $Y^F_{\ch{N2}} = 0.8$. 
+The initial conditions are given by 
+Las condiciones iniciales utilizadas son similares a las del cilindro en seccion \cref{ssec:FlowCircCyl}. Again, an initial vortex is Un vortex es introduced in the 
+\begin{subequations} 
+	\begin{align}
+		&u(t=0) = 1 + u^{\text{vortex}},  \\
+		&v(t=0) = 0 + v^{\text{vortex}},  \\
+		&T(t=0) = 1,\\
+		&p(t=0) = 0.
+	\end{align}
+\end{subequations}
+where the vortices $u^{\text{vortex}}$ and $u^{\text{vortex}}$
+The time-dependant simulation of a combustion phenomenon proved to be very challenging and the temporal discretization described in \cref{ssec:TemporalDiscretization} did not allowed to obtain solutions of this problem. Es sabido que la inclusión del término $\partial \rho /\partial t$ de la ecuacion de continuidad en el termino fuente es una fuente de inestabilidad numérica. En \cite{nicoudNumericalStudyChannel} se reporta que para ratios mayores a tres la obtención de soluciones se vuelve dificultosa. Ya se demostró anteriormente en \cref{ssec:FlowCircCyl} y \cref{ssec:MultipleCellConv} que el XNSEC-solver fue capaz de calcular flujos unsteady non-isothermic. Sin embargo, aquellos test-cases presentaban density ratios moderados, siendo el mas grande de ellos 1.5. Por otro lado para un proceso de combustión como los presentados acá los ratios de temperatura -y por lo tanto de densidad- son mucho más altos, siendo para casos típicos de combustion incluso mayores que 6. 
+ 
+\label{ssec:MultipleCellConv}
+\begin{figure}[p]
+	\centering
+	\inputtikz{CombustionOverCylinder_ConstantDensity}
+	\caption{Temperature field and mesh calculated with the Burke-Schuhmann solution at different times, assuming a constant density.} \label{fig:CoFlowFlameFig1}
+\end{figure}
+
+
+\begin{figure}[p]
+	\centering
+	\inputtikz{CombustionOverCylinder}
+	\caption{Temperature field calculated with the Burke-Schuhmann solution at different times.} \label{fig:CoFlowFlameFig1}
+\end{figure}
+

@@ -1,0 +1,2 @@
+tikz/HeatedSquareCylinderLenghts.pdf: data/HeatedSquareCylinder/xnsec.txt
+tikz/HeatedSquareCylinderLenghts.pdf: data/HeatedSquareCylinder/sharma.txt

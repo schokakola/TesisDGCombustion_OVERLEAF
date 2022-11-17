@@ -1,4 +1,5 @@
 \renewcommand\vec{\mathbf}
+%\newcommand{\vectr}[1]{\boldsymbol{\mathbf{#1}}}
 
 \DeclareMathOperator\supp{supp}
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -182,9 +183,9 @@
 \newcommand{\trace}[1]{{\textrm{tr}}{#1}}
 \newcommand{\cond}[1]{\textrm{cond}{\left(#1\right)}}
 \renewcommand{\d}[1]{~\textrm{d}{#1}}
-%\newcommand{\num}[1]{#1_{\gls{grdSz}}}
-\newcommand{\out}[1]{#1^{\textrm{out}}}
-\newcommand{\inn}[1]{#1^{\textrm{in}}}
+\newcommand{\nuM}[1]{#1_{\gls{grdSz}}}
+\newcommand{\out}[1]{#1^{{-}}}
+\newcommand{\inn}[1]{#1^{{+}}}
 \newcommand{\diri}[1]{{#1}_{\textrm{D}}}
 \newcommand{\neum}[1]{{#1}_{\textrm{N}}}
 \newcommand{\wall}[1]{{#1}_{\textrm{wall}}}
@@ -199,3 +200,7 @@
 \newcommand{\basisXvec}[1]{{\vectr{\gls{basis}}}_{#1}^{\gls{cut}}}
 \newcommand{\vap}[1]{{#1}_{\textrm{v}}}
 \newcommand{\liq}[1]{{#1}_{\textrm{l}}}
+
+\newcommand{\scp}[3][]{\left( #2 , #3 \right)_{#1}}
+\newcommand{\matrixDG}[1]{\underline{\underline{#1}}}
+\newcommand{\basisDg}{\phi}

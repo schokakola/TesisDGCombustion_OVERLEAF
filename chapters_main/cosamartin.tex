@@ -1,0 +1,100 @@
+\label{sec:discretDGmethod}
+
+As an introductory example, following \textcite{hesthaven_nodal_2008}, we are considering the discretization of a general conservation law with a non-linear flux function $\gls{flux}(\gls{fprop})$ for a scalar quantity $\gls{fprop} = \gls{fprop}(\vectr{x},t)$ in $\gls{domain}$ and suitable Dirichlet boundary condition on $\gls{boundary} = \diri{\gls{boundary}}$ and a compatible initial condition $\gls{fprop}_0$. The problem statement reads
+\begin{subequations}
+	\begin{align}
+		\pDeriv{\gls{fprop}}{t} + \div{\gls{flux}(\gls{fprop})} & = 0,                        & \vectr{x} \in  \gls{domain},    \label{eq:generalConservLaw} \\
+		\gls{fprop}                                             & = \diri{\gls{fprop}},       & \vectr{x} \in \diri{\gls{boundary}},
+		\label{eq:generalConservLawBC}                                                                                                                       \\
+		\gls{fprop}(\vectr{x}, 0)                               & = \gls{fprop}_0(\vectr{x}), & \vectr{x} \in  \gls{domain}.
+		\label{eq:generalConservLawIC}
+	\end{align}
+	\label{eq:generalConservLawProblem}
+\end{subequations}
+The goal is to find an approximate solution $\gls{fprop} = \gls{fprop}(\vectr{x},t)$ to $\gls{fprop}$ that fulfils the problem \eqref{eq:generalConservLawProblem}. Therefore, the problem domain $\gls{domain}$ is discretized by a numerical mesh $\gls{grid}$ and for each numerical cell $\gls{cell}_j$ we introduce the approximation by a local polynomial basis $\vectr{\gls{basis}}_j = (\gls{basis}_{j,l})_{l=1,...,\gls{NoDOFloc}} \in \gls{brknPspacek}(\{\gls{cell}_j\})$ with a cell-local support $\textrm{supp}(\vectr{\gls{basis}}_j) = \overline{\gls{cell}}_j$ as
+\begin{equation}
+	\gls{fprop}_j(\vectr{x},t) = \sum_{l=1}^{N_k} \tilde{\gls{fprop}}_{j,l}(t) \gls{basis}_{j,l}(\vectr{x}) = \tilde{\vectr{\gls{fprop}}}_{j}(t) \cdot \vectr{\gls{basis}}_{j}(\vectr{x}), \quad \vectr{x} \in \gls{cell}_j,
+	\label{eq:localApprox}
+\end{equation}
+where the coefficients $\tilde{\vectr{\gls{fprop}}}_{j} = (\tilde{\gls{fprop}}_{j,l})_{l=1,...,\gls{NoDOFloc}}$ denote the unknowns or degrees of freedom (DOF) of the local solution in cell $\gls{cell}_j$. In this work a modal polynomial basis is used, which fulfils the orthogonality condition
+\begin{equation}
+	\int_{\gls{cell}_j}  \gls{basis}_{j,m} \gls{basis}_{j,n} \d{V} = \delta_{mn}
+\end{equation}
+with the Kronecker delta $\delta_{mn}$. Inserting the local approximation \eqref{eq:localApprox} into the conservation law \eqref{eq:generalConservLaw} results in a cell-wise residual
+\begin{equation}
+	R_j(\vectr{x},t) = \pDeriv{{\gls{fprop}}_j}{t} + \div{\gls{flux}({\gls{fprop}}_j)}, \quad \vectr{x} \in \gls{cell}_j. %, \forall \gls{cell}_j \in \gls{grid}.
+	\label{eq:localRes}
+\end{equation}
+For a Galerkin method, the residual \eqref{eq:localRes} is minimized with respect to the same space as the ansatz functions, i.e. $\gls{brknPspacek}(\{\gls{cell}_j\})$. Thus, we demand for the test functions $\gls{testF}_{j,l} = \gls{basis}_{j,l}$ in each cell $\gls{cell}_j \in \gls{grid}$ that
+\begin{equation}
+	\int_{\gls{cell}_j} R_j \gls{testF}_{j,l} \d{V} = \int_{\gls{cell}_j}  \pDeriv{{\gls{fprop}}_j}{t} \gls{basis}_{j,l} + \div{\gls{flux}({\gls{fprop}}_j)} \gls{basis}_{j,l} \d{V} \stackrel{!}{=} 0, \quad \forall \vectr{\gls{basis}}_{j,l}.
+	\label{eq:DGminimization}
+\end{equation}
+So, for each cell we end up with a linear system of $\gls{NoDOFloc}$ equations. However so far, no approximate global solution $\gls{fprop} \in \gls{domain}$ can be regained from the minimization in \eqref{eq:DGminimization}. The global solution is assumed to be a piecewise polynomial approximation
+\begin{equation}
+	\gls{fprop}(\vectr{x},t) \approx  \gls{fprop}(\vectr{x},t) = \bigoplus\limits_{j=1}^{J} {\gls{fprop}}_j(\vectr{x},t) = \sum_{j=1}^{J} \sum_{l=1}^{\gls{NoDOFloc}} \tilde{\gls{fprop}}_{j,l}(t) \gls{basis}_{j,l}(\vectr{x}) \in \gls{brknPspacek}(\gls{grid})
+	\label{eq:globalApprox}
+\end{equation}
+defined as the direct sum of the $J$ local solutions ${\gls{fprop}}_j$ in \eqref{eq:localApprox}. Here, $\tilde{\gls{fprop}}_{j,l}$, with $j={1,...,J}$ and $l={1,...,\gls{NoDOFloc}}$, denote the total DOF, with $\gls{NoDOF} = J \cdot \gls{NoDOFloc}$, of the global approximate solution $\gls{fprop}$. In order to formulate a global DG method, the spatial term on the right-hand side of equation \eqref{eq:DGminimization} is rewritten in terms of boundary edge integrals $\forall \gls{cell}_j \in \gls{grid}$ using partial integration
+\begin{equation}
+	\int_{\gls{cell}_j}  \pDeriv{{\gls{fprop}}_j}{t} \gls{basis}_{j,l} \d{V} - \int_{\gls{cell}_j} \gls{flux}({\gls{fprop}}_j) \cdot \gradH{\gls{basis}}_{j,l} \d{V} + \oint_{\partial{\gls{cell}}_j} \left( \gls{flux}({\gls{fprop}}_j) \cdot {\gls{normal}}_j \right) \gls{basis}_{j,l} \d{S} = 0, \quad \forall \gls{basis}_{j,l},
+	\label{eq:DGfluxFormulation}
+\end{equation}
+where ${\gls{normal}}_j$ represents the local outward pointing normal for cell ${\gls{cell}}_j$. Note that on the internal edges $\gls{edgeInt}$ the value of $\gls{flux}({\gls{fprop}}_j)$ is multiply defined. Therefore, a numerical flux $\gls{numflux}$ is introduced
+\begin{equation}
+	\gls{numflux}(\inn{{\gls{fprop}}_j}, \out{{\gls{fprop}}_j}, \gls{normalGam}) \approx \gls{flux}({\gls{fprop}}_j) \cdot {\gls{normal}}_j,
+\end{equation}
+that uniquely defines the resulting value of both neighbouring values, i.e. $\inn{{\gls{fprop}}_j}$ and $\out{{\gls{fprop}}_j}$ at internal edges $\gls{edgeInt}$. Summing over all cells ${\gls{cell}}_j$, the global minimization problem for $\gls{fprop}(\vectr{x},t), \vectr{x} \in \gls{domain}$ reads: Find $\gls{fprop} \in \gls{brknPspacek}(\gls{grid})$, such that $\forall \gls{testF} = \gls{basis} \in \gls{brknPspacek}(\gls{grid})$
+\begin{equation}
+	\int_{\gls{domain}}  \pDeriv{\gls{fprop}}{t} \gls{basis} \d{V} - \int_{\gls{domain}} \gls{flux}(\gls{fprop}) \cdot \gradH{\gls{basis}} \d{V} + \oint_{\gls{edge}} \gls{numflux}(\inn{\gls{fprop}}, \out{\gls{fprop}}, \gls{normalGam}) \jump{\gls{basis}} \d{S} = 0,
+	\label{eq:semiDiscWeakForm}
+\end{equation}
+where at $\gls{edgeD}$ the outer value $ \out{\gls{fprop}} = \diri{\gls{fprop}} $ is given by the Dirichlet boundary condition \eqref{eq:generalConservLawBC}. In order to fully discretize the initial boundary value problem \eqref{eq:generalConservLawProblem}, one further needs to discretize the temporal term. This issue is skipped at this point and is discussed in Section \ref{sec:temporalDiscret}. Thus, the current form of \eqref{eq:semiDiscWeakForm} is referred to as the semi-discrete weak formulation of \eqref{eq:generalConservLawProblem}.
+
+Considering the spatial discretization, the numerical flux $\gls{numflux}$ needs to satisfy certain mathematical and physical properties to ensure stability and convergence of the DG method. In this work the stability is defined in the continuous setting via the energy estimate
+\begin{equation}
+	\norm{\gls{fprop}(\vectr{x},t)}_{\gls{domain}}^2 \leq \norm{\gls{fprop}(\vectr{x},0)}_{\gls{domain}}^2, \quad \forall t \geq 0,
+	\label{eq:energyEstimate}
+\end{equation}
+where homogenous Dirichlet conditions are assumed. Thus, stability is given, if the energy  $\norm{\gls{fprop}(\vectr{x},t)}_{\gls{domain}}^2$ only decreases in the absence of an inflow.
+%A further discussion can be found in Section \ref{sec:stabilityEnergyConserv}. 
+Two properties need to be fulfilled in order to proof that the discrete problem \eqref{eq:semiDiscWeakForm} satisfies the discrete equivalent of the energy estimate in \eqref{eq:energyEstimate}. The numerical flux $\gls{numflux}$ is required to be a function that is Lipschitz continuous and monotonic, see \textcite{di_pietro_mathematical_2012} for the proof. Furthermore, it is obvious that the DG method needs to regain a unique approximate solution to the underlying problem. Thus, $\gls{numflux}$ satisfies the following consistency property
+\begin{equation}
+	\gls{numflux}(a,a,\gls{normal}) = \gls{flux}(a) \cdot \gls{normal}, \quad \forall a \in \mathbb{R}.
+	\label{eq:consistency}
+\end{equation}
+A direct consequence of \eqref{eq:consistency} is that the weak formulation \eqref{eq:semiDiscWeakForm} is directly fulfilled for $\gls{fprop} = \gls{fprop}$. Since considering a general conservation law in its conservative form, one further requires that $\gls{numflux}$ regains the global conservation property, i.e. the total amount of $\gls{fprop}$ only changes due to fluxes across the domain boundary $\gls{boundary}$, by satisfying
+\begin{equation}
+	\gls{numflux}(a,b,\gls{normal}) = -\gls{numflux}(a,b,-\gls{normal}), \quad \forall a,b \in \mathbb{R}.
+	\label{eq:conservativity}
+\end{equation}
+The specific form of a suitable numerical flux $\gls{numflux}$ is presented in Section \ref{sec:spatialDiscret}, where the spatial discretization of the two-phase flow problem is discussed.
+
+%\todo[inline]{convergence property}
+
+Note that the system \eqref{eq:semiDiscWeakForm} can be written in a shorten matrix formulation as
+\begin{equation}
+	{\gls{massM}} \deriv{\tilde{\vectr{\gls{fprop}}}}{t} + \gls{OpM}(\tilde{\vectr{\gls{fprop}}}) = \vectr{b},
+	\label{eq:discretMatrixForm}
+\end{equation}
+where the sought-after coefficients are given as the solution vector $\tilde{\vectr{\gls{fprop}}} = \{ \tilde{\gls{fprop}}_{1,1}, \tilde{\gls{fprop}}_{1,2}, \allowbreak ..., \allowbreak \tilde{\gls{fprop}}_{j,n}, \allowbreak ..., \allowbreak \tilde{\gls{fprop}}_{J,\gls{NoDOFloc}} \} \in \mathbb{R}^{\gls{NoDOF}}$. The mass matrix ${\gls{massM}} \in \mathbb{R}^{\gls{NoDOF} \times \gls{NoDOF}}$ has a block-diagonal structure with
+\begin{equation}
+	{\gls{massM}} = \left[ \begin{array}{cccc}
+		{\gls{massM}}_{1} & 0                 & \cdots & 0                 \\
+		0                 & {\gls{massM}}_{2} & \cdots & 0                 \\
+		\vdots            & \vdots            & \ddots & \vdots            \\
+		0                 & 0                 & \cdots & {\gls{massM}}_{J}
+	\end{array} \right],
+\end{equation}
+where the cell-local mass matrix ${\gls{massM}}_j$ is defined by
+\begin{equation}
+	({\gls{massM}}_j)_{m,n} = \int_{\gls{cell}_j} \gls{basis}_{j,m} \gls{basis}_{j,n} \d{V} = \int_{\gls{cell}_j} \vectr{\gls{basis}}_j \otimes \vectr{\gls{basis}}_j \d{V}.
+	\label{eq:massMatrix}
+\end{equation}
+The cell-local Operator matrix $\gls{OpM}_j$ is given by
+\begin{equation}
+	(\gls{OpM}_j)_{m,n} = - \int_{\gls{cell}_j} \gls{flux}(\tilde{{\gls{fprop}}}_{j,n} {\gls{basis}}_{j,n}) \cdot \gradH{\gls{basis}}_{j,m} \d{V} + \oint_{\partial{\gls{cell}}_j} \gls{numflux}(\tilde{{\gls{fprop}}}_{j,n}, \tilde{{\gls{fprop}}}_{j^{\ast},n},\gls{normalI}) \gls{basis}_{j,m} \d{S},
+	\label{eq:genOpMatrix}
+\end{equation}
+where $j^{\ast}$ denotes the index of a neighbouring cell to $\gls{cell}_j$. Like the mass matrix, the operator matrix exhibits a block-diagonal structure, but including secondary diagonals due to the coupling with neighbouring cells over the numerical fluxes $\gls{numflux}$. The right-hand side $\vectr{b}$ incorporates the given Dirichlet boundary condition value $\diri{\gls{fprop}}$.
+

@@ -54,7 +54,7 @@
 %	logofile=example-image, %Falls die Logo Dateien nicht vorliegen
 	instbox=true,				% Blendet Box mit FB/FG auf der Titelseite ein/aus
 	pdfa=true,
-	%	captions=oneline
+%		captions=oneline
 	numbers=noenddot,			% Kein Punkt am Ende der Section-Nummerierung (KOMA-Script)
 ]{tudapub}
 
@@ -229,7 +229,7 @@ nopostdot=true	%remove the dot at the end of glossary descriptionsfsymbo
 %Load glossary files
 \loadglsentries{chapters_others/abbreviations}
 \loadglsentries{chapters_others/symbols}
-\loadglsentries{chapters_others/SymbolsSM}
+%\loadglsentries{chapters_others/SymbolsSM}
 
 \glsaddall
 
@@ -238,10 +238,10 @@ nopostdot=true	%remove the dot at the end of glossary descriptionsfsymbo
 %%%%%%%%%
 %Todo notes
 %%%%%%%%%
-%\usepackage[
-%colorinlistoftodos,
-%textsize=footnotesize,
-%]{todonotes}
+\usepackage[
+colorinlistoftodos,
+textsize=footnotesize,
+]{todonotes}
 %\usepackage{todo}
 
 %%%%%%%%%
@@ -268,6 +268,9 @@ nopostdot=true	%remove the dot at the end of glossary descriptionsfsymbo
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
 \usetikzlibrary{spy,backgrounds}
+\makeatletter
+\renewcommand{\todo}[2][]{\tikzexternaldisable\@todo[#1]{#2}\tikzexternalenable}
+\makeatother
 % Excludes todo notes from externalize
 \usepackage{letltxmacro}
 \usepackage{layouts}			%textwidth in cm: \printinunitsof{cm}\prntlen{\textwidth}
@@ -343,11 +346,7 @@ nopostdot=true	%remove the dot at the end of glossary descriptionsfsymbo
 \captionsetup[subfigure]{skip=-5pt}
 \graphicspath{{./figures/}}
 \graphicspath{{./plots/}}
-%
-%\usetikzlibrary{external}
-%
-%\tikzexternalize
-%\tikzsetexternalprefix{figures/}
+
 %%%%
 \usetikzlibrary{external}
 \tikzexternalize[prefix=tikz/]
@@ -370,8 +369,8 @@ noabbrev
 %%%%%%%%%
 % Gkeichungsnummern, Labels, etc. anzeigen
 %%%%%%%%%
-%\usepackage[inline]{showlabels}
-%\renewcommand{\showlabelfont}{\footnotesize\ttfamily\color{magenta}}
+\usepackage[inline]{showlabels}
+\renewcommand{\showlabelfont}{\footnotesize\ttfamily\color{magenta}}
 
 %%%%%%%%%%%%%%%%%%%
 %Paketvorschläge Tabellen
@@ -481,21 +480,22 @@ noabbrev
 %Main part
 %%%%%%%%%%
 \mainmatter
-%\cleardoublepage
+\cleardoublepage
 \input{chapters_main/introduction}
 \cleardoublepage
 \input{chapters_main/governing_equations}
 \cleardoublepage
 \input{chapters_main/numerical_method}
 \cleardoublepage
-% \input{chapters_main/results}
-% \cleardoublepage
-% \input{chapters_main/conclusion}
-
+\input{chapters_main/Computational_methodology}
+\cleardoublepage
+\input{chapters_main/results}
+\cleardoublepage
+\input{chapters_main/conclusion}
 
 %TODO incluir algun tipo de introduccion similar a lo que dice en
 %TODO Mathematical Models for Thermally Coupled Low Speed Flows
-
+%TODO Como está exactamente definida la mass matrix?
 %%%%%%%%%%%%%TODOOOOOOOOOOOOOOOOOO debo establecer de forma consistente si me refiero a las coordenadas como (x,y) o (x1,x2), similarmente si la velocidad es (u,v)o (u1,u2) 
 %%%%%%%%%%%%%%%%%%% TODO: Verificar si realmente todos los indices de las mass fractions ahora están referidos como k, y el numero total como N. Hacer lo mismo con M y W para los pesos moleculares.
 %
@@ -513,6 +513,7 @@ noabbrev
 %TODO Verificar que realmente en la discretizacion de las ecuaciones tengo el Cp termino pasado al lado derecho (osea que el termino cp solo aparece en realidad en el termino fuente, porque estamos asumiento Nu constante(por eso no entra en las ecuaciones para el termino difusivo, porque ya esta incluido))
 
 %TODO debo  corregir en todos lados: En realidad para la deduccion de las ecuaciones de la mixture farction nunca se asume un cp constante. solo se asume que el cp de todos los componentes es el mismo. Las consecuencias siguen siendo las mismas, puesto que aunque °
+%TODO Introduccion: Hacer una introduccion similar a la del paper de Aldo Hennin
 
 
 %TODO Hablar de que dentro de varios casos estudiados en esta tesis, el tema de multiple solution branches se va repitiendo. (Es importante alguna cualidad del solver para poder calcular esto de forma adecuada?)

@@ -50,6 +50,11 @@ They were first derived by Rehm and Baum \parencite{rehmEquationsMotionThermally
 % En la introduccion deberia dar una motivacion de porque esto es asi y porque se creó el solver fully coupled sin SIMPLE
 %TODO \todo[inline]{what are exactly the advantages of the present solver? multigrid? Ortogonalization?} 
 
+\subsection{The \gls{BoSSS} code}
+The presented solver is embedded in the \textit{BoSSS} (Bounded Support Spectral Solver) code, which is under active development at the chair of fluid dynamics of the Technical University of Darmstadt, and is available under \href{https://github.com/FDYdarmstadt/BoSSS}{https://github.com/FDYdarmstadt/BoSSS}.
+
+\BoSSS is a general framework for the discretization of conservation laws using the DG method and uses a modal DG approach with orthonormal Legendre polynomials as basis functions. The \BoSSS code features a variety of applications in the context of computational fluid dynamics, such as a solver for multiphase flows with a sharp interface approach, \parencite{kummerExtendedDiscontinuousGalerkin2017} an incompressible Immersed Boundary Method solver for particle laden flows,\parencite{krauseIncompressibleImmersedBoundary2017} a solver for viscoelastic fluid flows,\parencite{kikkerFullyCoupledHighorder} and a solver for compressible flows, \parencite{geisenhoferDiscontinuousGalerkinImmersed2019} among others.
+
 \begin{figure}
 	\includegraphics[width=\textwidth]{BoSSS-philosophy-1.pdf}
 	\caption{Schematic representation of the estructure of the \gls{BoSSS} solver from the \gls{BoSSS} handbook \parencite{kummer2020}.}

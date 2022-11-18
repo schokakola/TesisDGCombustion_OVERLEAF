@@ -1,10 +1,7 @@
 \chapter{Computational methodology} \label{sec:CompMethodology}
+This section has the objective of introducing the computational methodology that allows the resolution of the discretized set of equations. First, the globalized Newton method is presented that allows the resolution of a nonlinear system of equations. In addition, comments on the termination criteria are given.
 
 
-Subsequently, the following section X TODO introduces the computational methodology that allows the resolution of the discretized equations. First, the globalized Newton method that allows the resolution of the nonlinear system of equations is presented. In addition, comments on the termination criteria are given.
-
-
-The presented solver is embedded in the \textit{BoSSS} (Bounded Support Spectral Solver) code, which is under development at the chair of fluid dynamics of the Technical University of Darmstadt, and is available under \href{https://github.com/FDYdarmstadt/BoSSS}{https://github.com/FDYdarmstadt/BoSSS}. \BoSSS is a general framework for the discretization of conservation laws using the DG method and uses a modal DG approach with orthonormal Legendre polynomials as basis functions. The \BoSSS code features a variety of applications in the context of computational fluid dynamics, such as a solver for multiphase flows with a sharp interface approach, \textcite{kummerExtendedDiscontinuousGalerkin2017} an incompressible Immersed Boundary Method solver for particle laden flows,\textcite{krauseIncompressibleImmersedBoundary2017} a solver for viscoelastic fluid flows,\textcite{kikkerFullyCoupledHighorder} and a solver for compressible flows, \textcite{geisenhoferDiscontinuousGalerkinImmersed2019} among others.
 
 The variational problem for the finite chemistry rate case described by \crefrange{DiscretizedConti}{DiscretizedMassFractions} and for the flame sheet problem, \crefrange{DiscretizedConti2}{DiscretizedEnergy2}, are linearised and solved using a Newton method with a Dogleg-type globalization \textcite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008}. The \textit{BoSSS} framework provides an efficient algorithm for the evaluation of the Jacobian based on perturbations of the forms presented in the last section.
 The relatively large linear system of equations for each Newton iteration is solved by means of the in \BoSSS integrated orthonormalization multigrid algorithm \textcite{kummerBoSSSPackageMultigrid2021}, which at the lowest multigrid levels makes use of the sparse direct solver PARDISO, originally developed by Schenk et al. \textcite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
@@ -14,6 +11,7 @@ from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows
 Further details on the used Newton method solver, the homotopy strategy and its implementation are given in the next sections, which are adapted from \textcite{kikkerFullyCoupledHighorder}  and are included for the sake of completeness. For information on the mentioned orthonormalization multigrid algorithm we refer the interested reader to the work of \textcite{kummerBoSSSPackageMultigrid2021}.
 
 From this point on, the solver presented in this work will be called XNSEC (e\textbf{X}tended \textbf{N}avier-\textbf{S}tokes for \textbf{C}ombustion). The term \textit{extended} refers to the framework on which the solver is built, which focuses on applications for multi-phase flows using a sharp interface approach using a level-set method. This point will be briefly discussed in the section %TODO future work chapter
+\section{Nonlinear solver}
 
 \subsection{Calculation of the Jacobian matrix}
 We start by introducing a few new elements to be able to describe the implemented Newton method.

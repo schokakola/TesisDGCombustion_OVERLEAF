@@ -1,37 +1,37 @@
 \chapter{The Discontinous Galerkin method}	\label{ch:NumericalMethods}
-This chapter aims to give an overview of the basic ideas of the DG method as well as to present the spatial and temporal discretization of the equations presented earlier. Parts of this chapter are based on the work presented at \parencite{kummerExtendedDiscontinuousGalerkin2017,kikkerFullyCoupledHighorder, smudamartinDirectNumericalSimulation2021}, in order to maintain a consistent nomenclature with previous works where the BoSSS-code is used. Firthermore, the reader interested in a more in depth description of the DG method is referred to the works of  \parencite{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012}
+This chapter aims to give an overview of the basic ideas of the DG method, as well as to present the spatial and temporal discretization of the equations presented earlier. Parts of this chapter are based on the work presented at \parencite{kummerExtendedDiscontinuousGalerkin2017,kikkerFullyCoupledHighorder, smudamartinDirectNumericalSimulation2021}, in order to maintain a consistent nomenclature with previous work where the BoSSS code is used. Additionally, the reader interested in a more in-depth description of the DG method is referred to the works of  \parencite{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012}
 
 \section{State of the art}
 
 \section{The Discontinous Galerkin method}
 
 \subsection{Definitions for the discretization} \label{ssec:SpatDiscretization}
-First some some standard definitions and notation in the context of DG methods are introduced. 
-A computational domain $\Omega \subset \mathbb{R}^2$ with a polygonal and simply connected boundary $\partial \Omega$ is defined. The numerical grid is then formed by the set of non-overlapping elements $\gls{grid} = \{K_1, ..., K_J\}$ with a characteristic mesh size $h$, so that $\Omega$ is the union of all elements, i.e. $\Omega = \bigcup_{i=1}^J K_i$. 
+First some standard definitions and notation are introduced in the context of DG methods. 
+A computational domain $\Omega \subset \mathbb{R}^2$ with a polygonal and simply connected boundary $\partial \Omega$ is defined. The numerical grid is then formed by the set of nonoverlapping elements $\gls{grid} = \{K_1, ..., K_J\}$ with a characteristic mesh size $h$, so that $\Omega$ is the union of all elements, i.e. $\Omega = \bigcup_{i=1}^J K_i$. 
 
-Define  $\Gamma = \bigcup_j \partial K_j$ as the union of all edges (internal edges and boundary edges) and $\Gamma_I = \Gamma \setminus \partial \Omega$ as the union of all interior edges.
+Define $\Gamma = \bigcup_j \partial K_j$ as the union of all edges (internal edges and boundary edges) and $\Gamma_I = \Gamma \setminus \partial \Omega$ as the union of all interior edges.
 For each edge of $\Gamma$ a normal field $\myvector{n}_{\Gamma}$ is defined. Particularly on $\partial \Omega$ is defined as an outer normal and $\vec{n}_\Gamma = \vec{n}_{\partial\Omega}$.
-For each field ${u} \in C^0\left(\Omega\setminus \Gamma_I\right)$, ${u}^-$  and  ${u}^+$ is defined, which describe the values of the variables in the interior and exterior sides of the cell:
+For each field ${u} \in C^0\left(\Omega\setminus \Gamma_I\right)$, ${u}^-$  and ${u}^+$ is defined, which describe the values of the variables on the interior and exterior sides of the cell:
 \begin{align}
 	{u}^- & = \lim_{\xi \searrow 0} {u}\left(\myvector{x} - \xi \myvector{n}_{\Gamma}\right) \quad \text{for } \myvector{x}\in \Gamma   \\
 	{u}^+ & = \lim_{\xi \searrow 0} {u}\left(\myvector{x} + \xi \myvector{n}_{\Gamma}\right) \quad \text{for } \myvector{x}\in \Gamma_I
 \end{align}
-The jump and mean values of ${u}$ on inner edges $\Gamma_I$ are defined as:
+The jump and mean values of ${u}$ on the inner edges $\Gamma_I$ are defined as
 \begin{align}
 	\llbracket {u} \rrbracket & = {u}^+-{u}^-                           \\
 	\{{u}\}                   & = \frac{1}{2} \left({u}^-+{u}^+\right).
 \end{align}
-while the jump and mean values on boundary edges $\partial \Omega$ are:
+while the jump and mean values on the boundary edges $\partial \Omega$ are:
 \begin{align}
 	\llbracket {u} \rrbracket & = {u}^-  \\
 	\{{u}\}                   & = {u}^-.
 \end{align}
-Furthermore, the broken polynomial space of total degree $k$ is defined as
+Furthermore, the broken polynomial space of a total degree $k$ is defined as
 \begin{equation}
 	\mathbb{P}_k(\gls{grid} )= \{f \in L^2\left(\Omega\right); \forall K \in \gls{grid} : f\vert_{K} \text{ is polynomial and deg}\left(f\vert_{K}\right)\leq k \}.
 	\label{Eq:PolSpace}
 \end{equation}
-Additionally for $u \in \mathcal{C}^1(\Omega \setminus \Gamma)$ the broken gradient $\nabla_h u$ is defined as:
+Additionally, for $u \in \mathcal{C}^1(\Omega \setminus \Gamma)$ the broken gradient $\nabla_h u$ is defined as:
 \begin{equation}
 	\nabla_h u
 	= \begin{cases}
@@ -41,22 +41,22 @@ Additionally for $u \in \mathcal{C}^1(\Omega \setminus \Gamma)$ the broken gradi
 		 & \text{elsewhere }
 	\end{cases}
 \end{equation}
-The broken divergence  $\nabla_h \cdot u$ is defined analogously. Furthermore the function space for test and trial functions for $D_v$ dependent variables is defined as
+The broken divergence $\nabla_h \cdot u$ is defined analogously. Furthermore, the function space for test and trial functions for $D_v$ dependent variables is defined as
 \begin{equation}
 	\mathbb{V}_\myvector{k} = \prod_{i=1}^{D_v} \mathbb{P}_{k_i}(K_h)
 	\label{Eq:Vspace}
 \end{equation}
 where $\myvector{k} = \left(k_1,...,k_{D_v}\right)$. 
-Aditionally, for a cell $K$ we define for $u_K$, $v_K\in \mathbb{V}_\myvector{k}$ a local inner product and a local $L^2$-norm as
+Additionally, for a cell $K$ we define for $u_K$, $v_K\in \mathbb{V}_\myvector{k}$ a local inner product and a local $L^2$-norm as
 \begin{equation}
 (u_K, v_K)_K \coloneqq \int_K u_K v_K\text{d}x, \qquad \norm{u_K}^2_K \coloneqq(u_K,u_K)_K
 \end{equation}
-similarly for $u_h$, $v_h \in \mathbb{V}_\myvector{k}$ a global inner product and global broken norm are defined as
+Similarly, for $u_h$, $v_h \in \mathbb{V}_\myvector{k}$ a global inner product and global broken norm are defined as
 \begin{equation}
 	(u_h, v_h)_{\Omega_h} \coloneqq \sum_{i = 1}^N (u_h, v_h)_K, \qquad \norm{u_h}^2_{\Omega_h} \coloneqq(u_h,u_h)_{\Omega_h}
 \end{equation}
 \subsection{Discretization using the DG Method} \label{sec:DiscWithDG}
-In this subsection the discretization by the DG method of a simple problem will be shown to demonstrate how the discretization method works, and some of its specific characteristics. For this purpose the discretization of a general conservation law for a scalar quantity $u = u(\vec{x},t)$ governed by a nonlinear flux function $\vec{f}(u)$ will be considered. In addition suitable Dirichlet boundary conditions on $\partial \Omega = \partial \Omega_D$ and initial conditions $u_0$ are defined. The problem reads
+In this subsection, the discretization by the DG method of a simple problem will be shown to demonstrate how the discretization method works and some of its specific characteristics. For this purpose, the discretization of a general conservation law for a scalar quantity $u = u(\vec{x},t)$ governed by a nonlinear flux function $\vec{f}(u)$ will be considered. In addition, suitable Dirichlet boundary conditions on $\partial \Omega = \partial \Omega_D$ and initial conditions $u_0$ are defined. The problem reads
 \begin{subequations}
 \begin{align}
 &\pfrac{u}{t} + \nabla \cdot \vec{f}(u) = 0, \qquad\qquad\qquad &\vec{x} \in \Omega,\label{eq:consEqDG}\\
@@ -69,12 +69,12 @@ The DG-method allows finding an approximate solution $u_h = u_h(\vec{x},t)$ for 
 %\begin{equation}
 %\gls{dgerror}(\vec{x}) = \nuM{\gls{DGVar}} - \gls{DGVar} \label{DGerror}
 %\end{equation}
-This approximate solution sought in the DG method is in a sense the best approximation of $\gls{DGVar} \in L^2(\gls{domain})$, which gives minimum global error in the approximation space $\gls{DGVar} \in 	\mathbb{P}_k(\gls{domain} )$. 
+This approximate solution sought in the DG method is the best approximation of $\gls{DGVar} \in L^2(\gls{domain})$, which gives a minimum global error in the approximation space $\gls{DGVar} \in 	\mathbb{P}_k(\gls{domain} )$. 
 \begin{align}
 	\int_{\domain} (\underbrace{ \nuM{\gls{DGVar}}(x)-\gls{DGVar}(x) }_{=: \gls{dgerror}(x)})^2 \dV
 	= ||\nuM{\gls{DGVar}} - \gls{DGVar}||_2^2 \rightarrow \text{min}
 \end{align}
-Where $\gls{dgerror}$ is the error of the discretization. The minimization is equivalent to requiring
+Here $\gls{dgerror}$ is the error of the discretization. Minimization is equivalent to requiring
 \begin{equation}
 	\label{eq:L2projection}
 	\scp{r(x)}{\basis{}_m} = \scp{f_h-f}{\basis{}_m} \stackrel{!}{=} 0 \qquad \forall\basis{}_m

@@ -122,9 +122,9 @@ doi = true,              		% Schaltet doi-Angabe aus
 isbn = false,             		% Schaltet isbn-Angabe aus
 abbreviate = true,				% Ob Aufl. oder Auflage im Literaturverzeichnis stehen soll. Gilt für auch für die anderen Abkürzungen. 
 %	sorting=nyt,					% Sort by name, year, title
-maxalphanames=1,				% Sort by name of first author, year, title
-labelalpha,
-sorting=anyt,					
+%maxalphanames=1,				% Sort by name of first author, year, title
+%labelalpha,
+%sorting=anyt,					
 ]{biblatex}            
 % Abstand zwischen Einträgen in der BIBLIOGRAPHY
 \setlength\bibitemsep{1.1\itemsep}			% length between two different entries, preset to \itemsep
@@ -138,8 +138,7 @@ sorting=anyt,
 %\addbibresource{bibliography.bib}
 
 \bibliography{bibliography3}
-%\nocite{*}  
-%\bibliography{DEMO-TUDaBibliography}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Fussnoten
@@ -489,11 +488,11 @@ noabbrev
 \cleardoublepage
 
 \input{chapters_main/Computational_methodology}
-% \cleardoublepage
-% \input{chapters_main/results}
-% \cleardoublepage
-% \input{chapters_main/conclusion}
-blablaa
+ \cleardoublepage
+ \input{chapters_main/results}
+ \cleardoublepage
+ \input{chapters_main/conclusion}
+
 %TODO incluir algun tipo de introduccion similar a lo que dice en
 %TODO Mathematical Models for Thermally Coupled Low Speed Flows
 %TODO Como está exactamente definida la mass matrix?

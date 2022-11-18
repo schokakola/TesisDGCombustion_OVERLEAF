@@ -1,7 +1,6 @@
 \chapter{The Discontinous Galerkin method}	\label{ch:NumericalMethods}
-This chapter aims to give an overview of the basic ideas of the DG method as well as to present the spatial and temporal discretization of the equations presented earlier. Parts of this chapter are based on the work presented at \citep{kummerExtendedDiscontinuousGalerkin2017,kikkerFullyCoupledHighorder, smudamartinDirectNumericalSimulation2021}, in order to maintain a consistent nomenclature with previous works where the BoSSS-code is used. Firthermore, the reader interested in a more in depth description of the DG method is referred to the works of  \citep{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012}
+This chapter aims to give an overview of the basic ideas of the DG method as well as to present the spatial and temporal discretization of the equations presented earlier. Parts of this chapter are based on the work presented at \parencite{kummerExtendedDiscontinuousGalerkin2017,kikkerFullyCoupledHighorder, smudamartinDirectNumericalSimulation2021}, in order to maintain a consistent nomenclature with previous works where the BoSSS-code is used. Firthermore, the reader interested in a more in depth description of the DG method is referred to the works of  \parencite{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012}
 
-Subsequently, the following section X TODO introduces the computational methodology that allows the resolution of the discretized equations. First, the globalized Newton method that allows the resolution of the nonlinear system of equations is presented. In addition, comments on the termination criteria are given.
 \section{State of the art}
 
 \section{The Discontinous Galerkin method}
@@ -56,7 +55,7 @@ similarly for $u_h$, $v_h \in \mathbb{V}_\myvector{k}$ a global inner product an
 \begin{equation}
 	(u_h, v_h)_{\Omega_h} \coloneqq \sum_{i = 1}^N (u_h, v_h)_K, \qquad \norm{u_h}^2_{\Omega_h} \coloneqq(u_h,u_h)_{\Omega_h}
 \end{equation}
-\subsection{Discretization using the DG Method}
+\subsection{Discretization using the DG Method} \label{sec:DiscWithDG}
 In this subsection the discretization by the DG method of a simple problem will be shown to demonstrate how the discretization method works, and some of its specific characteristics. For this purpose the discretization of a general conservation law for a scalar quantity $u = u(\vec{x},t)$ governed by a nonlinear flux function $\vec{f}(u)$ will be considered. In addition suitable Dirichlet boundary conditions on $\partial \Omega = \partial \Omega_D$ and initial conditions $u_0$ are defined. The problem reads
 \begin{subequations}
 \begin{align}
@@ -80,7 +79,7 @@ Where $\gls{dgerror}$ is the error of the discretization. The minimization is eq
 	\label{eq:L2projection}
 	\scp{r(x)}{\basis{}_m} = \scp{f_h-f}{\basis{}_m} \stackrel{!}{=} 0 \qquad \forall\basis{}_m
 \end{equation}
-This means that the error is orthogonal to every polynomial function $ \basis{}_m$ in the approximation space. The Bramble-Hilbert lemma \citep{brambleEstimationLinearFunctionals1970} says, that for a $p$-times differentiable variable $\gls{DGVar}$, the error is of the order $\mathcal{O}(h^{p+1})$, which is one of the major motivations for the use of high order methods. The differentiability assumption is essential. For non smooth $\gls{DGVar}$ the well known Gibbs phenomenon occurs.
+This means that the error is orthogonal to every polynomial function $ \basis{}_m$ in the approximation space. The Bramble-Hilbert lemma \parencite{brambleEstimationLinearFunctionals1970} says, that for a $p$-times differentiable variable $\gls{DGVar}$, the error is of the order $\mathcal{O}(h^{p+1})$, which is one of the major motivations for the use of high order methods. The differentiability assumption is essential. For non smooth $\gls{DGVar}$ the well known Gibbs phenomenon occurs.
 
 The discretization procedure starts by the approximation of the domain $\gls{domain}$ with a numerical grid $\gls{grid}$. In each cell $K_j$ of the numerical grid a set of polynomial basis $\vectr{\phi}_j = (\tilde{\phi}_{j,l})_{l=1,\dots,N_k} \in \mathbb{P}_k(\mathcal{K}_h)$ with a local cell support $\text{supp}(\phi_j) = \overline{\gls{cell}}_j$ is defined. This allows to represent the local solution for each cell $K_j$ as
 \begin{equation}
@@ -88,7 +87,7 @@ u_j(\vec{x},t) = \sum_{l=1}^{N_k}\tilde{u}_{j,l}(t)\phi_{j,l}(\vec{x}) = \tilde{
 \end{equation}
 The coefficients $\tilde{\vectr{u}}_j = (\tilde{u}_{j,l})_{l=1,\dots,N_k}$ are the degrees of freedom (DOF) of the local solution in the cell $K_j$, which are the unknowns of the problem. Note the time dependence of the coefficients $\tilde{\vec{u}}_j$, as well as the dependence of the basis functions $\vectr{\phi}_j (\vec{x})$ on the vector $\vec{x}$. 
 
-There are two general approaches used for the representation of the solution with the basis functions: modal and nodal. Each one of them present some advantages and disadvantages \citep{hesthavenNodalDiscontinuousGalerkin2008}. In this work, a modal polynomial representation is used. The basis functions are chosen such that they are orthogonal to each other 
+There are two general approaches used for the representation of the solution with the basis functions: modal and nodal. Each one of them present some advantages and disadvantages \parencite{hesthavenNodalDiscontinuousGalerkin2008}. In this work, a modal polynomial representation is used. The basis functions are chosen such that they are orthogonal to each other 
 \begin{equation}
 	\int_{K_j} \phi_{j,m}\phi_{j,n} \text{d}V= \delta_{mn}
 \end{equation}
@@ -186,7 +185,7 @@ For a monotonic numerical flux is possible to show that the discrete problem \cr
 %	\exists C_b \in \mathbb{R}: \abs{\gls{numflux}(a, b_1, \vec{n}) - \hat{f}(a, b_2, \vec{n})} \leq C_b \abs{b_1 - b_2} 
 %	\qquad \forall b_1, b_2 \in \mathbb{R}
 %\end{equation}
-For the complete proof the interested reader is referred to the book from \cite{dipietroMathematicalAspectsDiscontinuous2012}.
+For the complete proof the interested reader is referred to the book from \textcite{dipietroMathematicalAspectsDiscontinuous2012}.
 
 Two more requirements are needed for the numerical flux. The first is the consistency of the flux, which can be written as
 \begin{equation}
@@ -234,64 +233,57 @@ An alternative to the method of lines is the so called Rothe's method, where tim
 The methods for solving this type of nonlinear problems will be shown in \cref{sec:CompMethodology}.
 \section{Discontinuous Galerkin discretization of the low-Mach equations}
 The democratization methodology shown in last section is used for finding a discrete formulation of the governing equations for low-Mach reactive flows. In the next sections the discretization for the fully coupled problem with finite reaction rate, and for the flame sheet problem are shown. The chosen numerical fluxes are also shown, and some of their particularities are discussed. 
-\subsection{Discontinuous Galerkin discretization of the finite reaction rate problem}
-First, the DG discretization of the finite reaction system defined by \crefrange{eq:LowMachConti}{eq:LowMachMassBalance} is presented. The vector $\vec{Y}' = \left(Y_1,\dots,Y_{N-1}\right)$ is defined as the vector containing the first $(n_s-1)$ mass fractions and $\vec{s} = \left(s_1, \dots, s_{N-1} \right)$ as the vector containing the test functions for the first $(n_s-1)$  mass fraction equations. The discretized form of \cref{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} is obtained by multiplying each equation by a test function, integrating it over an element $K$, applying integration by parts and finally using an adequate numerical flux for each term. Note that the convective and diffusive terms of the temperature scalars $T$, mass fraction $Y_\alpha$ and mixture fraction $z$ have the same form, so they share the same expression in their discretized form.
 
-In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition, (see \cite{babuskaFiniteElementMethod1973})  a mixed order formulation is used, where polynomials of order $k$ for velocity, temperature and mass fractions, and of degree $k' = k-1$ for pressure are used.  Finally, the discretized problem can be written as: find the numerical solution $(p_h,\vec{u}_h, T_h, \MFVecPrima_h) \in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h, r_h, \mathbf{s}_h) \in \mathbb{V}_\myvector{k}$ we have:
+In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition, (see \textcite{babuskaFiniteElementMethod1973})  a mixed order formulation is used in all calculations, where polynomials of order $k$ for velocity, temperature, mass fractions and mixture fractions, and of degree $k' = k-1$ for pressure are used. This is a required compatibility condition for obtaining a well posed problem. 
+\subsection{Discontinuous Galerkin discretization of the finite reaction rate problem}
+Here the DG discretization of the finite reaction system defined by \crefrange{eq:LowMach_Conti}{eq:LowMachMassBalance} is presented. 
+First, the vector $\vec{Y}' = \left(Y_1,\dots,Y_{N-1}\right)$ is defined as the vector containing the first $(\gls{TotalNumberSpecies}-1)$ mass fractions and $\vec{s} = \left(s_1, \dots, s_{N-1} \right)$ as the vector containing the test functions for the first $(\gls{TotalNumberSpecies}-1)$  mass fraction equations. 
+
+The discretized form of \crefrange{eq:LowMach_Conti}{eq:LowMachMassBalance} is obtained in a similar fashion to the methodology shown in \cref{sec:DiscWithDG}. This means, each equation is multiplied by a test function, integrated it over an element $K$, applying integration by parts, using an adequate numerical flux for each term and summing over all cells in order to obtain a global formulation. Note that the convective and diffusive terms of the temperature scalars $T$, mass fraction $Y_\alpha$ and mixture fraction $z$ have the same form, so they share the same expression in their discretized form.
+
+Finally, the discretized problem can be written as: find the numerical solution $(p_h,\vec{u}_h, T_h, \MFVecPrima_h) \in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h, r_h, \mathbf{s}_h) \in \mathbb{V}_\myvector{k}$:
 \begin{subequations}
 	\begin{flalign}%
 		%% Continuity
-		&\mathcal{B}^1(q_h)= \ContDis\ &, \label{DiscretizedConti}\\[1ex]
+		&\gls{BCcont}(q_h)= \ContDis\ ,& \label{DiscretizedConti}\\[1ex]
 		%% Momentum
-		&\mathcal{B}^2(\vec{v}_h) =	\MomConv + \MomPres + \frac{1}{\Reynolds}\MomDiff & \notag\\
-		& \quad\quad\quad + \smash{\frac{1}{\Froude^2}}\MomSource&, \label{DiscretizedMomentum}\\[1ex]
+		&\gls{BCmom}(\vec{v}_h) =	\MomConv + \MomPres + \MomDiff & \notag\\
+		& \quad\quad\quad + \MomSource,& \label{DiscretizedMomentum}\\[1ex]
 		%% Energy
-		&\mathcal{B}^3(r_h)
-		 = \mathcal{S}^C\left(\vec{u}_h,T_h,r_h, \rhoh\right) + \frac{1}{\Reynolds~\Prandtl}\mathcal{S}^D\left(T_h,r_h,k/c_p(T_h)\right)&  \notag\\
-		& \quad\quad\quad + \text{H}~\Da ~ \mathcal{S}^S\left(r_h, \heatRelease(T_h,\vec{Y}_h), \rateReac(T_h,\vec{Y}_h),\cph\right)&, \label{DiscretizedEnergy}   \\[1ex]
+		&\gls{BCenergy}(r_h)
+		 = \mathcal{S}^C\left(\vec{u}_h,T_h,r_h, \rhoh\right) + \mathcal{S}^{D,E}\left(T_h,r_h,k/c_p(T_h)\right)&  \notag\\
+		& \quad\quad\quad + \mathcal{S}^S\left(r_h, \heatRelease(T_h,\vec{Y}_h), \rateReac(T_h,\vec{Y}_h),\cph\right),& \label{DiscretizedEnergy}   \\[1ex]
 	%% MassFractions
-		&\mathcal{B}^3(s_{\alpha h})= \mathcal{S}^C\left(\vec{u}_h,\Yi, s_{\alpha h}, \rhoh\right) + \frac{1}{\Reynolds~\Prandtl~\Lewis_\alpha}\mathcal{S}^D\left(\Yi,s_{\alpha h},\rhodh\right)&  \notag \\
-		& \quad\quad\quad\quad + \Da \mathcal{M}^S_\alpha\left(s_{\alpha h},\rateReac(T_h,\vec{Y}_h )\right)&. \label{DiscretizedMassFractions}
+		&\gls{BCMass}(s_{\alpha h})= \mathcal{S}^C\left(\vec{u}_h,\Yi, s_{\alpha h}, \rhoh\right) + \mathcal{S}^{D,M}\left(\Yi,s_{\alpha h},\rhodh\right)&  \notag \\
+		& \quad\quad\quad\quad + \mathcal{M}^S_\alpha\left(s_{\alpha h},\rateReac(T_h,\vec{Y}_h )\right).& \label{DiscretizedMassFractions}
 	\end{flalign}\label{eqs:variatProblemFull}
 \end{subequations}
-where the index $\alpha$ takes values $\alpha = 1, \dots,~(n_s - 1)$. %The $n_s$-th component mass fraction $Y_{n_s}$ is calculated using \cref{eq:MassFractionConstraint}.
+where the index $\alpha$ takes values $\alpha = 1, \dots,~(\gls{TotalNumberSpecies} - 1)$. Each one of the forms introduced here are shown later in \cref{ssec:nonLinearforms}.
 \subsection{Discontinuous Galerkin discretization of the flame sheet problem}
-Discretizing the flame sheet problem given by \crefrange{eq:MixtFracConti2}{eq:MixtFracMF} proceeds in a similar way. Due to the similarity of the mass fraction equation and the mixture fraction equation the discretization is analogous. Again, we use a mixed order formulation of polynomials of degree $k$ for velocity and mixture fraction, and of degree $k-1$ for pressure. The resulting problem reads: find the numerical solution $(p_h,\vec{u}_h,z_h)\in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h,r_h)\in \mathbb{V}_\myvector{k}$ we have:
-% \begin{subequations}
-% 	\begin{align}
-% 		%% Continuity
-% 		\mathcal{B}^1(q_h)
-% 		 & = 	\mathcal{C}\left(\vec{u}_h,q_h, \rho(z_h)\right) \,, \label{DiscretizedConti2}                                                                                                                \\
-% 		%% Momentum
-% 		\mathcal{B}^2(\vec{v}_h)
-% 		 & = 	\mathcal{U}^C\left(\vec{w}_h,\vec{u}_h,\vec{v}_h, \rho(z_h)\right)+ 	\mathcal{U}^P\left(p_h,\vec{v}_h\right) +\frac{1}{\Reynolds}\mathcal{U}^D\left(\vec{u}_h,\vec{v}_h,\mu(z_h)\right)\notag \\
-% 		 & \quad  + \frac{1}{\Froude^2}\mathcal{U}^S\left(\rho(z), \vec{v}_h\right)\,, \label{DiscretizedMomentum2}                                                                                         \\
-% 		%% Mixture Fraction	 
-% 		\mathcal{B}^3(r_h)
-% 		 & = {S}^C\left(\vec{u}_h,z_h,r_h, \rho(z_h)\right) + \frac{1}{\Reynolds~\Prandtl}\mathcal{S}^D\left(z_h,r_h,\rho D(z_h)\right). \label{DiscretizedEnergy2}
-% 	\end{align}\label{eqs:variatFS}
-% \end{subequations}
+Discretizing the flame sheet problem given by \crefrange{eq:MixtFracConti2}{eq:MixtFracMF} proceeds in a similar way. Due to the similarity of the mass fraction equation and the mixture fraction equation the discretization is analogous.
+
+The resulting problem reads: find the numerical solution $(p_h,\vec{u}_h,z_h)\in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h,r_h)\in \mathbb{V}_\myvector{k}$ we have:
 \begin{subequations}
 	\begin{flalign}
 		%% Continuity
-		&\mathcal{B}^1(q_h)=\mathcal{C}\left(\vec{u}_h,q_h, \rho(z_h)\right)& \label{DiscretizedConti2}\\
+		&\mathcal{B}^1(q_h)=\mathcal{C}\left(\vec{u}_h,q_h, \rho(z_h)\right),& \label{DiscretizedConti2}\\
 		%% Momentum
-		&\mathcal{B}^2(\vec{v}_h) =\mathcal{U}^C\left(\vec{w}_h,\vec{u}_h,\vec{v}_h, \rho(z_h)\right)+ 	\mathcal{U}^P\left(p_h,\vec{v}_h\right) +\frac{1}{\Reynolds}\mathcal{U}^D\left(\vec{u}_h,\vec{v}_h,\mu(z_h)\right)&\notag \\
-		 & \quad  + \frac{1}{\Froude^2}\mathcal{U}^S\left(\rho(z), \vec{v}_h\right) \,,& \label{DiscretizedMomentum2}\\
+		&\mathcal{B}^2(\vec{v}_h) =\mathcal{U}^C\left(\vec{w}_h,\vec{u}_h,\vec{v}_h, \rho(z_h)\right)+ 	\mathcal{U}^P\left(p_h,\vec{v}_h\right) +\mathcal{U}^D\left(\vec{u}_h,\vec{v}_h,\mu(z_h)\right) +\mathcal{U}^S\left(\rho(z), \vec{v}_h\right),& \label{DiscretizedMomentum2}\\
 		%% Mixture Fraction	 
-		&\mathcal{B}^3(r_h) = {S}^C\left(\vec{u}_h,z_h,r_h, \rho(z_h)\right) + \frac{1}{\Reynolds~\Prandtl}\mathcal{S}^D\left(z_h,r_h,\rho D(z_h)\right).& \label{DiscretizedEnergy2}
+		&\mathcal{B}^3(r_h) = {S}^C\left(\vec{u}_h,z_h,r_h, \rho(z_h)\right) + \mathcal{S}^{D,E}\left(z_h,r_h,\rho D(z_h)\right).& \label{DiscretizedEnergy2}
 	\end{flalign}\label{eqs:variatFS}
 \end{subequations}
-Note that density and transport parameters are dependent on the mixture fraction $z$. The evaluation of those parameters is done as mentioned in  \cref{ssec:FlameSheet} and solved iteratively using a Newton-Dogleg type method as shown later in \cref{sec:newton}
-\subsection{Definitions of nonlinear forms}
-We show in the following the nonlinear forms used in this work. Regarding the choice of fluxes, we follow the "best practices" known in literature for the incompressible Navier-Stokes equation.
-It is known \cite{pietroMathematicalAspectsDiscontinuous2012,giraultDiscontinuousGalerkinMethod2004} that central difference fluxes for the pressure gradient and velocity divergence, combined with a coercive form for the viscous terms, e.g. symmetric interior penalty, gives a stable discretization for the Stokes equation. Furthermore, it is known that for all kinds of convective terms, a numerical flux which transports information in characteristic direction, e.g. Upwind, Lax-Friedrichs or Local-Lax-Friedrichs, must be used. We opted for the last one in our implementation, as it offers a good compromise between accuracy and stability.
+Note that density and transport parameters are dependent on the mixture fraction $z$. The evaluation of those parameters is done as mentioned in \cref{sec:FlameSheet} and solved iteratively using a Newton-Dogleg type method as shown later in \cref{sec:newton}
+\subsection{Definitions of nonlinear forms}\label{ssec:nonLinearforms}
+In the following the nonlinear forms used in this work are shown. Regarding the choice of fluxes, the "best practices" known in literature for the incompressible Navier-Stokes equation are followed. These fluxes proved to be well suited for all the problems discussed in this thesis, providing stability to the algorithm, while maintaining the accuracy of the solver.
+
+It is well known \parencite{pietroMathematicalAspectsDiscontinuous2012,giraultDiscontinuousGalerkinMethod2004} that central difference fluxes for the pressure gradient and velocity divergence, combined with a coercive form for the viscous terms, e.g. symmetric interior penalty, gives a stable discretization for the Stokes equation. Furthermore, it is known that for all kinds of convective terms, a numerical flux which transports information in characteristic direction, e.g. Upwind, Lax-Friedrichs or Local-Lax-Friedrichs, must be used. We opted for the last one in the present implementation, as it offers a good compromise between accuracy and stability.
 \paragraph{Continuity equation}
-We use a central difference flux for the discretization of the continuity equation:
+A central difference flux for the discretization of the continuity equation is used:
 \begin{equation}
 	\mathcal{C}(\vec{u},q, \rho)  =  \oint_{\GammaI \cup\GammaN\cup \GammaND\cup \GammaP}{\mean{\rho\vec{u} }\cdot \vec{n}_\Gamma\jump{q} \dS} - \int_{\Omega}{\rho \vec{u}\cdot \nabla_h q} \dV.  \label{eq:Conti}
 \end{equation}
-The density in \cref{eq:Conti} is evaluated as a function of the temperature and mass fractions using the equation of state (\cref{eq:ideal_gas}). The term $\mathcal{B}^1$ on the right hand sides of \cref{DiscretizedConti} and \cref{DiscretizedConti2}  contains the Dirichlet boundary conditions:
+The density in \cref{eq:Conti} is evaluated as a function of the temperature and mass fractions using the equation of state (\cref{eq:ideal_gas}). The term $\mathcal{B}^1$ on the left hand sides of \cref{DiscretizedConti} and \cref{DiscretizedConti2}  contains the Dirichlet boundary conditions:
 \begin{equation}
 	\mathcal{B}^1(q) =  -\oint_{\GammaD\cup \GammaDW}{q(\rho_{\text{D}} \vec{u}_{\text{D}} \cdot \normalBoundary). \dS}
 \end{equation}
@@ -303,40 +295,47 @@ The convective term of the momentum equations is discretized using a Lax-Friedri
 	-\int_{\Omega}({\rho\vec{u}\otimes\vec{w}}):\nabla_h\vec{v} d\text{V}.
 	\label{eq:Mom_convective}\\
 \end{equation}
-The Lax-Friedrichs parameter $\gamma_1$ is calculated as \cite{kleinHighorderDiscontinuousGalerkin2016}
+The Lax-Friedrichs parameter $\gamma_1$ is calculated as \textcite{kleinHighorderDiscontinuousGalerkin2016}
 \begin{equation}
 	\gamma_1  = \max \left\{2 \overline{\rho^+} |\overline{\vec{u}^+} \cdot \vec{n}^+|,2 \overline{\rho^-} |\overline{\vec{u}^-} \cdot \vec{n}^-|\right\},
 	\label{eq:vardens_lambda}
 \end{equation}
+\todo[inline]{How is this actually implemented?}
 where $\overline{\rho_{h}^\pm}$ and $\overline{\vec{u}^\pm}$ are the mean values of $\rho^\pm$ and $\vec{u}^\pm$ in $K^\pm$, respectively.\\
 The pressure term is discretized by using a central difference flux
 \begin{equation}
-	\mathcal{U}^P(p,\vec{v})=  \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}{ \mean{p}(\jump{\vec{v}}\cdot \vec{n} )\dS}
+	\mathcal{U}^P(p,\vec{v})=  \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}{ \mean{p}(\jump{\vec{v}}\cdot \vec{n}_\Gamma  )\dS}
 	- \int_{\Omega}{p \nabla_h \cdot \vec{v} \dV}. \label{eq:Mom_pressure}
 \end{equation}
-The diffusive term of the momentum equations is discretized using an Symmetric Interior Penalty (SIP)  formulation \cite{shahbaziExplicitExpressionPenalty2005}
+The diffusive term of the momentum equations is discretized using an Symmetric Interior Penalty (SIP)  formulation \parencite{shahbaziExplicitExpressionPenalty2005}
 \begin{equation}
 	\begin{aligned}
-		\mathcal{U}^D(\vec{u},\vec{v},\mu) =
+		\tilde{\mathcal{U}}^D(\vec{u},\vec{v},\mu) =
 		  & \int_{\Omega}{\left(\mu\left((\nabla_h \vec{u}) + (\nabla_h \vec{u})^T - \frac{2}{3}(\nabla_h\cdot \vec{u})\mytensor{I} \right)\right)\colon \nabla_h\vec{v}} \dV \\
 		- & \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}
 		\left(\mean{\mu(\nabla_h\vec{u} + \nabla_h\vec{u}^T - \frac{2}{3}(\nabla_h\cdot \vec{u})\mytensor{I})}\normalBoundary\right)\cdot\jump{\vec{v}}\dS                    \\
 		- & \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}
 		\left(\mean{\mu(\nabla_h\vec{v} + \nabla_h\vec{v}^T - \frac{2}{3}(\nabla_h\cdot \vec{v})\mytensor{I})}\normalBoundary\right)\cdot\jump{\vec{u}} \dS                   \\
-		+ & \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}} \eta \mu_{max} \jump{\vec{u}} \jump{\vec{v}}\dS.
+		+ & \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}} \eta \mu_{\text{max}} \jump{\vec{u}} \jump{\vec{v}}\dS.
 		\label{eq:Mom_diffusive}
 	\end{aligned}
 \end{equation}
 The viscosity $\mu$ is evaluated as a function of temperature according to \cref{eq:nondim_sutherland} and $\mu_{\text{max}} = \text{max}(\mu^{+}, \mu^{-})$.  Additionally  $\eta$ is the penalty term of the SIP formulation, which has to be chosen big enough to ensure coercivity of the form, but also as small as possible in order to not increase the condition number of the problem. The estimation of the penalty term is based on an expression of the form
 \begin{equation}
 	\eta = \eta_0 \frac{A(\partial K)}{V(K)},
+\end{equation}\label{eq:PenaltyFactor}
+where for a two-dimensional problem $A$ is the perimeter and $V$ the area of the element. Parameter $\eta_0$ is a safety factor. If not stated otherwise, the value  $\eta_0 = 4$ is  set in all calculations. Further information on the determination of the penalty term of the SIP formulation $\eta$ and the penalty term of the Lax-Friedrichs $\gamma_1 $ can be found in  the works from \textcite{hesthavenNodalDiscontinuousGalerkin2008} and \textcite{hillewaertDevelopmentDiscontinuousGalerkin2013}.
+
+Note that the diffusive term of the momentum equations is scaled by the Reynolds number, obtaining finally
+\begin{equation}
+		\mathcal{U}^D(\vec{u},\vec{v},\mu) = 	\frac{1}{\Reynolds}\tilde{\mathcal{U}}^D(\vec{u},\vec{v},\mu)
 \end{equation}
-where for a two-dimensional problem $A$ is the perimeter and $V$ the area of the element. Parameter $\eta_0$ is a safety factor. If not stated otherwise, the value  $\eta_0 = 4$ is  set in all calculations. Further information on the determination of the penalty term can be found in  \cite{hillewaertDevelopmentDiscontinuousGalerkin2013b}.
+
 The source term arising due to body forces is:
 \begin{equation}
-	\mathcal{U}^S\left(\rho, \vec{v}\right) =  \int_{\Omega}{  \rho \frac{\vec{g}}{\Vert \vec{g} \Vert}\cdot \vec{v}} \dV.  \label{eq:Mom_source}
+	\mathcal{U}^S\left(\rho, \vec{v}\right) =  \smash{\frac{1}{\Froude^2}}\int_{\Omega}{  \rho \frac{\vec{g}}{\Vert \vec{g} \Vert}\cdot \vec{v}} \dV.  \label{eq:Mom_source}
 \end{equation}
-The right hand sides of \cref{DiscretizedMomentum} and \cref{DiscretizedMomentum2} contain the information from Dirichlet boundary conditions:
+Finally, the right hand sides of \cref{DiscretizedMomentum} and \cref{DiscretizedMomentum2} contain the information from Dirichlet boundary conditions:
 \begin{equation}
 	\mathcal{B}^2(\vec{v}) =
 	-\oint_{\Gamma_{\text{D}}}{ \left( (\rho\vec{u}_{\text{D}}\otimes\vec{u}_{\text{D}} )\normalBoundary + \frac{\gamma_1}{2}\vec{u}_{\text{D}}\right)\cdot\vec{v} \dS}  +
@@ -344,12 +343,12 @@ The right hand sides of \cref{DiscretizedMomentum} and \cref{DiscretizedMomentum
 \end{equation}
 The Dirichlet viscosity value $\mu_{\text{D}}$ is calculated from \cref{eq:nondim_sutherland} using the Dirichlet values of the temperature at the boundary.
 \paragraph{Scalar equations}
-Since the convective and diffusive term for the temperature, mass fractions and mixture fraction share a similar form, we summarize here their discretized expressions in terms of an arbitrary scalar $X$ (corresponding to $T$ in the energy equation, $Y_\alpha$ in the equation for species $\alpha$ and $z$ for the mixture fraction equation) and transport parameter $\xi$ (i.e. $k/c_p$ in the energy equation, and $(\rho D)$ for the mass fraction and mixture fraction equations). The convective term of the scalars is discretized using a Lax-Friedrichs flux
+Since the convective and diffusive term for the temperature, mass fractions and mixture fraction share a similar form,  here their discretized expressions are summarized in terms of an arbitrary scalar $X$ (corresponding to $T$ in the energy equation, $Y_\alpha$ in the equation for species $\alpha$ and $z$ for the mixture fraction equation) and transport parameter $\xi$ (i.e. $k/c_p$ in the energy equation, and $(\rho D)$ for the mass fraction and mixture fraction equations). The convective term of the scalars is discretized using a Lax-Friedrichs flux
 \begin{equation}
 	\mathcal{S}^C(\vec{u},X,r, \rho) =  \oint_{\Gamma}{\left( \mean{\rho\vec{u}X }\cdot \vec{n} + \frac{\gamma_2}{2}\jump{X}\right)\jump{r} \dS}
 	- \int_{\Omega}({\rho \vec{u} X \cdot \nabla_h r) d\text{V}}. \label{eq:scalar_convective}
 \end{equation}
-The Lax-Friedrichs parameter $\gamma_2$ is calculated as \cite{kleinHighorderDiscontinuousGalerkin2016}
+The Lax-Friedrichs parameter $\gamma_2$ is calculated as 
 \begin{equation}
 	\gamma_2  = \max \left\{\overline{\rho^+} |\overline{\vec{u}^+} \cdot \vec{n}^+|,\overline{\rho^-} |\overline{\vec{u}^-} \cdot \vec{n}^-|\right\}.
 	\label{eq:vardens_lambda2}
@@ -365,6 +364,14 @@ The diffusion term of scalars is discretized again with a SIP formulation:
 	} \label{eq:Temp_diffusive}
 \end{align}
 The transport parameter $\xi$ is calculated as a function of temperature using \cref{eq:nondim_sutherland} and $\xi_{\text{max}} = \text{max}(\xi^{+}, \xi^{-})$.
+The diffusive term for the temperature equation  and mixture fraction equation is scaled by the Reynolds and Prandtl number as
+\begin{equation}
+\mathcal{S}^{D,E}\left(T,r,k/c_p\right) = \frac{1}{\Reynolds~\Prandtl} \mathcal{S}^D(T,r,k/c_p)
+\end{equation}
+Simmilarly the diffusive term for the mass fraction equations is
+\begin{equation}
+\mathcal{S}^{D,M}\left(\Yi,s_{\alpha h},\rhodh\right) = \frac{1}{\Reynolds~\Prandtl~\Lewis_\alpha} \mathcal{S}^D\left(\Yi,s_{\alpha h},\rhodh\right)
+\end{equation}
 The boundary condition term of the corresponding scalar equation is:
 \begin{equation}
 	\mathcal{B}^3(r) =  -
@@ -374,8 +381,8 @@ The boundary condition term of the corresponding scalar equation is:
 Here, $X_D$ is the Dirichlet value of the scalar $X$ on boundaries and $\xi_D$ is the corresponding transport parameter calculated,which is calculated with \cref{eq:nondim_sutherland} using the Dirichlet values of the temperature at the boundary.
 Finally, the volumetric source term of the energy and mass fraction equations are defined as follows:
 \begin{gather}
-	\mathcal{S}^S(r,\heatRelease, \rateReac,c_p) =  \int_{\Omega}{ \frac{\heatRelease \rateReac}{c_p} r} \dV, \\
-	\mathcal{M}^S_\alpha(s_\alpha,\rateReac ) =  \int_{\Omega}{  \stoicCoef_\alpha M_\alpha \rateReac s_\alpha} \dV.
+	\mathcal{S}^S(r,\heatRelease, \rateReac,c_p) =  \text{H}~\Da ~ \int_{\Omega}{ \frac{\heatRelease \rateReac}{c_p} r} \dV, \\
+	\mathcal{M}^S_\alpha(s_\alpha,\rateReac ) =  \Da \int_{\Omega}{  \stoicCoef_\alpha M_\alpha \rateReac s_\alpha} \dV.
 \end{gather}
 The heat release $\heatRelease$ is calculated with \cref{eq:heatReleaseOneStepNonDim}, the reaction rate $\rateReac$ is evaluated using \cref{eq:NonDimArr} and the mixture heat capacity with \cref{eq:nondim_cpmixture}.
 

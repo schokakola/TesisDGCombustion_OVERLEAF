@@ -1,13 +1,17 @@
 \chapter{Computational methodology} \label{sec:CompMethodology}
 
-The presented solver is embedded in the \textit{BoSSS} (Bounded Support Spectral Solver) code, which is under development at the chair of fluid dynamics of the Technical University of Darmstadt, and is available under \href{https://github.com/FDYdarmstadt/BoSSS}{https://github.com/FDYdarmstadt/BoSSS}. \BoSSS is a general framework for the discretization of conservation laws using the DG method and uses a modal DG approach with orthonormal Legendre polynomials as basis functions. The \BoSSS code features a variety of applications in the context of computational fluid dynamics, such as a solver for multiphase flows with a sharp interface approach, \cite{kummerExtendedDiscontinuousGalerkin2017} an incompressible Immersed Boundary Method solver for particle laden flows,\cite{krauseIncompressibleImmersedBoundary2017} a solver for viscoelastic fluid flows,\cite{kikkerFullyCoupledHighorder} and a solver for compressible flows, \cite{geisenhoferDiscontinuousGalerkinImmersed2019} among others.
 
-The variational problem for the finite chemistry rate case described by \crefrange{DiscretizedConti}{DiscretizedMassFractions} and for the flame sheet problem, \crefrange{DiscretizedConti2}{DiscretizedEnergy2}, are linearised and solved using a Newton method with a Dogleg-type globalization \cite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008}. The \textit{BoSSS} framework provides an efficient algorithm for the evaluation of the Jacobian based on perturbations of the forms presented in the last section.
-The relatively large linear system of equations for each Newton iteration is solved by means of the in \BoSSS integrated orthonormalization multigrid algorithm \cite{kummerBoSSSPackageMultigrid2021}, which at the lowest multigrid levels makes use of the sparse direct solver PARDISO, originally developed by Schenk et al. \cite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
+Subsequently, the following section X TODO introduces the computational methodology that allows the resolution of the discretized equations. First, the globalized Newton method that allows the resolution of the nonlinear system of equations is presented. In addition, comments on the termination criteria are given.
+
+
+The presented solver is embedded in the \textit{BoSSS} (Bounded Support Spectral Solver) code, which is under development at the chair of fluid dynamics of the Technical University of Darmstadt, and is available under \href{https://github.com/FDYdarmstadt/BoSSS}{https://github.com/FDYdarmstadt/BoSSS}. \BoSSS is a general framework for the discretization of conservation laws using the DG method and uses a modal DG approach with orthonormal Legendre polynomials as basis functions. The \BoSSS code features a variety of applications in the context of computational fluid dynamics, such as a solver for multiphase flows with a sharp interface approach, \textcite{kummerExtendedDiscontinuousGalerkin2017} an incompressible Immersed Boundary Method solver for particle laden flows,\textcite{krauseIncompressibleImmersedBoundary2017} a solver for viscoelastic fluid flows,\textcite{kikkerFullyCoupledHighorder} and a solver for compressible flows, \textcite{geisenhoferDiscontinuousGalerkinImmersed2019} among others.
+
+The variational problem for the finite chemistry rate case described by \crefrange{DiscretizedConti}{DiscretizedMassFractions} and for the flame sheet problem, \crefrange{DiscretizedConti2}{DiscretizedEnergy2}, are linearised and solved using a Newton method with a Dogleg-type globalization \textcite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008}. The \textit{BoSSS} framework provides an efficient algorithm for the evaluation of the Jacobian based on perturbations of the forms presented in the last section.
+The relatively large linear system of equations for each Newton iteration is solved by means of the in \BoSSS integrated orthonormalization multigrid algorithm \textcite{kummerBoSSSPackageMultigrid2021}, which at the lowest multigrid levels makes use of the sparse direct solver PARDISO, originally developed by Schenk et al. \textcite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
 from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows'' library collection to solve the linear system.
 
 \textit{BoSSS} also features a method for solving highly nonlinear problems with a homotopy strategy.
-Further details on the used Newton method solver, the homotopy strategy and its implementation are given in the next sections, which are adapted from \cite{kikkerFullyCoupledHighorder}  and are included for the sake of completeness. For information on the mentioned orthonormalization multigrid algorithm we refer the interested reader to the work of \cite{kummerBoSSSPackageMultigrid2021}.
+Further details on the used Newton method solver, the homotopy strategy and its implementation are given in the next sections, which are adapted from \textcite{kikkerFullyCoupledHighorder}  and are included for the sake of completeness. For information on the mentioned orthonormalization multigrid algorithm we refer the interested reader to the work of \textcite{kummerBoSSSPackageMultigrid2021}.
 
 From this point on, the solver presented in this work will be called XNSEC (e\textbf{X}tended \textbf{N}avier-\textbf{S}tokes for \textbf{C}ombustion). The term \textit{extended} refers to the framework on which the solver is built, which focuses on applications for multi-phase flows using a sharp interface approach using a level-set method. This point will be briefly discussed in the section %TODO future work chapter
 
@@ -112,7 +116,7 @@ i.e  $\myvector{s}'_n = \myvector{s}_n$ with
 which is computed using a direct solver.
 Unfortunately, convergence of the Newton method for any starting value $\myvector{U}_0$ is not guaranteed.
 In order to increase robustness when the distance between $\myvector{U}_0$ and the exact solution $\myvector{U}$ is large,
-we employ a globalization approach, presented by Pawlowski et al. \cite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008},
+we employ a globalization approach, presented by Pawlowski et al. \textcite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008},
 known as the Dogleg-method, or Newton-Dogleg method.
 Here, we intend to give only the central ideas of method and refer to the original works for further details.
 Obviously, the exact solution of \cref{Eq:nonLinSystem} is also a minimum of the functional
@@ -191,9 +195,9 @@ We replicate the algorithm here, for the sake of completeness:
 	Set $\myvector{U}_{n+1} = \myvector{U}_{n} + \myvector{s}'_{n} $, update $n \leftarrow n + 1$ and return to step (2).
 	
 \end{itemize}
-All constants used in the algorithm above have been taken from the work of Pawlowski et al. \cite{pawlowskiGlobalizationTechniquesNewton2006}
+All constants used in the algorithm above have been taken from the work of Pawlowski et al. \textcite{pawlowskiGlobalizationTechniquesNewton2006}
 For a detailed description of the underlying ideas we also refer to these works,
-which in turn are based on algorithms from Dennis and Schnabel's textbook. \cite{dennisNumericalMethodsUnconstrained1996}
+which in turn are based on algorithms from Dennis and Schnabel's textbook. \textcite{dennisNumericalMethodsUnconstrained1996}
 
 
 \subsection{Termination criterion}
@@ -239,7 +243,7 @@ Although the Newton-Dogleg method works well for a variety of cases,
 we experienced convergence problems for some of the test cases presented in next section.
 In particular, for the differentially heated cavity test case, the method was not successful on finding a convergent solution for a Rayleigh number $Ra \geq 10^5$  within 60 Newton iterations.
 In such cases we used a homotopy strategy, which is loosely based on
-ideas from the textbook of Deuflhard,\cite{deuflhardNewtonMethodsNonlinear2011} Chapter 5.
+ideas from the textbook of Deuflhard,\textcite{deuflhardNewtonMethodsNonlinear2011} Chapter 5.
 \tikzexternaldisable
 \begin{figure}[t]
 	\centering
@@ -364,7 +368,7 @@ An approximate solution for the target homotopy-parameter is found by the follow
 An exemplary run of the method is shown in \cref{fig:Homotopyevolution}. The homotopy parameter $\mathrm{hp}$ in this particular case is the Reynolds number. The homotopy-parameter hp was increased for iterations 10, 18, 22 and 24, causing an increase of the residuals $\| \mathcal{A}_{\mathrm{hp}^*}(\myvector{U}_{n}) \|_2 $, leading to a convergent solution after 34 Newton iterations. The presented algorithm offers a robust method for finding steady-state solutions of highly nonlinear systems.
 
 \subsection{Initialization of combustion applications}\label{ssec:MethodCombustion}
-Cases involving combustion are initialized with the solution of the flame sheet problem, \cref{DiscretizedConti2,DiscretizedMomentum2,DiscretizedEnergy2}. This idea has been already employed in various works. \cite{smookeNumericalSolutionTwoDimensional1986,smookeNumericalModelingAxisymmetric1992} The reason for the use of this pre-step is twofold:
+Cases involving combustion are initialized with the solution of the flame sheet problem, \cref{DiscretizedConti2,DiscretizedMomentum2,DiscretizedEnergy2}. This idea has been already employed in various works. \textcite{smookeNumericalSolutionTwoDimensional1986,smookeNumericalModelingAxisymmetric1992} The reason for the use of this pre-step is twofold:
 \begin{itemize}
 	\item Solving \cref{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} using a Newton-type method requires adequate starting estimates in order to converge. Using the flame sheet solution as initial estimate improves the convergence properties of the method.
 	\item The system of  \cref*{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} possesses multiple solutions. One is the pure mixing (frozen) solution, where no chemical reaction has taken place, and the other one is the ignited solution, where the flame is present. Using the flame sheet solution as initial estimate ensures that the path taken by Newton's algorithm will tend towards the ignited solution.
@@ -391,7 +395,7 @@ This function is useful for creating a smooth transition between two functions, 
 		Y_N(z) & = (1-Y_F^0)z + (1-Y_O^0)(1-z). \label{eq:BS-YNR}
 	\end{align}
 \end{subequations}
-The use of this regularized form of the equations results in practice on a spreading of the flame front, which eases the numerical calculation \citep{braackAdaptiveFiniteElement1997}.
+The use of this regularized form of the equations results in practice on a spreading of the flame front, which eases the numerical calculation \parencite{braackAdaptiveFiniteElement1997}.
 
 One question one could certainly ask is under what flame conditions the infinite rection-rate solution (also called flame-sheet solution in the following) effectively is a good initial estimate for Newton's algorithm.  Obviously for systems that respect the assumptions done for the flame-sheet the obtained solution will be very close to the finite-rate solution (see \cref{fig:MixtureFraction_finiteRateComparison}). 
 
@@ -401,7 +405,7 @@ The assumption of an infinitely fast chemical reaction implies that the time sca
 
 It should be noted that within the derivation of the equations for the flame sheet it is only assumed that the heat capacity is the same for all components ($c_{kp} = c_p$), but it is still possible to consider a dependence on temperature. However, this introduces a difficulty, since the evaluation of the temperature with \cref{eq:BS-YF} requires $c_p$, which according to \cref{eq:nondim_cpmixture}, depends in turn on the temperature. Solving the system of equations required to obtain $c_p$ and $T$ is very expensive, since it would require solving it every time the temperature must be evaluated -in particular for the evaluation of the density $\rho$ and transport parameters $\mu$ and $\rho D$-.  This problem can be solved by simply assuming a constant representative value of $c_p$. 
 
-The problem that now arises is the selection of a suitable $c_p$. In the work by \cite{xuApplicationPrimitiveVariable1993} it is suggested to estimate it simply on the basis of experimental measurements, or also by selecting some representative value, such as $c_p$ evaluated at the adiabatic temperature and stoichiometric conditions. In particular, in this work the value $\hat c_p = \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$ was adequate for all calculations. This constant value of the heat capacity proved to be an adequate estimate for finite-rate simulations, even for cases with a nonconstant heat capacity.
+The problem that now arises is the selection of a suitable $c_p$. In the work by \textcite{xuApplicationPrimitiveVariable1993} it is suggested to estimate it simply on the basis of experimental measurements, or also by selecting some representative value, such as $c_p$ evaluated at the adiabatic temperature and stoichiometric conditions. In particular, in this work the value $\hat c_p = \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$ was adequate for all calculations. This constant value of the heat capacity proved to be an adequate estimate for finite-rate simulations, even for cases with a nonconstant heat capacity.
 
 In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with non-unity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method. 
 

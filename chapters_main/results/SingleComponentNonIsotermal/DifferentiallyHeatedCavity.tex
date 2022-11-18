@@ -7,7 +7,7 @@
 		\label{DHCGeom}
 	\end{center}
 \end{figure}
-The differentially heated cavity problem is a classical benchmark case that is often used to assess the ability of numerical codes to simulate variable density flows \citep{paillereComparisonLowMach2000,vierendeelsBenchmarkSolutionsNatural2003,tyliszczakProjectionMethodHighorder2014}.
+The differentially heated cavity problem is a classical benchmark case that is often used to assess the ability of numerical codes to simulate variable density flows \parencite{paillereComparisonLowMach2000,vierendeelsBenchmarkSolutionsNatural2003,tyliszczakProjectionMethodHighorder2014}.
 The test case has the particularity that deals with a closed system, where the thermodynamic pressure $p_0$ is a parameter that must be adjusted so that the mass is conserved.The thermodynamic pressure $p_0$ determines the density field, which in turn appears in the momentum equation and the energy equation, making it necessary to use an adequate algorithm to solve the system. This point presents a special difficulty for the solution, since the calculation of $p_0$ requires knowledge of the temperature field on the whole computational domain, inducing a global coupling of the variables. 
 
 The system is a fully enclosed two-dimensional square cavity filled with fluid.  A sketch of the problem is shown in \cref{DHCGeom}. The left and right walls of the cavity have constant temperatures $\hat{T}_h$ and $\hat{T}_c$, respectively, with $\hat{T}_h >\hat{T}_c$, and the top and bottom walls are adiabatic. A gravity field induces fluid movement because of density differences caused by the difference in temperature between the hot and cold walls.
@@ -16,7 +16,7 @@ The natural convection phenomenon is characterized by the Rayleigh number, defin
 	\text{Ra} = \Prandtl \frac{\hat g \RefVal{\rho}^2(\hat T_h-\hat T_c) \RefVal{L}^3}{\RefVal{T}\RefVal{\mu}^2},
 \end{equation}
 For small values of $\text{Ra}$, conduction dominates the heat transfer process, and a boundary layer covers the entire domain. On the other hand, large values of $\text{Ra}$ represent a flow dominated by convection. When the number $\text{Ra}$ increases, a thinner boundary layer is formed.
-Following \cite{vierendeelsBenchmarkSolutionsNatural2003}, a reference velocity for buoyancy-driven flows can be defined as
+Following \textcite{vierendeelsBenchmarkSolutionsNatural2003}, a reference velocity for buoyancy-driven flows can be defined as
 \begin{equation}
 	\RefVal{u} = \frac{\sqrt{\text{Ra}} \RefVal{\mu}}{\RefVal{\rho}\RefVal{L}}.
 \end{equation}

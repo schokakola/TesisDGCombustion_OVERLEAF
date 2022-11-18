@@ -237,6 +237,14 @@ The skyline approach ensures robustness against oscillations close to the lower 
 /// 'safeguard' for solvers to avoid unphysical solutions during the solution procedure;
 /// An example would be to avoid e.g. negative denities, which might even cause NaNs,
 /// during the solver run for implicit, nonlinear equations.
+from \textcite{nicoudConservativeHighOrderFiniteDifference2000}
+ For these scales the dispersion phenomenon is important
+and may generate negative values of temperature if a non-positive scheme
+is used. The clipping to values greater than the cold wall temperature is
+justified since there is no physical mechanism which can decrease the temperature below this point. It emulates a TVD or ENO scheme which should
+be used for temperature. Since such techniques are well known but beyond
+the scope of this study, we preferred to use the simple clipping approach
+T > T1 when necessary. 
 \subsection{Homotopy method}
 \label{sec:HomotopyMethod}
 Although the Newton-Dogleg method works well for a variety of cases,

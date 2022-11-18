@@ -199,17 +199,16 @@ Finally the last requirement is that the numerical flux should be conservative, 
 	\gls{numflux}(a,b,\gls{normal}) = 	-\gls{numflux}(b,a,-\gls{normal}), \quad \forall a,b \in \mathbb{R}. 
 	\label{eq:conservativity}
 \end{equation}
-All numerical fluxes used in this work for the spatial discretization of \cref{eq:all-eqs} fulfill these requirements and they will be shown in the next section.
+All numerical fluxes used in this work for the spatial discretization of \cref{eq:all-eqs} fulfil these requirements and they will be shown in the next section.
 \subsection{Temporal discretization}\label{ssec:TemporalDiscretization}
-In the previous chapter the spatial discretization using a DG method was shown, finally obtaining the semi-discrete formulation given by \cref{eq:semiDiscWeakForm}. The time discretization of this semi-discrete system leads to the so called method of lines, which corresponds to a method first discretized in space, and later in time. In this part the chosen time-stepping method will be presented. The following part is based in \cref{levequeFiniteVolumeMethods2002,ferzigerComputationalMethodsFluid2002}
+In this section the chosen time-stepping method will be presented and is mainly based on \textcite{levequeFiniteVolumeMethods2002,ferzigerComputationalMethodsFluid2002}.
 
-An alternative to the method of lines is the so called Rothe's method, where time is first discretized then the space. This can be advantageous in some cases, such as problems with a moving domain. A second alternative is the space-time approach, where basically the temporal coordinate is treated as another spatial dimension. Again, the method can be very attractive for some cases. However, the discretized schemes lead often to prohibitively large systems. These approaches are ignored in the present work, and the method of lines is adopted.
+In the previous chapter the spatial discretization using a DG method was shown, resulting in the semi-discrete formulation given by \cref{eq:semiDiscWeakForm}. The time discretization of this semi-discrete system leads to the so called method of lines, which is the name for a method first discretized in space, and later in time. 
 
+An alternative to the method of lines is the so called Rothe's method, where time is first discretized then the space. This can be advantageous in some cases, such as problems with a moving domain. Another alternative is the space-time approach, where basically the temporal coordinate is treated as another spatial dimension. Again, the method can be very attractive for some cases. However, the discretized schemes lead often to prohibitively large systems. These approaches are ignored in the present work, and the method of lines is adopted.
 
+%TODO and the time derivatives are zero. de alguna forma dejar en claro que para steady state calculations se utiliza simplemente el mismo algoritmo pero con un deltaT muy grande
 
-\begin{equation}
-	\left(\frac{\partial \rho}{\partial t} \right)^n= \frac{1}{2\Delta t}\left(3\rho^n-2\rho^{n-1}\rho^{n-2}\right)
-\end{equation}
 \begin{table}[t]
 	\centering
 	\begin{tabular}{llllllll}
@@ -218,17 +217,24 @@ An alternative to the method of lines is the so called Rothe's method, where tim
 		Implicit Euler (BDF1) & 1             & 1        & 1         & -1        &           &           &           \\
 		BDF2                  & 1             & 2        & 3         & -4        & 1         &           &           \\
 		BDF3                  & 1             & 6        & 11        & -18       & 9         & -2        &           \\
-		BDF4                  & 1             & 12       & 25        & -48       & 36        & -16       & 3         \\
-		Crank-Nicholson       & $\frac{1}{2}$ & 1        & 1         & -1        &           &           &           \\ \hline
+		BDF4                  & 1             & 12       & 25        & -48       & 36        & -16       & 3         \\\hline
+%		Crank-Nicholson       & $\frac{1}{2}$ & 1        & 1         & -1        &           &           &           \\ \hline
 	\end{tabular}
 	\caption{Coefficients of the BDF schemes.}
-	\label{tab:my-table}
+	\label{tab:BDFCoeff}
 \end{table}
 \begin{equation}
 	\frac{\beta_0}{\gamma\Delta t}u(t^n)-\alpha F(u(t^n)) = - \sum_{i=1}^s \frac{\beta_i}{\gamma \Delta t}u(t^{n-i})+(1-\alpha)F(u(t^n)).
 \end{equation}
 
-%TODO and the time derivatives are zero. de alguna forma dejar en claro que para steady state calculations se utiliza simplemente el mismo algoritmo pero con un deltaT muy grande
+%%%%%%%%%%%%%%%%
+%. It is well known that the inclusion of the $\partial\rho /\partial t$ term of the continuity equation in the source term, as done in the present work, is a source of numerical instability. In the work of \textcite{nicoudNumericalStudyChannel} it is reported that obtaining solutions for density ratios greater than three  becomes difficult. It was previously shown in \cref{ssec:FlowCircCyl} and \cref{ssec:MultipleCellConv} that the XNSEC-solver was able to compute unsteady non-isothermic flows. However, those test cases presented moderate density ratios, the largest of them being 1.5. On the other hand, for a combustion process like the one presented here, the density ratios are much higher, even higher than 6 for typical combustion cases. In \textcite{rauwoensConservativeDiscreteCompatibilityconstraint2009} a similar destabilization effect is also reported for high density ratio
+\textcite{nicoudConservativeHighOrderFiniteDifference2000}
+Special attention should be put into the discretization of the temporal derivative appearing in the continuity equation, \cref{eq:LowMach_Conti}. It has been 
+\begin{equation}
+	\left(\frac{\partial \rho}{\partial t} \right)^n= \frac{1}{2\Delta t}\left(3\rho^n-2\rho^{n-1}+\rho^{n-2}\right)
+\end{equation}
+
 
 The methods for solving this type of nonlinear problems will be shown in \cref{sec:CompMethodology}.
 \section{Discontinuous Galerkin discretization of the low-Mach equations}
@@ -245,7 +251,7 @@ Finally, the discretized problem can be written as: find the numerical solution 
 \begin{subequations}
 	\begin{flalign}%
 		%% Continuity
-		&\gls{BCcont}(q_h)= \ContDis\ ,& \label{DiscretizedConti}\\[1ex]
+		&\gls{BCcont}(q_h)= \ContDis\ + \mathcal{T}(\partial_t \rho|_{t^{n+1}},q_h ) ,& \label{DiscretizedConti}\\[1ex]
 		%% Momentum
 		&\gls{BCmom}(\vec{v}_h) =	\MomConv + \MomPres + \MomDiff & \notag\\
 		& \quad\quad\quad + \MomSource,& \label{DiscretizedMomentum}\\[1ex]
@@ -258,6 +264,7 @@ Finally, the discretized problem can be written as: find the numerical solution 
 		& \quad\quad\quad\quad + \mathcal{M}^S_\alpha\left(s_{\alpha h},\rateReac(T_h,\vec{Y}_h )\right).& \label{DiscretizedMassFractions}
 	\end{flalign}\label{eqs:variatProblemFull}
 \end{subequations}
+\todo[inline]{Add the temporal terms}
 where the index $\alpha$ takes values $\alpha = 1, \dots,~(\gls{TotalNumberSpecies} - 1)$. Each one of the forms introduced here are shown later in \cref{ssec:nonLinearforms}.
 \subsection{Discontinuous Galerkin discretization of the flame sheet problem}
 Discretizing the flame sheet problem given by \crefrange{eq:MixtFracConti2}{eq:MixtFracMF} proceeds in a similar way. Due to the similarity of the mass fraction equation and the mixture fraction equation the discretization is analogous.
@@ -288,6 +295,10 @@ The density in \cref{eq:Conti} is evaluated as a function of the temperature and
 	\mathcal{B}^1(q) =  -\oint_{\GammaD\cup \GammaDW}{q(\rho_{\text{D}} \vec{u}_{\text{D}} \cdot \normalBoundary). \dS}
 \end{equation}
 The density at the boundary  $\rho_{\text{D}}$ is evaluated with \cref{eq:ideal_gas} using the corresponding Dirichlet values of temperature and mass fractions.
+\begin{equation}
+\mathcal{T}() =   \int_{\Omega}{  ? q} \dV.
+\end{equation}
+\todo[inline]{Add the source term for the continuity equation}
 \paragraph{Momentum equations}
 The convective term of the momentum equations is discretized using a Lax-Friedrichs flux
 \begin{equation}

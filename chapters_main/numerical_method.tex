@@ -192,18 +192,18 @@ Two more requirements are needed for the numerical flux. The first is the consis
 	\gls{numflux}(a,a,\gls{normal}) = \gls{flux}(a) \cdot \gls{normal}, \quad \forall a \in \mathbb{R}. 
 	\label{eq:consistency}
 \end{equation}
-showing that a numerical flux function should deliver the same approximate solution that the original flux function in case of a continuous variable across the interface. A direct consequence of the consistency of the numerical flux is that the weak formulation \cref{eq:semiDiscWeakForm} is automatically fullfiled by $\nuM{\gls{DGVar}} = \gls{DGVar}$.
+showing that a numerical flux function should deliver the same approximate solution that the original flux function in case of a continuous variable across the interface. A direct consequence of the consistency of the numerical flux is that the weak formulation \cref{eq:semiDiscWeakForm} is automatically fulfilled by $\nuM{\gls{DGVar}} = \gls{DGVar}$.
 
-Finally the last requirement is that the numerical flux should be conservative, which means that the total amount of $\gls{DGVar}$ can only change due to fluxes across the domain boundary. This can be writen as
+Finally the last requirement is that the numerical flux should be conservative, which means that the total amount of $\gls{DGVar}$ can only change due to fluxes across the domain boundary. This can be written as
 \begin{equation}
 	\gls{numflux}(a,b,\gls{normal}) = 	-\gls{numflux}(b,a,-\gls{normal}), \quad \forall a,b \in \mathbb{R}. 
 	\label{eq:conservativity}
 \end{equation}
-The particular numerical fluxes $\gls{numflux}$ used in the present work for the spatial discretization of \cref{eq:all-eqs} will be shown in the next section.
+All numerical fluxes used in this work for the spatial discretization of \cref{eq:all-eqs} fulfill these requirements and they will be shown in the next section.
 \subsection{Temporal discretization}\label{ssec:TemporalDiscretization}
-In the previous chapter the spatial discretization using a DG method was shown, finally obtaining the semi-discrete formulation given by \cref{eq:semiDiscWeakForm}. The time discretization of this semidiscrete system leads to the so called method of lines, which corresponds to a method first discretized in space, and later in time. In this part the chosen time-steping method will be presented. The following part is based in \cref{levequeFiniteVolumeMethods2002,ferzigerComputationalMethodsFluid2002}
+In the previous chapter the spatial discretization using a DG method was shown, finally obtaining the semi-discrete formulation given by \cref{eq:semiDiscWeakForm}. The time discretization of this semi-discrete system leads to the so called method of lines, which corresponds to a method first discretized in space, and later in time. In this part the chosen time-stepping method will be presented. The following part is based in \cref{levequeFiniteVolumeMethods2002,ferzigerComputationalMethodsFluid2002}
 
-An alternative to the method of lines is the so called Rothe's method, where time is first discretized then the space. This can be advantageous in some cases, such as problems with a moving domain. A second alternative is the space-time approach, where basically the temporal coordinate is treated as another spatial dimension. Again, the method can be very atractive for some cases. However, the discretized schemes lead often to prohibitively large systems. These approaches are ignored in the present work, and the method of lines is adopted.
+An alternative to the method of lines is the so called Rothe's method, where time is first discretized then the space. This can be advantageous in some cases, such as problems with a moving domain. A second alternative is the space-time approach, where basically the temporal coordinate is treated as another spatial dimension. Again, the method can be very attractive for some cases. However, the discretized schemes lead often to prohibitively large systems. These approaches are ignored in the present work, and the method of lines is adopted.
 
 
 

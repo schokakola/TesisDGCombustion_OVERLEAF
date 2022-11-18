@@ -1,0 +1,26 @@
+\begin{tikzpicture}
+	\begin{axis}[
+		hide axis,
+		scale only axis,
+		%height=0pt,
+		%width=0pt,
+		%		colormap/jet,
+		colorbar horizontal,
+		point meta min=0,
+		point meta max=30,
+		colormap name=turbo,
+		point meta max= 6.05,%6.73,
+		point meta min= 1,			
+		colorbar style={
+			width=11.156cm,
+			%			xtick={0,5,...,30},
+			ylabel style={},
+			xticklabel pos=upper,
+			at={(0.252,0.68)},anchor=north west,               
+			%			title={Symbol4},
+			title style={xshift=0cm} 
+		}
+		]
+		\addplot[draw=none] coordinates {(0,0)};
+	\end{axis}
+\end{tikzpicture}

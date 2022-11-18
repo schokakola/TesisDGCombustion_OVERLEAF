@@ -59,14 +59,42 @@ Interestingly the vortex shedding doesnt seem to appear in this case, at least f
 
 \begin{figure}[p]
 	\centering
-	\inputtikz{CombustionOverCylinder_ConstantDensity}
-	\caption{Temperature field and mesh calculated with the Burke-Schuhmann solution at different times, assuming a constant density.} \label{fig:CombustionOverCylinder_CD}
+	\inputtikz{ColorBarConstantDensity}
+	\subcaptionbox{t=1.25}{
+		\inputtikz{CylinderCombustion_ConstDens1}
+		\inputtikz{CylinderCombustion_ConstDens1_mesh}
+	}
+	\par\bigskip%
+	\subcaptionbox{t=5}{
+		\inputtikz{CylinderCombustion_ConstDens2}
+		\inputtikz{CylinderCombustion_ConstDens2_mesh}
+	}
+	\par\bigskip%
+	\subcaptionbox{t=25}{
+		\inputtikz{CylinderCombustion_ConstDens3}
+		\inputtikz{CylinderCombustion_ConstDens3_mesh}
+	}
+	\caption{Temperature field and mesh calculated with the Burke-Schumann solution at different times, assuming a constant density.} \label{fig:CombustionOverCylinder_CD}
 \end{figure}
 
 
 \begin{figure}[p]
 	\centering
-	\inputtikz{CombustionOverCylinder}
-	\caption{Temperature field calculated with the Burke-Schuhmann solution at different times.} \label{fig:CombustionOverCylinder}
+	\inputtikz{ColorBarVariableDensity}
+	\subcaptionbox{t=5 }{
+		\inputtikz{CylinderCombustion_VarDens1}
+		\inputtikz{CylinderCombustion_VarDens1_mesh}	
+	}
+	\par\bigskip%
+	\subcaptionbox{t=15}{
+		\inputtikz{CylinderCombustion_VarDens2}
+		\inputtikz{CylinderCombustion_VarDens2_mesh}
+	}
+	\par\bigskip%
+	\subcaptionbox{t=80}{
+		\inputtikz{CylinderCombustion_VarDens3}
+		\inputtikz{CylinderCombustion_VarDens3_mesh}	
+	}
+	\caption{Temperature field calculated with the Burke-Schumann solution at different times.} \label{fig:CombustionOverCylinder}
 \end{figure}
 

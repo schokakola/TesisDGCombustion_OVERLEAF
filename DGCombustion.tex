@@ -358,6 +358,12 @@ textsize=footnotesize,
 \captionsetup[subfigure]{skip=-5pt}
 \graphicspath{{./figures/}}
 \graphicspath{{./plots/}}
+%%%%
+%\usepackage{listings} 
+%\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
+%\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+%\definecolor{mylilas}{RGB}{170,55,241}
+\usepackage{matlab-prettifier}
 
 %%%%
 \usetikzlibrary{external}
@@ -404,10 +410,8 @@ noabbrev
 \title{A Discontinuous Galerkin Method for Diffusion Flames Embedded in a Low-Mach Solver Framework}
 % \subtitle{}
 \author[J. Gutiérrez-Jorquera]{Juan Francisco Gutiérrez Jorquera}%optionales Argument ist die Signatur,
-\birthplace{Santiago, Chile}%Geburtsort, bei Dissertationen zwingend notwendig
-%\reviewer{Gutachter 1 \and Gutachter 2 \and noch einer \and falls das immernoch nicht reicht}%Gutachter
-%Falls die Bezeichner entsprechend der Promotionsordnung angepasst werden sollen:
-\reviewer*[Erstreferent, Koreferent]{Prof. Dr.-Ing Martin Oberlack \and Gutachter 2}
+\birthplace{Santiago de Chile}%Geburtsort, bei Dissertationen zwingend notwendig
+\reviewer*[Erstreferent, Koreferent]{Prof. Dr.-Ing Martin Oberlack \and Prof. Dr. rer. nat. habil. Amsini Sadiki}
 \publishers{Darmstadt}% Feld für die Ortsangabe oder einen Verlag. Dies ist mit Darmstadt -- D17 vorbelegt, s.u. jedoch wurde die Anforderung für diese Vorgabe reduziert, daher genügt auch die Ortsangabe.
 
 
@@ -507,6 +511,7 @@ noabbrev
 
 %TODO incluir algun tipo de introduccion similar a lo que dice en
 %TODO Mathematical Models for Thermally Coupled Low Speed Flows
+
 %TODO Como está exactamente definida la mass matrix?
 %%%%%%%%%%%%%TODOOOOOOOOOOOOOOOOOO debo establecer de forma consistente si me refiero a las coordenadas como (x,y) o (x1,x2), similarmente si la velocidad es (u,v)o (u1,u2) 
 %%%%%%%%%%%%%%%%%%% TODO: Verificar si realmente todos los indices de las mass fractions ahora están referidos como k, y el numero total como N. Hacer lo mismo con M y W para los pesos moleculares.
@@ -535,8 +540,8 @@ noabbrev
 \label{bibref}
 %
 % \cleardoublepage
-% \appendix
-% \input{chapters_others/appendix}
+ \appendix
+ \input{chapters_others/AppendixMatlabCode}
 
 \cleardoublepage
 \phantomsection

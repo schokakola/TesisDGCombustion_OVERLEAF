@@ -201,42 +201,75 @@ Finally the last requirement is that the numerical flux should be conservative, 
 \end{equation}
 All numerical fluxes used in this work for the spatial discretization of \cref{eq:all-eqs} fulfil these requirements and they will be shown in the next section.
 \subsection{Temporal discretization}\label{ssec:TemporalDiscretization}
-In this section the chosen time-stepping method will be presented and is mainly based on \textcite{levequeFiniteVolumeMethods2002,ferzigerComputationalMethodsFluid2002}.
+This section will give a brief introduction to the most popular time-stepping techniques and then show the time-stepping method used in this work. This section is mainly based on \textcite{levequeFiniteVolumeMethods2002,ferzigerComputationalMethodsFluid2002}.
 
-In the previous chapter the spatial discretization using a DG method was shown, resulting in the semi-discrete formulation given by \cref{eq:semiDiscWeakForm}. The time discretization of this semi-discrete system leads to the so called method of lines, which is the name for a method first discretized in space, and later in time. 
+In the previous chapter the spatial discretization using a DG method was shown, resulting in the semi-discrete formulation given by \cref{eq:semiDiscWeakForm}. The time discretization of this semi-discrete system leads to the so called method of lines, which is the name for a method first discretized in space, and later in time.  
 
 An alternative to the method of lines is the so called Rothe's method, where time is first discretized then the space. This can be advantageous in some cases, such as problems with a moving domain. Another alternative is the space-time approach, where basically the temporal coordinate is treated as another spatial dimension. Again, the method can be very attractive for some cases. However, the discretized schemes lead often to prohibitively large systems. These approaches are ignored in the present work, and the method of lines is adopted.
 
-%TODO and the time derivatives are zero. de alguna forma dejar en claro que para steady state calculations se utiliza simplemente el mismo algoritmo pero con un deltaT muy grande
+First the time discretization for a system with a constant mass matrix will be discussed. The process of discretization results often in a system of ordinary differential equations (ODEs) of the form
+\begin{equation}
+	\frac{\text{d}\vec{u}}{\text{d}t} = - \gls{massM}^{-1}\vec{F}(t,\vec{u}(t))\qquad \text{for}\qquad t \in (0,T).\label{eq:timestep1}
+\end{equation}
+with a initial condition given by $\vec{u}(t=0) = \vec{u}^0$. The main idea of a time-stepper algorithm is to discretize the time coordinate, and advance gradually the solution $\vec{u}(t^n)$ in time from values at previous time levels $\vec{u}(t^{n-1})$, $\vec{u}(t^{n-2})$, $\dots$,  until a certain final time $t = T$ is reached.
+By integrating \cref{eq:timestep1} in time, one obtains
+\begin{equation}
+\vec{u}(t^{n+1})-\vec{u}(t^{n}) = - \gls{massM}^{-1}\int_{t^n}^{t^{n+1}}\vec{F}(t,\vec{u}(t)) \text{d}t \label{eq:timestep2}
+\end{equation}
+This equation is the starting point for different class of time stepping techniques. Two kind of methods can be distinguished, depending on how the integral in \cref{eq:timestep2} is evaluated: explicit methods and explicit methods. Explicit methods are obtained when the approximation of the integral is done only by using information from old time steps, while for implicit methods the information from the actual timestep is also considered, making necessary the solution of a system of equations.
 
+The simplest example of a explicit time-stepping method is the Explicit Euler Method: $\vec{u}(t^{n+1})= \vec{u}(t^{n})  - \Delta t \gls{massM}^{-1}\vec{F}(t^n,\vec{u}(t^n))$, which is first order accurate in time. Other methods exists with better properties than the Explicit Euler Method, typically using information from multiple known time levels or a interpolation of them. Adams-Bashforth methods are a good exponent of them. 
+
+Due to the local nature of the approach, explicit methods present themselves specially attractive for DG methods, particularly for hyperbolic equations. Explicit methods are relatively easy to implement, and need considerably less storage compared to implicit methods. However, explicit methods experience the disadvantage that, in order to obtain a stable algorithm, they are limited by a maximal timestep size $\Delta t$. The timestep typically scales with the grid size $h$ and polynomial degree $k$ by $\Delta \sim h/k$ for hyperbolic and $\Delta \sim (h/k)^2$ for parabolic problems \parencite{gassnerContributionConstructionDiffusion2007}. For many problems of interest this limitation could be highly restrictive, as too little timesteps need to be chosen in order to obtain a stable method. 
+
+Implicit methods are specially well suited for stiff problems, as they don't suffer from the timestep limitation of explicit methods, even not being restricted at all under certain conditions, which allows using considerably bigger timesteps. They present however the inconvenience that they require the solution of a system of equations, which for large problems is not a trivial task and specialized methods could be needed.
+
+The simplest implicit method is the Implicit Euler Method ${\vec{u}(t^{n+1})= \vec{u}(t^{n})  - \Delta t \gls{massM}^{-1}\vec{F}(t^n,\vec{u}(t^n))}$. The Implicit Euler Methods is the first method of a family of backward differentiation formulas (BDF), and presents the property of being unconditionally stable, meaning that the algorithm allows an arbitrarily large timestep. This property allows the calculation of steady state solutions just by choosing a very big $\Delta t$ value.
+\todo[inline]{why?}
 \begin{table}[t]
 	\centering
-	\begin{tabular}{llllllll}
+	\begin{tabular}{lllllll}
 		\hline
-		$s$                   & $\alpha$      & $\gamma$ & $\beta_0$ & $\beta_1$ & $\beta_2$ & $\beta_3$ & $\beta_4$ \\ \hline
-		Implicit Euler (BDF1) & 1             & 1        & 1         & -1        &           &           &           \\
-		BDF2                  & 1             & 2        & 3         & -4        & 1         &           &           \\
-		BDF3                  & 1             & 6        & 11        & -18       & 9         & -2        &           \\
-		BDF4                  & 1             & 12       & 25        & -48       & 36        & -16       & 3         \\\hline
-%		Crank-Nicholson       & $\frac{1}{2}$ & 1        & 1         & -1        &           &           &           \\ \hline
+		$s$                   & $\gamma$ & $\beta_0$ & $\beta_1$ & $\beta_2$ & $\beta_3$ & $\beta_4$ \\ \hline
+		Implicit Euler (BDF1) & 1        & 1         & -1        &           &           &           \\
+		BDF2                  & 2        & 3         & -4        & 1         &           &           \\
+		BDF3                  & 6        & 11        & -18       & 9         & -2        &           \\
+		BDF4                  & 12       & 25        & -48       & 36        & -16       & 3         \\ \hline
 	\end{tabular}
 	\caption{Coefficients of the BDF schemes.}
 	\label{tab:BDFCoeff}
 \end{table}
+In the present work BDF methods are used. In case of a non-constant mass matrix $\gls{massM}$, they have a general formula given by
 \begin{equation}
-	\frac{\beta_0}{\gamma\Delta t}u(t^n)-\alpha F(u(t^n)) = - \sum_{i=1}^s \frac{\beta_i}{\gamma \Delta t}u(t^{n-i})+(1-\alpha)F(u(t^n)).
-\end{equation}
+	\frac{\beta_0}{\gamma\Delta t}\gls{massM}(\vec{u}(t^n))\vec{u}(t^n)- \vec{F}(\vec{u}(t^n)) = - \sum_{i=1}^s \frac{\beta_i}{\gamma \Delta t}\gls{massM}(\vec{u}(t^{n-i}))\vec{u}(t^{n-i}).
+\end{equation}\label{eq:BDFDiscretization}
+where $s$ is the order of the BDF-scheme. The coefficients of each schema are shown in \cref{tab:BDFCoeff}. The solution of these kind of nonlinear problems will be treated in \cref{sec:CompMethodology}.
+
+
 
 %%%%%%%%%%%%%%%%
-%. It is well known that the inclusion of the $\partial\rho /\partial t$ term of the continuity equation in the source term, as done in the present work, is a source of numerical instability. In the work of \textcite{nicoudNumericalStudyChannel} it is reported that obtaining solutions for density ratios greater than three  becomes difficult. It was previously shown in \cref{ssec:FlowCircCyl} and \cref{ssec:MultipleCellConv} that the XNSEC-solver was able to compute unsteady non-isothermic flows. However, those test cases presented moderate density ratios, the largest of them being 1.5. On the other hand, for a combustion process like the one presented here, the density ratios are much higher, even higher than 6 for typical combustion cases. In \textcite{rauwoensConservativeDiscreteCompatibilityconstraint2009} a similar destabilization effect is also reported for high density ratio
+%. It is well known that the inclusion of the $\partial\rho /\partial t$ term of the continuity equation in the source term, as done in the present work, is a source of numerical instability. In the work of \textcite{nicoudNumericalStudyChannel} it is reported that obtaining solutions for density ratios greater than three  becomes difficult.In \textcite{rauwoensConservativeDiscreteCompatibilityconstraint2009} a similar destabilization effect is also reported for high density ratio
 \textcite{nicoudConservativeHighOrderFiniteDifference2000}
-Special attention should be put into the discretization of the temporal derivative appearing in the continuity equation, \cref{eq:LowMach_Conti}. It has been 
+Special attention should be put into the discretization of the temporal derivative appearing in the continuity equation, \cref{eq:LowMach_Conti}. It has been observed that the treating this term as a source term, for cases where high density ratios are present, is problematic \parencite{cookDirectNumericalSimulation1996,nicoudConservativeHighOrderFiniteDifference2000}. \textcite{cookDirectNumericalSimulation1996} reported for a pressure projection method, and using a third-order Adams-Bashforth scheme, that the discretization of the $\partial \rho /\partial t$ is a source of instabilities. They used a second-order explicit approximation
 \begin{equation}
 	\left(\frac{\partial \rho}{\partial t} \right)^n= \frac{1}{2\Delta t}\left(3\rho^n-2\rho^{n-1}+\rho^{n-2}\right)
 \end{equation}
+which is reported to be much more stable than a third-order approximation, by arguing that the extra dissipation from even-ordered schemas, compared to the dispersive effects of odd-ordered schemas, is helpful for the stability of the algorithm. However, they found that even with even-ordered time approximations of the density time derivative, the algorithm is stable only to maximum density variations up to a factor of three. 
 
-
-The methods for solving this type of nonlinear problems will be shown in \cref{sec:CompMethodology}.
+This approximation of the time derivative is used in this work. Some comments in this will be done later in \cref{ch:results}
+\todo[inline]{Dos preguntas: Porque tengo que incluir la densidad como un source term?}
+\todo[inline]{Es valido comprar en terminos de estabilidad mi approach (implicito si se ignora eltermino drhodt) con un approach como el del pressure projection method?}
+% Even-ordered finite difference approximations to this derivative
+%were found to be more stable but density ratios larger than 3 are difficult to
+%compute. Sandoval (reported in [6]) found that by decreasing the Reynolds
+%number, larger variations in density could be achieved. Larger density ratios
+%seem computable by using a predictor-corrector time-stepping algorithm in
+%which the predictor uses a second-order Adams-Bashforth time integration
+%4
+%scheme and the corrector relies on a quasi-Crank-Nicolson integration with
+%the inversion of a pressure Poisson equation at each step [7, 8]
+\todo[inline]{Escribir el problema como Ax = b}
+The methods for solving nonlinear problems such as the one given by \cref{eq:BDFDiscretization} be shown in \cref{sec:CompMethodology}.
 \section{Discontinuous Galerkin discretization of the low-Mach equations}
 The democratization methodology shown in last section is used for finding a discrete formulation of the governing equations for low-Mach reactive flows. In the next sections the discretization for the fully coupled problem with finite reaction rate, and for the flame sheet problem are shown. The chosen numerical fluxes are also shown, and some of their particularities are discussed. 
 
@@ -381,7 +414,7 @@ The diffusive term for the temperature equation  and mixture fraction equation i
 \end{equation}
 Simmilarly the diffusive term for the mass fraction equations is
 \begin{equation}
-\mathcal{S}^{D,M}\left(\Yi,s_{\alpha h},\rhodh\right) = \frac{1}{\Reynolds~\Prandtl~\Lewis_\alpha} \mathcal{S}^D\left(\Yi,s_{\alpha h},\rhodh\right)
+\mathcal{S}^{D,M}\left(\Yi,s_{\alpha h},\rho D_\alpha\right) = \frac{1}{\Reynolds~\Prandtl~\Lewis_\alpha} \mathcal{S}^D\left(\Yi,s_{\alpha h},\rho D_\alpha\right)
 \end{equation}
 The boundary condition term of the corresponding scalar equation is:
 \begin{equation}

@@ -9,7 +9,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\textcite{leeTwodimensionalDirectNumerical2000} paper donde hablan de comparacion entre quasi one-dimensional and two dimensional counter diffusion flame
+%\textcite{leeTwodimensionalDirectNumerical2000} paper donde hablan de comparacion entre quasi one-dimensional and two-dimensional  counter diffusion flame
 High order discretization methods is a topic which has been gaining increasing attention in the last decades. An important exponent of them is the Discontinuous Galerkin (DG) method \textcite{cockburnDevelopmentDiscontinuousGalerkin2000}. The DG method was initially developed and utilized for solving hyperbolic conservation laws, especially in the field of computational fluid dynamics (CFD), and has recently gained increased attention for incompressible CFD problems for structured and unstructured grids. Two main advantages stand out when compared with traditional methods such as the Finite Volume Method (FVM) or the Finite Difference Method (FDM): First, DG offers an arbitrary order of error convergence due to the polynomial local approximation of the solution field. A polynomial approximation of degree $p$ provides a numerical discretization error of the order  $\mathcal{O}(h^{p+1})$ for sufficiently smooth solutions, where $h$ is a characteristic grid length.
 Secondly, regardless of the desired order of accuracy, any given cell of the grid only requires information from its immediate neighbours, allowing for efficient parallelization with minimal communication overhead. In contrast, more traditional schemes, such as the FVM, are usually limited to $\mathcal{O}(h^N)$ accuracy, with $N \leq 2$ for unstructured grids. Even for structured grids $N$ is practically limited to low values due to the increasing stencil size for increasing $N$. Advantageously the DG method offers the locality of low-order schemes and the accuracy per degree of freedom of spectral schemes.
 
@@ -44,6 +44,25 @@ They were first derived by Rehm and Baum \parencite{rehmEquationsMotionThermally
 
 \textcite{pitschConsistentFlameletFormulation1998} Habla sobre pposibles formas de escribir las ecuaciones para un flamelet de tal forma que sea posible contabilizar la diffusion diferencial (non unity lewis numbers.)
 
+
+%Conservative High-Order Finite Difference
+%Schemes for Low-Mach Number Flows
+%F. Nicoud 1
+%owever, for the particular class of flow with
+%low Mach number M and strong density variation, the classical compressible Navier-Stokes equations are not well suited for computation. The small
+%time step limitation dictated by numerical stability requirements of explicit
+%methods would require excessive computing times to solve practical flow
+%problems. Indeed the sound waves move much faster than entropy or vorticity waves when M << 1. At the same time, in flows where the dominating
+%mechanism is free, forced or mixed convection, the acoustical mode of energy
+%carries only a small fraction of the energy present in the fluctuating part of
+%the flow. These observations led several authors [1, 2, 3, 4] to propose a set
+%of low-Mach number equations which do not contain acoustic waves but can
+%still describe the entropy and vorticity modes as well as compressibility due
+%to exothermicity of chemical reactions. A fractional-step method is used
+%most often, the pressure field being obtained by solving a Poisson equation
+%with the time derivative of the density field as part of the source term [3, 5].
+
+
 %% Esto viene de la discusion de resultados: ya lo quite de ahi, asi que hay que ponerlo aca
 %%% It was also observed that the calculation times were prohibitively high for some test cases. This point motivated the development of the solver presented in the present work, where the system is solved in a monolytic way and  and the Newton method globalized with a Dogleg-type method is used to solve the system.
 
@@ -55,8 +74,15 @@ The presented solver is embedded in the \textit{BoSSS} (Bounded Support Spectral
 
 \BoSSS is a general framework for the discretization of conservation laws using the DG method and uses a modal DG approach with orthonormal Legendre polynomials as basis functions. The \BoSSS code features a variety of applications in the context of computational fluid dynamics, such as a solver for multiphase flows with a sharp interface approach, \parencite{kummerExtendedDiscontinuousGalerkin2017} an incompressible Immersed Boundary Method solver for particle laden flows,\parencite{krauseIncompressibleImmersedBoundary2017} a solver for viscoelastic fluid flows,\parencite{kikkerFullyCoupledHighorder} and a solver for compressible flows, \parencite{geisenhoferDiscontinuousGalerkinImmersed2019} among others.
 
+
+
+From this point on, the solver presented in this work will be called XNSEC (e\textbf{X}tended \textbf{N}avier-\textbf{S}tokes for \textbf{C}ombustion). The term \textit{extended} refers to the framework on which the solver is built, which focuses on applications for multi-phase flows using a sharp interface approach using a level-set method. This point will be briefly discussed in the section %TODO future work chapter
 \begin{figure}
 	\includegraphics[width=\textwidth]{BoSSS-philosophy-1.pdf}
 	\caption{Schematic representation of the estructure of the \gls{BoSSS} solver from the \gls{BoSSS} handbook \parencite{kummer2020}.}
 	\label{Fig:BoSSS}
 \end{figure}
+
+
+\subsection{Motivation and objectives of this work}
+two-dimensional 

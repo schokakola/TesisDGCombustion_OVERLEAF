@@ -1,9 +1,9 @@
 \chapter{Governing equations}	\label{ch:gov_eqs}
 \glsresetall
-The objective of this work is to present a methodology that allows the simulation of reactive fluids - with emphasis on combustion systems - making use of the low-Mach equations.  In this chapter, it is intended to show the governing equations used in this work, in addition to making some remarks regarding their derivation and some assumptions made within the present framework.
+The objective of this work is to present a methodology that allows the simulation of reactive fluids - with emphasis on combustion systems - making use of the low-Mach equations.  In this chapter, it is intended to show the governing equations used in this work to give some remarks regarding their derivation, as well the assumptions made within the present framework.
 
 
-First, in \cref{sec:GovEqLowMach} the governing equations that allow the description of reactive fluids are presented, in addition to other thermodynamic relationships, expressions for the transport parameters and the one-step chemical model. Subsequently, in X the nondimensionalization of the equations is presented, as well as the low-Mach limit of the governing equations.
+First, in \cref{sec:GovEqLowMach}, the governing equations that allow the description of reactive fluids are presented, in addition to other thermodynamic relationships, expressions for the transport parameters and the one-step chemical model. Subsequently, in \cref{ssec:NonDimLowMachEquations} the nondimensionalization of the equations is presented, as well as the low-Mach limit of the governing equations.
 
 Finally, in \cref{sec:FlameSheet} the governing equations for an irreversible chemical model with an infinite reaction rate are presented. These equations are used as part of the algorithm to solve the finite reaction rate case.
 
@@ -11,7 +11,7 @@ Finally, in \cref{sec:FlameSheet} the governing equations for an irreversible ch
 
 \section{The low-Mach number equations for reactive flows} \label{sec:GovEqLowMach}
 Combustion processes can be modeled by a system of non-linear partial differential equations, namely the balance equations for the total mass, momentum, energy, and mass of individual species (usually expressed in terms of mass fractions). This system needs to be solved together with an equation of state and expressions for the transport properties as well as for the chemical reaction rates.
-The derivation of the governing equations for a reacting flow system can be found in the literature. (see, for example, \parencite{keeChemicallyReactingFlow2003}, \parencite{poinsotTheoreticalNumericalCombustion2005}). In the following pages, the main ideas regarding the derivation of equations are presented. For a more detailed explanation,  the interested reader is referred to the cited works and the references therein.
+The derivation of the governing equations for a reacting flow system can be found in the literature. For more information see for example the works from \textcite{keeChemicallyReactingFlow2003} and \textcite{poinsotTheoreticalNumericalCombustion2005}. In the following pages, the main ideas regarding the derivation of equations are presented. For a more detailed explanation,  the interested reader is referred to the cited works and the references therein.
 
 \subsection{The reactive Navier--Stokes equations}\label{ssect:lowMachModel}
 Throughout this work, variables with a hat sign, for example $\hat{\rho}$, represent dimensional variables, while those without it are nondimensional.  The derivation of the low-Mach number equations starts with the Navier--Stokes equations, the energy equation (in its temperature form), and the species transport equations.
@@ -36,7 +36,7 @@ Consider a reacting fluid mixture composed of $\gls{TotalNumberSpecies}$ species
 		 & \glsHat{dens}\glsHat{heatCapacity} \pfrac{\glsHat{temp}}{\hat{t}} +\glsHat{dens}\glsHat{heatCapacity} \glsHat{velVec}\cdot \hat \nabla \hat{\gls{temp}}
 		= \Dfrac{\glsHat{TotalPress}} - \hat{\nabla}\cdot \hat{\vec{q}}
 		-\left(\hat \rho \sum_{k = 1}^{\gls{TotalNumberSpecies}} \hat{c}_{p,k} Y_k \glsHat{velDiffusionvec}_k\right) \cdot \hat \nabla \glsHat{temp} %% Shouldi include this term?
-		+\glsHat{ViscTensor}\colon\hat \nabla \glsHat{velVec} + \hat \omega_T                                                                                                                                   \\
+		+\glsHat{ViscTensor}\colon\hat \nabla \glsHat{velVec} + \hat \omega_T,                                                                                                                                   \\
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		%%% Mass fraction k
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,7 +47,7 @@ Consider a reacting fluid mixture composed of $\gls{TotalNumberSpecies}$ species
 	\end{align}
 	\label{eq:NS-eq}
 \end{subequations}
-This results in (in the general case) $\gls{TotalNumberSpecies} + 5$ differential equations to be solved. In these equations, $\hat \rho$ is the density of the mixture and $\hat{\vec{g}}$ is the acceleration of gravity. $\glsHat{ViscTensor}$, $\hat{\vec{q}}$ and $\hat{\vec{j}_k}$ are the viscous tensor, the heat flux vector and the molecular mass flux vector of species $k$, respectively. Additionally, $\hat \omega_T$ is the heat release from combustion and $\hat \omega_k$ is the reaction rate of species $k$. To close the system, expressions must be defined to link these variables with the primitive variables. They will be briefly shown and commented upon in the following paragraphs.
+In the general case this results in  $\gls{TotalNumberSpecies} + 5$ differential equations to be solved. In these equations, $\hat \rho$ is the density of the mixture and $\hat{\vec{g}}$ is the acceleration of gravity. $\glsHat{ViscTensor}$, $\hat{\vec{q}}$ and $\hat{\vec{j}_k}$ are the viscous tensor, the heat flux vector and the molecular mass flux vector of species $k$, respectively. Additionally, $\hat \omega_T$ is the heat release from combustion and $\hat \omega_k$ is the reaction rate of species $k$. To close the system, expressions must be defined to link these variables with the primitive variables. They will be briefly shown and commented upon in the following paragraphs.
 \subsubsection{Equation of state}
 Assuming that the fluid behaves ideally, the density can be calculated as
 \begin{equation}
@@ -57,56 +57,56 @@ Here, $\hat{\gls{GasConstant}}$ is the universal gas constant of gases, and $\ha
 \begin{equation}
 	\hat W_{\text{avg}} = \left( \SumOvAllns \frac{Y_k}{\hat W_k} \right)^{-1}
 \end{equation}
-with $\hat{\gls{MolecularWeight}}$ as the molecular weight of species $k$.  For an ideal mixture, the specific heat capacity can be calculated as weighted averages of the specific heats of the species 
+with $\hat{\gls{MolecularWeight}}$ as the molecular weight of species $k$.  For an ideal mixture, the specific heat capacity can be calculated as a weighted average of the specific heats of the species 
 \begin{equation}
 	\hat c_p = \SumOvAllns Y_k \hat{c}_{p,k},%(\hat{T}),
 \end{equation}
-where $\hat{c}_{p,k}$ corresponds to the specific heat capacity of the component $k$. The temperature dependence of $\hat{c}_{p,k}$ can be accounted for by using NASA polynomials \parencite{mcbrideNASAThermodynamicData1993}.
+where $\hat{c}_{p,k}$ corresponds to the specific heat capacity of the component $k$. The temperature dependence of $\hat{c}_{p,k}$ can be accounted for by using NASA polynomials \parencite{mcbrideNASAThermodynamicData1993}
 \begin{equation}
-	\hat{c}_{p,k} = \left(\hat a_1 + \hat  a_2\glsHat{temp} +\hat  a_3\glsHat{temp}^2 +\hat  a_4\glsHat{temp}^3+\hat a_5\glsHat{temp}^4\right)\frac{\hat{\gls{GasConstant}}}{\hat{\gls{MolecularWeight}}}
+	\hat{c}_{p,k} = \left(\hat a_1 + \hat  a_2\glsHat{temp} +\hat  a_3\glsHat{temp}^2 +\hat  a_4\glsHat{temp}^3+\hat a_5\glsHat{temp}^4\right)\frac{\hat{\gls{GasConstant}}}{\hat{\gls{MolecularWeight}}},
 \end{equation}
 where $\hat a_1$, $\hat a_2$, $\hat a_3$, $\hat a_4$ and $\hat a_5$ are numerical coefficients supplied by the NASA database.
 \subsubsection{Transport models}
 The viscous tensor $\glsHat{ViscTensor}$ is defined for a Newtonian fluid as
 \begin{equation}
-	\glsHat{ViscTensor}= -\hat{\gls{visc}}\left( \hat\nabla \hat{\gls{velVec}} +(\hat\nabla\hat{\gls{velVec}})^T\right)  + \left(\frac{2}{3}\hat{\gls{visc}} - \hat \kappa \right) (\hat\nabla\cdot \hat{\gls{velVec}})\mytensor{I}
+	\glsHat{ViscTensor}= -\hat{\gls{visc}}\left( \hat\nabla \hat{\gls{velVec}} +(\hat\nabla\hat{\gls{velVec}})^T\right)  + \left(\frac{2}{3}\hat{\gls{visc}} - \hat \kappa \right) (\hat\nabla\cdot \hat{\gls{velVec}})\mytensor{I}.
 \end{equation}
-Here, $\hat{\gls{visc}}$ is the dynamic viscosity of the fluid, which is generally specific to the fluids and depends on its temperature and pressure. Furthermore, $\hat \kappa$ corresponds to the bulk viscosity, which is usually negligible for fluids at low pressures \parencite{birdTransportPhenomena1960}. $\hat \kappa$ will be taken to be equal to zero in the rest of this work.
+Here, $\hat{\gls{visc}}$ is the dynamic viscosity of the fluid, which is generally specific to the fluids and depends on its temperature and pressure. Furthermore, $\hat \kappa$ corresponds to the bulk viscosity, which is usually negligible for fluids at low pressures \parencite{birdTransportPhenomena1960}. In the rest of this work $\hat \kappa$ will be taken to be equal to zero.
 
 The heat flux vector $\hat{\vec{q}}$ is given by Fourier's law of heat conduction,
 \begin{equation}
 	\hat{\vec{q}} = \hat \lambda \hat{\nabla} \glsHat{temp}.
 	\label{eq:fourierLaw}
 \end{equation}
-Here, $\hat \lambda$ corresponds to the thermal conductivity, which, similar to viscosity, depends on the particular fluid under study and its temperature and pressure. Soret and Dufour effects are not considered in the present work.
+Here, $\hat \lambda$ corresponds to the thermal conductivity, which, similar to viscosity, depends on the particular fluid under study as well as its temperature and pressure. Soret and Dufour effects are not considered in the present work.
 
-The molecular mass flux vector $\hat{\vec{j}}_k$ of species $k$ is defined as $ \hat{\vec{j}}_k = \hat \rho \glsHat{velDiffusionvec}_k$. Here $\glsHat{velDiffusionvec}_k$ is the diffusion velocity of the component $k$. In general, $\glsHat{velDiffusionvec}_k$ can be obtained by solving the Maxwell-Stefan equations.
+The molecular mass flux vector $\hat{\vec{j}}_k$ of species $k$ is defined as $ \hat{\vec{j}}_k = \hat \rho \glsHat{velDiffusionvec}_k$, where $\glsHat{velDiffusionvec}_k$ is the diffusion velocity of the component $k$. In general, $\glsHat{velDiffusionvec}_k$ can be obtained by solving the Maxwell-Stefan equations
 \begin{equation}
-	\nabla X_p = \sum_{k=1}^{N}\frac{X_p X_k}{D_{pk}}(\vec{U}_k-\vec{U}_p) \qquad p = 1,\dots,N. \label{MaxwellStefan}
+	\nabla X_p = \sum_{k=1}^{N}\frac{X_p X_k}{D_{pk}}(\vec{U}_k-\vec{U}_p), \qquad p = 1,\dots,N. \label{MaxwellStefan}
 \end{equation}
-Here $D_{pk} = D_{kp}$ is the binary mass diffusion coefficient of species $p$ in species $k$. $X_p$ is the mole fraction of species $k$ and is related to the mass fraction of $k$ as $ X_k = Y_k \hat W /\hat W_k$.
-The solution of the system \eqref{MaxwellStefan} is often a difficult and costly task \parencite{williamsCombustionTheoryFundamental2000,poinsotTheoreticalNumericalCombustion2005}, and often simplifications are made. It can be shown that for binary mixtures ($N = 2$) and for mixtures containing multiple species ($N>2$) where all diffusion coefficients are equal, the system \eqref{MaxwellStefan} reduces exactly to the well-known Fick's law.
+Here $D_{pk} = D_{kp}$ is the binary mass diffusion coefficient of species $p$ into species $k$. $X_p$ is the mole fraction of species $k$ and is related to the mass fraction of $k$ as $ X_k = Y_k \hat W /\hat W_k$.
+The solution of the system \eqref{MaxwellStefan} is often a difficult and costly task \parencite{williamsCombustionTheoryFundamental2000,poinsotTheoreticalNumericalCombustion2005}, and often simplifications are made. It can be shown that for binary mixtures ($N = 2$), and for mixtures containing multiple species ($N>2$), where all diffusion coefficients are equal, the system \eqref{MaxwellStefan} reduces exactly to the well-known Fick's law
 \begin{equation}
-	\hat{\vec{j}}_k = -\rho \hat D_k \nabla Y_k \
+	\hat{\vec{j}}_k = -\rho \hat D_k \nabla Y_k.
 \end{equation}\label{eq:FickLaw}
-This expression is only exact in the cases mentioned above. The variable $\hat D_k$ corresponds in this case to the diffusion coefficient of species $k$ in the mixture. An issue related to global mass conservation can be noted here. Recall that by definition, the sum of the mass fractions must always be one ($ \sum_{k}^{N}Y_k = 1$). This is only true for the solution of \cref{eq:NS-eq} if exact expressions for diffusion velocities are used \parencite{poinsotTheoreticalNumericalCombustion2005}. If some inexact expression is used (as, for example, Fick's law), the constraint for the sum of the mass fractions will not be fulfilled. This problem can be solved by solving the global mass conservation (continuity) equation \cref{eq:NS_Conti} and only the equations for the first $\gls{TotalNumberSpecies} - 1$ species \cref{eq:NS_SpeciesBalance}.
-Therefore, all inconsistencies that originated from not using an exact species diffusion model are absorbed by $Y_{\gls{TotalNumberSpecies}}$. As pointed out in \textcite{poinsotTheoreticalNumericalCombustion2005}, this simplification should only be used if all $\gls{TotalNumberSpecies}-1$ species are strongly diluted in species $\gls{TotalNumberSpecies}$, such as the case of a flame in air, where the mass fraction of nitrogen is large. It can also be noted that this approach reduces in one the number of differential equations needed to be solved.
+This expression is exact only in the cases mentioned above. The variable $\hat D_k$ corresponds in this case to the diffusion coefficient of species $k$ in the mixture. An issue related to global mass conservation can be noted here. Recall that by definition, the sum of the mass fractions must always be one, namely $ \sum_{k=1}^{N}Y_k = 1$. This is only true for the solution of \cref{eq:NS-eq} if exact expressions for diffusion velocities are used \parencite{poinsotTheoreticalNumericalCombustion2005}. If some inexact expression is used (as, for example, Fick's law), the constraint for the sum of the mass fractions will not be fulfilled. This problem can be solved by solving the global mass conservation (continuity) equation \cref{eq:NS_Conti} and only the equations for the first $\gls{TotalNumberSpecies} - 1$ species \cref{eq:NS_SpeciesBalance}.
+Therefore, all inconsistencies originating from not using an exact species diffusion model are absorbed by $Y_{\gls{TotalNumberSpecies}}$. As pointed out in \textcite{poinsotTheoreticalNumericalCombustion2005}, this simplification should only be used if all $\gls{TotalNumberSpecies}-1$ species are strongly diluted in species $\gls{TotalNumberSpecies}$, such as the case of a flame in air, where the mass fraction of nitrogen is large. It can also be noted that this approach reduces the number of differential equations needed to be solved by one.
 
 The temperature dependence of viscosity is modeled by Sutherland's law \parencite{sutherlandLIIViscosityGases1893}
 \begin{equation}\label{eq:DimSutherland}
 	\hat{\mu}(\hat{T}) = \hat{\mu}_{\text{suth}}\left(\frac{\hat{T}}{\hat{T}_{\text{suth}}}\right)^{1.5}\frac{\hat{T}_{\text{suth}} + \hat{S}}{\hat{T}+\hat{S}}.
 \end{equation}
-Here $\hat{\mu}_{\text{suth}}$ is the viscosity evaluated at a reference temperature $\hat{T}_{\text{suth}}$, and $\hat S$ is a material-dependent parameter. In all calculations in this work the value of $\hat{S}$ for air is used, $\hat{S} = $ \SI{110.5}{\kelvin}. Expressions for determining the thermal conductivity and diffusion coefficients as function of temperature can be obtained using similar expressions, as will be shown later in \cref{ssec:NonDimLowMachEquations}.
+Here $\hat{\mu}_{\text{suth}}$ is the viscosity evaluated at a reference temperature $\hat{T}_{\text{suth}}$, and $\hat S$ is a material-dependent parameter. In all calculations in this work, the value of $\hat{S}$ for air is used, i.e. $\hat{S} = $ \SI{110.5}{\kelvin}. Expressions for determining the thermal conductivity and diffusion coefficients as a function of temperature can be obtained using similar expressions, as shown later in \cref{ssec:NonDimLowMachEquations}.
 
-The enthalpy transport term due to diffusive fluxes usually has a small influence on the solution (\textcite{smokeFormulationPremixedNonpremixed1991, goeyModelingSmallScale1995,paxionDevelopmentParallelUnstructured2001}) and is neglected in the energy equation. 
+The enthalpy transport term due to diffusive fluxes (third therm on the right hand side of \cref{eq:NS_energy}) usually has only a small influence on the solution (\textcite{smokeFormulationPremixedNonpremixed1991, goeyModelingSmallScale1995,paxionDevelopmentParallelUnstructured2001}), and it is actually exactly equal to zero for systems where all species heat capacities are equal. In the present formulation this term is neglected in the energy equation. 
 %by assuming constant values for the Prandtl and Lewis numbers (to be defined later), we obtain expression for the temperature dependency of the other transport parameters as $\hat{k}/\hat{c}_p(\hat T) = \hat \mu/\text{Pr}$ and $\hat \rho \hat D_k(\hat T) = \hat \mu/\text{Pr}\text{Le}_k$.
 
 \subsubsection{Chemical model}
 Consider a system composed of $N$ species where $M$ chemical reactions take place. Chemical reactions can be written in generalized form as follows.
 \begin{equation}\label{eq:allChemEq}
-	\sum_{k=1}^{N} \nu'_{kj}\mathcal{M}_k  \rightleftharpoons \sum_{k=1}^{N} \nu''_{kj}\mathcal{M}_k  \qquad \text{for}\qquad j=1,\dots,M
+	\sum_{k=1}^{N} \nu'_{kj}\mathcal{M}_k  \rightleftharpoons \sum_{k=1}^{N} \nu''_{kj}\mathcal{M}_k  \qquad \text{for}\qquad j=1,\dots,M\, ,
 \end{equation}
-where $\nu'_{jk}$ and $\nu''_{jk}$ are the molar stoichiometric coefficients of species $k$ in the chemical reaction $j$, and $\mathcal{M}_j$ represents the chemical component $k$. \newline
+where $\nu'_{jk}$ and $\nu''_{jk}$ are the molar stoichiometric coefficients of species $k$ in the chemical reaction $j$, and $\mathcal{M}_k$ represents the chemical component $k$. \newline
 
 %%%%%%%%
 The reaction rate of species $k$ is $\hat \omega_k$, which accounts for the total amount of species $k$ that appear or disappear due to $M$ chemical reactions (c.f. Equations \eqref{eq:allChemEq}). Its given by
@@ -118,28 +118,28 @@ Here $\nu_{kj} = \nu''_{kj} -\nu'_{kj}$, and $\mathcal{Q}_j$ is the rate of prog
 %%%%%%%
 The heat release $\hat \omega_T$ that appears in the energy equation is related to the reaction rates according to
 \begin{equation}\label{eq:heatRelDef}
-	\hat \omega _T = - \sum_{k=1}^{N} \hat h_k\hat\omega_k = - \sum_{k=1}^{N}   \Delta \hat h_k^0 \hat\omega_k   - \sum_{k=1}^{N} \hat h_{ks} \hat\omega_k
+	\hat \omega _T = - \sum_{k=1}^{N} \hat h_k\hat\omega_k = - \sum_{k=1}^{N}   \Delta \hat h_k^0 \hat\omega_k   - \sum_{k=1}^{N} \hat h_{ks} \hat\omega_k.
 \end{equation}
 Here, the specific enthalpy of $k$-th species $\hat h_k$  is written in terms of its formation enthalpy $\hat h_k^0$ and a sensible enthalpy $\hat h_{ks} =\int_{0}^{\hat{T}} \hat c_{p,k} \text{d}\hat{T} $. The second term on the right-hand side of \cref{eq:heatRelDef} is usually small and is exactly zero for a mixture where all the heat capacities of each component are equal \parencite{poinsotTheoreticalNumericalCombustion2005}. It will be neglected in the rest of the analysis.
 \newline
 
 In this work,  the one-step kinetic model for the combustion of hydrocarbons presented in \textcite{fernandez-tarrazoSimpleOnestepChemistry2006} is used. The chemical reaction is represented by a single ($M = 1$)  exothermic global irreversible expression as
 \begin{equation}
-	\ch{C}_n \ch{H}_m + \left(n+\frac{m}{4}\right) \ch{O}_2\ch{ -> } n \ch{CO2} + \frac{m}{2} \ch{H2O}
+	\ch{C}_n \ch{H}_m + \left(n+\frac{m}{4}\right) \ch{O}_2\ch{ -> } n \ch{CO2} + \frac{m}{2} \ch{H2O}.
 \end{equation}%TODO \todo{correct boldletter}
 The rate of progress of the global reaction is modeled by an Arrhenius-type expression
 \begin{align}
 	\hat{\mathcal{Q}}= \hat B e^{-\hat T_a/\hat T} \left(\frac{\hat \rho Y_F}{\hat W_F}\right)^a \left(\frac{\hat \rho Y_O}{\hat W_O}\right)^b . \label{eq:DimArr}
 \end{align}%
-Here, the subscripts $F$ and $O$ refer to fuel and oxidizer, respectively. The parameter $\hat{B}$ corresponds to the pre-exponential factor, $\hat T_a$ is the activation temperature, and $a$ and $b$ are reaction orders. For a one-step reaction model, the reaction rate of the $k$-th component (\cref{eq:reacRateDef}) is
+Here, the subscripts $F$ and $O$ refer to fuel and oxidizer, respectively. The parameter $\hat{B}$ corresponds to the pre-exponential factor, $\hat T_a$ is the activation temperature, and $a$ and $b$ are reaction orders. For a one-step reaction model, the reaction rate of the $k$-th component in\cref{eq:reacRateDef} is
 \begin{equation}
 	\hat \omega_k  =  \nu_{k} \hat W_k\hat{\mathcal{Q}}.
 \end{equation}
-With this definition, the heat release $\hat \omega_T$ (\cref{eq:heatRelDef}) is
+With this definition, the heat release $\hat \omega_T$ in \cref{eq:heatRelDef} yields
 \begin{equation}
 	\hat \omega_T = - \hat W_F \hat \omega_F\hat Q^m = - \hat \omega_F\hat Q .
 \end{equation}
-Here is $\hat Q^m$ the molar heat of reaction of the one-step reaction and $\hat Q$ is the mass heat of reaction. $\hat W_F$ and $ \hat \omega_F$ are the molar mass of the fuel species and the reaction rate of the fuel species respectively.
+Here $\hat Q^m$ is the molar heat of reaction of the one-step reaction and $\hat Q$ is the mass heat of reaction. $\hat W_F$ and $ \hat \omega_F$ are the molar mass of the fuel species and the reaction rate of the fuel species respectively.
 
 \begin{table}[!btp]
 	\centering
@@ -174,12 +174,12 @@ Here is $\hat Q^m$ the molar heat of reaction of the one-step reaction and $\hat
 	\caption{Base parameters used in the one-step combustion model by \textcite{fernandez-tarrazoSimpleOnestepChemistry2006}}\label{Tab:OneStepParameters}
 \end{table}%
 
-Within the model from \parencite{fernandez-tarrazoSimpleOnestepChemistry2006}, several parameters are adjusted to represent characteristic features of premixed flames and diffusion flames. The parameters $\hat T_a$ and $\hat \heatRelease$ are defined as functions of the local equivalence ratio $\phi$, which is, in turn, defined in terms of the local mass fractions of fuel $Y_F$ and oxidizer $Y_O$ as
+Within the model from \textcite{fernandez-tarrazoSimpleOnestepChemistry2006}, several parameters are adjusted to represent characteristic features of premixed flames and diffusion flames. The parameters $\hat T_a$ and $\hat \heatRelease$ are defined as functions of the local equivalence ratio $\phi$, which is, in turn, defined in terms of the local mass fractions of fuel $Y_F$ and oxidizer $Y_O$ as
 \begin{equation}\label{eq:equivalenceRatio}
 	\phi = \frac{s Y_F^0}{Y_O^0}\frac{s Y_F-Y_O+Y_O^0}{s(Y_F^0-Y_F) + Y_O},
 \end{equation}
 where $Y_F^0$ and $Y_O^0$ are the mass fractions of the fuel and oxidizer flows in their corresponding feed streams, and $s$ is the mass stoichiometric ratio, defined as $s =\nu_O \hat W_O/\nu_F \hat W_F$.
-The activation energy and molar heat release depend on $\phi$ as
+The activation energy depend on $\phi$ as
 \begin{equation}
 	\hat{T}_a(\phi)=
 	\begin{cases}
@@ -188,46 +188,44 @@ The activation energy and molar heat release depend on $\phi$ as
 		(1 + 4.443(\phi-1.07)^2)\hat{T}_{a0}  & \text{if}~\phi \geq 1.07,
 	\end{cases} \label{eq:ActivationTemperatureOneStep}
 \end{equation}
-
+and the molar heat release according to
 \begin{equation}
 	\hat{\heatRelease}(\phi)=
 	\begin{cases}
-		\hat{\heatRelease}_0                      & \text{if}~ \phi \leq 1 \\
-		(1 - \alpha(\phi -1))\hat{\heatRelease}_0 & \text{if}~\phi > 1,
+		\hat{\heatRelease}_0                      & \text{if}~ \phi \leq 1, \\
+		(1 - \alpha(\phi -1))\hat{\heatRelease}_0 & \text{if}~\phi > 1.
 	\end{cases}  \label{eq:heatReleaseOneStep}
 \end{equation}
 
-The parameter $\alpha$ is a constant that depends on the hydrocarbon being considered. In particular $\alpha = 0.21$ for methane combustion.
-
+The parameter $\alpha$ is a constant that depends on the hydrocarbon being considered, in particular $\alpha = 0.21$ for methane combustion.
 
 It should be noted that \cref{eq:heatReleaseOneStep} yields unphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep}. However, in practice, this should not have a significant effect because the non-physical values of $\hat Q$ appear in zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. However, setting an upper bound for $\phi$ is helpful in avoiding possible numerical instabilities.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{The unsteady non-dimensional low-Mach equations} \label{ssec:NonDimLowMachEquations}
+\subsection{The reactive low-Mach Navier-Stokes equations} \label{ssec:NonDimLowMachEquations}
 
-In the present work, the low-Mach number equation approximation of the governing equations is used. The derivation of the equations can be found in \parencite{rehmEquationsMotionThermally1978, majdaDerivationNumericalSolution1985,mullerLowMachNumberAsymptoticsNavierStokes1998}. The interested user is referred to these references for a detailed explanation of how the set of equations is derived. In what follows, the main consequences of the low Mach limit will be shown and discussed.
+In the present work, the low-Mach number approximation of the governing equations is used. The derivation of the equations can be found in the works from \textcite{rehmEquationsMotionThermally1978, majdaDerivationNumericalSolution1985,mullerLowMachNumberAsymptoticsNavierStokes1998}. The interested user is referred to these references for a detailed explanation of how the set of equations is derived. In what follows, the main consequences of the low Mach limit will be shown and discussed.
 
-The low-Mach number limit approximation of the governing equations is used for flows where the Mach number (defined as $\text{Ma} = \RefVal{u}/\hat c$, where $\RefVal{u}$ is a characteristic flow velocity and $\hat{c}$ the speed of sound) is small, which is usually the case in typical laminar combustion systems. \parencite{dobbinsFullyImplicitCompact2010}.
+Recall the definition of the Mach number, $\text{Ma} = \RefVal{u}/\hat c$, where $\RefVal{u}$ is a characteristic flow velocity and $\hat{c}$ the speed of sound. The low-Mach number limit approximation of the governing equations is used for flows where the Mach number is small, which is usually the case in typical laminar combustion systems \parencite{dobbinsFullyImplicitCompact2010}.
 The low-Mach equations are obtained by using standard asymptotic methods. One of the main results of the analysis is that for flows with a small Mach number, the pressure can be decomposed as
 \begin{equation}
 	\hat p(\hat {\vec{x}}, \hat t) = \underbrace{\hat p_0(\hat t)}_{\mathcal{O}(1)} + \underbrace{\hat p_2(\hat{\vec{x}},\hat t)}_{\mathcal{O}(\text{Ma}^2)} .
 \end{equation}
-The spatially uniform term $\hat p_0(\hat t)$ is called thermodynamic pressure and only influences the system through the equation of state. It is constant in space, but can change in time.  For an open system, the thermodynamic pressure is also constant in time and equal to the ambient pressure, while for a closed system (e.g. a system completely bounded by walls) it changes in order to ensure mass conservation. 
+The spatially uniform term $\hat p_0(\hat t)$ is called thermodynamic pressure and only influences the system through the equation of state. It is constant in space but can change in time.  For an open system, the thermodynamic pressure is also constant in time and equal to the ambient pressure, while for a closed system (e.g. a system completely bounded by walls) it changes in order to ensure mass conservation. 
 
-On the other hand, the perturbational term $\hat p_2(\hat{\vec{x}},\hat t)$ appears only in the momentum equations and plays a role similar to that of the pressure in the classical incompressible formulation. This perturbational term satisfies $\hat p_2/\hat p \sim \mathcal{O}(\text{Ma})^2$, \parencite{dobbinsFullyImplicitCompact2010,nonakaConservativeThermodynamicallyConsistent2018} showing that, under these assumptions, the equation of state is satisfied only to $\mathcal{O}(\text{Ma}^2)$ (cf.  \cref{eq:IdealGassDimensional})
+On the other hand, the perturbational term $\hat p_2(\hat{\vec{x}},\hat t)$ appears only in the momentum equations and plays a role similar to that of the pressure in the classical incompressible formulation. This perturbational term satisfies $\hat p_2/\hat p \sim \mathcal{O}(\text{Ma})^2$ \parencite{dobbinsFullyImplicitCompact2010,nonakaConservativeThermodynamicallyConsistent2018} showing that  the equation of state is satisfied only to $\mathcal{O}(\text{Ma}^2)$.
 
-Effectively, the low-Mach limit of the Navier-Stokes equations allows for the calculation of systems where big density variations due to temperature differences are present, thus not restricting the formulation to approximations such as the Boussinesq approximation for buoyancy-driven flow. In addition, this approximation truncates the mechanism of pressure wave propagation, which is a natural feature of the compressible Navier-Stokes equations. By doing this, the maximum allowed time-step is greatly increased, since the necessity of small time-steps for resolving wave phenomenon is completely removed.
+Effectively, the low-Mach limit of the Navier-Stokes equations allows the calculation of systems where large density variations due to temperature differences are present, thus the formulation is not restricted to approximations such as the Boussinesq approximation for buoyancy-driven flow. In addition, this approximation truncates the mechanism of pressure wave propagation, which is a natural feature of the compressible Navier-Stokes equations. By doing this the necessity of small time-steps for resolving the wave phenomenon is completely removed and the maximum allowed time-step is greatly increased.
 
-
-In this work a non-dimensional formulation of the governing equations is used. Following non-dimensional quantities are defined
+In this work a nondimensional formulation of the governing equations is used. Following nondimensional quantities are defined
 \begin{align*}
 	      & \rho = \frac{\hat \rho}{\RefVal{\rho}}, \quad
 	p = \frac{\hat p}{\RefVal{p}}, \quad
 	\vec{u}= \frac{\hat{\vec{u}}}{\RefVal{u}}, \quad
 	T = \frac{\hat T}{\RefVal{T}},  \quad
 	c_p = \frac{\hat c_p}{\RefValS{c}{p}}, \quad
-	W_k = \frac{\hat{W}_k}{\RefVal{W}}
+	W_k = \frac{\hat{W}_k}{\RefVal{W}},
 	\\
 	\mu = & \frac{\hat \mu}{\RefVal{\mu}},\quad
 	D_k = \frac{\hat D_k}{\RefValS{D}{k}}, \quad
@@ -235,25 +233,25 @@ In this work a non-dimensional formulation of the governing equations is used. F
 	\nabla = \frac{\hat \nabla}{\RefVal{L}}, \quad
 	t = \frac{\hat{t}}{\RefVal{t}},\quad
 	\vec{g} = \frac{\hat{\vec{g}}}{\RefVal{g}},\quad
-	Q = \frac{\hat Q}{\hat{Q}_0}
+	Q = \frac{\hat Q}{\hat{Q}_0}.
 \end{align*}
-Here $\RefVal{u}, \RefVal{L}$, $\RefVal{p}$, $\RefVal{t}$, and $\RefVal{T}$ are the reference velocity, length, pressure, time, and temperature, respectively, and are equal to some characteristic value for the particular configuration studied. Furthermore, $\RefVal{g}$ is the magnitude of the gravitational acceleration and $\RefVal{W}$ is the reference molecular weight. The reference transport properties $\RefVal{\mu}$, $\RefVal{k}$, $\RefValS{D}{k}$ and the reference heat capacity of the mixture and $\RefValS{c}{p}$ are evaluated at the reference temperature $\RefVal{T}$. Similarly, the reference density must satisfy the equation of state, thus $\RefVal{\rho} = \RefVal{p}/(\hat{\mathcal{R}}\RefVal{T}\RefVal{W})$.  By introducing these definitions into the governing equations (\cref{eq:NS_Conti,eq:NS_Momentum,eq:NS_energy,eq:NS_SpeciesBalance}) the reactive set of non-dimensional low-Mach number equations is obtained. The system of differential equations to be solved reads as follows.
+Here $\RefVal{u}, \RefVal{L}$, $\RefVal{p}$, $\RefVal{t}$, and $\RefVal{T}$ are the reference velocity, length, pressure, time, and temperature, respectively, and are equal to some characteristic value for the particular studied configuration. Furthermore, $\RefVal{g}$ is the magnitude of the gravitational acceleration and $\RefVal{W}$ is the reference molecular weight. The reference transport properties $\RefVal{\mu}$, $\RefVal{k}$, $\RefValS{D}{k}$ and the reference heat capacity of the mixture $\RefValS{c}{p}$ are evaluated at the reference temperature $\RefVal{T}$. Similarly, the reference density must satisfy the equation of state, thus $\RefVal{\rho} = \RefVal{p}/(\hat{\mathcal{R}}\RefVal{T}\RefVal{W})$.  By introducing these definitions into the governing  \cref{eq:NS_Conti,eq:NS_Momentum,eq:NS_energy,eq:NS_SpeciesBalance} the reactive set of nondimensional low-Mach number equations is obtained. The system of differential equations to be solved reads as follows.
 \begin{subequations}
 	\begin{align}
 		 & \pfrac{\rho}{t} + \nabla \cdot (\rho \vec{u})   = 0, \label{eq:LowMach_Conti}                                                                                                                                                                                                   \\
 		 & \pfrac{\rho \vec{u}}{t} + \nabla \cdot (\rho \vec{u} \otimes \vec{u})   = - \nabla p + \frac{1}{\Rey}\nabla \cdot \mu\left( \nabla \vec{u} +\nabla \vec{u}^T  - \frac{2}{3}(\nabla\cdot \vec{u})\mytensor{I} \right)  - \frac{1}{\Fr^2}\rho\vec{g}, \label{eq:LowMach_Momentum} \\
 		 &\frac{1}{\gamma} \pfrac{\rho T}{t} + \nabla \cdot (\rho \vec{u} T)  = \frac{1}{\text{Re}~\text{Pr}}\nabla \cdot\left(\frac{k}{c_p} \nabla T\right)+ \text{H}~\Da~\frac{\heatRelease~\mathcal{Q}}{c_p}, \label{eq:LowMachEnergy}                                                                  \\
-		 & \pfrac{\rho Y_k}{t} +	\nabla \cdot (\rho  \vec{u}Y_k)   = \frac{1}{\text{Re}~\text{Pr}~\text{Le}_k}\nabla \cdot(\rho D \nabla Y_k)+  \Da~\stoicCoef_k W_k \mathcal{Q}. \quad (k = 1, \dots,~N - 1) \label{eq:LowMachMassBalance}
+		 & \pfrac{\rho Y_k}{t} +	\nabla \cdot (\rho  \vec{u}Y_k)   = \frac{1}{\text{Re}~\text{Pr}~\text{Le}_k}\nabla \cdot(\rho D \nabla Y_k)+  \Da~\stoicCoef_k W_k \mathcal{Q}, \quad k = 1, \dots,~N - 1. \label{eq:LowMachMassBalance}
 	\end{align}
 	\label{eq:all-eq}\label[pluralequation]{eq:all-eqs}
 \end{subequations}
-This system is solved for the primitive variables velocity $\vec{u} = (u_x, u_y)$, pressure $p$, temperature $T$ and mass fractions ${\mathbf{Y} = (Y_1,\dots,Y_{N-1})}$. Note that it is assumed that the spatial gradients of the mixture heat capacity are small, which allows to introduce $c_p$ in the derivative of the diffusive term of \cref{eq:LowMachEnergy}. Furthermore, using the fact that the sum of the mass fractions must always be one, the mass fraction of the last species $\gls{TotalNumberSpecies}$ can be calculated with
+This system is solved for the primitive variables velocity $\vec{u} = (u_x, u_y)$, pressure $p$, temperature $T$ and mass fractions ${\mathbf{Y} = (Y_1,\dots,Y_{N-1})}$. Note that it is assumed that the spatial gradients of the mixture heat capacity are small, which allows to introduce $c_p$ in the derivative of the diffusive term of \cref{eq:LowMachEnergy}. Furthermore, considering the fact that the sum of the mass fractions must always be one, the mass fraction of the last species $\gls{TotalNumberSpecies}$ can be calculated with
 \begin{align} \label{eq:MassFractionConstraint}
 	Y_{\gls{TotalNumberSpecies}} = 1 - \sum_{k = 1}^{\gls{TotalNumberSpecies}-1}Y_k.
 \end{align}
-Note that the form of the low-Mach equations is very similar to the Navier-Stokes equations. The major difference being in the decomposition of the pressure. This similarity is beneficial, as it allows the use of similar techniques to solve the PDE system to those used for the completely incompressible case \parencite{keshtibanCompressibleFlowSolvers2003}. From now on the sub-index of the hydrodynamic pressure $\hat p_2$ will be dropped and it will be called simply $\hat p$, further emphasizing the similarity in its role to the pressure of the incompressible equations.
+Note that the form of the low-Mach equations is very similar to the Navier-Stokes equations. The major difference is in the decomposition of the pressure. This similarity is beneficial as it allows the use of similar techniques to solve the PDE system to those used for the completely incompressible case \parencite{keshtibanCompressibleFlowSolvers2003}. From now on, the sub-index of the hydrodynamic pressure $\hat p_2$ will be dropped and it will be called simply $\hat p$, further emphasizing the similarity in its role to the pressure of the incompressible equations.
 
-Six non-dimensional factors arise from the non-dimensionalization process:
+Six nondimensional factors arise from the nondimensionalization process:
 \begin{gather*}
 	\text{Re} = \frac{\RefVal{\rho} \RefVal{u}  \RefVal{L}}{\RefVal{\Viscosity}}, \quad
 	\text{Fr} = \frac{\RefVal{u}}{\sqrt{\RefVal{g}\RefVal{L}}}, \quad
@@ -261,48 +259,48 @@ Six non-dimensional factors arise from the non-dimensionalization process:
 	% \text{Ma} = \frac{\RefVal{u}}{\sqrt{\gamma \RefVal{T} \hat{\gls{GasConstant}} / \RefVal{W} }},\\
 	\text{Le}_k = \frac{\RefVal{k}}{\RefVal{\rho} \RefValS{D}{k} \RefValS{c}{p}}, \quad
 	\Da = \frac{\hat B \RefVal{L} \RefVal{\rho}}{\RefVal{M}\RefVal{u}}, \quad \label{eq:Dahmkoeler}
-	\text{H} = \frac{\hat \heatRelease_0}{\RefValS{c}{p} \RefVal{T}}%%%%%%%%%%%%%%%%%%%%%%% CHECK THIS,  not sure if \RefVal{M} should be here
+	\text{H} = \frac{\hat \heatRelease_0}{\RefValS{c}{p}. \RefVal{T}}%%%%%%%%%%%%%%%%%%%%%%% CHECK THIS,  not sure if \RefVal{M} should be here
 	%\text{H} = \frac{\hat \heatRelease_0}{\RefVal{M} \RefValS{c}{p} \RefVal{T}}%%%%%%%%%%%%%%%%%%%%%%% CHECK THISONEEEEEEEEEEEEEEEEEEEEE
 \end{gather*}
-The first three equations define the Reynolds, Froude and Prandtl number respectively. $\text{Le}_k$ is the Lewis number of species $k$. Finally $\text{Da}$ and H are the Damköhler number and the non-dimensional heat release respectively. The non-dimensional progress of the global reaction reads as follows.
+The first three equations define the Reynolds, Froude and Prandtl number, respectively. $\text{Le}_k$ is the Lewis number of species $k$. Finally, $\text{Da}$ and H are the Damköhler number and the nondimensional heat release, respectively. The nondimensional progress of the global reaction reads as follows
 \begin{align}
 	\mathcal{Q}(T, \vec{Y})  = \left(\frac{\rho Y_F}{M_F}\right) \left(\frac{\rho Y_O}{M_O}\right)\text{exp}\left(\frac{-T_a}{T}\right), \label{eq:NonDimArr}
 \end{align}
-where $T_a = \hat{T}_a / \RefVal{T}$. Furthermore, the non-dimensional heat release is
+where $T_a = \hat{T}_a / \RefVal{T}$. Furthermore, the nondimensional heat release is
 \begin{equation}
 	\heatRelease(\phi)=
 	\begin{cases}
-		1                     & \text{if}~ \phi \leq 1 \\
-		(1 - \alpha(\phi -1)) & \text{if}~\phi > 1,
+		1                     & \text{if}~ \phi \leq 1, \\
+		(1 - \alpha(\phi -1)) & \text{if}~\phi > 1.
 	\end{cases}  \label{eq:heatReleaseOneStepNonDim}
 \end{equation}
-with $\phi$ evaluated according to \cref{eq:equivalenceRatio}. In the low-Mach limit, the ideal gas equation depends on the thermodynamic pressure, temperature and mass fractions. It reads in its non-dimensional form
+with $\phi$ evaluated according to \cref{eq:equivalenceRatio}. In the low-Mach limit, the ideal gas equation depends on the thermodynamic pressure, temperature and mass fractions. It reads in its nondimensional form
 \begin{align} \label{eq:ideal_gas}
 	\rho(p_0,T, \vec{Y}) = \frac{p_0}{T \SumOvAllns \frac{Y_k}{W_k}}.
 \end{align}
-As mentioned above, the thermodynamic pressure of a closed system is a parameter that has to be determined (for an open system is equal to the atmospheric pressure). By integrating \cref{eq:ideal_gas} into the entire domain $\Omega$ the expression
+As mentioned above, the thermodynamic pressure of a closed system is a parameter that has to be determined (for an open system is equal to the atmospheric pressure). By integrating \cref{eq:ideal_gas} into the entire domain $\Omega$, the expression
 \begin{equation}
-	p_0(T, \vec{Y}) = \frac{m_0}{\int_\Omega \left( T\sum_{k=1}^{N} \frac{Y_k}{W_k} \right)^{-1}\text{d}V}, \label{eq:p0Condition}
+	p_0(T, \vec{Y}) = \frac{m_0}{\int_\Omega \left( T\sum_{k=1}^{N} \frac{Y_k}{W_k} \right)^{-1}\text{d}V} \label{eq:p0Condition}
 \end{equation}
-can be derived. Here, $m_0 = \int_\Omega \rho \text{d}V$ is the mass of the fluid in the closed system, and since in a closed system the total mass is constant, it can be determined using initial conditions.
-Similarly, the non-dimensional specific heat capacity of the mixture $c_p$ is calculated as
+can be derived. Here, $m_0 = \int_\Omega \rho \text{d}V$ is the mass of the fluid in the closed system. Since in a closed system the total mass is constant, it can be determined using initial conditions.
+Similarly, the nondimensional specific heat capacity of the mixture $c_p$ is calculated as
 \begin{equation}\label{eq:nondim_cpmixture}
 	c_p(T,\mathbf{Y}) = \SumOvAllns Y_k c_{p,\alpha},
 \end{equation}
-and the non-dimensional viscosity as
+and the nondimensional viscosity as
 \begin{equation} \label{eq:nondim_sutherland}
 	\mu(T) =  T^{\frac{3}{2}}\frac{1+\hat{S} }{\RefVal{T}T+\hat{S}}.
 \end{equation}
-The model for the transport parameters can be simplified by assuming constant values for the Prandtl and Lewis numbers. \parencite{smokeFormulationPremixedNonpremixed1991}  The nondimentional transport parameters are related in that case with 
+The model for the transport parameters can be simplified by assuming constant values for the Prandtl and Lewis numbers \parencite{smokeFormulationPremixedNonpremixed1991}.  The nondimensional transport parameters are related in that case with 
 \begin{equation}
     \mu = k/c_p = \rho D.
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The flame sheet approximation} \label{sec:FlameSheet}
-In this section, the concept of the flame sheet approximation is introduced, which is used in the solution algorithm to solve the finite reaction rate system given by \cref{eq:all-eqs}. The ideas proposed in the work of \textcite{keyesFlameSheetStarting1987} are followed.
+In this section, the concept of the flame sheet approximation is introduced, which is used in the solution algorithm to obtain solutions of the finite reaction rate system given by \cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}. The ideas proposed in the work of \textcite{keyesFlameSheetStarting1987} are followed.
 
-Assuming that all species have the same heat capacity $c_{p,k} = c_p$ and mass diffusion coefficient $D_k=D$, that the Lewis number is unity for all species, and that combustion can be described by a single step chemical reaction, it is possible to obtain an equation for a scalar without source terms, taking a linear combination of the energy \cref{eq:LowMachEnergy} and mass fraction \cref{eq:LowMachMassBalance}. Thus, the system can be simplified to solving the low-Mach Navier-Stokes equations together with an equation for the passive scalar $z$:
+Assuming that all species have the same heat capacity $c_{p,k} = c_p$ and mass diffusion coefficient $D_k=D$, that the Lewis number is unity for all species, and that combustion can be described by a single step chemical reaction, it is possible to obtain an equation for a scalar without source terms, which is a linear combination of the energy \cref{eq:LowMachEnergy} and mass fraction \cref{eq:LowMachMassBalance}. Thus, the system can be simplified to solving the low-Mach Navier-Stokes equations and an equation for the passive scalar $z$:
 \begin{subequations}
 	\begin{align}
 		\pfrac{\rho}{t}+	\nabla \cdot (\rho \vec{u})                          & = 0, \label{eq:MixtFracConti2}                                                                                                                                                                    \\
@@ -311,48 +309,43 @@ Assuming that all species have the same heat capacity $c_{p,k} = c_p$ and mass d
 	\end{align}
 	\label{eq:all-eq-mixfrac}
 \end{subequations}
-which are solved together with the equation of state and expressions for the transport parameters. Here $z$ is the mixture fraction, it is a scalar that measures the local fuel/oxidizer ratio \parencite{poinsotTheoreticalNumericalCombustion2005}. The variable $z$ is per definition equal to unity in the fuel feed stream and equal to zero in the oxidizer feed stream. Note that the system is not closed, because $\rho$, $\mu$ and $\rho D$ are still functions of the temperature and mass fractions. These fields can be related to the mixture fraction using the Burke-Schumann flame structure concept. \parencite{burkeDiffusionFlames1928} 
+which are solved together with the equation of state (\cref{eq:ideal_gas}) and expressions for the transport parameters (\cref{eq:nondim_sutherland}). Here $z$ is the mixture fraction, which is a scalar that measures the local fuel/oxidizer ratio \parencite{poinsotTheoreticalNumericalCombustion2005}. The variable $z$ is per definition equal to unity in the fuel feed stream and equal to zero in the oxidizer feed stream. Note that the system is not closed, because $\rho$, $\mu$ and $\rho D$ are still functions of the temperature and mass fractions. These fields can be related to the mixture fraction using the Burke-Schumann flame structure concept \parencite{burkeDiffusionFlames1928}. 
 
 In the case of an infinitely fast chemical reaction, fuel and oxidizer cannot coexist. On one side of this sheet only oxidizer is found, and on the other side only fuel. The exact position of the flame sheet can be determined by finding the location of the points where the reactant mass fractions $Y_F$ and $Y_O$  meet in stoichiometric proportions, that is, the points where the mixture fraction $z = z_{st}$, with
 \begin{equation}
-	z_{st} = \frac{Y_O^0}{Y_O^0+sY_F^0},
+	z_{st} = \frac{Y_O^0}{Y_O^0+sY_F^0}.
 \end{equation}
-where $Y_O^0$ is the mass fraction of the oxidizer in the oxidizer inlet stream, and $Y_F^0$ is the mass fraction of fuel in the fuel inlet stream.
-The Burke-Schumann solution provides analytical expressions for temperature and mass fraction fields on either side of the flame sheet as function of the mixture fraction $z$ (see for example the textbook from \textcite{poinsotTheoreticalNumericalCombustion2005} or the work from \textcite{keyesFlameSheetStarting1987}).
-
-
-%%%%%%%%%%%%%%%%%%%%%
-
-
-
+Here $Y_O^0$ is the mass fraction of the oxidizer in the oxidizer inlet stream, and $Y_F^0$ is the mass fraction of fuel in the fuel inlet stream.
+The Burke-Schumann solution provides analytical expressions for temperature and mass fraction fields on either side of the flame sheet as a function of the mixture fraction $z$. For a more detailed derivation see for example the textbook from \textcite{poinsotTheoreticalNumericalCombustion2005} or the work from \textcite{keyesFlameSheetStarting1987}.
+The temperature is related to the mixture fraction as
 \begin{equation}\label{eq:BS-T}
 	T(z) =
 	\begin{dcases}
-		z T_F^0 + (1-z)T_O^0 + \frac{Q Y_F^0}{c_p}z_{st}\frac{1 - z}{1-z_{st}} & \text{if}\quad z \geq z_{st} \\
-		z T_F^0 + (1-z)T_O^0 + \frac{Q Y_F^0}{c_p}z                            & \text{if}\quad z < z_{st}
+		z T_F^0 + (1-z)T_O^0 + \frac{Q Y_F^0}{c_p}z_{st}\frac{1 - z}{1-z_{st}} & \text{if}\quad z \geq z_{st}, \\
+		z T_F^0 + (1-z)T_O^0 + \frac{Q Y_F^0}{c_p}z                            & \text{if}\quad z < z_{st}.
 	\end{dcases}
 \end{equation}
 The mass fraction field of fuel and oxidizer species at either side of the flame is given by:
 \begin{equation}\label{eq:BS-YF}
 	Y_F(z) =
 	\begin{dcases}
-		Y_F^0\frac{z - z_{st}}{1-z_{st}} & \text{if}\quad z \geq z_{st} \\
-		0                                & \text{if} \quad z < z_{st}
+		Y_F^0\frac{z - z_{st}}{1-z_{st}} & \text{if}\quad z \geq z_{st}, \\
+		0                                & \text{if} \quad z < z_{st},
 	\end{dcases}
 \end{equation}
 \begin{equation}\label{eq:BS-YO}
 	Y_O(z) =
 	\begin{dcases}
-		0                                         & \text{if} \quad z \geq z_{st} \\
-		Y_O^0 \left( 1- \frac{z}{z_{st}}  \right) & \text{if} \quad z < z_{st}
+		0                                         & \text{if} \quad z \geq z_{st}, \\
+		Y_O^0 \left( 1- \frac{z}{z_{st}}  \right) & \text{if} \quad z < z_{st}.
 	\end{dcases}
 \end{equation}
-and finally, the mass fraction field of product species $P$ is:
+Finally, the mass fraction field of product species $P$ is:
 \begin{equation}\label{eq:BS-YP}
 	Y_P(z) =
 	\begin{dcases}
-		Y_O^0\frac{W_P\nu_P}{W_O\nu_O}(1-z) & \text{if} \quad z \geq z_{st} \\
-		Y_F^0\frac{W_P\nu_P}{W_F\nu_F}z     & \text{if} \quad z < z_{st}
+		Y_O^0\frac{W_P\nu_P}{W_O\nu_O}(1-z) & \text{if} \quad z \geq z_{st}, \\
+		Y_F^0\frac{W_P\nu_P}{W_F\nu_F}z     & \text{if} \quad z < z_{st}.
 	\end{dcases}
 \end{equation}
 Once the mixture fraction field $z$ is obtained, the temperature and mass fraction fields are uniquely defined by \cref{eq:BS-T,eq:BS-YF,eq:BS-YO,eq:BS-YP}, which are used to evaluate the density and the transport properties. 
@@ -373,10 +366,10 @@ Once the mixture fraction field $z$ is obtained, the temperature and mass fracti
 
 Note that the expressions shown above are not differentiable at the stoichiometric point, which also means that the density and transport properties are not differentiable at $z =z_{st}$. This presents a challenge for algorithms for finding solutions of the system \parencite{rauwoensConservativeDiscreteCompatibilityconstraint2009}. Later in \cref{ssec:MethodCombustion} this point will be treated.
 
-The main idea of introducing the system of equations presented in this section is to obtain an adequate initial estimate that can be used to find a solution to the system with a finite reaction rate (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}). Under certain conditions, the approximation is indeed very good. In \cref{fig:MixtureFraction_finiteRateComparison} temperature and fuel mass fraction fields obtained with infinite and finite reaction rate across the center-line of a counterflow flame configuration is shown. Clearly, both solutions are very similar, differing only in the area near the flame. However, this similarity is only valid under the assumptions made to derive \cref{eq:MixtFracMF}. In the case that the Lewis number is not equal to one, or that the heat capacities are not equal for each species, the finite-rate solution will differ slightly from that obtained with the infinite-reaction rate.
+The main idea of introducing the system of equations presented in this section is to obtain an adequate initial estimate that can be used to find a solution for the system with a finite reaction rate (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}). Under certain conditions, the approximation is indeed very good. In \cref{fig:MixtureFraction_finiteRateComparison}, temperature and fuel mass fraction fields obtained with infinite and finite reaction rate across the center-line of a counterflow flame configuration are shown. Clearly, both solutions are very similar, differing only in the area near the flame. However, this similarity is only valid under the assumptions made to derive \cref{eq:MixtFracMF}. In the case that the Lewis number is not equal to one, or that the heat capacities are not equal for each species, the finite-rate solution will differ slightly from that obtained with the infinite-reaction rate.
 
 \section{Boundary conditions}
-The following boundary conditions are imposed for the resolution of the finite reaction rate system (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}) and for the flame sheet problem (\cref{eq:MixtFracConti2,eq:MixtFracMom,eq:MixtFracMF}).
+The following boundary conditions are imposed for the resolution of the finite reaction rate system (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}) and for the flame sheet problem (\cref{eq:MixtFracConti2,eq:MixtFracMom,eq:MixtFracMF}),
 \begin{subequations}
 	\begin{align}
 		\Gamma_{\text{D}}:\quad
@@ -427,8 +420,7 @@ The following boundary conditions are imposed for the resolution of the finite r
 		\label{eq:bc_P}
 	\end{align}
 \end{subequations}
-
-where $k$ denotes the index from mass fractions $k = (1,\dots,N-1)$. The boundary $\Gamma_\text{D}$ represents conditions for inlets and walls, with velocity, temperature, mass fractions and mixture fraction defined as Dirichlet boundary conditions. Boundaries $\Gamma_\text{DW}$  are used to represent adiabatic walls, where velocity is given as a Dirichlet boundary condition, but with the gradients perpendicular to the wall of the transported scalars set to zero. The boundary $\Gamma_\text{N}$ represent an outflow of the domain with homogeneous Neumann condition for all scalars. The boundary $\Gamma_{\text{ND}}$ also  represents an outlet boundary condition, but with Dirichlet boundary conditions for the scalars. Finally the boundaries $\Gamma_P$ are periodic boundaries, where $\vec{x}$ and $\vec{x}'$ are periodic pairs in the domain.
+where $k = (1,\dots,N-1)$ denotes the index of mass fractions. The boundary $\Gamma_\text{D}$ represents conditions for inlets and walls, with the velocity, temperature, mass fractions and mixture fraction defined as Dirichlet boundary conditions. Boundaries $\Gamma_\text{DW}$  are used to represent adiabatic walls, where the velocity is given as a Dirichlet boundary condition again, but with the gradients perpendicular to the wall of the transported scalars are set to zero. The boundary $\Gamma_\text{N}$ represent an outflow of the domain with homogeneous Neumann condition for all scalars. The boundary $\Gamma_{\text{ND}}$ also  represents an outlet boundary condition, but with Dirichlet boundary conditions for the scalars. Finally, the boundaries $\Gamma_P$ are periodic, where $\vec{x}$ and $\vec{x}'$ are periodic pairs in the domain.
 
 \mycomment{
 	%TODO cosas por poner en algun lado

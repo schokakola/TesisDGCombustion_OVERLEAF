@@ -1,22 +1,38 @@
 \chapter{Computational methodology} \label{sec:CompMethodology}
-This section has the objective of introducing the computational methodology that allows the resolution of the discretized set of equations. First, the globalized Newton method is presented that allows the resolution of a nonlinear system of equations. In addition, comments on the termination criteria are given.
+
+
+This section has the objective of introducing the computational strategies used in the present work for the solution of low-Mach number flows. Parts of this section are based on the work published by \textcite{kikkerFullyCoupledHighorder} and \textcite{gutierrez-jorqueraFullyCoupledHigh2022}.
 
 
 
-The variational problem for the finite chemistry rate case described by \crefrange{DiscretizedConti}{DiscretizedMassFractions} and for the flame sheet problem, \crefrange{DiscretizedConti2}{DiscretizedEnergy2}, are linearised and solved using a Newton method with a Dogleg-type globalization \textcite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008}. The \textit{BoSSS} framework provides an efficient algorithm for the evaluation of the Jacobian based on perturbations of the forms presented in the last section.
-The relatively large linear system of equations for each Newton iteration is solved by means of the in \BoSSS integrated orthonormalization multigrid algorithm \textcite{kummerBoSSSPackageMultigrid2021}, which at the lowest multigrid levels makes use of the sparse direct solver PARDISO, originally developed by Schenk et al. \textcite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
-from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows'' library collection to solve the linear system.
 
 \textit{BoSSS} also features a method for solving highly nonlinear problems with a homotopy strategy.
-Further details on the used Newton method solver, the homotopy strategy and its implementation are given in the next sections, which are adapted from \textcite{kikkerFullyCoupledHighorder}  and are included for the sake of completeness. For information on the mentioned orthonormalization multigrid algorithm we refer the interested reader to the work of \textcite{kummerBoSSSPackageMultigrid2021}.
+Further details on the used Newton method solver, the homotopy strategy and its implementation are given in the next sections, which are adapted from \textcite{kikkerFullyCoupledHighorder}. For information on the mentioned orthonormalization multigrid algorithm we refer the interested reader to the work of \textcite{kummerBoSSSPackageMultigrid2021}.
+First, the globalized Newton method is presented that allows the resolution of a nonlinear system of equations. In addition, comments on the termination criteria are given.
 
-From this point on, the solver presented in this work will be called XNSEC (e\textbf{X}tended \textbf{N}avier-\textbf{S}tokes for \textbf{C}ombustion). The term \textit{extended} refers to the framework on which the solver is built, which focuses on applications for multi-phase flows using a sharp interface approach using a level-set method. This point will be briefly discussed in the section %TODO future work chapter
-\section{Nonlinear solver}
+The newton algorithm presented in this section is a collaborative work of the \textit{BoSSS}  code developers group and has also been used for the simulation of viscoelastic \parencite{kikkerFullyCoupledHighorder} flows, among others.
 
-\subsection{Calculation of the Jacobian matrix}
-We start by introducing a few new elements to be able to describe the implemented Newton method.
-The discussion for the variational problem using the mixture fraction variable (\crefrange{DiscretizedConti2}{DiscretizedEnergy2}) is completely analogous, and will not be mentioned in this discussions.
-%The variational problem defined by \cref*{DiscretizedConti,DiscretizedMomentum,DiscretizedEnergy,DiscretizedMassFractions} can be cast into a more compact notation. By subtracting all terms from the right-hand sides from the terms of the left-hand sides of \crefrange{DiscretizedConti}{DiscretizedMassFractions} the problem can be written as:
+
+In the early stages of development of the XNSEC solver the BoSSS code featured a framework for the solution of nonlinear systems using Picard iterations. These proved to be useful for systems where no large nonlinearities exist. Although the use of Picard iterations was useful for solving various types of problems (particularly problems involving incompressible flows), the method did not prove to be a particularly robust method, since it requires user-defined under-relaxation parameters in order to obtain a stable algorithm. These parameters are highly dependent on the problem at hand and require user experience to be adequately chosen.
+This motivated the development of the implementation of a Newton method for the resolution of the non-linear system. The use of a newton method proved to be very successful for all testcases treated in the present work. 
+
+We note however that this globalization strategy is still not sufficient to ensure convergence for some of the test cases presented, namely for high Rayleigh numbers for the differentially heated cavity problem. For those cases we use a homotopy strategy, where we start with a low homotopy-parameter, a parameter for which the solution of the problem is not hard to find, which is gradually and carefully increased until convergence for the aimed value is reached (cf. \cref{sec:HomotopyMethod}).
+
+
+
+
+The solution algorithm developed for this work consists in various ingredients
+
+Newton solver
+Efficient Calculation of the jacobian matrix
+Homotopy strategy
+Initialization strategy for steady state combustion problems.
+\section{Solver structure}
+\section{Solution of the nonlinear problem}
+
+
+
+The variational problem defined by \cref*{DiscretizedConti,DiscretizedMomentum,DiscretizedEnergy,DiscretizedMassFractions} can be cast into a more compact notation. By subtracting all terms from the right-hand sides from the terms of the left-hand sides of \crefrange{DiscretizedConti}{DiscretizedMassFractions} the problem can be written as:
 Find $\myvector{U}_h \in \mathbb{V}_\myvector{k}$
 \begin{equation}
 	\mathcal{N}(\myvector{U}_h,\myvector{V}_h) = 0 \quad \forall \ \myvector{V}_h \in \mathbb{V}_\myvector{k} ,
@@ -25,12 +41,12 @@ Find $\myvector{U}_h \in \mathbb{V}_\myvector{k}$
 for
 $\myvector{U}_h = (p_h,\vec{u}_h, T_h, \MFVecPrima_h)$ and
 $\myvector{V}_h = (q_h,\vec{v}_h, r_h, \mathbf{s}_h)$
-. We assume a basis
+. A basis is asumed as
 $\underline{\gvec{\Phi}} = ( \gvec{\Phi}_1, \ldots , \gvec{\Phi}_L )$ of $\mathbb{V}_\myvector{k}$,
 written as a row vector, with $L \coloneqq \textrm{dim}(\mathbb{V}_\myvector{k})$.
 Then $\myvector{U}_h$ can be represented as
 $ \myvector{U}_h =  \underline{ \gvec{\Phi} } \cdot \myvector{U} $.
-The nonlinear problem (\ref{eq:CompactVariational}) can then be written as
+The nonlinear problem (\ref{eq:CompactVariational}) can then be expressed as
 \begin{equation}
 	\mathcal{A}(\myvector{U}) = 0 ,
 	\label{Eq:nonLinSystem}
@@ -40,79 +56,35 @@ $\mathbb{R}^L \ni \myvector{U} \mapsto \mathcal{A}(\myvector{U}) \in \mathbb{R}^
 The $i$-th component of $ \mathcal{A}(\myvector{U})$, can be defined by $\mathcal{N}(-,-)$ through the relation
 $[\mathcal{A}(\myvector{U})]_i = \mathcal{N}( \underline{ \gvec{\Phi} } \cdot \myvector{U} , \gvec{\Phi}_i)$.
 
-The formulation of the Newton method requires the Jacobian matrix   $\partial \mathcal{A}$ of $\mathcal{A}$, defined as
-\begin{equation}
-	\partial \mathcal{A}_{ij}(\myvector{U}) \coloneqq \frac{\partial \mathcal{A}_i}{\partial U_j}(\myvector{U}).
-	\label{Eq:Jacobian}
-\end{equation}
-Its computation is quite straightforward, but lengthy. The \BoSSS code is capable of evaluating the
-Jacobian matrix automatically from the expressions given in Section \ref{ssec:SpatDiscretization}.
-We note that one could write $\mathcal{A}(\myvector{U})$ as
-\begin{equation}
-	[\mathcal{A}(\myvector{U})]_i = \mathcal{N}( \myvector{U}_h , \gvec{\Phi}_i) =
-	\int_{\Omega_h}
-	N_1 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \cdot \gvec{\Phi}_i
-	+ N_2 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \cdot \nabla \gvec{\Phi}_i
-	\textrm{dV}
-	+
-	\oint_{\Gamma} \ldots \mathrm{dS}.
-	\label{eq:NonlinearGestalt}
-\end{equation}
-The edge integral, which is left out in \cref{eq:NonlinearGestalt},
-can be written in analogous fashion as the volume integral, i.e. as a sum over
-four nonlinear functions, multiplied by
-$ \gvec{\Phi}_i^{+}$,  $\gvec{\Phi}_i^{-}$, $ \nabla \gvec{\Phi}_i^{+}$ and  $ \nabla \gvec{\Phi}_i^{-}$,
-respectively.
-These functions themselves may depend on
-$\vec{x}$, $\myvector{U}_h^{+}$,  $\myvector{U}_h^{-}$, $\nabla \myvector{U}_h^{+}$ and  $\nabla \myvector{U}_h^{-}$.
-For sake of compactness, this part is skipped.
-Realizing that $\frac{\partial \myvector{U}_h}{\partial \myvector{U}_j}  = \gvec{\Phi}_j$ and by application of the
-chain rule, one derives
-\begin{equation}
-	\partial \mathcal{A}_{ij}(\myvector{U}) =
-	\int_{\Omega_h}
-	( \partial_{ \myvector{U}_h}       N_1 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \gvec{\Phi}_j
-	+   \partial_{\nabla \myvector{U}_h} N_1 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \nabla \gvec{\Phi}_j ) \cdot \gvec{\Phi}_i
-	+ \ldots
-	\textrm{dV}
-	+
-	\oint_{\Gamma} \ldots \mathrm{dS} .
-	\label{eq:JacobiGestalt}
-\end{equation}
-All skipped terms in \cref{eq:JacobiGestalt} can be derived in an analogous fashion as the contributions for $N_1$.
-In the \BoSSS code, derivatives $ \partial_{ \myvector{U}_h} N_1 ( \ldots )$ and  $ \partial_{ \nabla \myvector{U}_h} N_1 ( \ldots )$
-are approximated by a finite difference, using a perturbation by $\sqrt{\mathtt{eps}}$ in the respective argument,
-where  $\mathtt{eps} = 2.22044604925031 \cdot 10^{-16}$ is the floating point accuracy for double precision.
+\subsection{Newton's method}
+Newton's method is a very popular and well known iterative method used for finding roots of nonlinear systems. The method is particularly attractive because under certain conditions it can exhibit quadratic convergence \parencite{deuflhardNewtonMethodsNonlinear2011}. In this section the method will be briefly described. For more information the interested reader is referred to the textbook from \textcite{kelleyIterativeMethodsLinear1995}. 
 
-The notation introduced here allows us to describe the Newton-Dogleg method used in this work. We note however that this globalization strategy is still not sufficient to ensure convergence for some of the test cases presented, namely for high Rayleigh numbers for the differentially heated cavity problem. For those cases we use a homotopy strategy, where we start with a low homotopy-parameter, a parameter for which the solution of the problem is not hard to find, which is gradually and carefully increased until convergence for the desired value of the homotopy-parameter is reached (cf. \cref{sec:HomotopyMethod}).
-
-
-\subsection{Dogleg Method} \label{sec:newton}
-We consider a linearization of \cref{Eq:nonLinSystem} around $\myvector{U}_n$,
+Consider the linearization of \cref{Eq:nonLinSystem} around $\myvector{U}_n$,
 \begin{equation}
 	\mathcal{A}(\myvector{U}_{n}) +
 	\partial \mathcal{A} (\myvector{U}_n) \underbrace{ ( \myvector{U}_{n+1} -  \myvector{U}_{n} ) }_{=: \myvector{s}'_n }
 	= 0.
 	\label{eq:LinearizedSys}
 \end{equation}
-By repeatedly solving this system one obtains
-a standard Newton scheme for \cref{Eq:nonLinSystem},
-yielding a sequence of approximate solutions
-$
-\myvector{U}_0, \myvector{U}_1, \myvector{U}_2, \ldots
-$
-obtained from an initial guess $\myvector{U}_0$ through the iteration scheme
-$
-\myvector{U}_{n+1} = \myvector{U}_n + \myvector{s}'_n.
-$
-In the classical un-damped Newton method, the correction step $\myvector{s}'_n$ is set to be the whole Newton-step,
-i.e  $\myvector{s}'_n = \myvector{s}_n$ with
+Here is $\partial \mathcal{A}$ the Jacobian matrix of $\mathcal{A}$, defined as
+\begin{equation}
+	\partial \mathcal{A}_{ij}(\myvector{U}) \coloneqq \frac{\partial \mathcal{A}_i}{\partial U_j}(\myvector{U}).
+	\label{Eq:Jacobian}
+\end{equation}
+By repeatedly solving \cref{eq:LinearizedSys} one obtains a standard Newton scheme for \cref{Eq:nonLinSystem}, yielding a sequence of approximate solutions $\myvector{U}_0, \myvector{U}_1, \myvector{U}_2, \ldots$ obtained from an initial guess $\myvector{U}_0$ through the iteration scheme $ \myvector{U}_{n+1} =\myvector{U}_n + \myvector{s}'_n.$
+In the classical undamped Newton method, the correction step $\myvector{s}'_n$ is set to be the whole Newton-step, i.e  $\myvector{s}'_n = \myvector{s}_n$ with
 \begin{equation}
 	\myvector{s}_n  \coloneqq - \partial \mathcal{A}(\myvector{U}_n)^{-1}\mathcal{A}(\myvector{U}_n),
 	\label{eq:NewtonStep}
 \end{equation}
 which is computed using a direct solver.
 Unfortunately, convergence of the Newton method for any starting value $\myvector{U}_0$ is not guaranteed.
+
+A big drawback of Newton method is the calculation of the Jacobian matrix, since its direct calculation using usual methods can be computationally expensive. The \textit{BoSSS} framework provides an efficient algorithm for the evaluation of the Jacobian, and is presented in \cref{ssec:EvalJacobian}
+
+
+\subsection{Dogleg Method} \label{sec:newton}
+
 In order to increase robustness when the distance between $\myvector{U}_0$ and the exact solution $\myvector{U}$ is large,
 we employ a globalization approach, presented by Pawlowski et al. \textcite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008},
 known as the Dogleg-method, or Newton-Dogleg method.
@@ -190,13 +162,95 @@ We replicate the algorithm here, for the sake of completeness:
 		\delta_{n}                              & \text{otherwise}                                                                                \\
 	\end{array} \right.
 	\]
-	Set $\myvector{U}_{n+1} = \myvector{U}_{n} + \myvector{s}'_{n} $, update $n \leftarrow n + 1$ and return to step (2).
-	
+	Set $\myvector{U}_{n+1} = \myvector{U}_{n} + \myvector{s}'_{n} $, update $n \leftarrow n + 1$ and return to step (2).	
 \end{itemize}
 All constants used in the algorithm above have been taken from the work of Pawlowski et al. \textcite{pawlowskiGlobalizationTechniquesNewton2006}
 For a detailed description of the underlying ideas we also refer to these works,
 which in turn are based on algorithms from Dennis and Schnabel's textbook. \textcite{dennisNumericalMethodsUnconstrained1996}
 
+\subsection{Linear solver}\label{ssec:LinearSolver}
+The computation of the Newton step according to \cref{eq:NewtonStep} requires the inversion of the Jacobi matrix. This is done by means of the in \BoSSS integrated orthonormalization multigrid algorithm \textcite{kummerBoSSSPackageMultigrid2021}, which at the lowest multigrid levels makes use of the sparse direct solver \texttt{PARDISO} (Parallel Sparse Direct and Multi-Recursive Iterative Linear Solvers), originally developed by Schenk et al.  \parencite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
+from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows'' library collection to solve the linear system. 
+
+
+For some of the testcases presented here, particularly the cases with combustion, the use of \texttt{PARDISO} for the solution of the linear problem resulted in memory problems. 
+An active field of study in the BoSSS development group is that of iterative algorithms for solving linear systems. The BoSSS code features a multigrid orthonormalization method, using additive Schwarz schemes as smoothers for all multigrid levels, except the coarsest one, where \texttt{PARDISO} is used. This method of solution proved to be adequate to solve systems that are too big to be solved directly by \texttt{PARDISO}, and is adopted for all combustion calculations.
+
+\todo[inline]{What do i exactly do with the linear system? Preconditioning?}
+
+\subsection{Calculation of the Jacobian matrix} \label{ssec:EvalJacobian}
+During the development process of the XNSEC solver different strategies for the calculation of the Jacobian matrix $\partial \mathcal{A}$ were tested and are shown here. 
+
+First, it is interesting to show the relationship existing between two well known methods for solving nonlinear systems: Picard iterations and Newton's method. First, note that the non-linear problems \cref{Eq:nonLinSystem} appearing in this work have the structure
+\begin{equation}
+	\mathcal{A}(\myvector{U}) \coloneqq  A(\myvector{U})\myvector{U}-\myvector{b}.
+\end{equation}
+Thus, the Jacobian matrix \cref{Eq:Jacobian} can be written as
+\begin{equation}
+	\partial \mathcal{A}_{ij}(\myvector{U})  = A_{ij} + \sum_k \pfrac{A_{ik}}{U_j} U_K = A_{ij} + A'_{ij}U_K.
+\end{equation}
+Inserting these , the linear system to be solved using Newton's method can be written as
+\begin{equation}
+	\underbrace{A(\myvector{U}_n)(\myvector{U}_n+\myvector{s}'_n) - \myvector{b}}_{\text{Picard system}} + A'(\myvector{U}_n)\myvector{U}_n\myvector{s}'_n = 0
+\end{equation}
+This makes the relationship between the two algorithms apparent. Unlike Picard's method of iterations, Newton's method requires additionally the evaluation of the Jacobi matrix, which must be approximated in some way. This section shows three strategies that were used throughout the development of this work for that purpose.
+
+\subsubsection{Adhoc linearization of the Jacobian matrix}
+For some problems, particularly saddle-point problems, the Jacobian A' can be approximated fairly well by simply evaluating the operator matrix. Thus, the system to be solved for Newton Iteration yields
+\begin{equation}
+	A(\myvector{U}_n)(\myvector{U}_n+\myvector{s}'_n) - \myvector{b} + A(\myvector{U}_n)\myvector{U}_n\myvector{s}'_n = 0
+\end{equation}
+This strategy offers a computationally cheap algorithm to obtain a solution of the nonlinear problem. However, the method offers limited robustness, and is known to be prone to fail for non-saddle-point problems \parencite{kikkerHighOrderEXtendedDiscontinuous2020}. 
+
+\subsubsection{Approximation of the Jacobian matrix by finite differences}
+
+A straightforward way of calculating the Jacobian matrix is to use forward finite differences as an approximation.
+
+\begin{equation}
+	A'(\myvector{U})_j \coloneqq \frac{A(\myvector{U}+\varepsilon\norm{\myvector{U}}\myvector{e}_j )-A(\myvector{U})  }{\varepsilon\norm{\myvector{U}}}
+\end{equation}
+where $\myvector{e}_j$ is the unit vector with $j$th component equal to one, and zero in all other components. The value of $\varepsilon$ should be chosen small, as usual when calculating finite differences, but also large enough not to disturb the calculations due to problems caused by floating-point rounding calculations.  For all calculations in this work, the value $\varepsilon = \sqrt{\mathtt{eps}}$ was adequate, where $\mathtt{eps} = 2.22044604925031 \cdot 10^{-16}$ is the floating point accuracy for double precision.
+
+The calculation of the forward finite difference approximation is a costly operation, especially for large systems, where it can be particularly prohibitive. However it offers a robust way to approximate the Jacobian. Strategies for improve the efficiency of this calculation exists, such as the use of analytic Jacobians, or use of the sparsity patterns of the Jacobian \parencite{kelleyIterativeMethodsLinear1995}. These are not treated in the present work. 
+\subsubsection{Approximation of the Jacobian from differentiation of equation components}
+The finite difference Jacobi matrix calculation shown above is a fairly simple but computationally expensive calculation. The \BoSSS code is capable of evaluating the Jacobian matrix automatically from the equation components given in Section \ref{ssec:SpatDiscretization}.
+First, note that $\mathcal{A}(\myvector{U})$ could be written as
+\begin{equation}
+	[\mathcal{A}(\myvector{U})]_i = \mathcal{N}( \myvector{U}_h , \gvec{\Phi}_i) =
+	\int_{\Omega_h}
+	N_1 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \cdot \gvec{\Phi}_i
+	+ N_2 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \cdot \nabla \gvec{\Phi}_i
+	\textrm{dV}
+	+
+	\oint_{\Gamma} \ldots \mathrm{dS}.
+	\label{eq:NonlinearGestalt}
+\end{equation}
+The edge integral, which is left out in \cref{eq:NonlinearGestalt},
+can be expressed analogously to the volume integral, i.e. as a sum over
+four nonlinear functions, multiplied by
+$ \gvec{\Phi}_i^{+}$,  $\gvec{\Phi}_i^{-}$, $ \nabla \gvec{\Phi}_i^{+}$ and  $ \nabla \gvec{\Phi}_i^{-}$,
+respectively.
+These functions themselves may include the dependence on
+$\vec{x}$, $\myvector{U}_h^{+}$,  $\myvector{U}_h^{-}$, $\nabla \myvector{U}_h^{+}$ and  $\nabla \myvector{U}_h^{-}$.
+The is however omitted here for the sake of compactness, but the treatment is analogue. Realizing that 
+\begin{equation}
+\frac{\partial \myvector{U}_h}{\partial \myvector{U}_j}  = \gvec{\Phi}_j
+\end{equation}
+and by application of the chain rule, it is possible to derive an expression for the calculation of the entries of the Jacobian matrix from the equation components as
+\begin{equation}
+	\partial \mathcal{A}_{ij}(\myvector{U}) =
+	\int_{\Omega_h}
+	( \partial_{ \myvector{U}_h}       N_1 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \gvec{\Phi}_j
+	+   \partial_{\nabla \myvector{U}_h} N_1 (\vec{x}, \myvector{U}_h , \nabla \myvector{U}_h  ) \nabla \gvec{\Phi}_j ) \cdot \gvec{\Phi}_i
+	+ \ldots
+	\textrm{dV}
+	+
+	\oint_{\Gamma} \ldots \mathrm{dS} .
+	\label{eq:JacobiGestalt}
+\end{equation}
+All omitted  terms in \cref{eq:JacobiGestalt} can be approximated analogously to the contributions for $N_1$. In the \BoSSS code, derivatives $ \partial_{ \myvector{U}_h} N_1 ( \ldots )$ and  $ \partial_{ \nabla \myvector{U}_h} N_1 ( \ldots )$ are approximated by a finite difference, using a perturbation by $\sqrt{\varepsilon}$ in the respective argument.
+
+This approach has the significant improvement that it offers an efficient and accurate way to obtain the Jacobian matrix, unlike the two approaches mentioned above. For this reason, this option is the one chosen for the resolution of all the testcases shown in this work.
 
 \subsection{Termination criterion}
 \label{ssec:TerminationCriterion}
@@ -230,20 +284,9 @@ For the computations in this work, this choice guarantees that the
 nonlinear system is solved as accurately as possible. It secures that the numerical error is dominated by the error of the spatial or temporal discretization
 and not by the termination criterion of the Newton-Dogleg method.
 The skyline approach ensures robustness against oscillations close to the lower limit.
-\subsection{Solver safeguard}
-%TODO Bounding of values using the solver safeguard option. Manual modification of the proposed solution given by the solver in order to avoid unphysical solutions
-/// 'safeguard' for solvers to avoid unphysical solutions during the solution procedure;
-/// An example would be to avoid e.g. negative denities, which might even cause NaNs,
-/// during the solver run for implicit, nonlinear equations.
-from \textcite{nicoudConservativeHighOrderFiniteDifference2000}
- For these scales the dispersion phenomenon is important
-and may generate negative values of temperature if a non-positive scheme
-is used. The clipping to values greater than the cold wall temperature is
-justified since there is no physical mechanism which can decrease the temperature below this point. It emulates a TVD or ENO scheme which should
-be used for temperature. Since such techniques are well known but beyond
-the scope of this study, we preferred to use the simple clipping approach
-T > T1 when necessary. 
-\subsection{Homotopy method}
+
+
+\section{Homotopy method}
 \label{sec:HomotopyMethod}
 Although the Newton-Dogleg method works well for a variety of cases,
 we experienced convergence problems for some of the test cases presented in next section.
@@ -293,7 +336,7 @@ ideas from the textbook of Deuflhard,\textcite{deuflhardNewtonMethodsNonlinear20
 			\addlegendentry{$\mathrm{hp}$}
 		\end{axis}
 	\end{tikzpicture}
-	\caption{Behaviour of the homotopy method for the differentially heated cavity test case. The homotopy parameter $\mathrm{hp}$ in this case is the Reynolds number. }
+	\caption{behavior of the homotopy method for the differentially heated cavity test case. The homotopy parameter $\mathrm{hp}$ in this case is the Reynolds number. }
 	\label{fig:Homotopyevolution}
 \end{figure}
 
@@ -373,7 +416,7 @@ An approximate solution for the target homotopy-parameter is found by the follow
 \end{itemize}
 An exemplary run of the method is shown in \cref{fig:Homotopyevolution}. The homotopy parameter $\mathrm{hp}$ in this particular case is the Reynolds number. The homotopy-parameter hp was increased for iterations 10, 18, 22 and 24, causing an increase of the residuals $\| \mathcal{A}_{\mathrm{hp}^*}(\myvector{U}_{n}) \|_2 $, leading to a convergent solution after 34 Newton iterations. The presented algorithm offers a robust method for finding steady-state solutions of highly nonlinear systems.
 
-\subsection{Initialization of combustion applications}\label{ssec:MethodCombustion}
+\section{Initialization of combustion applications}\label{ssec:MethodCombustion}
 Cases involving combustion are initialized with the solution of the flame sheet problem, \cref{DiscretizedConti2,DiscretizedMomentum2,DiscretizedEnergy2}. This idea has been already employed in various works. \textcite{smookeNumericalSolutionTwoDimensional1986,smookeNumericalModelingAxisymmetric1992} The reason for the use of this pre-step is twofold:
 \begin{itemize}
 	\item Solving \cref{eq:LowMachConti,eq:LowMachMomentum,eq:LowMachEnergy,eq:LowMachMassBalance} using a Newton-type method requires adequate starting estimates in order to converge. Using the flame sheet solution as initial estimate improves the convergence properties of the method.
@@ -403,7 +446,7 @@ This function is useful for creating a smooth transition between two functions, 
 \end{subequations}
 The use of this regularized form of the equations results in practice on a spreading of the flame front, which eases the numerical calculation \parencite{braackAdaptiveFiniteElement1997}.
 
-One question one could certainly ask is under what flame conditions the infinite rection-rate solution (also called flame-sheet solution in the following) effectively is a good initial estimate for Newton's algorithm.  Obviously for systems that respect the assumptions done for the flame-sheet the obtained solution will be very close to the finite-rate solution (see \cref{fig:MixtureFraction_finiteRateComparison}). 
+One question one could certainly ask is under what flame conditions the infinite rection-rate solution (also called flame sheet solution in the following) effectively is a good initial estimate for Newton's algorithm.  Obviously for systems that respect the assumptions done for the flame sheet the obtained solution will be very close to the finite-rate solution (see \cref{fig:MixtureFraction_finiteRateComparison}). 
 
 The assumption of an infinitely fast chemical reaction implies that the time scales associated with the chemical reaction are infinitely smaller than the flow scales, or in other words, $\text{Da} \to \infty$. For this reason, the flame sheet solution is expected to give a similar solution for cases close to equilibrium (where the Damköhler number is large). On the other hand, in cases that are far from equilibrium, as, for example, in the case of a flame in conditions close to extinction, it is expected that the flame sheet solution will depart considerably from the solution with a finite reaction rate.
 
@@ -413,7 +456,7 @@ It should be noted that within the derivation of the equations for the flame she
 
 The problem that now arises is the selection of a suitable $c_p$. In the work by \textcite{xuApplicationPrimitiveVariable1993} it is suggested to estimate it simply on the basis of experimental measurements, or also by selecting some representative value, such as $c_p$ evaluated at the adiabatic temperature and stoichiometric conditions. In particular, in this work the value $\hat c_p = \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$ was adequate for all calculations. This constant value of the heat capacity proved to be an adequate estimate for finite-rate simulations, even for cases with a nonconstant heat capacity.
 
-In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with non-unity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method. 
+In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with nonunity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method. 
 
 
 
@@ -447,3 +490,9 @@ The area where the chemical reaction takes place is usually a thin region whose 
 			\inputtikz{MeshRefinementCoflow3}
 	\caption{Adaptive mesh refinement around the stoichiometric surface in a coflow flame configuration.}
 \end{figure}
+\subsection{Solver safeguard}
+Another strategy that proved to be useful in improving the convergence properties of the iterative scheme is the use of a solver safeguard, which is used to avoid unphysical solutions during the solution procedure, such as negative temperatures or temperatures higher than the adiabatic temperature. In particular, the idea is to clip values from the solution fields delivered by Newton's algorithm which are known to be unphysical, and limit the solution fields by user defined values. This clipping emulates in a sense the effect of schemes such as total variation diminishing methods (TVM) or essentially non-oscillatory (ENO) methods  \parencite{nicoudConservativeHighOrderFiniteDifference2000}. 
+
+Particularly, for an arbitrary scalar $\xi$ the values are bounded in the range $[\xi_{\text{min}} - \epsilon_{\text{safe}}, \xi_{\text{max}} + \epsilon_{\text{safe}}]$, where $\xi_{\text{min}}$ and $\xi_{\text{max}}$ are user defined bounds, and  $\epsilon_{\text{safe}} = 10^{-4}$. For example, the mass fractions by definition should have a value between zero and one, thus $Y_{k,\text{min}} = 0$ and  $Y_{k,\text{max}} = 1$. For certain problems, particularly problems involving combustion, it could be also useful to limit the value of the temperature, which can be bounded using the inlet conditions as the minimum value, and the adiabatic temperature as the maximum value.
+
+The occurrence of these non-physical values is not always problematic, and in theory the Newton algorithm above should be able to correctly handle them and finally find the solution of the nonlinear system. However in certain cases this can lead to problems. Just to mention one example, a negative temperature would result in a imaginary value of the viscosity if it is calculated according to \cref{eq:nondim_sutherland}. Particularly for problems with sharp gradients this could be problematic due to dispersion phenomena. 

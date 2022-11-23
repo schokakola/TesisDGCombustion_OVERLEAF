@@ -8,7 +8,7 @@
 	\end{center}
 \end{figure}
 The differentially heated cavity problem is a classical benchmark case that is often used to assess the ability of numerical codes to simulate variable density flows \parencite{paillereComparisonLowMach2000,vierendeelsBenchmarkSolutionsNatural2003,tyliszczakProjectionMethodHighorder2014}.
-The test case has the particularity that deals with a closed system, where the thermodynamic pressure $p_0$ is a parameter that must be adjusted so that the mass is conserved.The thermodynamic pressure $p_0$ determines the density field, which in turn appears in the momentum equation and the energy equation, making it necessary to use an adequate algorithm to solve the system. This point presents a special difficulty for the solution, since the calculation of $p_0$ requires knowledge of the temperature field on the whole computational domain, inducing a global coupling of the variables. 
+The test case has the particularity that deals with a closed system, where the thermodynamic pressure $p_0$ is a parameter that must be adjusted so that the mass is conserved. The thermodynamic pressure $p_0$ determines the density field, which in turn appears in the momentum equation and the energy equation, making it necessary to use an adequate algorithm to solve the system. This point presents a special difficulty for the solution, since the calculation of $p_0$ requires knowledge of the temperature field on the whole computational domain, inducing a global coupling of the variables. 
 
 The system is a fully enclosed two-dimensional square cavity filled with fluid.  A sketch of the problem is shown in \cref{DHCGeom}. The left and right walls of the cavity have constant temperatures $\hat{T}_h$ and $\hat{T}_c$, respectively, with $\hat{T}_h >\hat{T}_c$, and the top and bottom walls are adiabatic. A gravity field induces fluid movement because of density differences caused by the difference in temperature between the hot and cold walls.
 The natural convection phenomenon is characterized by the Rayleigh number, defined as
@@ -24,7 +24,7 @@ The Rayleigh number is then related to the Reynolds number according to
 \begin{equation}
 	\text{Re} = \sqrt{\text{Ra}}.
 \end{equation}
-Thus, it is sufficient to select a $\Reynolds$ number in the simulation, fixing the value of the $\text{Ra}$ number. The driving temperature difference $(\hat T_h - \hat T_c)$ appearing in \cref{eq:Rayleigh} can be represented as a non-dimensional parameter:
+Thus, it is sufficient to select a $\Reynolds$ number in the simulation, fixing the value of the $\text{Ra}$ number. The driving temperature difference $(\hat T_h - \hat T_c)$ appearing in \cref{eq:Rayleigh} can be represented as a nondimensional parameter:
 \begin{equation}\label{eq:nondimensionalTemperature}
 	\varepsilon = \frac{\hat T_h - \hat T_c}{2\RefVal{T}}.
 \end{equation}
@@ -32,7 +32,7 @@ Using these definitions, the Froude number can be calculated as
 \begin{equation}
 	\Froude = \sqrt{\Prandtl 2 \varepsilon}.
 \end{equation}
-The results of the XNSEC solver are compared with those of the reference solution for $\RefVal{T} = 600\si{K}$  and $\varepsilon = 0.6$. All calculations assume a constant Prandtl number equal to 0.71. The dependence of viscosity and heat conductivity on temperature is calculated using Sutherland's law (\cref{eq:nondim_sutherland}). The non-dimensional length of the cavity is $L=1$. The non-dimensional temperatures $T_h$ and $T_c$ are set to 1.6 and 0.4, respectively. The non-dimensional equation of state (\cref{eq:ideal_gas}) depends only on the temperature and reduces to
+The results of the XNSEC solver are compared with those of the reference solution for $\RefVal{T} = 600\si{K}$ and $\varepsilon = 0.6$. All calculations assume a constant Prandtl number equal to 0.71. The dependence of viscosity and heat conductivity on temperature is calculated using Sutherland's law (\cref{eq:nondim_sutherland}). The nondimensional length of the cavity is $L=1$. The nondimensional temperatures $T_h$ and $T_c$ are set to 1.6 and 0.4, respectively. The nondimensional equation of state (\cref{eq:ideal_gas}) depends only on the temperature and reduces to
 \begin{equation}
 	\rho = \frac{p_0}{T}.
 \end{equation}
@@ -40,7 +40,7 @@ The thermodynamic pressure $p_0$ in a closed system must be adjusted to ensure m
 \begin{equation}
 	p_0 =\frac{\int_\Omega \rho_0\text{d}V}{\int_\Omega \frac{1}{T}\text{d}V}= \frac{m_0}{\int_\Omega \frac{1}{T}\text{d}V}, \label{eq:p0Condition}
 \end{equation}
-where $\Omega$ represents the complete closed domain. The initial mass of the system $m_0$ is constant and is set $m_0 = 1.0$. Note that the thermodynamic pressure is a parameter with a dependence on the temperature of the entire domain. This makes necessary the use of an iterative solution algorithm, so that the solution obtained respects the conservation of mass. Within the solution algorithm of the XNSEC-solver, \cref{eq:p0Condition} is used to update the value of the thermodynamic pressure after each Newton iteration.
+where $\Omega$ represents the complete closed domain. The initial mass of the system $m_0$ is constant and is set $m_0 = 1.0$. Note that the thermodynamic pressure is a parameter with a dependence on the temperature of the entire domain. This makes necessary the use of an iterative solution algorithm, so that the solution obtained respects the conservation of mass. Within the solution algorithm of the XNSEC solver, \cref{eq:p0Condition} is used to update the value of the thermodynamic pressure after each Newton iteration.
 The average Nusselt number is defined for a given wall $\Gamma$  as
 \begin{equation}\label{eq:Nusselt}
 	\text{Nu}_\Gamma = \frac{1}{T_h - T_c}\int_{\Gamma} k \pfrac{T}{x}\text{d}y.

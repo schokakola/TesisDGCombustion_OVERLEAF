@@ -20,8 +20,6 @@
 		try min ticks=5,
 		]
 		\nextgroupplot[title = {\textbf{Case (a)}}]
-%		\addplot+[color=black, no marks, thick] table[x expr=\thisrow{Var1}*0.5, y expr=\thisrow{Var2}*0.069444 ] {data/DataStrainSweep2/2/FullVelocityX_BOSSS.txt}; \addlegendentry{XNSEC}
-%		\addplot+[color=black, no marks, dashed]table[x expr=\thisrow{Var1}*0.5, y expr=\thisrow{Var2}*0.069444 ]{data/DataStrainSweep2/2/FullVelocityX_MATLAB.txt};\addlegendentry{1D}
 		\addplot+[color=black, no marks, thick] table {data/DataStrainSweep2/2/FullVelocityX_BOSSS.txt}; \addlegendentry{XNSEC}
 		\addplot+[color=black, no marks, dashed]table {data/DataStrainSweep2/2/FullVelocityX_MATLAB.txt};\addlegendentry{1D}
 		\nextgroupplot[title = {\textbf{Case (b)}}]

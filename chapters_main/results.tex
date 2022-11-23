@@ -1,6 +1,6 @@
-\chapter{Results}	\label{ch:results}
+\chapter{Numerical results}	\label{ch:results}
 \glsresetall
-The following sections show a comprehensive solver validation using various test cases presented in increasing levels of complexity. The tests also allow to highlight some of the benefits of the DG-method and the algorithms introduced before in this work, namely the globalized Newton method, homotopy strategy and the initialization of combustion applications using flame-sheet estimates. 
+The following sections show a comprehensive solver validation using various test cases presented in increasing levels of complexity. The tests also allow to highlight some of the benefits of the DG-method and the algorithms introduced before in this work, namely the globalized Newton method, homotopy strategy and the initialization of combustion applications using flame sheet estimates. 
 
 First, in \cref{sec:SingleCompIsotCase} the applicability of the solver is analyzed for isothermal single-component systems. Later in \cref{sec:SinCompNonIsothermCase} several single-component non-isothermal configurations are studied. Finally, in \cref{sec:MultCompNonIsothermCase} test cases for multicomponent non-isothermal systems are presented, with a particular emphasis on systems where combustion is present.
 %Additionally the convergence properties of the DG-method will be analyzed for some of the systems.
@@ -10,16 +10,16 @@ All calculations shown here were performed on a cluster with the following spefi
     \item \textbf{CPU} 4x8 cores (Intel(R) Xeon(R) CPU E5-4627 v2)
     \item \textbf{CPU vector extension} Intel® AVX
     \item \textbf{CPU speed} basis 3.30 GHz, turbo 3.6 GHz
-    \item \textbf{memory} 512 GByte (DDR3-1600)
+    \item \textbf{Memory} 512 GByte (DDR3-1600)
 \end{itemize}
 Unless otherwise stated, all calculations use the termination criteria presented in \cref{ssec:TerminationCriterion}.
-Some of the results presented in the next sections has been published \parencite{gutierrez-jorqueraFullyCoupledHighorder2022}.
+Some of the results presented in this section have been published in \parencite{gutierrez-jorqueraFullyCoupledHighorder2022}.
 %%%%%%%%
 %%%%%%%%
 \section{Single-component isothermal cases}\label{sec:SingleCompIsotCase}
 %%%%%%%%
 %%%%%%%%
-The XNSEC-solver presented in the previous chapter is validated first for single-component isothermal cases. In these cases, only the continuity and momentum equations are solved. The energy equation and the species concentration equations are replaced by the conditions $T = 1.0$ and $Y_0 = 1.0$ in the entire domain. This means that the physical properties of the flow (density and viscosity) are constant and that the flow is fully incompressible because the density does not show a thermodynamic or hydrodynamic dependence.
+The XNSEC solver presented in the previous chapter is validated first for single-component isothermal cases. In these cases, only the continuity and momentum equations are solved. The energy equation and the species concentration equations are replaced by the conditions $T = 1.0$ and $Y_0 = 1.0$ in the entire domain. This means that the physical properties of the flow (density and viscosity) are constant. Therefore, the flow is totally incompressible, since the density shows no thermodynamic or hydrodynamic dependence.
 \input{chapters_main/results/SingleComponentIsotermal/LidDrivenCavity}
 \input{chapters_main/results/SingleComponentIsotermal/BackwardFacingStep}
 %%%%%%%%
@@ -28,9 +28,9 @@ The XNSEC-solver presented in the previous chapter is validated first for single
 %%%%%%%%
 %%%%%%%%
 For the test cases presented in this section, the equations for continuity, momentum and energy are solved. All systems are assumed to be single-component, thus $N = 1$ and $Y_0 = 1.0$. 
-The tests shown in this section shall serve as a throughout validation of the XNSEC-solver spatial and temporal discretization for low-Mach variable density flows. 
+The tests shown in this section shall serve as a throughout validation of the XNSEC solver spatial and temporal discretization for low-Mach variable density flows. 
 
-First in \cref{ssec:HeatedBackwardFacingStep} an extension of the backward-facing step configuration for a non-isothermal system is shown, and benchmark values are compared to references. Later in \cref{ssec:CouetteFlowTempDiff} a Couette flow configuration that presents a temperature gradient in the vertical direction is studied and compared to an analytical solution. Aditionally the numerical accuracy of the solver is shown and compared to calculations using a SIMPLE-type algorithm. Later in \cref{ss:DHC} a heated square cavity configuration is studied to assess the solver's ability to simulate steady state flow configurations of variable density in closed systems. In \cref{ssec:FlowCircCyl} the flow over a heated cylinder is studied, which serves as a test for unsteady calculations of non-isothermal systems. Finally in \cref{ssec:RayBer} a classical Rayleigh-Bénard convection system is treated, showing the behaviour of the solver for instable systems.
+First in \cref{ssec:HeatedBackwardFacingStep} an extension of the backward-facing step configuration for a non-isothermal system is shown, and benchmark values are compared to references. Later in \cref{ssec:CouetteFlowTempDiff} a Couette flow configuration that presents a temperature gradient in the vertical direction is studied and compared to an analytical solution. Additionally the numerical accuracy of the solver is shown and compared to calculations using a SIMPLE-type algorithm. Later in \cref{ss:DHC} a heated square cavity configuration is studied to assess the solver's ability to simulate steady state flow configurations of variable density in closed systems. In \cref{ssec:FlowCircCyl} the flow over a heated cylinder is studied, which serves as a test for unsteady calculations of non-isothermal systems. Finally in \cref{ssec:RayBer} a classical Rayleigh-Bénard convection system is treated, showing the behavior of the solver for unstable systems.
 \input{chapters_main/results/SingleComponentNonIsotermal/HeatedBackwardFacingStep}
 \input{chapters_main/results/SingleComponentNonIsotermal/CouetteTemperatureGradient}
 \input{chapters_main/results/SingleComponentNonIsotermal/DifferentiallyHeatedCavity}
@@ -41,11 +41,13 @@ First in \cref{ssec:HeatedBackwardFacingStep} an extension of the backward-facin
 \section{Multi-component non-isothermal cases}\label{sec:MultCompNonIsothermCase}
 %%%%%%%%
 %%%%%%%%
-Finally in this section, test cases where the whole operator presented in \cref{ch:NumericalMethods} is used, meaning that the balance equations of continuity, momentum, energy and species are considered and solved in a coupled manner, together with a equation of state and expressions for the transport parameters. For all the cases treated here, the solution of the flame sheet problem described in \cref{sec:FlameSheet} is calculated first, and then this solution is used as an initial estimate for the solution of the finite chemistry rate problem (see \cref{ssec:NonDimLowMachEquations}). For all test cases presented in this section, a smoothing parameter $\sigma = 0.02$ was used (see \cref{ssec:MethodCombustion}). 
+Finally in this section, test cases where the whole operator presented in \cref{ch:NumericalMethods} is used are shown. The balance equations of continuity, momentum, energy and species are considered and solved in a coupled manner, together with a equation of state and expressions for the transport parameters. For all the cases treated here, the solution of the flame sheet problem described in \cref{sec:FlameSheet} is calculated first, and then this solution is used as an initial estimate for the solution of the finite chemistry rate problem (see \cref{ssec:NonDimLowMachEquations}). For all test cases presented in this section, a smoothing parameter $\sigma = 40$ is used (see \cref{ssec:MethodCombustion}). 
 
-The combustion model used for is the one-step model shown in \cref{sec:GovEqLowMach}. All calculations assume methane as fuel, therefore, the relevant chemical components are \ch{CH4}, \ch{O2}, \ch{CO2}, \ch{H2O} and \ch{N2}, thus $N = 5$ and $\vec{Y}' = \left(Y_{\ch{CH4}},Y_{\ch{O2}},Y_{\ch{CO2}},Y_{\ch{H2O}}\right)$. The nitrogen mass fraction $Y_{\ch{N2}}$ is calculated according to \cref{eq:MassFractionConstraint}.%
+As already mentioned before, for the resolution of the linear solver using a direct solver such as \textit{PARDISO} was not possible, because the memory requirements are too high. In all calculations of this section the multigrid orthonormalization method commented in \cref{ssec:LinearSolver} is used.
 
-First in \cref{ssec:coflowFlame} a coflow laminar diffusion flame configuration is calculated and some remarks about the convergence behaviour of the XNSEC-solver using are done. Next in \cref{ss:CDF} a diffusion flame in a two-dimensional counterflow configuration is simulated and compared with results from a one-dimensional configuration solved using a fourth-order finite difference solver. Finally in \cref{ss:UDF} the convergence rates of the fully coupled solver are investigated by studing a pseudo-one-dimensional diffusion flame configuration.
+The combustion model used is the one-step model shown in \cref{sec:GovEqLowMach}. All calculations assume methane as fuel, therefore, the relevant chemical components are \ch{CH4}, \ch{O2}, \ch{CO2}, \ch{H2O} and \ch{N2}, thus $N = 5$ and $\vec{Y}' = \left(Y_{\ch{CH4}},Y_{\ch{O2}},Y_{\ch{CO2}},Y_{\ch{H2O}}\right)$. The nitrogen mass fraction $Y_{\ch{N2}}$ is calculated according to \cref{eq:MassFractionConstraint}.%
+
+First in \cref{ssec:coflowFlame} a coflow laminar diffusion flame configuration is calculated and some remarks about the convergence behavior of the XNSEC solver using are made. Next in \cref{ss:CDF} a diffusion flame in a two-dimensional counterflow configuration is simulated and compared with results from a one-dimensional configuration solved using a fourth-order finite difference solver. Finally in \cref{ss:UDF} the convergence rates of the fully coupled solver are investigated by studing a pseudo-one-dimensional diffusion flame configuration.
 
 \input{chapters_main/results/MultiComponentNonIsothermal/CoflowFlame}
 \input{chapters_main/results/MultiComponentNonIsothermal/CounterflowDiffusionFlame}

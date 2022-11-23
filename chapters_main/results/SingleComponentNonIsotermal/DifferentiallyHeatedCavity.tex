@@ -8,7 +8,7 @@
 	\end{center}
 \end{figure}
 The differentially heated cavity problem is a classical benchmark case that is often used to assess the ability of numerical codes to simulate variable density flows \parencite{paillereComparisonLowMach2000,vierendeelsBenchmarkSolutionsNatural2003,tyliszczakProjectionMethodHighorder2014}.
-The test case has the particularity that deals with a closed system, where the thermodynamic pressure $p_0$ is a parameter that must be adjusted so that the mass is conserved.The thermodynamic pressure $p_0$ determines the density field, which in turn appears in the momentum equation and the energy equation, making it necessary to use an adequate algorithm to solve the system. This point presents a special difficulty for the solution, since the calculation of $p_0$ requires knowledge of the temperature field on the whole computational domain, inducing a global coupling of the variables. 
+The test case has the particularity that deals with a closed system, where the thermodynamic pressure $p_0$ is a parameter that must be adjusted so that the mass is conserved. The thermodynamic pressure $p_0$ determines the density field, which in turn appears in the momentum equation and the energy equation, making it necessary to use an adequate algorithm to solve the system. This point presents a special difficulty for the solution, since the calculation of $p_0$ requires knowledge of the temperature field on the whole computational domain, inducing a global coupling of the variables. 
 
 The system is a fully enclosed two-dimensional square cavity filled with fluid.  A sketch of the problem is shown in \cref{DHCGeom}. The left and right walls of the cavity have constant temperatures $\hat{T}_h$ and $\hat{T}_c$, respectively, with $\hat{T}_h >\hat{T}_c$, and the top and bottom walls are adiabatic. A gravity field induces fluid movement because of density differences caused by the difference in temperature between the hot and cold walls.
 The natural convection phenomenon is characterized by the Rayleigh number, defined as
@@ -32,7 +32,7 @@ Using these definitions, the Froude number can be calculated as
 \begin{equation}
 	\Froude = \sqrt{\Prandtl 2 \varepsilon}.
 \end{equation}
-The results of the XNSEC solver are compared with those of the reference solution for $\RefVal{T} = 600\si{K}$  and $\varepsilon = 0.6$. All calculations assume a constant Prandtl number equal to 0.71. The dependence of viscosity and heat conductivity on temperature is calculated using Sutherland's law (\cref{eq:nondim_sutherland}). The nondimensional length of the cavity is $L=1$. The nondimensional temperatures $T_h$ and $T_c$ are set to 1.6 and 0.4, respectively. The nondimensional equation of state (\cref{eq:ideal_gas}) depends only on the temperature and reduces to
+The results of the XNSEC solver are compared with those of the reference solution for $\RefVal{T} = 600\si{K}$ and $\varepsilon = 0.6$. All calculations assume a constant Prandtl number equal to 0.71. The dependence of viscosity and heat conductivity on temperature is calculated using Sutherland's law (\cref{eq:nondim_sutherland}). The nondimensional length of the cavity is $L=1$. The nondimensional temperatures $T_h$ and $T_c$ are set to 1.6 and 0.4, respectively. The nondimensional equation of state (\cref{eq:ideal_gas}) depends only on the temperature and reduces to
 \begin{equation}
 	\rho = \frac{p_0}{T}.
 \end{equation}

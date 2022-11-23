@@ -353,6 +353,7 @@ textsize=footnotesize,
 }
 
 \usepackage{placeins} %% Allows use of FloatBarrier
+\allowdisplaybreaks %% Allows page breaks in align enviroments
 \usepackage{import}
 \usepackage{subcaption}
 \captionsetup[subfigure]{skip=-5pt}
@@ -508,6 +509,19 @@ noabbrev
 \input{chapters_main/results}
 \cleardoublepage
 \input{chapters_main/conclusion}
+%
+%\cleardoublepage
+%\printbibliography[heading=bibintoc]
+%\label{bibref}
+%%
+%% \cleardoublepage
+%\appendix
+%\input{chapters_others/AppendixMatlabCode}
+%
+%\cleardoublepage
+%\phantomsection
+%\addcontentsline{toc}{chapter}{Curriculum vitae}
+%\input{chapters_others/cv}
 
 %TODO incluir algun tipo de introduccion similar a lo que dice en
 %TODO Mathematical Models for Thermally Coupled Low Speed Flows
@@ -518,8 +532,7 @@ noabbrev
 %
 %TODO still i need to check all the consistency between dimensionless and normal variables
 % TODO express in a formal way what actually the subscripts F, O, P, N mean in the context of combustion.
-%TODO check for consistency between WE and other formulations
-% Cambiar en todos lados donde se hace referencia a mi solver, y referirse a el consistentemente como XNSEC
+
 %TODO: acortar usando \caption[]{} los nombres de las figuras que apareceran en la lista de imagenes/tablas
 %TODO: pregunta abierta: basta con definir el poly deg k, y con eso esta ya definido k'?
 
@@ -535,18 +548,6 @@ noabbrev
 
 %TODO Hablar de que dentro de varios casos estudiados en esta tesis, el tema de multiple solution branches se va repitiendo. (Es importante alguna cualidad del solver para poder calcular esto de forma adecuada?)
 % Hablvar de porque es bacan el modelo de fernandez terrazo. Yo diria que representa una forma simple de representar fenomenos que solo serian posibles de predecir utilizando modelos quimicos muchos mas complejos, como por ejemplo el leakage. Entonces haciendo uso de una unica ecuacion quimica, es posible estudiar fenomenos complejos de combustionn, disminuyendo sustancialmente el costo computacional.  La idea es implementar un modelo versatil, pero a su vez que no brinde mayores complejidades tanto numericas como computacionales. 
-\cleardoublepage
-\printbibliography[heading=bibintoc]
-\label{bibref}
-%
-% \cleardoublepage
- \appendix
- \input{chapters_others/AppendixMatlabCode}
-
-\cleardoublepage
-\phantomsection
-\addcontentsline{toc}{chapter}{Curriculum vitae}
-\input{chapters_others/cv}
 
 \end{document}
 

@@ -1,4 +1,4 @@
-\chapter{Results}	\label{ch:results}
+\chapter{Numerical results}	\label{ch:results}
 \glsresetall
 The following sections show a comprehensive solver validation using various test cases presented in increasing levels of complexity. The tests also allow to highlight some of the benefits of the DG-method and the algorithms introduced before in this work, namely the globalized Newton method, homotopy strategy and the initialization of combustion applications using flame sheet estimates. 
 
@@ -10,16 +10,16 @@ All calculations shown here were performed on a cluster with the following spefi
     \item \textbf{CPU} 4x8 cores (Intel(R) Xeon(R) CPU E5-4627 v2)
     \item \textbf{CPU vector extension} Intel® AVX
     \item \textbf{CPU speed} basis 3.30 GHz, turbo 3.6 GHz
-    \item \textbf{memory} 512 GByte (DDR3-1600)
+    \item \textbf{Memory} 512 GByte (DDR3-1600)
 \end{itemize}
 Unless otherwise stated, all calculations use the termination criteria presented in \cref{ssec:TerminationCriterion}.
-Some of the results presented in the next sections has been published \parencite{gutierrez-jorqueraFullyCoupledHighorder2022}.
+Some of the results presented in this section have been published in \parencite{gutierrez-jorqueraFullyCoupledHighorder2022}.
 %%%%%%%%
 %%%%%%%%
 \section{Single-component isothermal cases}\label{sec:SingleCompIsotCase}
 %%%%%%%%
 %%%%%%%%
-The XNSEC solver presented in the previous chapter is validated first for single-component isothermal cases. In these cases, only the continuity and momentum equations are solved. The energy equation and the species concentration equations are replaced by the conditions $T = 1.0$ and $Y_0 = 1.0$ in the entire domain. This means that the physical properties of the flow (density and viscosity) are constant and that the flow is fully incompressible because the density does not show a thermodynamic or hydrodynamic dependence.
+The XNSEC solver presented in the previous chapter is validated first for single-component isothermal cases. In these cases, only the continuity and momentum equations are solved. The energy equation and the species concentration equations are replaced by the conditions $T = 1.0$ and $Y_0 = 1.0$ in the entire domain. This means that the physical properties of the flow (density and viscosity) are constant. Therefore, the flow is totally incompressible, since the density shows no thermodynamic or hydrodynamic dependence.
 \input{chapters_main/results/SingleComponentIsotermal/LidDrivenCavity}
 \input{chapters_main/results/SingleComponentIsotermal/BackwardFacingStep}
 %%%%%%%%

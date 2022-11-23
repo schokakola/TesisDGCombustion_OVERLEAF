@@ -297,8 +297,19 @@ The model for the transport parameters can be simplified by assuming constant va
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \section{The flame sheet approximation} \label{sec:FlameSheet}
 In this section, the concept of the flame sheet approximation is introduced, which is used in the solution algorithm to obtain solutions of the finite reaction rate system given by \cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}. The ideas proposed in the work of \textcite{keyesFlameSheetStarting1987} are followed.
+
+\begin{figure}[h]
+	\begin{center}
+		\def\svgwidth{0.5\textwidth}
+		\import{./plots/}{SShapedResponse.pdf_tex}
+		\caption{S-shaped bifurcation curve of a combustion process.}
+		\label{fig:Sshaped}%
+	\end{center}%
+\end{figure}%
 
 Assuming that all species have the same heat capacity $c_{p,k} = c_p$ and mass diffusion coefficient $D_k=D$, that the Lewis number is unity for all species, and that combustion can be described by a single step chemical reaction, it is possible to obtain an equation for a scalar without source terms, which is a linear combination of the energy \cref{eq:LowMachEnergy} and mass fraction \cref{eq:LowMachMassBalance}. Thus, the system can be simplified to solving the low-Mach Navier-Stokes equations and an equation for the passive scalar $z$:
 \begin{subequations}

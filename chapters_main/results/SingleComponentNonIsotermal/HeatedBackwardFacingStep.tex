@@ -5,7 +5,7 @@
 As an extension to the previous casem the backward-facing step configuration in a non-isothermal configuration is studied, where the bottom wall is heated to a constant temperature. 
 
 
-In this section the configuration for a heated backward-facing step proposed in \textcite{xieFluidFlowHeat2016} is solved. 
+In this section the configuration for a heated backward-facing step proposed in the work of \textcite{xieFluidFlowHeat2016} is solved. 
 The fluid entering the system has a temperature equal to $\hat T_0 = \SI{283}{\kelvin}$ and the bottom wall is set to a constant temperature of $\hat T_1 =\SI{313}{\kelvin}$. The inlet temperature is used as the reference temperature, obtaining $T_0 = 1.0$ and $T_1 = 1.106$.
 In the work of \textcite{xieFluidFlowHeat2016} results are reported for the local Nusselt numbers and the local friction coefficients $f_d$  along the bottom wall ($y = 0$) for different expansion ratios and Reynolds numbers.
 By combining the definition of the Nusselt number ($\gls{Nusselt} = \gls{HeatTransCoef}\hat{L}/\glsHat{HeatConductivity}$), Newton's law of cooling ($\hat{\vec{q}} = \hat{h} (\hat{T}_0 - \hat{T}_1 )$), and Fourier's law of heat conduction ($\hat{\vec{q}} = \hat \lambda \hat{\nabla} \glsHat{temp}$) a expression for the local Nusselt number is obtained.
@@ -32,7 +32,7 @@ where $\hat L$ is the reference length. $ \hat L = \hat S$ is chosen to be consi
 It should be noted here that the results obtained using the XNSEC solver are substantially different from those reported by \textcite{xieFluidFlowHeat2016}, and will not be shown here. However, in the work of \textcite{henninkLowMachNumberFlow2022} the same is also reported, stating that with his method it was not possible to reproduce the results presented by \textcite{xieFluidFlowHeat2016}. 
 
 In \cref{fig:fd_Nu_plot} the local friction factor and local Nusselt number along the wall $y = 0$ are plotted for $\gls{Reynolds} = 700$ and ER $= 2$. Comparing the results from the XNSEC solver with those reported in \textcite{henninkLowMachNumberFlow2022} a very good agreement can be observed.
-With this test it is possible to confirm that the XNSEC solver is able to deal with complex systems where heat transfer is present. However, for the range of temperature differences involved in this case, the variation of physical parameters such as density, viscosity and thermal conductivity with respect to temperature has no appreciable influence on the simulated flow fields. The next two test-cases will show how the XNSEC solver is able to simulate low-Mach number flows with a considerable temperature difference.
+With this test it is possible to confirm that the XNSEC solver is able to deal with complex systems where heat transfer is present. However, for the range of temperature differences involved in this case, the variation of physical parameters such as density, viscosity and thermal conductivity with respect to temperature has no appreciable influence on the simulated flow fields. The next two test-cases will show how the XNSEC solver is able to simulate low-Mach number flows with a larger temperature difference.
 \begin{figure}[tb]
 	\pgfplotsset{
 		group/xticklabels at=edge bottom,

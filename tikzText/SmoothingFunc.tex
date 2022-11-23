@@ -14,16 +14,14 @@
 		myaxis,
 		xmin=0,
 		xmax=1,
-		xlabel = z,
-		ylabel = H,
+		xlabel = $z$,
+		ylabel = $H$,
 		legend style={at={(0.9,0.12)},anchor=south east,},
 		]
-		%		\addplot+[no markers, ]table {data/smoothing/Smooth0.001.txt}; \addlegendentry{No smoothing}
-		\addplot+ [no markers, ]table {data/smoothing/Smooth10.txt}; \addlegendentry{$\sigma$=0.1}
-		\addplot+[no markers, ]table {data/smoothing/Smooth12.5.txt}; \addlegendentry{$\sigma$=0.08}
-		\addplot+[no markers, ]table {data/smoothing/Smooth20.txt}; \addlegendentry{$\sigma$=0.05}
-		\addplot+[no markers, ]table {data/smoothing/Smooth50.txt}; \addlegendentry{$\sigma$=0.02}
-		\addplot+[no markers, ]table {data/smoothing/Smooth100.txt}; \addlegendentry{$\sigma$=0.01}
-		%		\addplot+[no markers, ]table {data/smoothing/Smooth1000.txt}; \addlegendentry{$\sigma$=0.001}	 
+		\addplot+[no markers, ]table {data/smoothing/Smooth100.txt}; \addlegendentry{$\sigma$=100}
+		\addplot+[no markers, ]table {data/smoothing/Smooth50.txt}; \addlegendentry{$\sigma$=50}
+		\addplot+[no markers, ]table {data/smoothing/Smooth20.txt}; \addlegendentry{$\sigma$=20}
+		%\addplot+[no markers, ]table {data/smoothing/Smooth12.5.txt}; \addlegendentry{$\sigma$=12.5}
+		\addplot+ [no markers, ]table {data/smoothing/Smooth10.txt}; \addlegendentry{$\sigma$=10}
 	\end{axis} 
 \end{tikzpicture}

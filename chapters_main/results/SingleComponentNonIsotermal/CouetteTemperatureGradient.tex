@@ -8,7 +8,7 @@ As a further test case for the low-Mach solver, a Couette flow with a vertical t
 		\caption{Schematic representation of the Couette flow with temperature difference test case.}\label{fig:CouetteTempDiff_scheme}
 	\end{center}
 \end{figure}%
-\subsubsection{Set-up}
+%\subsubsection{Set-up}
 In \cref{fig:CouetteTempDiff_scheme} a schematic representation of the test case is shown. The domain is chosen as $\Omega = [0,1]\times[0,1]$, and Dirichlet boundary conditions are used for all boundaries. The upper wall corresponds to a moving wall ($u = 1$) with a fixed temperature $T=T_h$. The bottom wall is static ($u = 0$) and has a constant temperature $T = T_c$.
 Additionally, the system is subjected to a gravitational field, where the gravity vector only has a component in the $y$ direction. Under these conditions, the x-component of velocity, pressure, and temperature are only dependent on the $y$ coordinate, that is, $u = u(y)$, $T = T(y)$ and $p = p(y)$. The governing equations (\cref{eq:NS-eq}) reduce to%
 \begin{subequations}
@@ -38,10 +38,10 @@ Where the constants $C_1$, $C_2$, $C_3$ and $C_4$ are determined using the bound
 	C_4 & = \frac{3}{5}\left(T_c^{5/3}-T_h^{5/3}\right)
 \end{align}
 \end{subequations}
-and $C$ is a real-valued constant determined by an arbitrary zero level for the pressure. The dimensionless parameters are set as $\gls{Reynolds} = 10$ and $\gls{Prandtl} =0.71$, $T_h = 1.6$, and $T_c = 0.4$ for all calculations. The system is considered open and $p_0 =1.0$. The Froude number is calculated as
+and $C$ is a real-valued constant determined by an arbitrary zero level for the pressure. The dimensionless parameters are set as $\gls{Reynolds} = 10$ and $\gls{Prandtl} =0.71$, $T_h = 1.6$, and $T_c = 0.4$ for all calculations. The system is considered open and the thermodynamic pressure is $p_0 =1.0$. The Froude number is calculated as
 \begin{equation}
 	\text{Fr} = \left( \frac{2\text{Pr}(T_h-T_c)}{(T_h+T_c)}\right)^{1/2}.\label{eq:FroudeNumber1}
-\end{equation}
+\end{equation}%
 \begin{center}
 	\begin{figure}[bt]
 		\pgfplotsset{
@@ -64,23 +64,15 @@ In \cref{fig:ConvergenceCFTD} the results of the h-convergence study are shown. 
 	\caption{Convergence study of the Couette-flow with temperature difference. A power-law is used for the transport parameters.}\label{fig:ConvergenceCFTD}
 \end{figure}
 \subsubsection{Comparison with SIMPLE}
-As mentioned before, a solver for solving low-Mach number flows based on the SIMPLE algorithm (presented in \textcite{kleinHighorderDiscontinuousGalerkin2016}) has already been developed and implemented within the BoSSS framework.
+As mentioned before, a solver for solving low-Mach number flows based on the SIMPLE algorithm presented in \textcite{kleinHighorderDiscontinuousGalerkin2016} has already been developed and implemented within the BoSSS framework.
 Although the solver was validated and shown to be useful for a wide variety of test cases, there were also disadvantages inherent to the SIMPLE algorithm. For example,
 within the solution algorithm, Picard-type iterations are used to search for a solution. This usually requires some prior knowledge from the user in order to select suitable relaxation factor values that provide stability to the algorithm, but at the same time do not slow down the computation substantially. 
-The intention of this subsection is to show a comparison of runtimes of the calculation of the Couette flow with vertical temperature gradient between the DG-SIMPLE algorithm \parencite{kleinHighorderDiscontinuousGalerkin2016} and the XNSEC solver. Calculations were performed on uniform Cartesian meshes with $16\times16$, $32\times32$, $64\times64$ and $128\times128$ elements, and with varying polynomial degrees between one and three for the velocity and temperature, and between zero and two for the pressure. All calculations where initialized with a zero velocity and pressure field, and with a temperature equal to one in the whole domain. Are calculations were performed single-core and the convergence criteria is set to $10^{-8}$ for both solvers. The under-relaxation factors for the SIMPLE algorithm were set for all calculations to 0.8, 0.5 and 1.0 for the velocity, pressure and temperature, respectively.
+The intention of this subsection is to show a comparison of runtimes of the calculation of the Couette flow with vertical temperature gradient between the DG-SIMPLE algorithm \parencite{kleinHighorderDiscontinuousGalerkin2016} and the XNSEC solver. Calculations were performed on uniform Cartesian meshes with $16\times16$, $32\times32$, $64\times64$ and $128\times128$ elements, and with varying polynomial degrees between one and three for the velocity and temperature, and between zero and two for the pressure. All calculations where initialized with a zero velocity and pressure field, and with a temperature equal to one in the whole domain. Are calculations were performed single-core. The convergence criteria of the nonlinear solver is set to $10^{-8}$ for both solvers. The under-relaxation factors for the SIMPLE algorithm are set for all calculations to 0.8, 0.5 and 1.0 for the velocity, pressure and temperature, respectively.
 
-In figure \cref{fig:RuntimeComparison} a comparison of the runtimes from both solvers is shown. It is clearly  appreciated how the runtimes of the SIMPLE algorithm are higher for almost all of the cases studied. Obviously the under-relaxation parameters of the SIMPLE algorithm have an influence on the calculation times and an appropiate selection of them could decrease the runtimes. This is a clear disadvantage because the selection of adequate factors is highly problem dependent and requires some previous expertise from the user. On the other hand, the globalized Newton method used by the XNSEC solver avoid this problem by using a more sophisticated method and heuristics in order to find a better path to the solution.
-
-%TODO \todo[inline]{I have to somehow highlight even more the positive points of using this solver} 
-
-
-
+In \cref{fig:RuntimeComparison} a comparison of the runtimes from both solvers is shown. It is clearly  appreciated how the runtimes of the SIMPLE algorithm are higher for almost all of the cases studied. Only for systems with a small number of cells the solver using the SIMPLE algorithm outperforms the XNSEC solver.  It is also interesting to note how the runtime of the simulations with the XNSEC code seems to scale linearly with the polynomial degree. On the other hand, in the case of the SIMPLE solver, the scaling is much more unfavourable, and the runtime increases dramatically as the polynomial degree increases.  Obviously the under-relaxation parameters of the SIMPLE algorithm have an influence on the calculation times and an appropriate selection of them could decrease the runtimes. This is a clear disadvantage, since the adequate selection of under-relaxation factors is highly problem dependent and requires previous expertise from the user. On the other hand, the globalized Newton method used by the XNSEC solver avoid this problem by using a more sophisticated method and heuristics in order to find a better path to the solution.
 \begin{figure}	
 \centering
     \inputtikz{RuntimeComparisonCouetteFlow}
 	\caption{Runtime comparison of the DG-SIMPLE solver and the XNSEC solver for the Couette flow with vertical temperature gradient for different polynomial degrees $k$ and number of cells.}
 	\label{fig:RuntimeComparison}
 \end{figure}
-
-
-% \FloatBarrier

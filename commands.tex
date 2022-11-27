@@ -118,7 +118,7 @@
 \newcommand{\Fr}{\text{Fr}}
 \newcommand{\Mach}{\text{Ma}}
 
-\newcommand{\Yi}{Y_{\alpha h}}
+\newcommand{\Yi}{Y^{n+1}_{\alpha h}}
 
 \newcommand{\RefVal}[1]{\hat #1_{\text{ref}}}
 \newcommand{\RefValS}[2]{\hat #1_{#2,\text{ref}}} \newcommand{\LtwoNorm}[1]{\left \Vert #1 \right\Vert_2}
@@ -132,25 +132,25 @@
 
 \newcommand{\normalBoundary}{\vec{n}_{\Gamma}}
 
-\newcommand{\cph}{c_p(T_h,\vec{Y}_h)}
-\newcommand{\rhoh}{\rho(T_h,\vec{Y}_h)}
-\newcommand{\visch}{\mu(T_h)}
-\newcommand{\lambdah}{\lambda(T_h)}
-\newcommand{\rhodh}{\rho\!D_\alpha(T_h)}
+\newcommand{\cph}{c_p(T^{n+1}_h,\vec{Y}^{n+1}_h)}
+\newcommand{\rhoh}{\rho(T^{n+1}_h,\vec{Y}^{n+1}_h)}
+\newcommand{\visch}{\mu(T^{n+1}_h)}
+\newcommand{\lambdah}{\lambda(T^{n+1}_h)}
+\newcommand{\rhodh}{\rho\!D_\alpha(T^{n+1}_h)}
 \newcommand{\cd}[1]{#1^{*}}
 \newcommand{\dtpart}[1]{\frac{\partial}{\partial t}(#1)}
 \newcommand{\dtpartcd}[1]{\frac{\partial}{\partial t^*}(#1)}
 \newcommand{\nondimA}[1]{#1 = \frac{#1^*}{#1^*_\infty}}
 \newcommand{\nondimB}[1]{#1 = \frac{#1^*}{p^*_\infty/\rho^*_\infty}}
 
-\newcommand{\ContDis}{\mathcal{C}\left(\vec{u}_h,q_h, \rhoh\right) }
-\newcommand{\MomConv}{\mathcal{U}^C\left(\vec{u}_h,\vec{u}_h,\vec{v}_h, \rhoh\right) } \newcommand{\MomConvDefinition}{\mathcal{U}^C\left(\vec{w}_h,\vec{u}_h,\vec{v}_h, \rhoh\right) }\newcommand{\MomPres}{\mathcal{U}^P\left(p_h,\vec{v}_h\right) }
-\newcommand{\MomDiff}{\mathcal{U}^D\left(\vec{u}_h,\vec{v}_h,\visch\right)}
+\newcommand{\ContDis}{\mathcal{C}\left(\vec{u}^{n+1}_h,q_h, \rhoh\right) }
+\newcommand{\MomConv}{\mathcal{U}^C\left(\vec{u}^{n+1}_h,\vec{u}^{n+1}_h,\vec{v}_h, \rhoh\right) } \newcommand{\MomConvDefinition}{\mathcal{U}^C\left(\vec{w}_h,\vec{u}_h,\vec{v}_h, \rhoh\right) }\newcommand{\MomPres}{\mathcal{U}^P\left(p^{n+1}_h,\vec{v}_h\right) }
+\newcommand{\MomDiff}{\mathcal{U}^D\left(\vec{u}^{n+1}_h,\vec{v}_h,\visch\right)}
 \newcommand{\MomSource}{\mathcal{U}^S\left(\rhoh, \vec{v}_h\right)}
 
-\newcommand{\EnergyConv}{\mathcal{E}^C\left(\vec{u}_h,T_h,r_h, \rhoh\right)}
-\newcommand{\EnergyDiff}{\mathcal{E}^D\left(T_h,r_h,\lambdah\right)} 
-\newcommand{\EnergySource}{\mathcal{E}^S\left(r_h, Q_h(T_h,\vec{Y}_h), \rateReac_h(T_h,\vec{Y}_h)\right)}
+\newcommand{\EnergyConv}{\mathcal{E}^C\left(\vec{u}^{n+1}_h,T^{n+1}_h,r_h, \rhoh\right)}
+\newcommand{\EnergyDiff}{\mathcal{E}^D\left(T^{n+1}_h,r_h,\lambdah\right)} 
+\newcommand{\EnergySource}{\mathcal{E}^S\left(r_h, Q(T^{n+1}_h,\vec{Y}^{n+1}_h), \rateReac_h(T^{n+1}_h,\vec{Y}^{n+1}_h)\right)}
 \newcommand{\MFTestFunc}{s_h}
 \newcommand{\MFConv}{\mathcal{M}^C_\alpha\left(\vec{u}_h,\Yi,\MFTestFunc, \rhoh\right)}
 \newcommand{\MFDiff}{\mathcal{M}^D_\alpha\left(\Yi,\MFTestFunc,\rhodh\right) } 

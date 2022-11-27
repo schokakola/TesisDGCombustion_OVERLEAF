@@ -1,25 +1,5 @@
 \chapter{Computational methodology} \label{ch:CompMethodology}
 
-%%%%%%%%%%
-Dario:
-or any incompressible flow solver, an issue that has to be addressed is that of velocity-pressure
-coupling. In BoSSS, the straightforward approach of solving the entire set of equations in a
-coupled way is employed. Care must be taken to prevent physically unreasonable fluctuations
-of the pressure, i.e. the analog of the checkerboard instability observed in many numerical
-methods for incompressible flows (Schäfer, 2006). To this end, a mixed-order discretization is
-used, in which the polynomial degree of the pressure field is chosen to be smaller by one than
-the polynomial degree of the velocity and the other variables. This is intended to ensure that
-the Ladyženskaja-Babuška-Brezzi condition (Babuška, 1973; Brezzi, 1974) is fulfilled, even
-though, strictly speaking, no rigorous proof for this in the general setting discussed here exists.
-Note that this fully-coupled solution approach, while conceptually simple, is very demanding
-of the nonlinear solver, and can easily lead to convergence issues. We discuss some measures
-that address these challenges in Sections 4.3.2–4.3.4.
-In t
-
-%%%%%%%%%%
-
-
-
 \paragraph{State of the art of DG methods}
 
 \paragraph{State of the art simulation of combustion? (muy amplio))}
@@ -27,7 +7,7 @@ Simulacion de procesos de combustion haciendo uso metodos de high order. Mencion
 
 
 
-One point that should be discussed is the method of solving the discretized system presented above. The coupling of the velocity fields with the pressure that exists in the Navier Stokes equations has been a subject of much work and interest. It is well known that for incompressible flows, the system of governing equations has the disadvantage that the continuity equation does not include a time derivative, which makes it difficult to advance the system in time using conventional methods. Traditionally this type of coupling has been solved by using projection methods such as \parencite{chorinNumericalSolutionNavierStokes1967}, or by using methods such as SIMPLE \parencite{patankarNumericalHeatTransfer1980} or PISO. These types of algorithms have the advantage of low memory consumption, and have been widely studied and used, particularly in the context of methods such as FVM. On the other hand, very little research has been done on the use of methods such as SIMPLE in conjunction with DG Methods. In the work of \textcite{kleinSIMPLEBasedDiscontinuous2013} one of the first investigations was carried out with the objective of creating a framework for solving the Navier-Stokes equations in a DG-Methods context. In addition, in \parencite{kleinHighorderDiscontinuousGalerkin2016} an extension of the previously presented method for low-Mach number flows is made. All these investigations were done using the BoSSS framework. The combination of both algorithms proved to be succesful in many situations. However, as will be seen later the computational times associated with it turned out to be very high under certain conditions. This prompted the development of other strategies for solving the problem. 
+One point that should be discussed is the method of solving the discretized system presented in \cref{NumericalMethods}. The coupling of the velocity fields with the pressure that exists in the Navier Stokes equations has been a subject of much work and interest. It is well known that for incompressible flows, the system of governing equations has the disadvantage that the continuity equation does not include a time derivative, which makes it difficult to advance the system in time using conventional methods. Traditionally this type of coupling has been solved by using projection methods such as \parencite{chorinNumericalSolutionNavierStokes1967}, or by using methods such as SIMPLE \parencite{patankarNumericalHeatTransfer1980} or PISO. These types of algorithms have the advantage of low memory consumption, and have been widely studied and used, particularly in the context of methods such as FVM. On the other hand, very little research has been done on the use of methods such as SIMPLE in conjunction with DG Methods. In the work of \textcite{kleinSIMPLEBasedDiscontinuous2013} one of the first investigations was carried out with the objective of creating a framework for solving the Navier-Stokes equations in a DG-Methods context. In addition, in \parencite{kleinHighorderDiscontinuousGalerkin2016} an extension of the previously presented method for low-Mach number flows is made. All these investigations were done using the BoSSS framework. The combination of both algorithms proved to be succesful in many situations. However, as will be seen later the computational times associated with it turned out to be very high under certain conditions. This prompted the development of other strategies for solving the problem. 
 
 
 Another approach is to solve the complete system of equations in a fully coupled form. In this way, a solution is obtained that satisfies all constraints imposed by the set of equations, such as the divergence-free velocity constraint imposed by the continuity equation. While this approach may appear to be the most straightforward, it is not free of complications. Special care must be taken in the algorithms for solving the (usually nonlinear) associated problem, as this can easily lead to problems with convergence. 

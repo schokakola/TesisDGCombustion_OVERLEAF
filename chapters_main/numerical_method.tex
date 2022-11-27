@@ -1,11 +1,9 @@
 \chapter{The Discontinuous Galerkin method}	\label{ch:NumericalMethods}
 This chapter aims to give an overview of the DG method, as well as to present the spatial and temporal discretization of the equations presented earlier. Parts of this chapter are based on the work presented at \parencite{kummerExtendedDiscontinuousGalerkin2017,kikkerFullyCoupledHighorder, smudamartinDirectNumericalSimulation2021}. The reader interested in a more in-depth description of the DG method is referred to the works of  \textcite{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012}
 
-\section{State of the art}
-
 
 \section{The Discontinuous Galerkin method}
-
+In this section the spatial and temporal discretization of a scalar transport equation using the DG-method is shown. We start by giving some basic definitions, and later the general procedure for obtaining a DG discretization is shown. 
 \subsection{Definitions for the discretization} \label{ssec:SpatDiscretization}
 First some standard definitions and notation are introduced in the context of DG methods. 
 
@@ -176,7 +174,8 @@ which is block-diagonal, since  ${\gls{massM}}_{j}$ does not depend on neighbour
 \end{equation} 
 The mass matrix of a cell ${\gls{massM}}_{j} := \matrixDG{M}_{(j,-) \ (j,-)} $ only depends in this case on the cell-local basis functions. 
 %\todo[inline]{How is the mass matrix defined for variable density flows?}
-It is interesting to note that a \gls{FVM} discretization can be recovered if the basis functions in this formulation are restrited to zero-degree polynomials. Similarly, a discretization similar to a \gls{FEM} formulation would be obtained if the allowance of discontinuities in the formulation of the DG-method would have been ignored.
+
+It is interesting to note regarding the DG discretization, that a \gls{FVM}-type  discretization can be recovered if the basis functions in this formulation are restrited to zero-degree polynomials. Similarly, a discretization similar to a \gls{FEM} formulation would be obtained if the allowance of discontinuities in the formulation of the DG-method would have been ignored.
 \subsubsection{Note on the numerical fluxes}
 As mentioned before, the numerical fluxes $\gls{numflux}$ have to fulfil certain physical and mathematical properties for obtaining a stable and convergent method. One of the requirement for proving the stability of the scheme is the monotonicity. First, the energy estimate is defined as
 \begin{equation}
@@ -341,42 +340,50 @@ In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf
 Here the DG discretization of the finite reaction system defined by \crefrange{eq:LowMach_Conti}{eq:LowMachMassBalance} is presented. 
 First, the vector $\vec{Y}' = \left(Y_1,\dots,Y_{N-1}\right)$ is defined as the vector containing the first $(\gls{TotalNumberSpecies}-1)$ mass fractions and $\vec{s} = \left(s_1, \dots, s_{N-1} \right)$ as the vector containing the test functions for the first $(\gls{TotalNumberSpecies}-1)$  mass fraction equations. 
 
-The discretized form of \crefrange{eq:LowMach_Conti}{eq:LowMachMassBalance} is obtained in a similar fashion to the methodology shown in \cref{sec:DiscWithDG}. This means, (1) each equation is multiplied by a test function, (2) integrated it over an element $K$, (3) applied integration by parts, (4) introduced an adequate numerical flux for each term and finally (5) summing over all cells in order to obtain a global formulation.
+The discretized form of \crefrange{eq:LowMach_Conti}{eq:LowMachMassBalance} is obtained in a similar fashion to the methodology shown in \cref{sec:DiscWithDG}. This means, (1) each equation is multiplied by a test function, (2) integrated it over an element $K_j$, (3) applied integration by parts, (4) introduced an adequate numerical flux for each term and finally (5) summing over all cells in order to obtain a global formulation.
 
-The discretized problem can be written as: find the numerical solution $(p_h,\vec{u}_h, T_h, \MFVecPrima_h) \in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h, r_h, \mathbf{s}_h) \in \mathbb{V}_\myvector{k}$:
+The discretized equations of the transient problem can be written as: find the numerical solution $(p^{n+1}_h,\vec{u}^{n+1}_h, T^{n+1}_h, \MFVecPrima^{n+1}_h) \in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h, r_h, \mathbf{s}_h) \in \mathbb{V}_\myvector{k}$ , following equations are fulfilled:
 \begin{subequations}
 	\begin{flalign}%
 		%% Continuity
+		&\textbf{Continuity equation}& \notag \\
 		&\gls{BCcont}(q_h)= \ContDis\ + \mathcal{T}(\partial_t \rho|_{t^{n+1}},q_h ) ,& \label{DiscretizedConti}\\[1ex]
 		%% Momentum
+		&\textbf{Momentum equations}& \notag \\
 		&\gls{BCmom}(\vec{v}_h) =	\MomConv + \MomPres + \MomDiff & \notag\\
-		& \quad\quad\quad + \MomSource,& \label{DiscretizedMomentum}\\[1ex]
+		& \quad\quad\quad + \MomSource + \mathcal{E}(\partial_t (\rho \vec{u})|_{t^{n+1}},\vec{v}_h ) ,& \label{DiscretizedMomentum}\\[1ex]
 		%% Energy
+		&\textbf{Energy equation}& \notag \\
 		&\gls{BCenergy}(r_h)
-		 = \mathcal{S}^C\left(\vec{u}_h,T_h,r_h, \rhoh\right) + \mathcal{S}^{D,E}\left(T_h,r_h,k/c_p(T_h)\right)&  \notag\\
-		& \quad\quad\quad + \mathcal{S}^S\left(r_h, \heatRelease(T_h,\vec{Y}_h), \rateReac(T_h,\vec{Y}_h),\cph\right),& \label{DiscretizedEnergy}   \\[1ex]
+		 = \mathcal{S}^C\left(\vec{u}^{n+1}_h,T^{n+1}_h,r_h, \rhoh\right) + \mathcal{S}^{D,E}\left(T^{n+1}_h,r_h,k/c_p(T^{n+1}_h)\right)&  \notag\\
+		& \quad\quad\quad + \mathcal{S}^S\left(r_h, \heatRelease(T^{n+1}_h,\vec{Y}^{n+1}_h), \rateReac(T^{n+1}_h,\vec{Y}^{n+1}_h),\cph\right)&\notag\\
+		&\quad\quad\quad+ \mathcal{T}(\partial_t (\rho T)|_{t^{n+1}},r_h ),& \label{DiscretizedEnergy}   \\[1ex]
 	%% MassFractions
-		&\gls{BCMass}(s_{\alpha h})= \mathcal{S}^C\left(\vec{u}_h,\Yi, s_{\alpha h}, \rhoh\right) + \mathcal{S}^{D,M}\left(\Yi,s_{\alpha h},\rhodh\right)&  \notag \\
-		& \quad\quad\quad\quad + \mathcal{M}^S_\alpha\left(s_{\alpha h},\rateReac(T_h,\vec{Y}_h )\right).& \label{DiscretizedMassFractions}
+		&\textbf{Mass fraction of species $\alpha$ equation}& \notag \\
+		&\gls{BCMass}(s_{\alpha h})= \mathcal{S}^C\left(\vec{u}^{n+1}_h,\Yi, s_{\alpha h}, \rhoh\right) + \mathcal{S}^{D,M}\left(\Yi,s_{\alpha h},\rhodh\right)&  \notag \\
+		& \quad\quad\quad\quad + \mathcal{M}^S_\alpha\left(s_{\alpha h},\rateReac(T^{n+1}_h,\vec{Y}^{n+1}_h )\right) + \mathcal{T}(\partial_t (\rho Y_{\alpha,h})|_{t^{n+1}},s_h ).& \label{DiscretizedMassFractions}
 	\end{flalign}\label{eqs:variatProblemFull}
 \end{subequations}
-\todo[inline]{Add the temporal terms}
-where the index $\alpha$ takes values $\alpha = 1, \dots,~(\gls{TotalNumberSpecies} - 1)$.
-Here $\gls{BCcont}$, $\gls{BCmom}$, $\gls{BCenergy}$ and $\gls{BCMass}$ contain the information of the Dirichlet boundary conditions. $\mathcal{C}$ is the discretized divergence operator of the continuity equation. Furthermore $\mathcal{U}^C$ is the discretized convective operator of the momentum equation and  $\mathcal{S}^C$ is the discretized convective operator of the temperature and mass fraction equations. $\mathcal{U}^P$ is the discretized gradient operator. Additionally, $\mathcal{U}^D$, $\mathcal{S}^{D,E}$ and $\mathcal{S}^{D,M}$ are the discretized diffusive operators of the momentum, temperature and mass fractions equations, respectively. Finally $\mathcal{U}^S$, $\mathcal{S}^S$ and $\mathcal{M}^S$ are the discretized source terms of the momentum, temperature and mass fraction equations.
+Here the index $\alpha$ of the mass fraction equations takes values $\alpha = 1, \dots,~(\gls{TotalNumberSpecies} - 1)$.
+Here $\mathcal{C}$ is the discretized divergence form of the continuity equation. Furthermore $\mathcal{U}^C$ is the discretized convective form of the momentum equation and  $\mathcal{S}^C$ is the discretized convective form of the temperature and mass fraction equations. $\mathcal{U}^P$ is the discretized gradient form. Additionally, $\mathcal{U}^D$, $\mathcal{S}^{D,E}$ and $\mathcal{S}^{D,M}$ are the discretized diffusive form of the momentum, temperature and mass fractions equations, respectively. Furthermore $\mathcal{U}^S$, $\mathcal{S}^S$ and $\mathcal{M}^S$ are the discretized source terms of the momentum, temperature and mass fraction equations.  Finally $\mathcal{T}$ and $\mathcal{E}$ are the contributions of the temporal derivatives, and $\gls{BCcont}$, $\gls{BCmom}$, $\gls{BCenergy}$ and $\gls{BCMass}$ contain the information of the Dirichlet boundary conditions for the continuity, momentum, energy and mass fraction equations, respectively.
 
 Note that the convective and diffusive terms of the temperature scalars $T$, mass fraction $Y_\alpha$ and mixture fraction $z$ have the same form, so they share the same expression in their discretized form. Each one of the forms introduced here are defined later in \cref{ssec:nonLinearforms}.
 \subsection{Discontinuous Galerkin discretization of the flame sheet problem}
 Discretizing the flame sheet problem given by \crefrange{eq:MixtFracConti2}{eq:MixtFracMF} proceeds in a similar way. 
 
-The resulting problem reads: find the numerical solution $(p_h,\vec{u}_h,z_h)\in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h,r_h)\in \mathbb{V}_\myvector{k}$ we have:
+The resulting problem reads: find the numerical solution $(p^{n+1}_h,\vec{u}^{n+1}_h,z^{n+1}_h)\in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h,r_h)\in \mathbb{V}_\myvector{k}$ following equations have to be fulfilled:
 \begin{subequations}
 	\begin{flalign}
 		%% Continuity
-		&\mathcal{B}^1(q_h)=\mathcal{C}\left(\vec{u}_h,q_h, \rho(z_h)\right),& \label{DiscretizedConti2}\\
+		&\textbf{Continuity equation}& \notag \\
+		&\mathcal{B}^1(q_h)=\mathcal{C}\left(\vec{u}^{n+1}_h,q_h, \rho(z^{n+1}_h)\right)  + \mathcal{T}(\partial_t \rho|_{t^{n+1}},q_h ) ,& \label{DiscretizedConti2}\\
 		%% Momentum
-		&\mathcal{B}^2(\vec{v}_h) =\mathcal{U}^C\left(\vec{w}_h,\vec{u}_h,\vec{v}_h, \rho(z_h)\right)+ 	\mathcal{U}^P\left(p_h,\vec{v}_h\right) +\mathcal{U}^D\left(\vec{u}_h,\vec{v}_h,\mu(z_h)\right) +\mathcal{U}^S\left(\rho(z), \vec{v}_h\right),& \label{DiscretizedMomentum2}\\
+		&\textbf{Momentum equations}& \notag \\
+		&\mathcal{B}^2(\vec{v}_h) =\mathcal{U}^C\left(\vec{u}^{n+1}_h,\vec{u}^{n+1}_h,\vec{v}_h, \rho(z^{n+1}_h)\right)+ 	\mathcal{U}^P\left(p^{n+1}_h,\vec{v}_h\right) +\mathcal{U}^D\left(\vec{u}^{n+1}_h,\vec{v}_h,\mu(z^{n+1}_h)\right)&\notag \\
+		&\qquad\qquad	+\mathcal{U}^S\left(\rho(z^{n+1}_h), \vec{v}_h\right) + \mathcal{E}(\partial_t (\rho \vec{u})|_{t^{n+1}},\vec{v}_h ),& \label{DiscretizedMomentum2}\\ 
 		%% Mixture Fraction	 
-		&\mathcal{B}^3(r_h) = {S}^C\left(\vec{u}_h,z_h,r_h, \rho(z_h)\right) + \mathcal{S}^{D,E}\left(z_h,r_h,\rho D(z_h)\right).& \label{DiscretizedEnergy2}
+		&\textbf{Mixture fraction equation}& \notag \\
+		&\mathcal{B}^3(r_h) = {S}^C\left(\vec{u}^{n+1}_h,z^{n+1}_h,r_h, \rho(z^{n+1}_h)\right) + \mathcal{S}^{D,E}\left(z^{n+1}_h,r_h,\rho D(z^{n+1}_h)\right)  \mathcal{T}(\partial_t (\rho z)|_{t^{n+1}},r_h ).& \label{DiscretizedEnergy2}
 	\end{flalign}\label{eqs:variatFS}
 \end{subequations}
 Note that density and transport parameters depend on the mixture fraction $z$, which indirectly modifies the temperature and mass fraction fields.%Due to the similarity of the mass fraction equation and the mixture fraction equation the discretization is analogous.
@@ -385,7 +392,7 @@ Note that density and transport parameters depend on the mixture fraction $z$, w
 \subsection{Definitions of nonlinear forms}\label{ssec:nonLinearforms}
 In the following the nonlinear forms used in this work are shown. Regarding the choice of fluxes, the "best practices" known in literature for the incompressible Navier-Stokes equation are followed. These fluxes proved to be well suited for all the problems discussed in this thesis, providing stability to the algorithm, while maintaining the accuracy of the solver.
 
-It is well known \parencite{pietroMathematicalAspectsDiscontinuous2012,giraultDiscontinuousGalerkinMethod2004} that central difference fluxes for the pressure gradient and velocity divergence, combined with a coercive form for the viscous terms, e.g. symmetric interior penalty, gives a stable discretization for the Stokes equation. Furthermore, it is known that for all kinds of convective terms, a numerical flux which transports information in characteristic direction, e.g. Upwind, Lax-Friedrichs or Local-Lax-Friedrichs, must be used. We opted for the last one in the present implementation, as it offers a good compromise between accuracy and stability.
+It is well known that central difference fluxes for the pressure gradient and velocity divergence, combined with a coercive form for the viscous terms, e.g. symmetric interior penalty, gives a stable discretization for the Stokes equation \parencite{pietroMathematicalAspectsDiscontinuous2012,giraultDiscontinuousGalerkinMethod2004}. Furthermore, it is known that for all kinds of convective terms, a numerical flux which transports information in characteristic direction, e.g. Upwind, Lax-Friedrichs or Local-Lax-Friedrichs, must be used. We opted for the last one in the present implementation, as it offers a good compromise between accuracy and stability.
 \paragraph{Continuity equation}
 A central difference flux for the discretization of the continuity equation is used:
 \begin{equation}
@@ -397,9 +404,9 @@ The density in \cref{eq:Conti} is evaluated as a function of the temperature and
 \end{equation}
 The density at the boundary  $\rho_{\text{D}}$ is evaluated with \cref{eq:ideal_gas} using the corresponding Dirichlet values of temperature and mass fractions.
 \begin{equation}
-\mathcal{T}() =   \int_{\Omega}{  ? q} \dV.
+\mathcal{T}(u,v) =   \int_{\Omega}{uv} \dV.
 \end{equation}
-\todo[inline]{Add the source term for the continuity equation}
+Note that in case of the temporal term of the continuity equation $\partial_t \rho$, it is discretized as mentioned in \cref{eq:DiscretizationDrhoDT}
 \paragraph{Momentum equations}
 The convective term of the momentum equations is discretized using a Lax-Friedrichs flux
 \begin{equation}
@@ -453,8 +460,12 @@ Finally, the right hand sides of \cref{DiscretizedMomentum} and \cref{Discretize
 	\oint_{\Gamma_{\text{D}}}{\mu_{\text{D}}\vec{u}_{\text{D}}\cdot(\nabla_h\vec{v} \normalBoundary + \nabla_h\vec{v}^T \normalBoundary- \eta \vec{v} )\dS.}
 \end{equation}
 The Dirichlet viscosity value $\mu_{\text{D}}$ is calculated from \cref{eq:nondim_sutherland} using the Dirichlet values of the temperature at the boundary.
+Finally the temporal derivative of the momentum equation in its discretized form corresponds to
+\begin{equation}
+\mathcal{E} (\vec{u},\vec{v}) =   \int_{\Omega}{\vec{u}\cdot\vec{v}} \dV.
+\end{equation}
 \paragraph{Scalar equations}
-Since the convective and diffusive term for the temperature, mass fractions and mixture fraction share a similar form,  here their discretized expressions are summarized in terms of an arbitrary scalar $X$ (corresponding to $T$ in the energy equation, $Y_\alpha$ in the equation for species $\alpha$ and $z$ for the mixture fraction equation) and transport parameter $\xi$ (i.e. $k/c_p$ in the energy equation, and $(\rho D)$ for the mass fraction and mixture fraction equations). The convective term of the scalars is discretized using a Lax-Friedrichs flux
+Since the convective and diffusive terms for the temperature, mass fractions and mixture fraction share a similar form,  here their discretized expressions are summarized in terms of an arbitrary scalar $X$ (corresponding to $T$ in the energy equation, $Y_\alpha$ in the equation for species $\alpha$ and $z$ for the mixture fraction equation) and transport parameter $\xi$ (i.e. $k/c_p$ in the energy equation, and $(\rho D)$ for the mass fraction and mixture fraction equations). The convective term of the scalars is discretized using a Lax-Friedrichs flux
 \begin{equation}
 	\mathcal{S}^C(\vec{u},X,r, \rho) =  \oint_{\Gamma}{\left( \mean{\rho\vec{u}X }\cdot \vec{n} + \frac{\gamma_2}{2}\jump{X}\right)\jump{r} \dS}
 	- \int_{\Omega}({\rho \vec{u} X \cdot \nabla_h r) d\text{V}}. \label{eq:scalar_convective}

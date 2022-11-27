@@ -1,5 +1,50 @@
-\chapter{Computational methodology} \label{sec:CompMethodology}
+\chapter{Computational methodology} \label{ch:CompMethodology}
 
+%%%%%%%%%%
+Dario:
+or any incompressible flow solver, an issue that has to be addressed is that of velocity-pressure
+coupling. In BoSSS, the straightforward approach of solving the entire set of equations in a
+coupled way is employed. Care must be taken to prevent physically unreasonable fluctuations
+of the pressure, i.e. the analog of the checkerboard instability observed in many numerical
+methods for incompressible flows (Schäfer, 2006). To this end, a mixed-order discretization is
+used, in which the polynomial degree of the pressure field is chosen to be smaller by one than
+the polynomial degree of the velocity and the other variables. This is intended to ensure that
+the Ladyženskaja-Babuška-Brezzi condition (Babuška, 1973; Brezzi, 1974) is fulfilled, even
+though, strictly speaking, no rigorous proof for this in the general setting discussed here exists.
+Note that this fully-coupled solution approach, while conceptually simple, is very demanding
+of the nonlinear solver, and can easily lead to convergence issues. We discuss some measures
+that address these challenges in Sections 4.3.2–4.3.4.
+In t
+
+%%%%%%%%%%
+
+
+
+\paragraph{State of the art of DG methods}
+
+\paragraph{State of the art simulation of combustion? (muy amplio))}
+Simulacion de procesos de combustion haciendo uso metodos de high order. Mencionar papers donde se utiliza la flame sheet estimation para la resolución de sistemas con combustion en estado estacionario. La gran mayoria de esas publicaciones está enfocada en la resolución de sistemas caracteristicos de difusion flames tales como la counterflow flame o coflowing flame, haciendo uso de modelos quimicos complejos. 
+
+
+
+One point that should be discussed is the method of solving the discretized system presented above. The coupling of the velocity fields with the pressure that exists in the Navier Stokes equations has been a subject of much work and interest. It is well known that for incompressible flows, the system of governing equations has the disadvantage that the continuity equation does not include a time derivative, which makes it difficult to advance the system in time using conventional methods. Traditionally this type of coupling has been solved by using projection methods such as \parencite{chorinNumericalSolutionNavierStokes1967}, or by using methods such as SIMPLE \parencite{patankarNumericalHeatTransfer1980} or PISO. These types of algorithms have the advantage of low memory consumption, and have been widely studied and used, particularly in the context of methods such as FVM. On the other hand, very little research has been done on the use of methods such as SIMPLE in conjunction with DG Methods. In the work of \textcite{kleinSIMPLEBasedDiscontinuous2013} one of the first investigations was carried out with the objective of creating a framework for solving the Navier-Stokes equations in a DG-Methods context. In addition, in \parencite{kleinHighorderDiscontinuousGalerkin2016} an extension of the previously presented method for low-Mach number flows is made. All these investigations were done using the BoSSS framework. The combination of both algorithms proved to be succesful in many situations. However, as will be seen later the computational times associated with it turned out to be very high under certain conditions. This prompted the development of other strategies for solving the problem. 
+
+
+Another approach is to solve the complete system of equations in a fully coupled form. In this way, a solution is obtained that satisfies all constraints imposed by the set of equations, such as the divergence-free velocity constraint imposed by the continuity equation. While this approach may appear to be the most straightforward, it is not free of complications. Special care must be taken in the algorithms for solving the (usually nonlinear) associated problem, as this can easily lead to problems with convergence. 
+
+
+
+Puesto que para low-Mach number flows el campo de flujo está acoplado a la temperatura y por lo tanto a la densidad, no es posible resolver las ecuaciones de una forma completamente conservativa en un framework segregado.  En \textcite{knikkerComparativeStudyHighorder2011} se hace un estudio de diferentes algoritmos para la simulacion de low-Mach number flows haciendo uso de distiontas estrategias en algoritmos segregados. 
+
+
+La estrategia propuesta en el presente trabajo consiste en la resolucion completamente acoplada del sistema de ecuaciones, incluyendo en el mismo sistema todas las ecuaciones governantes discretizadas asi como los parametros de transporte y ecuacion de estado. De esta forma se logra circumvent the problems asociated with the solution of the problem using segregated approaches. Como ejemplo que motiva el desarrollo y uso de estrategia \cref{fig:RuntimeComparisonk2} se puede mostrar una comparación en los tiempos de calculo para el mismo caso haciendo uso de un fully coupled approach (XNSEC) y el algoritmo SIMPLE. Si bien ambos algoritmos permiten la simulación de low-Mach number flows, claramente el algoritmo SIMPLE requiere mucho más tiempo. Esto no es por ningun motivo un indicador de que la resolución haciendo uso de un esquema fully implicit es en general superior a una estrategia como el algoritmo SIMPLE en el contexto de DG-methods, y posiblemente una mayor optimización de los algoritmos segregados podría llevar a una mejora en los tiempos de calculo.
+
+\begin{figure}[h]	
+	\centering
+	\inputtikz{RuntimecomparisonWithSimple_k2}
+	\caption{Runtime comparison of the DG-SIMPLE solver and the XNSEC solver on a typical simulation.}
+	\label{fig:RuntimeComparisonk2}
+\end{figure}
 
 This section has the objective of introducing the computational strategies used in the present work for the solution of low-Mach number flows. Parts of this section are based on the work published by \textcite{kikkerFullyCoupledHighorder} and \textcite{gutierrez-jorqueraFullyCoupledHigh2022}.
 
@@ -7,11 +52,12 @@ This section has the objective of introducing the computational strategies used 
 Further details on the used Newton method solver, the homotopy strategy and its implementation are given in the next sections, which are adapted from \textcite{kikkerFullyCoupledHighorder}. For information on the mentioned orthonormalization multigrid algorithm we refer the interested reader to the work of \textcite{kummerBoSSSPackageMultigrid2021}.
 First, the globalized Newton method is presented that allows the resolution of a nonlinear system of equations. In addition, comments on the termination criteria are given.
 
-The newton algorithm presented in this section is a collaborative work of the \textit{BoSSS}  code developers group and has also been used for the simulation of viscoelastic \parencite{kikkerFullyCoupledHighorder} flows, among others.
-
 
 In the early stages of development of the XNSEC solver the BoSSS code featured a framework for the solution of nonlinear systems using Picard iterations. These proved to be useful for systems where no large nonlinearities exist. Although the use of Picard iterations was useful for solving various types of problems (particularly problems involving incompressible flows), the method did not prove to be a particularly robust method, since it requires user-defined under-relaxation parameters in order to obtain a stable algorithm. These parameters are highly dependent on the problem at hand and require user experience to be adequately chosen.
 This motivated the development of the implementation of a Newton method for the resolution of the non-linear system. The use of a newton method proved to be very successful for all testcases treated in the present work. 
+
+The newton algorithm presented in this section is a collaborative work of the \textit{BoSSS}  code developers group and has also been used for the simulation of viscoelastic \parencite{kikkerFullyCoupledHighorder} flows, among others.
+
 
 We note however that this globalization strategy is still not sufficient to ensure convergence for some of the test cases presented, namely for high Rayleigh numbers for the differentially heated cavity problem. For those cases we use a homotopy strategy, where we start with a low homotopy-parameter, a parameter for which the solution of the problem is not hard to find, which is gradually and carefully increased until convergence for the aimed value is reached (cf. \cref{sec:HomotopyMethod}).
 
@@ -26,8 +72,8 @@ Homotopy strategy
 Initialization strategy for steady state combustion problems.
 \section{Solver structure}
 
-TODO: Steady state calculations are obtained by using a Implicit Euler timesteping scheme. Since the scheme is unconditionally stable (see \cref{ssec:TemporalDiscretization}), it is possible to use a very large timestep to obtain the steady state solution. In particular, a value $\Delta t = 1.7976931348623157E\cdot 10^{304}$ is used, which is four orders of magnitude lower than the largest possible value of a double-precision floating-point number.
-\section{Solution of the nonlinear problem}
+TODO: Steady state calculations are obtained by using a Implicit Euler time stepping scheme. Since the scheme is unconditionally stable (see \cref{ssec:TemporalDiscretization}), it is possible to use a very large timestep to obtain the steady state solution. In particular, a value $\Delta t = 1.7976931348623157\cdot 10^{304}$ is used, which is four orders of magnitude lower than the largest possible value of a double-precision floating-point number.
+\section{Solution of the nonlinear problem}\label{sec:SolNonLinProblem}
 
 
 
@@ -77,118 +123,23 @@ In the classical undamped Newton method, the correction step $\myvector{s}'_n$ i
 	\label{eq:NewtonStep}
 \end{equation}
 which is computed using a direct solver.
-Unfortunately, convergence of the Newton method for any starting value $\myvector{U}_0$ is not guaranteed.
+Unfortunately, convergence of the Newton method for any starting value $\myvector{U}_0$ is not guaranteed. Como forma de remediar, almenos en parte, este problema, los llamados metodos de globalizacion han sido desarrollados. 
 
 A big drawback of Newton method is the calculation of the Jacobian matrix, since its direct calculation using usual methods can be computationally expensive. The \textit{BoSSS} framework provides an efficient algorithm for the evaluation of the Jacobian, and is presented in \cref{ssec:EvalJacobian}
 
 
-\subsection{Dogleg Method} \label{sec:newton}
-
-In order to increase robustness when the distance between $\myvector{U}_0$ and the exact solution $\myvector{U}$ is large,
-we employ a globalization approach, presented by Pawlowski et al. \textcite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008},
-known as the Dogleg-method, or Newton-Dogleg method.
-Here, we intend to give only the central ideas of method and refer to the original works for further details.
-Obviously, the exact solution of \cref{Eq:nonLinSystem} is also a minimum of the functional
-\begin{equation}
-	f(\myvector{U}) \coloneqq \frac{1}{2}  \left\| \mathcal{A}(\myvector{U})  \right\|^2_2 .
-\end{equation}
-One observes that $\nabla f(\myvector{U}) = \partial \mathcal{A}(\myvector{U})^T \mathcal{A}(\myvector{U})$.
-For $\myvector{U}_n$, the approximate Cauchy point with respect to the 2-norm,
-is defined as the minimizer $\myvector{g}_n$ of
-$ \left\|  \mathcal{A}(\myvector{U}_{n}) + \partial \mathcal{A} (\myvector{U}_n) \myvector{g}_n \right\|_2  $
-in the direction of steepest decent, i.e. $\myvector{g}_n = \lambda \nabla f(\myvector{U}_n)$, $\lambda \in \mathbb{R}$.
-Substituting $\myvector{w} \coloneqq - \partial \mathcal{A}(\myvector{U}_n) \nabla f(\myvector{U}_n)$, $\myvector{g}_n$ is given by
-\begin{equation}
-	\myvector{g}_n = \frac{\mathcal{A}(\myvector{U}_n) \cdot \myvector{w}}{\myvector{w} \cdot \myvector{w}} \nabla f(\myvector{U}_n) .
-	\label{eq:CauchyPoint}
-\end{equation}
-
-For the Newton-Dogleg method, the correction step  $\myvector{s}'_n$
-is chosen along the so-called Dogleg curve, which is the piece-wise linear
-curve from the origin to $\myvector{g}_n$ and further to $ \myvector{s}_n$.
-The selection of $\myvector{s}'_n$ on this curve is determined by the trust-region diameter $\delta > 0$:
-\begin{itemize}
-	\item
-	If $\|  \myvector{s}_n \|_2 \leq \delta$, $ \myvector{s}'_n =  \myvector{s}_n$.
-	
-	\item
-	If  $\|  \myvector{g}_n \|_2 \leq \delta$ and $\|  \myvector{s}_n \|_2 > \delta$,
-	$\myvector{s}'_n$ is chosen on the linear interpolation from $\myvector{g}_n$ to $\myvector{s}_n$
-	so that  $\|  \myvector{s}'_n \|_2 = \delta$:
-	For the ansatz
-	$\myvector{s}'_n = \tau \myvector{s}_n + (1-\tau) \myvector{g}_n$,
-	the interpolation factor $\tau$ is given as
-	$ \tau = (a^2 - c + \sqrt{(a^2 + b^2 - 2 c) \delta^2 - a^2 b^2 + c^2}) / (a^2 + b^2 - 2 c) $
-	with $a = \| \myvector{g}_n \|_2$,  $b = \| \myvector{s}_n \|_2$ and $c = \myvector{g}_n \cdot \myvector{s}_n $.
-	
-	\item
-	If  $\|  \myvector{g}_n \|_2 > \delta$,
-	$  \myvector{g}_n = (\delta / \|  \myvector{g}_n \|_2) \myvector{g}_n$.
-\end{itemize}
-The choice and adaptation of the trust region diameter $\delta$
-throughout the Newton-Dogleg procedure follows
-a sophisticated heuristic,
-mainly based on comparing the actual residual reduction
-$\textrm{ared}_n \coloneqq \| \mathcal{A} (\myvector{U}_n) \|_2 - \| \mathcal{A} (\myvector{U}_n  + \myvector{s}'_{n} ) \|_2$
-with the predicted residual reduction
-$\textrm{pred}_n \coloneqq \| \mathcal{A} (\myvector{U}_n) \|_2 - \| \mathcal{A} (\myvector{U}_n )   + \partial \mathcal{A} (\myvector{U}_n ) \myvector{s}'_{n} \|_2$; For the direct solver used in this work $\textrm{pred}_n$ simplifies to
-$\textrm{pred}_n \coloneqq \| \mathcal{A} (\myvector{U}_n) \|_2$.
-We replicate the algorithm here, for the sake of completeness:
-\begin{itemize}
-	\item[(1)]
-	Set $n=0$, $\delta_n = \min(10^{10}, \max(2 \cdot 10^{-6}, \| \myvector{s}_0 \|_2 ))$.
-	
-	\item[(2)]
-	Compute the Newton step $\myvector{s}_n$ and the Cauchy point  $\myvector{g}_n$ and
-	find $\myvector{s}'_n$ on the Dogleg curve with respect to the recent $\delta_n$.
-	
-	\item[(3)]
-	While $\textrm{ared}_n \leq \textrm{pred}_n$ do:
-	Update trust region diameter $\delta_n \leftarrow 0.5 \ \delta_n$
-	and re-compute $\myvector{s}'_n$.
-	If $\delta_n < 10^{-6}$ terminate abnormally and mark the computation as failed.
-	
-	\item[(4)]
-	If the convergence criterion (see below) is fulfilled, terminate and mark the computation as success.
-	
-	\item[(5)]
-	Perform a final update of the trust region: Set
-	\[
-	\delta_{n+1} = \left\{ \begin{array}{ll}
-		\max( 10^{-6}, \| \myvector{s}_n \|_2 ) & \text{if } \textrm{ared}_n / \textrm{pred}_n < 0.1 \text{ and } \| \myvector{s}_n \|_2 \delta_n \\
-		\max( 10^{-6}, 0.25 \cdot \delta_n )    & \text{else, if } \textrm{ared}_n / \textrm{pred}_n < 0.1                                        \\
-		\min( 10^{10}, 4 \cdot \delta_n )       & \text{else, if } \textrm{ared}_n / \textrm{pred}_n > 0.75                                       \\
-		\delta_{n}                              & \text{otherwise}                                                                                \\
-	\end{array} \right.
-	\]
-	Set $\myvector{U}_{n+1} = \myvector{U}_{n} + \myvector{s}'_{n} $, update $n \leftarrow n + 1$ and return to step (2).	
-\end{itemize}
-All constants used in the algorithm above have been taken from the work of Pawlowski et al. \textcite{pawlowskiGlobalizationTechniquesNewton2006}
-For a detailed description of the underlying ideas we also refer to these works,
-which in turn are based on algorithms from Dennis and Schnabel's textbook. \textcite{dennisNumericalMethodsUnconstrained1996}
-
-\subsection{Linear solver}\label{ssec:LinearSolver}
-The computation of the Newton step according to \cref{eq:NewtonStep} requires the inversion of the Jacobi matrix. This is done by means of the in \BoSSS integrated orthonormalization multigrid algorithm \textcite{kummerBoSSSPackageMultigrid2021}, which at the lowest multigrid levels makes use of the sparse direct solver \texttt{PARDISO} (Parallel Sparse Direct and Multi-Recursive Iterative Linear Solvers), originally developed by Schenk et al.  \parencite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
-from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows'' library collection to solve the linear system. 
-
-
-For some of the testcases presented here, particularly the cases with combustion, the use of \texttt{PARDISO} for the solution of the linear problem resulted in memory problems. 
-An active field of study in the BoSSS development group is that of iterative algorithms for solving linear systems. The BoSSS code features a multigrid orthonormalization method, using additive Schwarz schemes as smoothers for all multigrid levels, except the coarsest one, where \texttt{PARDISO} is used. This method of solution proved to be adequate to solve systems that are too big to be solved directly by \texttt{PARDISO}, and is adopted for all combustion calculations.
-
-\todo[inline]{What do i exactly do with the linear system? Preconditioning?}
-
 \subsection{Calculation of the Jacobian matrix} \label{ssec:EvalJacobian}
 During the development process of the XNSEC solver different strategies for the calculation of the Jacobian matrix $\partial \mathcal{A}$ were tested and are shown here. 
 
-First, it is interesting to show the relationship existing between two well known methods for solving nonlinear systems: Picard iterations and Newton's method. First, note that the non-linear problems \cref{Eq:nonLinSystem} appearing in this work have the structure
+First, it is interesting to show the relationship existing between two well known methods for solving nonlinear systems: Picard iterations and Newton's method. Note that the non-linear problems \cref{Eq:nonLinSystem} appearing in this work have the structure
 \begin{equation}
-	\mathcal{A}(\myvector{U}) \coloneqq  A(\myvector{U})\myvector{U}-\myvector{b}.
+	\mathcal{A}(\myvector{U}) \coloneqq  A(\myvector{U})\myvector{U}-\myvector{b}. \label{eq:LinearForm}
 \end{equation}
 Thus, the Jacobian matrix \cref{Eq:Jacobian} can be written as
 \begin{equation}
-	\partial \mathcal{A}_{ij}(\myvector{U})  = A_{ij} + \sum_k \pfrac{A_{ik}}{U_j} U_K = A_{ij} + A'_{ij}U_K.
+	\partial \mathcal{A}_{ij}(\myvector{U})  = A_{ij} + \sum_k \pfrac{A_{ik}}{U_j} U_K = A_{ij} + A'_{ij}U_K.\label{eq:JacMatrix2}
 \end{equation}
-Inserting these , the linear system to be solved using Newton's method can be written as
+Inserting \cref{eq:LinearForm} and  \cref{eq:JacMatrix2} into \cref{eq:LinearizedSys}, the linear system to be solved using Newton's method can be written as
 \begin{equation}
 	\underbrace{A(\myvector{U}_n)(\myvector{U}_n+\myvector{s}'_n) - \myvector{b}}_{\text{Picard system}} + A'(\myvector{U}_n)\myvector{U}_n\myvector{s}'_n = 0
 \end{equation}
@@ -231,9 +182,9 @@ $ \gvec{\Phi}_i^{+}$,  $\gvec{\Phi}_i^{-}$, $ \nabla \gvec{\Phi}_i^{+}$ and  $ \
 respectively.
 These functions themselves may include the dependence on
 $\vec{x}$, $\myvector{U}_h^{+}$,  $\myvector{U}_h^{-}$, $\nabla \myvector{U}_h^{+}$ and  $\nabla \myvector{U}_h^{-}$.
-The is however omitted here for the sake of compactness, but the treatment is analogue. Realizing that 
+These are however omitted here for the sake of compactness, but the treatment is analogue. Realizing that 
 \begin{equation}
-\frac{\partial \myvector{U}_h}{\partial \myvector{U}_j}  = \gvec{\Phi}_j
+	\frac{\partial \myvector{U}_h}{\partial \myvector{U}_j}  = \gvec{\Phi}_j
 \end{equation}
 and by application of the chain rule, it is possible to derive an expression for the calculation of the entries of the Jacobian matrix from the equation components as
 \begin{equation}
@@ -247,22 +198,97 @@ and by application of the chain rule, it is possible to derive an expression for
 	\oint_{\Gamma} \ldots \mathrm{dS} .
 	\label{eq:JacobiGestalt}
 \end{equation}
-All omitted  terms in \cref{eq:JacobiGestalt} can be approximated analogously to the contributions for $N_1$. In the \BoSSS code, derivatives $ \partial_{ \myvector{U}_h} N_1 ( \ldots )$ and  $ \partial_{ \nabla \myvector{U}_h} N_1 ( \ldots )$ are approximated by a finite difference, using a perturbation by $\sqrt{\varepsilon}$ in the respective argument.
+All omitted  terms in \cref{eq:JacobiGestalt} can be approximated analogously to the contributions for $N_1$. In the \BoSSS code, derivatives $ \partial_{ \myvector{U}_h} N_1 ( \ldots )$ and  $ \partial_{ \nabla \myvector{U}_h} N_1 ( \ldots )$ are approximated by a finite difference, using a perturbation by $\varepsilon$ in the respective argument.
 
 This approach has the significant improvement that it offers an efficient and accurate way to obtain the Jacobian matrix, unlike the two approaches mentioned above. For this reason, this option is the one chosen for the resolution of all the testcases shown in this work.
 
-\subsection{Termination criterion}
-\label{ssec:TerminationCriterion}
-A simple approach to determine that a Newton-Dogleg loop can be terminated
-is to check whether the residual norm has fallen below a certain threshold, i.e.
-$ \| \mathcal{A}(U_n) \| \leq \textrm{tol}  $.
-A universal choice for the tolerance is indeed difficult,
-especially for investigations of convergence properties (cf.  \cref{ssec:ConvStudyHeatedCavity} and \cref{ss:UDF}).
-If it is chosen too low, the algorithm may never terminate, because of dominating numerical round-off errors. On the other hand, if it is chosen too high, the error of the premature termination may dominate  the error of
-the spatial discretization and one cannot take the full advantage of the high-order method.
-Therefore the goal is to continue the Newton-Dogleg method until
-the lowest possible limit dictated by floating point accuracy is reached.
-To identify the limit in a robust way, we first define the residual-norm skyline as
+
+
+\subsection{Newton-Dogleg Method} \label{sec:newton}
+A well known problematic of newton methods is the necessity of a good starting estimate for the algorithm to get a convergent solution. If the initial estimate is far away from a solution, the algorithm could converge but at a very slow rate and in the most critical cases it could stagnate or even diverge. The so called globalization methods are auxiliary procedures designed to alleviate  this problem. 
+
+In general two kinds of globalization algorithms can be identified. The so called backtracking methods consist in a modification of the newton step length (usually a reduction), in order to obtain steps that lead to a solution of the system. These are usually easy to implement, but suffer from the restriction that the newton step direction is restricted to the one of the trial step, which could not be an ideal direction, specially if the Jacobian is ill conditioned \parencite{pawlowskiGlobalizationTechniquesNewton2006}. 
+
+The second globalization type are the so called Trust-region globalization methods. The main idea of these kind of algorithms is to use a quadratic approximation of the function, which is assumed to be valid within a "trust region". This trust region is enlarged or reduced based on defined strategies, which improves the likelihood of finding a solution and accelerates the convergence. This kind of approaches has proven to be robust and  very useful for a variety of problems, but are usually not easy to implement. 
+
+In this work, in order to increase robustness when the distance between $\myvector{U}_0$ and the exact solution $\myvector{U}$ is large, a trust region globalization approach known as the Newton-Dogleg method is used. The algorithm is presented by \textcite{pawlowskiGlobalizationTechniquesNewton2006,pawlowskiInexactNewtonDogleg2008}. In this section the intention is to give only the main ideas of method and refer to the original works for further details. 
+
+Note that the exact solution of \cref{Eq:nonLinSystem} is also a minimum of the functional
+\begin{equation}
+	f(\myvector{U}) \coloneqq \frac{1}{2}  \left\| \mathcal{A}(\myvector{U})  \right\|^2_2 .
+\end{equation}
+Thus $\nabla f(\myvector{U}) = \partial \mathcal{A}(\myvector{U})^T \mathcal{A}(\myvector{U})$.
+For $\myvector{U}_n$, the approximate Cauchy point with respect to the 2-norm,
+is defined as the minimizer $\myvector{g}_n$ of
+$ \left\|  \mathcal{A}(\myvector{U}_{n}) + \partial \mathcal{A} (\myvector{U}_n) \myvector{g}_n \right\|_2  $
+in the direction of steepest decent, i.e. $\myvector{g}_n = \lambda \nabla f(\myvector{U}_n)$, $\lambda \in \mathbb{R}$.
+Substituting $\myvector{w} \coloneqq - \partial \mathcal{A}(\myvector{U}_n) \nabla f(\myvector{U}_n)$, $\myvector{g}_n$ is given by
+\begin{equation}
+	\myvector{g}_n = \frac{\mathcal{A}(\myvector{U}_n) \cdot \myvector{w}}{\myvector{w} \cdot \myvector{w}} \nabla f(\myvector{U}_n) .
+	\label{eq:CauchyPoint}
+\end{equation}
+
+In contrast to the classical undamped Newton Method, where each iteration used the whole Newton-step $\vec{s}_n$ (cf. \cref{eq:NewtonStep}), within the Newton-Dogleg method, the correction step  $\myvector{s}'_n$ is chosen along the so-called Dogleg curve, which is the piece-wise linear
+curve from the origin to $\myvector{g}_n$ and further to $ \myvector{s}_n$. The selection of $\myvector{s}'_n$ on this curve is controlled by the trust-region diameter $\delta > 0$:
+\begin{itemize}
+	\item
+	If $\|  \myvector{s}_n \|_2 \leq \delta$,  meaning that the Newton estimate lies inside the trust region, the whole Newton step is accepted and $ \myvector{s}'_n =  \myvector{s}_n$.	
+	\item
+	If  $\|  \myvector{g}_n \|_2 \leq \delta$ and $\|  \myvector{s}_n \|_2 > \delta$, i.e. the Newton guess is outside the trust region, but the Cauchy point is inside the trust region, 
+	$\myvector{s}'_n$ is chosen on the linear interpolation from $\myvector{g}_n$ to $\myvector{s}_n$
+	so that  $\|  \myvector{s}'_n \|_2 = \delta$:
+	For the ansatz
+	$\myvector{s}'_n = \tau \myvector{s}_n + (1-\tau) \myvector{g}_n$,
+	the interpolation factor $\tau$ is given as
+	$ \tau = (a^2 - c + \sqrt{(a^2 + b^2 - 2 c) \delta^2 - a^2 b^2 + c^2}) / (a^2 + b^2 - 2 c) $
+	with $a = \| \myvector{g}_n \|_2$,  $b = \| \myvector{s}_n \|_2$ and $c = \myvector{g}_n \cdot \myvector{s}_n $. Thus, the new estimate is taken as point where the line connecting the Newton guess and the Cauchy point intersect the boundary of the trust region.
+	
+	\item 	If  $\|  \myvector{g}_n \|_2 > \delta$, both Newton guess and Cauchy point lie outside the trust region, the new iterate is taken to be the point  at  the edge of the trust region from the line connecting the actual Newton guess and the Cauchy point.
+	$  \myvector{g}_n = (\delta / \|  \myvector{g}_n \|_2) \myvector{g}_n$.
+\end{itemize}
+The choice and adaptation of the trust region diameter $\delta$ throughout the Newton-Dogleg procedure follows a sophisticated heuristic. It is for the sake of completeness described here. The adaptation of the trust region diameter is based on comparing the actual residual reduction $\textrm{ared}_n \coloneqq \| \mathcal{A} (\myvector{U}_n) \|_2 - \| \mathcal{A} (\myvector{U}_n  + \myvector{s}'_{n} ) \|_2$ with the predicted residual reduction
+$\textrm{pred}_n \coloneqq \| \mathcal{A} (\myvector{U}_n) \|_2 - \| \mathcal{A} (\myvector{U}_n )   + \partial \mathcal{A} (\myvector{U}_n ) \myvector{s}'_{n} \|_2$. The algorithm for the adaptation of the trust region can be resumed as
+\begin{itemize}
+	\item[(1)]
+	Set $n=0$, $\delta_n = \min(10^{10}, \max(2 \cdot 10^{-6}, \| \myvector{s}_0 \|_2 ))$.	
+	\item[(2)]
+	Compute the Newton step $\myvector{s}_n$ and the Cauchy point  $\myvector{g}_n$ and
+	find $\myvector{s}'_n$ on the Dogleg curve with respect to the recent $\delta_n$.	
+	\item[(3)]
+	While $\textrm{ared}_n \leq \textrm{pred}_n$ do:
+	Update trust region diameter $\delta_n \leftarrow 0.5 \ \delta_n$
+	and re-compute $\myvector{s}'_n$.
+	If $\delta_n < 10^{-6}$ terminate abnormally and mark the computation as failed.	
+	\item[(4)]
+	If the convergence criterion (see below) is fulfilled, terminate and mark the computation as success.	
+	\item[(5)]
+	Perform a final update of the trust region: Set
+	\[
+	\delta_{n+1} = \left\{ \begin{array}{ll}
+		\max( 10^{-6}, \| \myvector{s}_n \|_2 ) & \text{if } \textrm{ared}_n / \textrm{pred}_n < 0.1 \text{ and } \| \myvector{s}_n \|_2 \delta_n \\
+		\max( 10^{-6}, 0.25 \cdot \delta_n )    & \text{else, if } \textrm{ared}_n / \textrm{pred}_n < 0.1                                        \\
+		\min( 10^{10}, 4 \cdot \delta_n )       & \text{else, if } \textrm{ared}_n / \textrm{pred}_n > 0.75                                       \\
+		\delta_{n}                              & \text{otherwise}                                                                                \\
+	\end{array} \right.
+	\]
+	Set $\myvector{U}_{n+1} = \myvector{U}_{n} + \myvector{s}'_{n} $, update $n \leftarrow n + 1$ and return to step (2).	
+\end{itemize}
+\subsection{Linear solver}\label{ssec:LinearSolver}
+
+The computation of the Newton step according to \cref{eq:NewtonStep} requires the inversion of the Jacobian matrix.  For most of the problems presented in this work, the system is solved by using the sparse direct solver \texttt{PARDISO} (Parallel Sparse Direct and Multi-Recursive Iterative Linear Solvers), originally developed by Schenk et al.  \parencite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
+from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows'' library collection.
+
+For some of the testcases presented later, particularly the cases with combustion, the use of \texttt{PARDISO} for the solution of the linear problem resulted in memory problems. A limit of approximately 500,000 DOFs was observed. 
+
+An active field of study in the BoSSS development group is that of iterative algorithms for solving linear systems. The BoSSS code features a multigrid orthonormalization method \parencite{kummerBoSSSPackageMultigrid2021}, which uses additive Schwarz schemes as smoothers for all multigrid levels, except the coarsest one, where \texttt{PARDISO} is used. This method of solution proved to be adequate to solve systems that are too big to be solved directly by \texttt{PARDISO}, and is adopted for all combustion calculations.
+Additionally, BoSSS includes a matrix preconditioning procedure using LU-factorization. In particular, it allows preconditioning of each block of the matrix, with the objective of reducing the condition number of the system.
+
+\subsection{Termination criterion} \label{ssec:TerminationCriterion}
+The usual approach to determine whether the nonlinear solver should terminate is to check whether the residual norm has fallen under a certain threshold, i.e.
+$ \| \mathcal{A}(U_n) \| \leq \textrm{tol}  $. As noted by \textcite{pawlowskiInexactNewtonDogleg2008}, this approach is not always helpful. A universal choice of tolerance is in fact difficult, especially for investigations of the convergence properties of numerical methods. 
+The reason for this is that, if the tolerance $\textrm{tol}$ is chosen to be too high, the error due to the premature termination may dominate the error of the spatial discretization and the advantages offered by the high-order methods cannot be fully employed. On the other hand, if the tolerance is set too low, the algorithm may never terminate, due to dominant numerical rounding errors.  Therefore, the goal is to continue the Newton-Dogleg method until the lowest possible limit dictated by the floating point precision is reached. 
+
+To identify the limit in a robust way, the residual-norm skyline is defined as
 \begin{equation}
 	\textrm{sr}_n \coloneqq \min_{j \leq n} \| \mathcal{A}(\myvector{U}_j) \|
 \end{equation}
@@ -279,19 +305,35 @@ The Newton-Dogleg method is terminated if
 	\textrm{sr}_n \leq 10^{-5} + 10^{-5} \| \myvector{U}_n \|_2 \text{ and }
 	\textrm{arf}_n < 1.5 .
 \end{equation}
-For the computations in this work, this choice guarantees that the
-nonlinear system is solved as accurately as possible. It secures that the numerical error is dominated by the error of the spatial or temporal discretization
-and not by the termination criterion of the Newton-Dogleg method.
-The skyline approach ensures robustness against oscillations close to the lower limit.
+The skyline approach ensures robustness against oscillations close to the lower limit. For the computations in this work, this choice guarantees that the nonlinear system is solved as accurately as possible. It secures that the numerical error is dominated by the error of the spatial or temporal discretization and not by the termination criterion of the Newton-Dogleg method. 
 
+\section{Additional convergence supporting strategies}\label{sec:ConvSupportStrat}
+Although the Newton-Dogleg method works well for a variety of cases, in some of the test cases discussed in this work, convergence problems are encountered. This section shows a series of strategies used in the present work that allowed the solution of problems where large nonlinearities, or the lack of adequate initial estimates, made it difficult to obtain results by simply using the Dogleg-Method newton. 
 
-\section{Homotopy method}
-\label{sec:HomotopyMethod}
-Although the Newton-Dogleg method works well for a variety of cases,
-we experienced convergence problems for some of the test cases presented in next section.
-In particular, for the differentially heated cavity test case, the method was not successful on finding a convergent solution for a Rayleigh number $Ra \geq 10^5$  within 60 Newton iterations.
-In such cases we used a homotopy strategy, which is loosely based on
-ideas from the textbook of \textcite{deuflhardNewtonMethodsNonlinear2011}.
+\subsection{Homotopy method} \label{sec:HomotopyMethod}
+
+In some cases the problem to be solved contains some parameter that makes it difficult to obtain a result using the methods presented above. A typical example of this is a system where the Reynolds number is very high. An approach that makes it easier to obtain a solution is to choose as an initial guess a solution of a similar but simpler problem - such as the same system with a moderate Reynolds number - where even with a bad initial guess Newton's algorithm is able to obtain a solution. This strategy can be used repeatedly to gradually approach the full system. Such approaches are usually called homotopy methods. 
+
+The choice of the values of the parameter of the intermediate steps of the homotopy method is a point that requires attention. A straightforward option would be to manually choose the path to the solution. While such a strategy proved useful in cases such as the one presented in \parencite{klingenbergdarioDevelopmentNovelReynoldsaveraged2022} for a turbulent boundary layer flow, the requirement for user intervention to choose a suitable homotopy path makes it a not always robust solution. 
+
+Based on the above, a methodology for homotopy methods was implemented in the BoSSS framework making use of an algorithm that automatically determines a homotopy path to the full system solution. This algorithm is based on the ideas from the textbook by  \textcite{deuflhardNewtonMethodsNonlinear2011}. In this section the main ideas of the algorithm are presented, as already shown in \parencite{gutierrez-jorqueraFullyCoupledHigh2022}. For a more detailed explanation of the method, the interested reader is referred to the mentioned textbook.
+
+The first step is to identify a parameter that causes difficulties in the solution of the nonlinear problem. Hereafter this variable will be referred to as the homotopy parameter. 
+As mentioned, the main idea of the homotopy strategy is to solve a series of simpler problems, starting with a parameter where the problem is easy to solve, and carefully increasing it until the desired value is reached.  Let  $\mathrm{Hp}$ be the value of the homotopy parameter for which a solution is sought. Let
+\begin{equation}
+	\mathcal{A}_{\mathrm{hp}^*}(\myvector{U}) = 0
+	\label{eq:NonlinearAt-hp}
+\end{equation}
+be the discretized system for a certain intermediate homotopy-parameter $\mathrm{hp}^*$, between 0 and the target homotopy-parameter $\mathrm{Hp}$, i.e. $0 \leq \mathrm{hp}^* \leq \mathrm{Hp}$.
+In addition, let $\myvector{U}_{\mathrm{hp},\epsilon} $ be an approximate solution to the problem (\ref{eq:NonlinearAt-hp}) with $ \mathrm{hp}^* =  \mathrm{hp}$,
+up to a tolerance $\epsilon$, i.e. 
+\begin{equation}
+	\left\| \mathcal{A}_{\mathrm{hp}}( \myvector{U}_{\mathrm{hp},\epsilon} ) \right\|_2 \leq \epsilon .
+\end{equation}
+For the sake of clarity when discussing the algorithm which follows below, a distinction is made between the intermediate homotopy-parameter $\mathrm{hp}$ for which it is assumed to already have found an acceptable solution, and the next homotopy-parameter $\mathrm{hp}^*$ whose solution is being looked for.
+For any $\textrm{hp}^* > \textrm{hp}$, $\epsilon= 10^{-5} \left\| \mathcal{A}_{\mathrm{hp*}}( \myvector{U}_{\mathrm{hp},\epsilon} ) \right\|_2$ is set,
+meaning that the accepted solution for the intermediate homotopy parameter $\mathrm{hp}^*$ should show a residual norm reduction of at least five orders of magnitude with respect to the initial residual norm.
+Finally, if $\textrm{hp}^* = \textrm{Hp}$, the termination criterion presented in section \ref{ssec:TerminationCriterion} is applied.%
 \tikzexternaldisable
 \begin{figure}[t]
 	\centering
@@ -309,7 +351,7 @@ ideas from the textbook of \textcite{deuflhardNewtonMethodsNonlinear2011}.
 			ymode = log,
 			xlabel=Iteration number,
 			xmin = 0,
-			ylabel=Residual and trust region $\delta$,
+			ylabel=Residual and trust region diameter $\delta$,
 			xtick = {0,2,...,36},
 			ytickten = {-16,-12,...,12}
 			]
@@ -335,38 +377,11 @@ ideas from the textbook of \textcite{deuflhardNewtonMethodsNonlinear2011}.
 			\addlegendentry{$\mathrm{hp}$}
 		\end{axis}
 	\end{tikzpicture}
-	\caption{behavior of the homotopy method for the differentially heated cavity test case. The homotopy parameter $\mathrm{hp}$ in this case is the Reynolds number. }
+	\caption[Residual, trust region diameter and homotopy parameter history  of the differentially heated cavity test case using the Homotopy strategy.]{Residual, trust region diameter and homotopy parameter history  of the differentially heated cavity test case using the Homotopy strategy. The homotopy parameter $\mathrm{hp}$ in this case is the Reynolds number. }
 	\label{fig:Homotopyevolution}
-\end{figure}
-
-\tikzexternalenable
-We start by identifying a parameter that makes the solution of the nonlinear problem difficult to solve. In the following we will refer to this variable as the homotopy parameter.
-The main idea of the homotopy strategy consists of solving a series of simpler problems, starting with a parameter where the problem is easy to solve, and carefully increasing it until the desired value is reached.  Let $\mathrm{Hp}$ denote the value of the homotopy parameter for which a solution is being sought. Let
-\begin{equation}
-	\mathcal{A}_{\mathrm{hp}^*}(\myvector{U}) = 0
-	\label{eq:NonlinearAt-hp}
-\end{equation}
-be the discretized system for a certain intermediate homotopy-parameter
-$\mathrm{hp}^*$, between 0 and the `target'  homotopy-parameter $\mathrm{Hp}$, i.e. $0 \leq \mathrm{hp}^* \leq \mathrm{Hp}$.
-Furthermore, let $\myvector{U}_{\mathrm{hp},\epsilon} $ be an approximate solution
-to the problem (\ref{eq:NonlinearAt-hp}) with $ \mathrm{hp}^* =  \mathrm{hp}$,
-up to a tolerance $\epsilon$, i.e.
-\begin{equation}
-	\left\| \mathcal{A}_{\mathrm{hp}}( \myvector{U}_{\mathrm{hp},\epsilon} ) \right\|_2 \leq \epsilon .
-\end{equation}
-For the sake of clarity when discussing the algorithm which follows below, we distinguish between the
-intermediate homotopy-parameter  $\mathrm{hp}$ for which we assume to already have found an acceptable solution
-and the next homotopy-parameter $\mathrm{hp}^*$ that we are currently trying to find a solution for.
-For any $\textrm{hp}^* > \textrm{hp}$
-we set
-$
-\epsilon
-= 10^{-5}
-\left\| \mathcal{A}_{\mathrm{hp*}}( \myvector{U}_{\mathrm{hp},\epsilon} ) \right\|_2
-$,
-i.e. we aim for a residual norm reduction of at least five orders of magnitude with respect to the initial residual norm.
-If  $\textrm{hp}^* = \textrm{Hp}$, the termination criterion presented in section \ref{ssec:TerminationCriterion} is applied.
-An approximate solution for the target homotopy-parameter is found by the following recipe:
+\end{figure}%
+\tikzexternalenable%
+ An approximate solution for the target homotopy-parameter is obtained by means of the following algorithm:
 \begin{itemize}
 	\item[(1)]
 	Set $\mathrm{hp} = 0$, i.e. start by obtaining an (approximate) solution $\myvector{U}_{0,\epsilon}$.
@@ -385,7 +400,7 @@ An approximate solution for the target homotopy-parameter is found by the follow
 	$
 	Here, $\delta_{\textrm{max}}$ is the maximal allowed increase of the residual for an increased
 	homotopy-parameter $\mathrm{hp}^*$;  $\delta_{\textrm{max}}$ is adapted in the following steps,
-	as an initial guess we use $ \delta_{\textrm{max}} = 10^6$.
+	as an initial guess $ \delta_{\textrm{max}} = 10^6$ is used.
 	
 	\item[(3)]
 	Use the Newton-Dogleg method to compute an approximate solution to the problem (\ref{eq:NonlinearAt-hp}),
@@ -410,29 +425,49 @@ An approximate solution for the target homotopy-parameter is found by the follow
 		If the Newton-Dogleg method took less than three iterations to reach the convergence criterion,
 		set  $\delta_{\textrm{max}} \leftarrow 8\delta_{\textrm{max}}$.
 		Return to step (2).
-	\end{itemize}
-	
-\end{itemize}
+	\end{itemize}	
+\end{itemize}%
+%
 An exemplary run of the method is shown in \cref{fig:Homotopyevolution}. The homotopy parameter $\mathrm{hp}$ in this particular case is the Reynolds number. The homotopy-parameter hp was increased for iterations 10, 18, 22 and 24, causing an increase of the residuals $\| \mathcal{A}_{\mathrm{hp}^*}(\myvector{U}_{n}) \|_2 $, leading to a convergent solution after 34 Newton iterations. The presented algorithm offers a robust method for finding steady-state solutions of highly nonlinear systems.
 
-\section{Initialization of combustion applications}\label{ssec:MethodCombustion}
-The proposed algorithm for obtaining steady state solutions of finite reaction rate combustion problems involves first solving the problem assuming an infinite reaction rate (the flame sheet problem). This requires first solving the system presented in \cref{sec:FlameSheet}, where \cref{DiscretizedConti2,DiscretizedMomentum2,DiscretizedEnergy2} need to be solved in a coupled manner together with the expressions that link the temperature and mass fractions to the mixture fraction in order to be able to evaluate the density and . This idea has been already employed in various works \parencite{smookeNumericalSolutionTwoDimensional1986,smookeNumericalModelingAxisymmetric1992}. The reason for the use of this pre-step is twofold:
-\begin{itemize}
-	\item The system of  \cref*{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance} presents multiple solutions. One is the pure mixing (frozen) solution, where no chemical reaction has taken place, and the other one is the ignited solution, where the flame is present. Using the flame sheet solution as initial estimate ensures that the path taken by Newton's algorithm will tend towards the ignited solution.
-		\item Solving \cref*{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance} using a Newton-type method requires adequate starting estimates in order to converge. Using the flame sheet solution as initial estimate improves the convergence properties of the method.
-\end{itemize}
+\subsection{Solver safeguard}
+Another strategy that proved to be useful in improving the convergence properties of the iterative scheme is the use of a solver safeguard, which is used to avoid unphysical solutions during the solution procedure, such as negative temperatures or temperatures higher than the adiabatic temperature. In particular, the idea is to clip values from the solution fields delivered by Newton's algorithm which are known to be unphysical, and limit the solution fields by user defined values. This clipping emulates in a sense the effect of schemes such as \gls{TVM} or \gls{ENO} \parencite{nicoudConservativeHighOrderFiniteDifference2000}. 
 
-It should be noted regarding the solution of the flame sheet problem (cf. \cref{sec:FlameSheet}) that the sharp change in the primitive variables around $z = z_{st}$  is problematic in certain scenarios. In particular, the non-smoothness of the derived variables could lead to Gibbs phenomenon-type problems. This inconvenient can be remedied by using a regularized form of the equations. The smoothing function $\mathcal{H}$ is defined as
-\begin{equation}\label{eq:regularization_MF}
-	\mathcal{H}(z) \approx \frac{1}{2}(1+\tanh(\sigma(z - z_{st}) )),
-\end{equation}
-This function is useful for creating a smooth transition between two functions, since it returns values close to 0 for $z \ll z_{st}$ and values close to 1 for $z \gg z_{st}$. The sharpness of the transition at the point $z = z_{st}$ is dictated by the parameter $\sigma$. In \cref{fig:SmoothingFunc} the smoothing function $H$ using different smoothing parameters $\sigma$ is shown. Clearly, increasing the value of $\sigma$ increases the sharpness of the transition at the point $z_{st}$. For a very big $\sigma$ value the function $H$ resembles the Heaviside step function
-\begin{figure}[h]
+Particularly, for an arbitrary scalar $\xi$ the values are bounded in the range $[\xi_{\text{min}} - \epsilon_{\text{safe}}, \xi_{\text{max}} + \epsilon_{\text{safe}}]$, where $\xi_{\text{min}}$ and $\xi_{\text{max}}$ are user defined bounds, and  $\epsilon_{\text{safe}} = 10^{-4}$. For example, the mass fractions by definition should have a value between zero and one, thus $Y_{k,\text{min}} = 0$ and  $Y_{k,\text{max}} = 1$. For certain problems, particularly problems involving combustion, it could be also useful to limit the value of the temperature, which can be bounded using the inlet conditions as the minimum value, and the adiabatic temperature as the maximum value.
+
+The occurrence of these non-physical values is not always problematic, and in theory the Newton algorithm above should be able to correctly handle them and finally find the solution of the nonlinear system. However in certain cases this can lead to problems. Just to mention one example, a negative temperature would result in a imaginary value of the viscosity if it is calculated according to \cref{eq:nondim_sutherland}. Particularly for problems with sharp gradients this could be problematic due to dispersion phenomena. 
+
+\subsection{Flame sheet estimates for steady state combustion simulations}\label{ssec:MethodCombustion}
+The proposed algorithm for obtaining steady state solutions of finite reaction rate combustion problems involves first solving the problem assuming an infinite reaction rate (the flame sheet problem). This requires first solving the system presented in \cref{sec:FlameSheet}, where \cref{DiscretizedConti2,DiscretizedMomentum2,DiscretizedEnergy2} need to be solved in a coupled manner together with the expressions that link the temperature and mass fractions to the mixture fraction in order to be able to evaluate the density and transport parameters. This idea has been already employed in various works \parencite{smookeNumericalSolutionTwoDimensional1986,smookeNumericalModelingAxisymmetric1992}.
+
+ The reason for the use of this pre-step is twofold:
+\begin{itemize}
+	\item Solving \cref*{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance} using a Newton-type method requires adequate starting estimates in order to converge. Using the flame sheet solution as initial estimate improves the convergence properties of the method.
+	\item The system of  \cref*{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance} has multiple solutions. One is the pure mixing (frozen) solution, where no chemical reaction has taken place, and other one is the ignited solution, where the flame is present (see \cref{fig:Sshaped}) . Using the flame sheet solution as initial estimate makes much more likely that the path taken by Newton's algorithm will tend towards the ignited solution.
+\end{itemize}
+This approach proved to be very useful for finding solutions of steady state flame simulations in a variety of cases. 
+
+One question one could certainly ask is under what flame conditions the infinite reaction rate solution (also called flame sheet solution in the following) effectively is a good initial estimate for Newton's algorithm.  Obviously for systems that respect the assumptions done for the flame sheet the obtained solution will be very close to the finite-rate solution (see \cref{fig:MixtureFraction_finiteRateComparison}). The assumption of an infinitely fast chemical reaction implies that the time scales associated with the chemical reaction are infinitely smaller than the flow scales, or in other words, $\text{Da} \to \infty$. For this reason, the flame sheet solution is expected to give a similar solution for cases close to equilibrium (where the Damköhler number is large). On the other hand, in cases that are far from equilibrium, as, for example, in the case of a flame in conditions close to extinction, it is expected that the flame sheet solution will depart considerably from the solution with a finite reaction rate.
+
+It should be noted that within the derivation of the equations for the flame sheet it is only assumed that the heat capacity is the same for all components ($c_{kp} = c_p$), but it is still possible to consider a dependence on temperature. However, this introduces a difficulty, since the evaluation of the temperature with \cref{eq:BS-YF} requires $c_p$, which according to \cref{eq:nondim_cpmixture}, depends in turn on the temperature. Solving the system of equations required to obtain $c_p$ and $T$ is very expensive, since it would require solving it every time the temperature must be evaluated -in particular for the evaluation of the density $\rho$ and transport parameters $\mu$ and $\rho D$.  This problem can be solved by simply assuming a constant representative value of $c_p$. 
+
+The problem that now arises is the selection of a suitable $c_p$. In the work by \textcite{xuApplicationPrimitiveVariable1993} it is suggested to estimate it simply on the basis of experimental measurements, or also by selecting some representative value, such as $c_p$ evaluated at the adiabatic temperature and stoichiometric conditions. In particular, in this work the value $\hat c_p = \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$ was adequate for all calculations. This constant value of the heat capacity proved to yield a flame sheet solution which is an adequate estimate for finite-rate simulations, even for cases with a nonconstant heat capacity. 
+
+In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with nonunity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method. 
+
+\subsubsection{Smoothing of the flame sheet}
+\begin{figure}[b]
 	\centering
 	\inputtikz{SmoothingFunc}
 	\caption{Smoothing function  at $z_{\text{st}} = 0.22$ for different smoothing parameters $\sigma$. }\label{fig:SmoothingFunc}
 \end{figure}
- Using \cref{eq:regularization_MF} the temperature and mass fraction fields can be written as
+It should be noted regarding the solution of the flame sheet problem (cf. \cref{sec:FlameSheet}) that the sharp change in the primitive variables around $z = z_{st}$  is problematic in certain scenarios. In particular, the non-smoothness of the derived variables could lead to Gibbs phenomenon-type problems if the stoichiometric point happens to be in a unfavourable position within a cell. This inconvenient can be remedied to a certain extent by using a regularized form of the equations. The smoothing function $\mathcal{H}$ is defined as
+\begin{equation}\label{eq:regularization_MF}
+	\mathcal{H}(z) \approx \frac{1}{2}(1+\tanh(\sigma(z - z_{st}) )).
+\end{equation}
+This function is useful for creating a smooth transition between two functions, since it returns values close to 0 for $z \ll z_{st}$ and values close to 1 for $z \gg z_{st}$. The sharpness of the transition at the point $z = z_{st}$ is dictated by the parameter $\sigma$. In \cref{fig:SmoothingFunc} the smoothing function $\mathcal{H}$ using different smoothing parameters $\sigma$ is shown. Clearly, increasing the value of $\sigma$ increases the sharpness of the transition at the point $z_{st}$. For a very big $\sigma$ value the function $	\mathcal{H}$ resembles the Heaviside step function
+
+Using \cref{eq:regularization_MF} for creating a smooth transition of \cref{eq:BS-T,eq:BS-YF,eq:BS-YO,eq:BS-YP}, the temperature and mass fraction fields can be written as
 \begin{subequations}
 	\begin{align}
 		T(z)   & = z T_F^0 + (1-z)T_O^0 + \frac{Q Y_F^0}{c_p} z_{st}\frac{1- z}{1-z_{st}}\mathcal{H}(z) +  \frac{Q Y_F^0}{c_p}z\left(1-\mathcal{H}(z)\right),  \label{eq:BS-TR} \\[1ex]
@@ -443,7 +478,7 @@ This function is useful for creating a smooth transition between two functions, 
 	\end{align}
 \end{subequations}
 The use of this regularized form of the equations results in practice on a spreading of the flame front, which eases the numerical calculation \parencite{braackAdaptiveFiniteElement1997}.
-\begin{figure}[h]
+\begin{figure}[t]
 	\centering
 	\inputtikz{SmoothingPicture}
 	\caption{Temperature profile calculated in the center-line of a counter-flow flame configuration for different smoothing parameters $\sigma$.}
@@ -451,28 +486,20 @@ The use of this regularized form of the equations results in practice on a sprea
 \end{figure}
 In \cref{fig:smoothings} the effect of the smoothing factor $\sigma$ on calculations of a flame in a counter-flow configuration are shown. It can be clearly observed how for decreasing $\sigma$ the solution becomes smoother.
 
-One question one could certainly ask is under what flame conditions the infinite reaction rate solution (also called flame sheet solution in the following) effectively is a good initial estimate for Newton's algorithm.  Obviously for systems that respect the assumptions done for the flame sheet the obtained solution will be very close to the finite-rate solution (see \cref{fig:MixtureFraction_finiteRateComparison}). The assumption of an infinitely fast chemical reaction implies that the time scales associated with the chemical reaction are infinitely smaller than the flow scales, or in other words, $\text{Da} \to \infty$. For this reason, the flame sheet solution is expected to give a similar solution for cases close to equilibrium (where the Damköhler number is large). On the other hand, in cases that are far from equilibrium, as, for example, in the case of a flame in conditions close to extinction, it is expected that the flame sheet solution will depart considerably from the solution with a finite reaction rate.
 
-It should be noted that within the derivation of the equations for the flame sheet it is only assumed that the heat capacity is the same for all components ($c_{kp} = c_p$), but it is still possible to consider a dependence on temperature. However, this introduces a difficulty, since the evaluation of the temperature with \cref{eq:BS-YF} requires $c_p$, which according to \cref{eq:nondim_cpmixture}, depends in turn on the temperature. Solving the system of equations required to obtain $c_p$ and $T$ is very expensive, since it would require solving it every time the temperature must be evaluated -in particular for the evaluation of the density $\rho$ and transport parameters $\mu$ and $\rho D$-.  This problem can be solved by simply assuming a constant representative value of $c_p$. 
+\subsection{Adaptive Mesh Refinement}\label{ssec:MeshRefinement}
+The BoSSS code offers the capability to modify the numerical mesh by means of an \gls{AMR}  algorithm throughout the simulation. In particular, the locality of a DG method allows a straightforward implementation, as the DG discretization admits the apparition of hanging nodes in the numerical mesh. The base mesh can be refined by subdividing a cell element into four elements of the same size using a quadtree-like data structure. It is also ensured that neighbouring cells always exhibit a 2:1 cell ratio on every edge \parencite{smudamartinDirectNumericalSimulation2021}. 
 
-The problem that now arises is the selection of a suitable $c_p$. In the work by \textcite{xuApplicationPrimitiveVariable1993} it is suggested to estimate it simply on the basis of experimental measurements, or also by selecting some representative value, such as $c_p$ evaluated at the adiabatic temperature and stoichiometric conditions. In particular, in this work the value $\hat c_p = \SI{1.3}{\kilo \joule \per \kilo \gram \per \kelvin}$ was adequate for all calculations. This constant value of the heat capacity proved to yield a flame sheet solution which is an adequate estimate for finite-rate simulations, even for cases with a nonconstant heat capacity. 
+The mesh refinement process occurs before each time-step is started. This allows to use the Adaptive Mesh Refinement algorithm on start of the application, which can be useful in case the user needs an increased mesh resolution in particular areas of the computational domain. Note that, in practice, the mesh-refinement procedure results in a soft-restart of the simulation. 
 
-In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with nonunity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method. 
+The mesh refinement is controlled by user defined refinement-coarsening criteria. During the development of the XNSEC solver different refinement strategies where investigated and implemented. Some of them worth mentioning are the refinement strategy  $\texttt{AMRBasedOnFieldGradient}$, where the mesh is refined or coarsened based on the magnitude of the gradients of a particular solution field. For simulations where combustion is present, a sensible choice for the refinement strategy are the magnitude of temperature gradients or magnitude of mass fraction gradients. Additionally, the strategy $\texttt{AMRonFlameSheet}$ allows the refinement/coarsening around the stoichiometric surface $z = z_{st}$. In \cref{fig:CoFlowMeshStrategy} the refinement of a coflowing flame configuration using the $\texttt{AMRonFlameSheet}$ strategy is shown. The mentioned strategies proved to be useful in combustion simulations, as will be discussed later.
 
 
-\subsubsection{Adaptive Mesh Refinement}\label{ssec:MeshRefinement}
-The area where the chemical reaction takes place is usually a thin region whose thickness is defined by the availability of reactants.
 \begin{figure}
 	\centering
 	\pgfplotsset{width=0.50\textwidth, compat=1.3}
 	\inputtikz{MeshRefinementCoflow1}
 	\inputtikz{MeshRefinementCoflow2}
 	\inputtikz{MeshRefinementCoflow3}
-	\caption{Adaptive mesh refinement around the stoichiometric surface in a coflow flame configuration.}
+	\caption{Adaptive mesh refinement around the stoichiometric surface in a coflow flame configuration. The iso-contour $z = z_{st}$ of the mixture fraction is shown in red.}\label{fig:CoFlowMeshStrategy}
 \end{figure}
-\subsection{Solver safeguard}
-Another strategy that proved to be useful in improving the convergence properties of the iterative scheme is the use of a solver safeguard, which is used to avoid unphysical solutions during the solution procedure, such as negative temperatures or temperatures higher than the adiabatic temperature. In particular, the idea is to clip values from the solution fields delivered by Newton's algorithm which are known to be unphysical, and limit the solution fields by user defined values. This clipping emulates in a sense the effect of schemes such as \gls{TVM} or \gls{ENO} \parencite{nicoudConservativeHighOrderFiniteDifference2000}. 
-
-Particularly, for an arbitrary scalar $\xi$ the values are bounded in the range $[\xi_{\text{min}} - \epsilon_{\text{safe}}, \xi_{\text{max}} + \epsilon_{\text{safe}}]$, where $\xi_{\text{min}}$ and $\xi_{\text{max}}$ are user defined bounds, and  $\epsilon_{\text{safe}} = 10^{-4}$. For example, the mass fractions by definition should have a value between zero and one, thus $Y_{k,\text{min}} = 0$ and  $Y_{k,\text{max}} = 1$. For certain problems, particularly problems involving combustion, it could be also useful to limit the value of the temperature, which can be bounded using the inlet conditions as the minimum value, and the adiabatic temperature as the maximum value.
-
-The occurrence of these non-physical values is not always problematic, and in theory the Newton algorithm above should be able to correctly handle them and finally find the solution of the nonlinear system. However in certain cases this can lead to problems. Just to mention one example, a negative temperature would result in a imaginary value of the viscosity if it is calculated according to \cref{eq:nondim_sutherland}. Particularly for problems with sharp gradients this could be problematic due to dispersion phenomena. 

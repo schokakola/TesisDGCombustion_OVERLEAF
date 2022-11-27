@@ -1,0 +1,34 @@
+	\begin{tikzpicture}
+	\begin{groupplot}[
+		group style={
+			group name= group,
+			group size=2 by 2,
+			xlabels at= edge bottom,
+			ylabels at= edge left,
+			horizontal sep = 2.0cm,
+			vertical sep = 1.6cm,
+		},
+		width=5.2cm,
+		height=3.5cm,
+		x tick label style={
+			/pgf/number format/.cd,
+			precision=3,
+			/tikz/.cd
+		},
+		ybar,
+		xlabel=$k$,
+		ylabel= time(sec),
+		xtick=data,	
+		legend style={at={(0.05,0.95)}, anchor=north west},
+		enlarge x limits= 0.2,
+		cycle list={
+			{fill=gray!90,draw=black!70},
+			{fill=gray!50,draw=gray!80},
+			{fill=gray!10,draw=gray!40}
+		}
+		]
+		\nextgroupplot
+		\addplot table {data/CouetteTempDifference_runtimes/xnsec_nc8.txt};\addlegendentry{XNSEC};
+		\addplot table {data/CouetteTempDifference_runtimes/Simple_nc8.txt};\addlegendentry{SIMPLE};
+	\end{groupplot}
+\end{tikzpicture}	

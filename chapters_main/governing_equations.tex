@@ -47,7 +47,7 @@ Consider a reacting fluid mixture composed of $\gls{TotalNumberSpecies}$ species
 	\end{align}
 	\label{eq:NS-eq}
 \end{subequations}
-In the general case this results in  $\gls{TotalNumberSpecies} + 5$ differential equations to be solved. In these equations, $\hat \rho$ is the density of the mixture and $\hat{\vec{g}}$ is the acceleration of gravity. $\glsHat{ViscTensor}$, $\hat{\vec{q}}$ and $\hat{\vec{j}_k}$ are the viscous tensor, the heat flux vector and the molecular mass flux vector of species $k$, respectively. Additionally, $\hat \omega_T$ is the heat release from combustion and $\hat \omega_k$ is the reaction rate of species $k$. To close the system, expressions must be defined to link these variables with the primitive variables. They will be briefly shown and commented upon in the following paragraphs.
+In the general case this results in  $\gls{TotalNumberSpecies} + 5$ differential equations to be solved. In these equations, $\hat \rho$ is the density of the mixture and $\hat{\vec{g}}$ is the acceleration of gravity. $\glsHat{ViscTensor}$, $\hat{\vec{q}}$ and $\hat{\vec{j}}_k$ are the viscous tensor, the heat flux vector and the molecular mass flux vector of species $k$, respectively. Additionally, $\hat \omega_T$ is the heat release from combustion and $\hat \omega_k$ is the reaction rate of species $k$. To close the system, expressions must be defined to link these variables with the primitive variables. They will be briefly shown and commented upon in the following paragraphs.
 \subsubsection{Equation of state}
 Assuming that the fluid behaves ideally, the density can be calculated as
 \begin{equation}
@@ -245,7 +245,7 @@ Here $\RefVal{u}, \RefVal{L}$, $\RefVal{p}$, $\RefVal{t}$, and $\RefVal{T}$ are 
 	\end{align}
 	\label{eq:all-eq}\label[pluralequation]{eq:all-eqs}
 \end{subequations}
-This system is solved for the primitive variables velocity $\vec{u} = (u_x, u_y)$, pressure $p$, temperature $T$ and mass fractions ${\mathbf{Y} = (Y_1,\dots,Y_{N-1})}$. Note that it is assumed that the spatial gradients of the mixture heat capacity are small, which allows to introduce $c_p$ in the derivative of the diffusive term of \cref{eq:LowMachEnergy}. Furthermore, considering the fact that the sum of the mass fractions must always be one, the mass fraction of the last species $\gls{TotalNumberSpecies}$ can be calculated with
+This system is solved for the primitive variables velocity $\vec{u} = (u_x, u_y)$, pressure $p$, temperature $T$ and mass fractions ${\mathbf{Y}' = (Y_1,\dots,Y_{N-1})}$. Note that it is assumed that the spatial gradients of the mixture heat capacity are small, which allows to introduce $c_p$ in the derivative of the diffusive term of \cref{eq:LowMachEnergy}. Furthermore, considering the fact that the sum of the mass fractions must always be one, the mass fraction of the last species $\gls{TotalNumberSpecies}$ can be calculated with
 \begin{align} \label{eq:MassFractionConstraint}
 	Y_{\gls{TotalNumberSpecies}} = 1 - \sum_{k = 1}^{\gls{TotalNumberSpecies}-1}Y_k.
 \end{align}
@@ -300,16 +300,8 @@ The model for the transport parameters can be simplified by assuming constant va
 
 
 \section{The flame sheet approximation} \label{sec:FlameSheet}
-In this section, the concept of the flame sheet approximation is introduced, which is used in the solution algorithm to obtain solutions of the finite reaction rate system given by \cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}. The ideas proposed in the work of \textcite{keyesFlameSheetStarting1987} are followed.
 
-\begin{figure}[h]
-	\begin{center}
-		\def\svgwidth{0.5\textwidth}
-		\import{./plots/}{SShapedResponse.pdf_tex}
-		\caption{S-shaped bifurcation curve of a combustion process.}
-		\label{fig:Sshaped}%
-	\end{center}%
-\end{figure}%
+A problem encountered when numerically solving the system of \cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance},is that the lack of suitable initial conditions can lead the algorithm to very slow convergence or even failure.  In this section, the concept of the flame sheet approximation is introduced, which is used for circumvent this problem. The ideas proposed in the work of \textcite{keyesFlameSheetStarting1987} are followed.
 
 Assuming that all species have the same heat capacity $c_{p,k} = c_p$ and mass diffusion coefficient $D_k=D$, that the Lewis number is unity for all species, and that combustion can be described by a single step chemical reaction, it is possible to obtain an equation for a scalar without source terms, which is a linear combination of the energy \cref{eq:LowMachEnergy} and mass fraction \cref{eq:LowMachMassBalance}. Thus, the system can be simplified to solving the low-Mach Navier-Stokes equations and an equation for the passive scalar $z$:
 \begin{subequations}
@@ -377,7 +369,19 @@ Once the mixture fraction field $z$ is obtained, the temperature and mass fracti
 
 Note that the expressions shown above are not differentiable at the stoichiometric point, which also means that the density and transport properties are not differentiable at $z =z_{st}$. This presents a challenge for algorithms for finding solutions of the system \parencite{rauwoensConservativeDiscreteCompatibilityconstraint2009}. Later in \cref{ssec:MethodCombustion} this point will be treated.
 
-The main idea of introducing the system of equations presented in this section is to obtain an adequate initial estimate that can be used to find a solution for the system with a finite reaction rate (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}). Under certain conditions, the approximation is indeed very good. In \cref{fig:MixtureFraction_finiteRateComparison}, temperature and fuel mass fraction fields obtained with infinite and finite reaction rate across the center-line of a counterflow flame configuration are shown. Clearly, both solutions are very similar, differing only in the area near the flame. However, this similarity is only valid under the assumptions made to derive \cref{eq:MixtFracMF}. In the case that the Lewis number is not equal to one, or that the heat capacities are not equal for each species, the finite-rate solution will differ slightly from that obtained with the infinite-reaction rate.
+The main idea of introducing the system of equations presented in this section is to obtain an adequate initial estimate that can be used to find a solution for the system with a finite reaction rate (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}). Under certain conditions, the approximation is indeed very good. In \cref{fig:MixtureFraction_finiteRateComparison}, temperature and fuel mass fraction fields obtained with infinite and finite reaction rate across the center-line of a counterflow flame configuration are shown. Clearly, both solutions are very similar, differing only in the area near the flame. However, this similarity is only valid under the assumptions made to derive \cref{eq:MixtFracMF}. In the case that the Lewis number is not equal to one, or that the heat capacities are not equal for each species, the finite-rate solution will differ slightly from that obtained with the infinite-reaction rate. Obviously, the steady state solution of the full problem obtained with this approach can be used to initialize non-steady state systems.
+
+
+
+\begin{figure}[bh]
+	\begin{center}
+		\def\svgwidth{0.5\textwidth}
+		\import{./plots/}{SShapedResponse.pdf_tex}
+		\caption{S-shaped bifurcation curve of a combustion process.}
+		\label{fig:Sshaped}%
+	\end{center}%
+\end{figure}%
+
 
 \section{Boundary conditions}
 The following boundary conditions are imposed for the resolution of the finite reaction rate system (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}) and for the flame sheet problem (\cref{eq:MixtFracConti2,eq:MixtFracMom,eq:MixtFracMF}),

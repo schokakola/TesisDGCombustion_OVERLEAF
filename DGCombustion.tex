@@ -353,7 +353,13 @@ textsize=footnotesize,
 }
 
 \usepackage{placeins} %% Allows use of FloatBarrier
-\allowdisplaybreaks %% Allows page breaks in align enviroments
+
+
+
+%\allowdisplaybreaks %% Allows page breaks in align enviroments
+
+
+
 \usepackage{import}
 \usepackage{subcaption}
 \captionsetup[subfigure]{skip=-5pt}
@@ -388,8 +394,8 @@ noabbrev
 %%%%%%%%%
 % Gkeichungsnummern, Labels, etc. anzeigen
 %%%%%%%%%
-\usepackage[inline]{showlabels}
-\renewcommand{\showlabelfont}{\footnotesize\ttfamily\color{magenta}}
+%\usepackage[inline]{showlabels}
+%\renewcommand{\showlabelfont}{\footnotesize\ttfamily\color{magenta}}
 
 %%%%%%%%%%%%%%%%%%%
 %Paketvorschläge Tabellen
@@ -408,7 +414,7 @@ noabbrev
 
 \frontmatter
 
-\title{A Discontinuous Galerkin Method for Diffusion Flames Embedded in a Low-Mach Solver Framework}
+\title{A Fully Coupled Discontinuous Galerkin Method for Diffusion Flames Embedded in a Low-Mach Solver Framework}
 % \subtitle{}
 \author[J. Gutiérrez-Jorquera]{Juan Francisco Gutiérrez Jorquera}%optionales Argument ist die Signatur,
 \birthplace{Santiago de Chile}%Geburtsort, bei Dissertationen zwingend notwendig
@@ -496,6 +502,9 @@ noabbrev
 %%%%%%%%%%
 %Main part
 %%%%%%%%%%
+%\newpage
+
+
 \mainmatter
 \cleardoublepage
 \input{chapters_main/introduction}
@@ -530,7 +539,7 @@ noabbrev
 %%%%%%%%%%%%%TODOOOOOOOOOOOOOOOOOO debo establecer de forma consistente si me refiero a las coordenadas como (x,y) o (x1,x2), similarmente si la velocidad es (u,v)o (u1,u2) 
 %%%%%%%%%%%%%%%%%%% TODO: Verificar si realmente todos los indices de las mass fractions ahora están referidos como k, y el numero total como N. Hacer lo mismo con M y W para los pesos moleculares.
 %
-%TODO still i need to check all the consistency between dimensionless and normal variables
+
 % TODO express in a formal way what actually the subscripts F, O, P, N mean in the context of combustion.
 
 %TODO: acortar usando \caption[]{} los nombres de las figuras que apareceran en la lista de imagenes/tablas
@@ -549,5 +558,7 @@ noabbrev
 %TODO Hablar de que dentro de varios casos estudiados en esta tesis, el tema de multiple solution branches se va repitiendo. (Es importante alguna cualidad del solver para poder calcular esto de forma adecuada?)
 % Hablvar de porque es bacan el modelo de fernandez terrazo. Yo diria que representa una forma simple de representar fenomenos que solo serian posibles de predecir utilizando modelos quimicos muchos mas complejos, como por ejemplo el leakage. Entonces haciendo uso de una unica ecuacion quimica, es posible estudiar fenomenos complejos de combustionn, disminuyendo sustancialmente el costo computacional.  La idea es implementar un modelo versatil, pero a su vez que no brinde mayores complejidades tanto numericas como computacionales. 
 
+%$$$: Todos creo que listos?
+%TODO still i need to check all the consistency between dimensionless and normal variables
 \end{document}
 

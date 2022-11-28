@@ -255,7 +255,7 @@ $\textrm{pred}_n \coloneqq \| \mathcal{A} (\myvector{U}_n) \|_2 - \| \mathcal{A}
 \end{itemize}
 \subsection{Linear solver}\label{ssec:LinearSolver}
 
-The computation of the Newton step according to \cref{eq:NewtonStep} requires the inversion of the Jacobian matrix.  For most of the problems presented in this work, the system is solved by using the sparse direct solver \texttt{PARDISO} (Parallel Sparse Direct and Multi-Recursive Iterative Linear Solvers), originally developed by Schenk et al.  \parencite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
+The computation of the Newton step according to \cref{eq:NewtonStep} requires the inversion of the Jacobian matrix.  For most of the problems presented in this work, the system is solved by using  \gls{PARDISO}, originally developed by Schenk et al.  \parencite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
 from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows'' library collection.
 
 For some of the testcases presented later, particularly the cases with combustion, the use of \texttt{PARDISO} for the solution of the linear problem resulted in memory problems. A limit of approximately 500,000 DOFs was observed. 
@@ -436,7 +436,7 @@ The problem that now arises is the selection of a suitable $c_p$. In the work by
 In a similar fashion, the assumption of unity Lewis number in the flame sheet system delivers a solution that slightly deviates from the solution of the finite chemistry rate problem with nonunity Lewis numbers. Nevertheless, this small deviation does not preclude the use of the flame sheet solution as an adequate initial estimate for Newton's method. 
 
 \subsubsection{Smoothing of the flame sheet}
-\begin{figure}[b]
+\begin{figure}[h]
 	\centering
 	\inputtikz{SmoothingFunc}
 	\caption{Smoothing function  at $z_{\text{st}} = 0.22$ for different smoothing parameters $\sigma$. }\label{fig:SmoothingFunc}
@@ -458,7 +458,7 @@ Using \cref{eq:regularization_MF} for creating a smooth transition of \cref{eq:B
 	\end{align}
 \end{subequations}
 The use of this regularized form of the equations results in practice on a spreading of the flame front, which eases the numerical calculation \parencite{braackAdaptiveFiniteElement1997}.
-\begin{figure}[t]
+\begin{figure}[h]
 	\centering
 	\inputtikz{SmoothingPicture}
 	\caption{Temperature profile calculated in the center-line of a counter-flow flame configuration for different smoothing parameters $\sigma$.}

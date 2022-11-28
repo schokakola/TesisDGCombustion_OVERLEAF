@@ -8,10 +8,28 @@
 \glossaryentry{FEM?\glossentry{FEM}|setentrycounter[]{page}"\glsnumberformat}{1}
 \glossaryentry{AMR?\glossentry{AMR}|setentrycounter[]{page}"\glsnumberformat}{1}
 \glossaryentry{DG?\glossentry{DG}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{MPI?\glossentry{MPI}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{BDF?\glossentry{BDF}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{CFD?\glossentry{CFD}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{ODE?\glossentry{ODE}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{PDE?\glossentry{PDE}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{SIP?\glossentry{SIP}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{"\texttt {PARDISO}?\glossentry{PARDISO}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{CFD?\glossentry{CFD}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{BoSSS?\glossentry{BoSSS}|setentrycounter[]{page}"\glsnumberformat}{5}
+\glossaryentry{MPI?\glossentry{MPI}|setentrycounter[]{page}"\glsnumberformat}{6}
+\glossaryentry{PDE?\glossentry{PDE}|setentrycounter[]{page}"\glsnumberformat}{13}
 \glossaryentry{DOFs?\glossentry{DOFs}|setentrycounter[]{page}"\glsnumberformat}{21}
 \glossaryentry{DOFs?\glossentry{DOFs}|setentrycounter[]{page}"\glsnumberformat}{22}
 \glossaryentry{FVM?\glossentry{FVM}|setentrycounter[]{page}"\glsnumberformat}{23}
 \glossaryentry{FEM?\glossentry{FEM}|setentrycounter[]{page}"\glsnumberformat}{23}
-\glossaryentry{TVM?\glossentry{TVM}|setentrycounter[]{page}"\glsnumberformat}{43}
-\glossaryentry{ENO?\glossentry{ENO}|setentrycounter[]{page}"\glsnumberformat}{43}
+\glossaryentry{ODE?\glossentry{ODE}|setentrycounter[]{page}"\glsnumberformat}{24}
+\glossaryentry{BDF?\glossentry{BDF}|setentrycounter[]{page}"\glsnumberformat}{25}
+\glossaryentry{SIP?\glossentry{SIP}|setentrycounter[]{page}"\glsnumberformat}{30}
+\glossaryentry{SIP?\glossentry{SIP}|setentrycounter[]{page}"\glsnumberformat}{30}
+\glossaryentry{"\texttt {PARDISO}?\glossentry{PARDISO}|setentrycounter[]{page}"\glsnumberformat}{39}
+\glossaryentry{TVM?\glossentry{TVM}|setentrycounter[]{page}"\glsnumberformat}{42}
+\glossaryentry{ENO?\glossentry{ENO}|setentrycounter[]{page}"\glsnumberformat}{42}
 \glossaryentry{AMR?\glossentry{AMR}|setentrycounter[]{page}"\glsnumberformat}{45}
+\glossaryentry{DOFs?\glossentry{DOFs}|setentrycounter[]{page}"\glsnumberformat}{101}
+\glossaryentry{"\texttt {PARDISO}?\glossentry{PARDISO}|setentrycounter[]{page}"\glsnumberformat}{101}

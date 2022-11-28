@@ -3,7 +3,7 @@ This chapter aims to give an overview of the DG method, as well as to present th
 
 
 \section{The Discontinuous Galerkin method}
-In this section the spatial and temporal discretization of a scalar transport equation using the DG-method is shown. We start by giving some basic definitions, and later the general procedure for obtaining a DG discretization is shown. 
+In this section the spatial and temporal discretization of a scalar transport equation using the DG-method is shown. We start by giving some basic definitions, and later the general procedure for obtaining a DG discretization is shown. First in \cref{sec:DiscWithDG} the spatial discretization is demonstrated. Later in \cref{ssec:TemporalDiscretization} the temporal discretization is treated.
 \subsection{Definitions for the discretization} \label{ssec:SpatDiscretization}
 First some standard definitions and notation are introduced in the context of DG methods. 
 
@@ -220,7 +220,7 @@ The time discretization of this semi-discrete system leads to the so called meth
 
 An alternative to the method of lines is the so called Rothe's method, where time is first discretized then the space. This can be advantageous in some cases, such as problems with a moving domain. Another alternative is the space-time approach, where basically the temporal coordinate is treated as another spatial dimension. Again, the method can be very attractive for some cases. However, the discretized schemes lead often to prohibitively large systems. These approaches are ignored in the present work, and the method of lines is adopted.
 
-First the time discretization for a system with a constant mass matrix will be discussed. The process of discretization results often in a system of ordinary differential equations (ODEs) of the form
+First the time discretization for a system with a constant mass matrix will be discussed. The process of discretization results often in a system of \gls{ODE} of the form
 \begin{equation}
 \gls{massM}\frac{\text{d}\vec{u}}{\text{d}t} = - \vec{F}(t,\vec{u}(t))\qquad \text{for}\qquad t \in (0,T).\label{eq:timestep1}
 \end{equation}
@@ -245,7 +245,7 @@ The simplest implicit method is the Implicit Euler Method,
 \begin{equation}
 \gls{massM}\vec{u}(t^{n+1}) + \Delta t\vec{F}(t^{n+1},\vec{u}(t^{n+1}))= \gls{massM}\vec{u}(t^{n}).
 \end{equation}
-Note that this is a non-linear system of algebraic equations that has to be solved for $\vec{u}(t^{n+1})$ iteratively. The Implicit Euler Methods is the first method of a family of backward differentiation formulas (BDF), and presents the property of being unconditionally stable, meaning that the algorithm allows an arbitrarily large timestep. This property allows the calculation of steady state solutions just by choosing a very big $\Delta t$ value. However, not all BDF schemes are unconditionally stable, as it will be shown next.
+Note that this is a non-linear system of algebraic equations that has to be solved for $\vec{u}(t^{n+1})$ iteratively. The Implicit Euler Methods is the first method of a family of \gls{BDF} methods, and presents the property of being unconditionally stable, meaning that the algorithm allows an arbitrarily large timestep. This property allows the calculation of steady state solutions just by choosing a very big $\Delta t$ value. However, not all BDF schemes are unconditionally stable, as it will be shown next.
 \subsubsection{Backward Differentiation Formula}
 \begin{table}[h]
 	\centering
@@ -425,7 +425,7 @@ The pressure term is discretized by using a central difference flux
 	\mathcal{U}^P(p,\vec{v})=  \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}{ \mean{p}(\jump{\vec{v}}\cdot \vec{n}_\Gamma  )\dS}
 	- \int_{\Omega}{p \nabla_h \cdot \vec{v} \dV}. \label{eq:Mom_pressure}
 \end{equation}
-The diffusive term of the momentum equations is discretized using an Symmetric Interior Penalty (SIP)  formulation \parencite{shahbaziExplicitExpressionPenalty2005}
+The diffusive term of the momentum equations is discretized using a \gls{SIP} formulation \parencite{shahbaziExplicitExpressionPenalty2005}
 \begin{equation}
 	\begin{aligned}
 		\tilde{\mathcal{U}}^D(\vec{u},\vec{v},\mu) =
@@ -438,7 +438,7 @@ The diffusive term of the momentum equations is discretized using an Symmetric I
 		\label{eq:Mom_diffusive}
 	\end{aligned}
 \end{equation}
-The viscosity $\mu$ is evaluated as a function of temperature according to \cref{eq:nondim_sutherland} and $\mu_{\text{max}} = \text{max}(\mu^{+}, \mu^{-})$.  Additionally  $\eta$ is the penalty term of the SIP formulation, which has to be chosen big enough to ensure coercivity of the form, but also as small as possible in order to not increase the condition number of the problem. The estimation of the penalty term is based on an expression of the form
+The viscosity $\mu$ is evaluated as a function of temperature according to \cref{eq:nondim_sutherland} and $\mu_{\text{max}} = \text{max}(\mu^{+}, \mu^{-})$.  Additionally  $\eta$ is the penalty term of the \gls{SIP} formulation, which has to be chosen big enough to ensure coercivity of the form, but also as small as possible in order to not increase the condition number of the problem. The estimation of the penalty term is based on an expression of the form
 \begin{equation}
 	\eta = \eta_0 \frac{A(\partial K)}{V(K)},
 \end{equation}\label{eq:PenaltyFactor}
@@ -507,4 +507,5 @@ Finally, the volumetric source term of the energy and mass fraction equations ar
 	\mathcal{M}^S_\alpha(s_\alpha,\rateReac ) =  \Da \int_{\Omega}{  \stoicCoef_\alpha M_\alpha \rateReac s_\alpha} \dV.
 \end{gather}
 The heat release $\heatRelease$ is calculated with \cref{eq:heatReleaseOneStepNonDim}, the reaction rate $\rateReac$ is evaluated using \cref{eq:NonDimArr} and the mixture heat capacity with \cref{eq:nondim_cpmixture}.
+
 

@@ -58,32 +58,32 @@
 	numbers=noenddot,			% Kein Punkt am Ende der Section-Nummerierung (KOMA-Script)
 ]{tudapub}
 
-%\geometry{
-%	reset,
-%	a4paper,
-%	twoside,
-%	outer=2.5cm,
-%	inner=3.0cm,
-%	top=2.0cm,
-%	bottom=2.0cm,
-%	includehead,
-%	includefoot,
-%	includemp,
-%	nomarginpar
-%}
-
 \geometry{
 	reset,
 	a4paper,
 	twoside,
-	outer=-1cm,
+	outer=2.5cm,
 	inner=3.0cm,
-	top=2.5cm,
+	top=2.0cm,
 	bottom=2.0cm,
 	includehead,
 	includefoot,
-	includemp
+	includemp,
+	nomarginpar
 }
+
+%\geometry{
+%	reset,
+%	a4paper,
+%	twoside,
+%	outer=-1cm,
+%	inner=3.0cm,
+%	top=2.5cm,
+%	bottom=2.0cm,
+%	includehead,
+%	includefoot,
+%	includemp
+%}
 %\usepackage{atbegshi}
 %\newcommand\showtimer{%
 %	\message{^^Jtimer: \the\numexpr\the\pdfelapsedtime*1000/65536\relax}%
@@ -546,12 +546,7 @@ noabbrev
 %TODO: pregunta abierta: basta con definir el poly deg k, y con eso esta ya definido k'?
 
 %TODO Question: Que implicancias tiene el utilizar un mallado curvo dentro del DG method? es particularmente complicado/beneficioso?
-%TODO Mencionar en la conclusion que realmente la asumpcion de 2D fue realizada por motivos de ahorro de costos computacionales. En teoria el solver deberia ser posible de hacer calculos tridimensionales, lo cual podria ser futuro trabajo.
-%argumentar con DOFs que la MF calculation es mucho mas facil y eficiente que la otra.
-%TODO Creo que en realidad nunca hice validacion , solo verificación => cambiar la palaba
-%TODO Verificar que realmente en la discretizacion de las ecuaciones tengo el Cp termino pasado al lado derecho (osea que el termino cp solo aparece en realidad en el termino fuente, porque estamos asumiento Nu constante(por eso no entra en las ecuaciones para el termino difusivo, porque ya esta incluido))
 
-%TODO debo  corregir en todos lados: En realidad para la deduccion de las ecuaciones de la mixture farction nunca se asume un cp constante. solo se asume que el cp de todos los componentes es el mismo. Las consecuencias siguen siendo las mismas, puesto que aunque °
 %TODO Introduccion: Hacer una introduccion similar a la del paper de Aldo Hennin
 
 

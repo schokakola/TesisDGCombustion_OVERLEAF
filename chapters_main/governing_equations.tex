@@ -1,5 +1,5 @@
 \chapter{Governing equations}	\label{ch:gov_eqs}
-\glsresetall
+%\glsresetall
 The objective of this work is to present a methodology that allows the simulation of reactive fluids - with emphasis on combustion systems - making use of the low-Mach equations.  In this chapter, it is intended to show the governing equations used in this work to give some remarks regarding their derivation, as well the assumptions made within the present framework.
 
 
@@ -249,7 +249,7 @@ This system is solved for the primitive variables velocity $\vec{u} = (u_x, u_y)
 \begin{align} \label{eq:MassFractionConstraint}
 	Y_{\gls{TotalNumberSpecies}} = 1 - \sum_{k = 1}^{\gls{TotalNumberSpecies}-1}Y_k.
 \end{align}
-Note that the form of the low-Mach equations is very similar to the Navier-Stokes equations. The major difference is in the decomposition of the pressure. This similarity is beneficial as it allows the use of similar techniques to solve the PDE system to those used for the completely incompressible case \parencite{keshtibanCompressibleFlowSolvers2003}. From now on, the sub-index of the hydrodynamic pressure $\hat p_2$ will be dropped and it will be called simply $\hat p$, further emphasizing the similarity in its role to the pressure of the incompressible equations.
+Note that the form of the low-Mach equations is very similar to the Navier-Stokes equations. The major difference is in the decomposition of the pressure. This similarity is beneficial as it allows the use of similar techniques to solve the \gls{PDE} system to those used for the completely incompressible case \parencite{keshtibanCompressibleFlowSolvers2003}. From now on, the sub-index of the hydrodynamic pressure $\hat p_2$ will be dropped and it will be called simply $\hat p$, further emphasizing the similarity in its role to the pressure of the incompressible equations.
 
 Six nondimensional factors arise from the nondimensionalization process:
 \begin{gather*}
@@ -332,10 +332,12 @@ Note that \cref{eq:MixtFracMF} is simply a diffusion-convection equation. It is 
 The system of \cref{eq:MixtFracConti2,eq:MixtFracMom,eq:MixtFracMF} need to be solved together with the equation of state (\cref{eq:ideal_gas}) and expressions for the transport parameters (\cref{eq:nondim_sutherland}). 
 
 Here $z$ is the mixture fraction, which is a scalar that measures the local fuel/oxidizer ratio  \parencite{poinsotTheoreticalNumericalCombustion2005}. The variable $z$ is per definition equal to unity in the fuel feed stream and equal to zero in the oxidizer feed stream. Note that the system is not closed, because $\rho$, $\mu$ and $\rho D$ are still functions of the temperature and mass fractions. These fields can be related to the mixture fraction using the Burke-Schumann flame structure concept \parencite{burkeDiffusionFlames1928}. 
+
 The procedure described before for obtaining the equation for the mixture fraction $z$ leads to expressions that relate $z$ to the temperature $T$, mass fraction of the fuel $Y_F$ and the mass fraction of the oxidizer $Y_O$ as
 \begin{equation}
-	z = \frac{s Y_F -Y_O +Y_O^0}{sY_F^0+Y_O^0} = \frac{\frac{c_p}{Q}(T-T_O^0)+Y_F }{\frac{c_p}{Q}(T_F^0-T_O^0)+Y_F^0} = \frac{\frac{s c_p}{Q}(T-T_O^0)+Y_O-Y_O^0 }{\frac{sc_p}{Q}(T_F^0-T_O^0)+Y_O^0} \label{eq:AllMFRelationships}
+	z = \frac{s Y_F -Y_O +Y_O^0}{sY_F^0+Y_O^0} = \frac{\frac{c_p}{Q}(T-T_O^0)+Y_F }{\frac{c_p}{Q}(T_F^0-T_O^0)+Y_F^0} = \frac{\frac{s c_p}{Q}(T-T_O^0)+Y_O-Y_O^0 }{\frac{sc_p}{Q}(T_F^0-T_O^0)+Y_O^0}. \label{eq:AllMFRelationships}
 \end{equation}
+
 In the case of an infinitely fast chemical reaction, fuel and oxidizer cannot coexist. On one side of this sheet only oxidizer is found, and on the other side only fuel. The exact position of the flame sheet can be determined  using \cref{eq:AllMFRelationships} by the location of the points where the reactant mass fractions $Y_F$ and $Y_O$ are zero, that is, the points where the mixture fraction $z = z_{st}$, with
 \begin{equation}
 	z_{st} = \frac{Y_O^0}{Y_O^0+sY_F^0}.
@@ -393,7 +395,7 @@ Once the mixture fraction field $z$ is obtained, the temperature and mass fracti
 Note that the expressions shown above are not differentiable at the stoichiometric point, which also means that the density and transport properties are not differentiable at $z =z_{st}$. This presents a challenge for algorithms for finding solutions of the system \parencite{rauwoensConservativeDiscreteCompatibilityconstraint2009}. Later in \cref{ssec:MethodCombustion} this point will be treated.
 
 The main idea of introducing the system of equations presented in this section is to obtain an adequate initial estimate that can be used to find a solution for the steady state systems with a finite reaction rate (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}). Note that the assumption of infinite reaction rate can be interpreted as an infinite Dahmköhler number, where the chemical time scales are much shorter than the flow scales. It is expected that the initial estimate using the flame-sheet is a good approximation for finite reaction rate systems where the Dahmköhler number is very large, or expressed differently, for conditions far away from the extinction point (see \cref{fig:Sshaped}).
-Under certain conditions, the approximation is indeed very good. In \cref{fig:MixtureFraction_finiteRateComparison}, temperature and fuel mass fraction fields obtained with infinite and finite reaction rate across the center-line of a counterflow flame configuration are shown. Clearly, both solutions are very similar, differing only in the area near the flame. However, this similarity is only valid under the assumptions made to derive \cref{eq:MixtFracMF}. In the case that the Lewis number is not equal to one, or that the heat capacities are not equal for each species, the finite-rate solution will differ slightly from that obtained with the infinite-reaction rate. It should be mentioned that the steady state solution of the full problem obtained with this approach can be used to initialize non-steady state systems, and could help to simulating reactive systems while avoiding the ignition process.
+Under certain conditions, the approximation is indeed very good. In \cref{fig:MixtureFraction_finiteRateComparison}, temperature and fuel mass fraction fields obtained with infinite and finite reaction rate across the center-line of a counterflow flame configuration are shown. Clearly, both solutions are very similar, differing only in the area near the flame. However, this similarity is only valid under the assumptions made to derive \cref{eq:MixtFracMF}. In the case that the Lewis number is not equal to one, or that the heat capacities are not equal for each species, the finite-rate solution will differ slightly from that obtained for the flame sheet. It should be mentioned that the steady state solution of the full problem obtained with this approach can be used to initialize non-steady state systems, and could help to simulating reactive systems while avoiding the ignition process.
 
 
 

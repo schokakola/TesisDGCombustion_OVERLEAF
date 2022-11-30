@@ -1,5 +1,9 @@
 \chapter{Computational methodology} \label{ch:CompMethodology}
-
+%
+%\chapter{State of the art}
+%\section{Introduction and state of the art.}
+%\subsection{Combustion}
+%\subsubsection{Non-Premixed Flames}
 \paragraph{State of the art of DG methods}
 
 \paragraph{State of the art simulation of combustion? (muy amplio))}
@@ -44,15 +48,17 @@ We note however that this globalization strategy is still not sufficient to ensu
 
 
 
-The solution algorithm developed for this work consists in various ingredients
+\section{The XNSEC solver}
+The XNSEC solver is mainly focused on the simulation of combustion using the low-Mach equations. Motivated by future work, where it is intended to simulate multiphase cases involving chemical reactions, such as a burning droplet, the solver is embedded in the framework for \gls{XDG} solvers presented in \textcite{kummerExtendedDiscontinuousGalerkin2017}, which focuses on applications for multi-phase flows using a sharp interface approach employing a level-set method.  In the present work only the single-phase case is treated. The solution of the algebraic system of equations exposed above is part of an iterative framework subdivided into several levels, which allows the fully coupled solution of the equations
 
-Newton solver
-Efficient Calculation of the Jacobian matrix
-Homotopy strategy
-Initialization strategy for steady state combustion problems.
-\section{Solver structure}
+\begin{itemize}
+\item  The solution of the flame-sheet problem for initialization of a fully coupled steady-state finite-reaction rate system. The strategy is presented in \cref{ssec:MethodCombustion}
+\item A timestepping framework based on a \gls{BDF} scheme, described in \textcite{kummer2018}.
+\item A homotopy scheme that allows solving highly nonlinear problems by generating a series of convergent solutions. This algorithm is described in \cref{sec:HomotopyMethod}.
+\item A Newton-Dogleg method for the solution of nonlinear problems. The Dogleg globalization increases the likelihood of finding a convergent solution even in cases where no adequate initial estimate is available. An increased computational efficiency is archived by an special method for the calculation of the Jacobian matrix. The algorithm is described in \cref{sec:newton}
+\end{itemize}
 
-TODO: Steady state calculations are obtained by using a Implicit Euler time stepping scheme. Since the scheme is unconditionally stable (see \cref{ssec:TemporalDiscretization}), it is possible to use a very large timestep to obtain the steady state solution. In particular, a value $\Delta t = 1.7976931348623157\cdot 10^{304}$ is used, which is four orders of magnitude lower than the largest possible value of a double-precision floating-point number.
+Note that even for steady state calculations, a time stepping scheme is used and the steady-state solutions are obtained by using a Implicit Euler time stepping scheme. Since the scheme is unconditionally stable (see \cref{ssec:TemporalDiscretization}), it is possible to use a very large timestep to obtain the steady state solution. In particular, a value $\Delta t = 1.7976931348623157\cdot 10^{304}$ is used, which is four orders of magnitude lower than the largest possible value of a double-precision floating-point number.
 \section{Solution of the nonlinear problem}\label{sec:SolNonLinProblem}
 
 

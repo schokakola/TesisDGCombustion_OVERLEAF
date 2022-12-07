@@ -16,6 +16,24 @@
 \glossaryentry{SIP?\glossentry{SIP}|setentrycounter[]{page}"\glsnumberformat}{1}
 \glossaryentry{"\texttt {PARDISO}?\glossentry{PARDISO}|setentrycounter[]{page}"\glsnumberformat}{1}
 \glossaryentry{XDG?\glossentry{XDG}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{BoSSS?\glossentry{BoSSS}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{XNSEC?\glossentry{XNSEC}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{SIMPLE?\glossentry{SIMPLE}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{TVM?\glossentry{TVM}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{ENO?\glossentry{ENO}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{DOFs?\glossentry{DOFs}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{FVM?\glossentry{FVM}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{FEM?\glossentry{FEM}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{AMR?\glossentry{AMR}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{DG?\glossentry{DG}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{MPI?\glossentry{MPI}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{BDF?\glossentry{BDF}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{CFD?\glossentry{CFD}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{ODE?\glossentry{ODE}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{PDE?\glossentry{PDE}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{SIP?\glossentry{SIP}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{"\texttt {PARDISO}?\glossentry{PARDISO}|setentrycounter[]{page}"\glsignore}{xxi}
+\glossaryentry{XDG?\glossentry{XDG}|setentrycounter[]{page}"\glsignore}{xxi}
 \glossaryentry{CFD?\glossentry{CFD}|setentrycounter[]{page}"\glsnumberformat}{1}
 \glossaryentry{XNSEC?\glossentry{XNSEC}|setentrycounter[]{page}"\glsnumberformat}{4}
 \glossaryentry{BoSSS?\glossentry{BoSSS}|setentrycounter[]{page}"\glsnumberformat}{5}

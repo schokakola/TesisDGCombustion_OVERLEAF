@@ -1,9 +1,8 @@
 \chapter{Governing equations}	\label{ch:gov_eqs}
 %\glsresetall
-The objective of this work is to present a methodology that allows the simulation of reactive fluids - with emphasis on combustion systems - making use of the low-Mach equations.  In this chapter, it is intended to show the governing equations used in this work to give some remarks regarding their derivation, as well the assumptions made within the present framework.
+The objective of this thesis is to present a methodology that allows the simulation of reactive fluids - with emphasis on combustion systems - making use of the low-Mach equations.  In this chapter, it is intended to show the governing equations used in this work to give some remarks regarding their derivation, as well the assumptions made within the present framework.
 
-
-First, in \cref{sec:GovEqLowMach}, the governing equations that allow the description of reactive fluids are presented, in addition to other thermodynamic relationships, expressions for the transport parameters and the one-step chemical model. Subsequently, in \cref{ssec:NonDimLowMachEquations} the nondimensionalization of the equations is presented, as well as the low-Mach limit of the governing equations.
+First, in \cref{ssect:lowMachModel}, the governing equations that allow the description of reactive fluids are presented, in addition to other thermodynamic relationships, expressions for the transport parameters and the one-step chemical model. Subsequently, in \cref{ssec:NonDimLowMachEquations} the nondimensionalization of the equations is presented, as well as the low-Mach limit of the governing equations.
 
 Finally, in \cref{sec:FlameSheet} the governing equations for an irreversible chemical model with an infinite reaction rate are presented. These equations are used as part of the algorithm to solve the finite reaction rate case.
 
@@ -11,6 +10,7 @@ Finally, in \cref{sec:FlameSheet} the governing equations for an irreversible ch
 
 \section{The low-Mach number equations for reactive flows} \label{sec:GovEqLowMach}
 Combustion processes can be modeled by a system of non-linear partial differential equations, namely the balance equations for the total mass, momentum, energy, and mass of individual species (usually expressed in terms of mass fractions). This system needs to be solved together with an equation of state and expressions for the transport properties as well as for the chemical reaction rates.
+
 The derivation of the governing equations for a reacting flow system can be found in the literature. For more information see for example the works from \textcite{keeChemicallyReactingFlow2003} and \textcite{poinsotTheoreticalNumericalCombustion2005}. In the following pages, the main ideas regarding the derivation of equations are presented. For a more detailed explanation,  the interested reader is referred to the cited works and the references therein.
 
 \subsection{The reactive Navier--Stokes equations}\label{ssect:lowMachModel}
@@ -34,16 +34,16 @@ Consider a reacting fluid mixture composed of $\gls{TotalNumberSpecies}$ species
 		\label{eq:NS_energy}
 		%	\glsHat{dens}\glsHat{heatCapacity} \left(\pfrac{\glsHat{temp}}{\hat{t}} +\glsHat{velVec}\cdot \hat \nabla \hat{\gls{temp}}\right)
 		 & \glsHat{dens}\glsHat{heatCapacity} \pfrac{\glsHat{temp}}{\hat{t}} +\glsHat{dens}\glsHat{heatCapacity} \glsHat{velVec}\cdot \hat \nabla \hat{\gls{temp}}
-		= \Dfrac{\glsHat{TotalPress}} - \hat{\nabla}\cdot \hat{\vec{q}}
+		= \Dfrac{\glsHat{TotalPress}} - \hat{\nabla}\cdot \hat{\gls{heatVec}}
 		-\left(\hat \rho \sum_{k = 1}^{\gls{TotalNumberSpecies}} \hat{c}_{p,k} Y_k \glsHat{velDiffusionvec}_k\right) \cdot \hat \nabla \glsHat{temp} %% Shouldi include this term?
-		+\glsHat{ViscTensor}\colon\hat \nabla \glsHat{velVec} + \hat \omega_T,                                                                                                                                   \\
+		+\glsHat{ViscTensor}\colon\hat \nabla \glsHat{velVec} + \hat{\omega}_T,\\
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		%%% Mass fraction k
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		\label{eq:NS_SpeciesBalance}
 		 &                                                                                                                                                                                                      %	\pfrac{\hat \rho  Y_k }{\hat t} +	\hat\nabla \cdot (\hat \rho \hat{\vec{u}} Y_k)  & = \hat\nabla \cdot(\hat\rho\hat D_k \hat\nabla Y_k)+ 	  \hat \omega_k	  \quad (k = 1, \dots,~N - 1) \label{eq:GasLowMachMassBalance} 
 		\pfrac{\hat \rho  Y_k }{\hat t} +	\hat\nabla \cdot (\hat \rho \hat{\vec{u}} Y_k)
-		=  -	\hat\nabla \cdot \hat{\vec{j}}_k	 +  \hat{\gls{reactionRate}}  \quad (k = 1, \dots,~\gls{TotalNumberSpecies})
+		=  -	\hat\nabla \cdot \hat{\vec{j}}_k	 +  \hat{\omega}_k  \quad (k = 1, \dots,~\gls{TotalNumberSpecies})
 	\end{align}
 	\label{eq:NS-eq}
 \end{subequations}
@@ -98,7 +98,7 @@ The temperature dependence of viscosity is modeled by Sutherland's law \parencit
 \end{equation}
 Here $\hat{\mu}_{\text{suth}}$ is the viscosity evaluated at a reference temperature $\hat{T}_{\text{suth}}$, and $\hat S$ is a material-dependent parameter. In all calculations in this work, the value of $\hat{S}$ for air is used, i.e. $\hat{S} = $ \SI{110.5}{\kelvin}. Expressions for determining the thermal conductivity and diffusion coefficients as a function of temperature can be obtained using similar expressions, as shown later in \cref{ssec:NonDimLowMachEquations}.
 
-The enthalpy transport term due to diffusive fluxes (third therm on the right hand side of \cref{eq:NS_energy}) usually has only a small influence on the solution (\textcite{smokeFormulationPremixedNonpremixed1991, goeyModelingSmallScale1995,paxionDevelopmentParallelUnstructured2001}), and it is actually exactly equal to zero for systems where all species heat capacities are equal. In the present formulation this term is neglected in the energy equation. 
+The enthalpy transport term due to diffusive fluxes (third therm on the right hand side of \cref{eq:NS_energy}) usually has only a small influence on the solution (\textcite{smokeFormulationPremixedNonpremixed1991, goeyModelingSmallScale1995,paxionDevelopmentParallelUnstructured2001}), and it is actually exactly equal to zero for systems where all species heat capacities are equal. In the present formulation this term is neglected from the energy equation. 
 %by assuming constant values for the Prandtl and Lewis numbers (to be defined later), we obtain expression for the temperature dependency of the other transport parameters as $\hat{k}/\hat{c}_p(\hat T) = \hat \mu/\text{Pr}$ and $\hat \rho \hat D_k(\hat T) = \hat \mu/\text{Pr}\text{Le}_k$.
 
 \subsubsection{Chemical model}

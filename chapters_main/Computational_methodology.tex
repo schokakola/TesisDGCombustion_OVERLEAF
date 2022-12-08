@@ -132,7 +132,7 @@ Inserting \cref{eq:LinearForm} and  \cref{eq:JacMatrix2} into \cref{eq:Linearize
 This makes the relationship between the two algorithms apparent. Unlike Picard's method of iterations, Newton's method requires additionally the evaluation of the Jacobi matrix, which must be approximated in some way. This section shows three strategies that were used throughout the development of this work for that purpose.
 
 \subsubsection{Ad-hoc linearization of the Jacobian matrix}
-For some problems, particularly saddle-point problems, the Jacobian A' can be approximated fairly well by simply evaluating the operator matrix. Thus, the system to be solved for Newton Iteration yields
+For some problems, particularly saddle-point problems, the Jacobian $A$' can be approximated fairly well by simply evaluating the operator matrix. Thus, the system to be solved for Newton Iteration yields
 \begin{equation}
 	A(\myvector{U}_n)(\myvector{U}_n+\myvector{s}'_n) - \myvector{b} + A(\myvector{U}_n)\myvector{U}_n\myvector{s}'_n = 0
 \end{equation}
@@ -147,7 +147,7 @@ A straightforward way of calculating the Jacobian matrix is to use forward finit
 \end{equation}
 where $\myvector{e}_j$ is the unit vector with $j$th component equal to one, and zero in all other components. The value of $\varepsilon$ should be chosen small, as usual when calculating finite differences, but also large enough not to disturb the calculations due to problems caused by floating-point rounding calculations.  For all calculations in this work, the value $\varepsilon = \sqrt{\mathtt{eps}}$ was adequate, where $\mathtt{eps} = 2.22044604925031 \cdot 10^{-16}$ is the floating point accuracy for double precision.
 
-The calculation of the forward finite difference approximation is a costly operation, especially for large systems, where it can be particularly prohibitive. However it offers a robust way to approximate the Jacobian. Strategies for improve the efficiency of this calculation exists, such as the use of analytic Jacobians, or use of the sparsity patterns of the Jacobian \parencite{kelleyIterativeMethodsLinear1995}. These are not treated in the present work. 
+The calculation of the forward finite difference approximation is a costly operation, especially for large systems, where it can be particularly prohibitive. However it offers a robust way to approximate the Jacobian. Strategies for improving the efficiency of this calculation exists, such as the use of analytic Jacobians, or use of the sparsity patterns of the Jacobian \parencite{kelleyIterativeMethodsLinear1995}. These are not treated in the present work. 
 \subsubsection{Approximation of the Jacobian from differentiation of equation components}
 The finite difference Jacobi matrix calculation shown above is a fairly simple but computationally expensive calculation. The \BoSSS code is capable of evaluating the Jacobian matrix automatically from the equation components given in Section \ref{ssec:SpatDiscretization}.
 First, note that $\mathcal{A}(\myvector{U})$ could be written as

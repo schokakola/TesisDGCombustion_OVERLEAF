@@ -2,7 +2,7 @@
 \newglossaryentry{temp}{
 	name=\ensuremath{T},
 	description={Temperature},
-	sort={da}, type=symbols, symbol=[$-$]
+	sort={T}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{dens}{
 	name=\ensuremath{\rho},
@@ -39,7 +39,7 @@
 \newglossaryentry{visc}{
 	name=\ensuremath{\mu},
 	description={Dynamic viscosity},
-	sort={bh}, type=symbols, symbol=[$-$]
+	sort={mu}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{HeatConductivity}{
 	name=\ensuremath{\lambda},
@@ -62,7 +62,7 @@
 \newglossaryentry{MeanMolecularWeight}{
 	name=\ensuremath{W},
 	description={Mean molecular weight of the mixture},
-	sort={MolWe}, type=symbols, symbol=[$-$]
+	sort={We}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{GasConstant}{
 	name=\ensuremath{\mathcal{R}},
@@ -82,12 +82,12 @@
 \newglossaryentry{MolecularWeight}{
 	name=\ensuremath{W_k},
 	description={Molecular weight of species $k$},
-	sort={MW}, type=symbols, symbol=[$-$]
+	sort={we}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{MF_k}{
 	name=\ensuremath{Y_k},
 	description={Mass fraction of species $k$},
-	sort={MF}, type=symbols, symbol=[$-$]
+	sort={yk}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{DiffCoeff}{
 	name=\ensuremath{D},
@@ -98,7 +98,7 @@
 \newglossaryentry{StoichiomCoeff}{
 	name=\ensuremath{\nu_k},
 	description={Stoichiometric coefficient of species $k$},
-	sort={Diff}, type=symbols, symbol=[$-$]
+	sort={nu}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{heatCapacity_k}{
 	name=\ensuremath{c_{p,k}},
@@ -114,6 +114,18 @@
 \newglossaryentry{specificEnthalpy_k}{
 	name=\ensuremath{h_k},
 	description={Specific enthalpy of $k$ species.},
+	sort={hk}, type=symbols, symbol=[$-$]
+}
+
+\newglossaryentry{formationEnthalpy_k}{
+	name=\ensuremath{h_k^0},
+	description={Formation enthalpy of $k$ species.},
+	sort={hk}, type=symbols, symbol=[$-$]
+}
+
+\newglossaryentry{sensibleEnthalpy_k}{
+	name=\ensuremath{h_k},
+	description={Sensible enthalpy of $k$ species.},
 	sort={hk}, type=symbols, symbol=[$-$]
 }
 
@@ -143,7 +155,7 @@
 \newglossaryentry{diffusionCoeff}{
 	name=\ensuremath{D},
 	description={Diffusion coefficient},
-	sort={D	}, type=symbols, symbol=[$-$]
+	sort={D}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{Reynolds}{
 	name=\ensuremath{\text{Re}},
@@ -192,7 +204,7 @@ sort={Fro}, type=symbols, symbol=[$-$]
 \newglossaryentry{ExpansionRatio}{
 	name=\ensuremath{\text{ER}},
 	description={Expansion ratio the backward-facing step},
-	sort={Exp}, type=symbols, symbol=[$-$]
+	sort={Er}, type=symbols, symbol=[$-$]
 }
 
 %\newglossaryentry{beta}{
@@ -203,34 +215,34 @@ sort={Fro}, type=symbols, symbol=[$-$]
 \newglossaryentry{cell}{
 	name=\ensuremath{K},
 	description={Numerical cell},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={k}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{grid}{
 	name=\ensuremath{\mathfrak{K}_{\gls{grdSz}}},
 	description={Numerical mesh},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={k}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{grdSz}{
 	name=\ensuremath{h},
 	description={Numerical mesh size},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={h}, type=symbols, symbol=[$-$]
 }
 
 
 \newglossaryentry{domain}{
 	name=\ensuremath{\Omega},
 	description={Domain of interest, computational domain},
-	sort={aa}, type=symbols, symbol=[$-$]
+	sort={ome}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{testF}{
 	name=\ensuremath{\vartheta},
 	description={General test function},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={the}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{basis}{
 	name=\ensuremath{\phi},
 	description={Basis function},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={phi}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{DGres}{
 	name=\ensuremath{R},
@@ -240,7 +252,7 @@ sort={Fro}, type=symbols, symbol=[$-$]
 \newglossaryentry{flux}{
 	name=\ensuremath{\vectr{f}},
 	description={Flux vector},
-	sort={bf}, type=symbols, symbol=[$-$]
+	sort={fb}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{DGVar}{
 	name=\ensuremath{u},
@@ -250,52 +262,52 @@ sort={Fro}, type=symbols, symbol=[$-$]
 \newglossaryentry{NoDOF}{
 	name=\ensuremath{N},
 	description={Number of total DOF},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={N}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{NoDOFloc}{
 	name=\ensuremath{N_{\gls{Pdeg}}},
 	description={Number of local DOF},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={N}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{brknPspacek}{
 	name=\ensuremath{\mathbb{P}_{\gls{Pdeg}}},
 	description={Broken polynomial space},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={P}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{Pdeg}{
 	name=\ensuremath{k},
 	description={Total degree of the polynomial space},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={k}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{normal}{
 	name=\ensuremath{\vectr{n}},
 	description={Normal vector},
-	sort={al}, type=symbols, symbol=[$-$]
+	sort={n}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{numflux}{
 	name=\ensuremath{\hat{f}},
 	description={Numerical flux},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={f}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{normalGam}{
 	name=\ensuremath{\vectr{n}_{\gls{edge}}},
 	description={Edge normal field},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={n}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{edge}{
 	name=\ensuremath{\Gamma},
 	description={Edge},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={gamm}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{massM}{
 	name=\ensuremath{\tensr{M}},
 	description={Mass matrix},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={mm}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{OpM}{
 	name=\ensuremath{\tensr{Op}},
 	description={Operator matrix},
-	sort={e}, type=symbols, symbol=[$-$]
+	sort={op}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{dgerror}{
 	name=\ensuremath{r},
@@ -305,12 +317,12 @@ sort={Fro}, type=symbols, symbol=[$-$]
 \newglossaryentry{normalI}{
 	name=\ensuremath{\vectr{n}_{\gls{interface}}},
 	description={Interface normal vector},
-	sort={ak}, type=symbols, symbol=[$-$]
+	sort={n}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{interface}{
 	name=\ensuremath{\mathfrak{I}},
 	description={Interface},
-	sort={ag}, type=symbols, symbol=[$-$]
+	sort={I}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{BCcont}{
 	name=\ensuremath{\mathcal{B}^1},
@@ -351,5 +363,18 @@ sort={q}, type=symbols, symbol=[$-$]
 	description={Sutherland constant.},
 	sort={suth}, type=symbols, symbol=[$-$]
 }
-
-
+\newglossaryentry{rateProgress}{
+name=\ensuremath{\mathcal{Q}_j},
+description={Rate of progress of reaction $j$},
+sort={q}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{preexpFact}{
+	name=\ensuremath{B},
+	description={Pre-exponential factor},
+	sort={B}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{actTemperature}{
+	name=\ensuremath{T_a},
+	description={Activation temperature},
+	sort={Ta}, type=symbols, symbol=[$-$]
+}

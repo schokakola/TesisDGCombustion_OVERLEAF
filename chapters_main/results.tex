@@ -14,6 +14,8 @@ All calculations shown here were performed on a cluster with the following spefi
 \end{itemize}
 Unless otherwise stated, all calculations use the termination criteria presented in \cref{ssec:TerminationCriterion}.
 Some of the results presented in this section have been published in \parencite{gutierrez-jorqueraFullyCoupledHighorder2022}.
+
+In the following, only two dimensional configurations are considered. However, the methods shown in this work could be also used for three-dimensional problems. 
 %%%%%%%%
 %%%%%%%%
 \section{Single-component isothermal cases}\label{sec:SingleCompIsotCase}
@@ -41,13 +43,16 @@ First in \cref{ssec:HeatedBackwardFacingStep} an extension of the backward-facin
 \section{Multi-component non-isothermal cases}\label{sec:MultCompNonIsothermCase}
 %%%%%%%%
 %%%%%%%%
-Finally in this section, test cases where the whole operator presented in \cref{ch:NumericalMethods} is used are shown. The balance equations of continuity, momentum, energy and species are considered and solved in a coupled manner, together with a equation of state and expressions for the transport parameters. For all the cases treated here, the solution of the flame sheet problem described in \cref{sec:FlameSheet} is calculated first, and then this solution is used as an initial estimate for the solution of the finite chemistry rate problem (see \cref{ssec:NonDimLowMachEquations}). For all test cases presented in this section, a smoothing parameter $\sigma = 40$ is used (see \cref{ssec:MethodCombustion}). 
+Finally in this section, test cases where the whole operator presented in \cref{ch:NumericalMethods} is used are shown. The balance equations of continuity, momentum, energy and species are considered and solved in a coupled manner, together with a equation of state and expressions for the transport parameters. For all the steady state cases treated here, the solution of the flame sheet problem described in \cref{sec:FlameSheet} is calculated first, and then this solution is used as an initial estimate for the solution of the finite chemistry rate problem (see \cref{ssec:NonDimLowMachEquations}). For all test cases presented in this section, a smoothing parameter $\sigma = 40$ is used (see \cref{ssec:MethodCombustion}). 
+
 
 As already mentioned before, for the resolution of the linear solver using a direct solver such as \textit{PARDISO} was not possible, because the memory requirements are too high. In all calculations of this section the multigrid orthonormalization method commented in \cref{ssec:LinearSolver} is used.
 
 The combustion model used is the one-step model shown in \cref{sec:GovEqLowMach}. All calculations assume methane as fuel, therefore, the relevant chemical components are \ch{CH4}, \ch{O2}, \ch{CO2}, \ch{H2O} and \ch{N2}, thus $N = 5$ and $\vec{Y}' = \left(Y_{\ch{CH4}},Y_{\ch{O2}},Y_{\ch{CO2}},Y_{\ch{H2O}}\right)$. The nitrogen mass fraction $Y_{\ch{N2}}$ is calculated according to \cref{eq:MassFractionConstraint}.%
 
 First in \cref{ssec:coflowFlame} a coflow laminar diffusion flame configuration is calculated and some remarks about the convergence behavior of the XNSEC solver using are made. Next in \cref{ss:CDF} a diffusion flame in a two-dimensional counterflow configuration is simulated and compared with results from a one-dimensional configuration solved using a fourth-order finite difference solver. Finally in \cref{ss:UDF} the convergence rates of the fully coupled solver are investigated by studing a pseudo-one-dimensional diffusion flame configuration.
+
+
 
 \input{chapters_main/results/MultiComponentNonIsothermal/CoflowFlame}
 \input{chapters_main/results/MultiComponentNonIsothermal/CounterflowDiffusionFlame}

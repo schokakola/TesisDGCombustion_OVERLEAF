@@ -102,6 +102,14 @@ The enthalpy transport term due to diffusive fluxes (third therm on the right ha
 %by assuming constant values for the Prandtl and Lewis numbers (to be defined later), we obtain expression for the temperature dependency of the other transport parameters as $\hat{k}/\hat{c}_p(\hat T) = \hat \mu/\text{Pr}$ and $\hat \rho \hat D_k(\hat T) = \hat \mu/\text{Pr}\text{Le}_k$.
 
 \subsubsection{Chemical model}
+As mentioned in the introduction, For example, in the work of \textcite{stauchDetailedNumericalSimulation2006} a numerical investigation of methanol combustion using detailed chemistry is carried out, and involves the analysis of 23 chemical species and 166 elementary reactions.
+Because of their high complexity the mentioned works are restricted to simple one- or two-dimensional configurations, and to a small number of grid elements. If one is interested in more complex geometries or more complicated flow systems, the use of detailed kinetics can be prohibitive. 
+
+
+
+In the work of \textcite{westbrookSimplifiedReactionMechanisms1981} a one-step kinetic model is presented, where combustion is expressed as a single chemical reaction with a reaction rate given by an Arrhenius-type expression with constant parameters. Multi-step chemical reaction models have also been developed, such as the four-step mechanism for methane combustion by Peters, \textcite{petersNumericalAsymptoticAnalysis1985} or the three-step mechanism by Peters and Williams. \textcite{petersAsymptoticStructureStoichiometric1987}
+
+
 Consider a system composed of $N$ species where $M$ chemical reactions take place. Chemical reactions can be written in generalized form as follows.
 \begin{equation}\label{eq:allChemEq}
 	\sum_{k=1}^{N} \nu'_{kj}\mathcal{M}_k  \rightleftharpoons \sum_{k=1}^{N} \nu''_{kj}\mathcal{M}_k  \qquad \text{for}\qquad j=1,\dots,M\, ,
@@ -113,7 +121,7 @@ The reaction rate of species $k$ is $\hat \omega_k$, which accounts for the tota
 \begin{equation} \label{eq:reacRateDef}
 	\hat \omega_k  = \hat W_k \sum_{j=1}^{M}\nu_{jk}\hat{\mathcal{Q}}_j.
 \end{equation}
-Here $\nu_{kj} = \nu''_{kj} -\nu'_{kj}$, and $\gls{rateProgress}$ is the rate of progress of the reaction $j$. It is usually modeled using Arrhenius-type expressions.\newline
+Here $\nu_{kj} = \nu''_{kj} -\nu'_{kj}$, and $\hat{\mathcal{Q}}_j$ is the rate of progress of the reaction $j$. It is usually modeled using Arrhenius-type expressions.\newline
 
 %%%%%%%
 The heat release $\hat \omega_T$ that appears in the energy equation is related to the reaction rates according to
@@ -131,7 +139,7 @@ The rate of progress of the global reaction is modeled by an Arrhenius-type expr
 \begin{align}
 	\hat{\mathcal{Q}}= \hat B e^{-\hat T_a/\hat T} \left(\frac{\hat \rho Y_F}{\hat W_F}\right)^a \left(\frac{\hat \rho Y_O}{\hat W_O}\right)^b . \label{eq:DimArr}
 \end{align}%
-Here, the subscripts $F$ and $O$ refer to fuel and oxidizer, respectively. The parameter $\gls{preexpFact}$ corresponds to the pre-exponential factor, $\hat T_a$ is the activation temperature, and $a$ and $b$ are reaction orders. For a one-step reaction model, the reaction rate of the $k$-th component in\cref{eq:reacRateDef} is
+Here, the subscripts $F$ and $O$ refer to fuel and oxidizer, respectively. The parameter $\hat{B}$ corresponds to the pre-exponential factor, $\hat T_a$ is the activation temperature, and $a$ and $b$ are reaction orders. For a one-step reaction model, the reaction rate of the $k$-th component in \cref{eq:reacRateDef} is
 \begin{equation}
 	\hat \omega_k  =  \nu_{k} \hat W_k\hat{\mathcal{Q}}.
 \end{equation}
@@ -199,13 +207,13 @@ and the molar heat release according to
 
 The parameter $\alpha$ is a constant that depends on the hydrocarbon being considered, in particular $\alpha = 0.21$ for methane combustion.
 
-It should be noted that \cref{eq:heatReleaseOneStep} yields unphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep}. However, in practice, this should not have a significant effect because the non-physical values of $\hat Q$ appear in zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. However, setting an upper bound for $\phi$ is helpful in avoiding possible numerical instabilities.
+It should be noted that \cref{eq:heatReleaseOneStep} yields nonphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep}. However, in practice, this should not have a significant effect because the non-physical values of $\hat Q$ appear in zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. However, setting an upper bound for $\phi$ is helpful in avoiding possible numerical instabilities.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{The reactive low-Mach Navier-Stokes equations} \label{ssec:NonDimLowMachEquations}
 
-In the present work, the low-Mach number approximation of the governing equations is used. The derivation of the equations can be found in the works from \textcite{rehmEquationsMotionThermally1978, majdaDerivationNumericalSolution1985,mullerLowMachNumberAsymptoticsNavierStokes1998}. The interested user is referred to these references for a detailed explanation of how the set of equations is derived. In what follows, the main consequences of the low Mach limit will be shown and discussed.
+In the present work, the low-Mach number approximation of the governing equations is used.  They were first derived by Rehm and Baum \parencite{rehmEquationsMotionThermally1978}. A rigorous extension to combustion problems was done by Majda and Sethian \parencite{majdaDerivationNumericalSolution1985}. The interested user is referred to these references for a detailed explanation of how the set of equations is derived, as well as the work from \textcite{mullerLowMachNumberAsymptoticsNavierStokes1998}. In what follows, only the main consequences of the low Mach limit will be shown and discussed.
 
 Recall the definition of the Mach number, $\text{Ma} = \RefVal{u}/\hat c$, where $\RefVal{u}$ is a characteristic flow velocity and $\hat{c}$ the speed of sound. The low-Mach number limit approximation of the governing equations is used for flows where the Mach number is small, which is usually the case in typical laminar combustion systems \parencite{dobbinsFullyImplicitCompact2010}.
 The low-Mach equations are obtained by using standard asymptotic methods. One of the main results of the analysis is that for flows with a small Mach number, the pressure can be decomposed as
@@ -235,7 +243,7 @@ In this work a nondimensional formulation of the governing equations is used. Fo
 	\vec{g} = \frac{\hat{\vec{g}}}{\RefVal{g}},\quad
 	Q = \frac{\hat Q}{\hat{Q}_0}.
 \end{align*}
-Here $\RefVal{u}, \RefVal{L}$, $\RefVal{p}$, $\RefVal{t}$, and $\RefVal{T}$ are the reference velocity, length, pressure, time, and temperature, respectively, and are equal to some characteristic value for the particular studied configuration. Furthermore, $\RefVal{g}$ is the magnitude of the gravitational acceleration and $\RefVal{W}$ is the reference molecular weight. The reference transport properties $\RefVal{\mu}$, $\RefVal{k}$, $\RefValS{D}{k}$ and the reference heat capacity of the mixture $\RefValS{c}{p}$ are evaluated at the reference temperature $\RefVal{T}$. Similarly, the reference density must satisfy the equation of state, thus $\RefVal{\rho} = \RefVal{p}/(\hat{\mathcal{R}}\RefVal{T}\RefVal{W})$.  By introducing these definitions into the governing  \cref{eq:NS_Conti,eq:NS_Momentum,eq:NS_energy,eq:NS_SpeciesBalance} the reactive set of nondimensional low-Mach number equations is obtained. The system of differential equations to be solved reads as follows.
+Here $\RefVal{u}, \RefVal{L}$, $\RefVal{p}$, $\RefVal{t}$, and $\RefVal{T}$ are the reference velocity, length, pressure, time, and temperature, respectively, and are equal to some characteristic value for the particular studied configuration. Furthermore, $\RefVal{g}$ is the magnitude of the gravitational acceleration and $\RefVal{W}$ is the reference molecular weight. The reference transport properties $\RefVal{\mu}$, $\RefVal{k}$, $\RefValS{D}{k}$ and the reference heat capacity of the mixture $\RefValS{c}{p}$ are evaluated at the reference temperature $\RefVal{T}$. Similarly, the reference density must satisfy the equation of state, thus $\RefVal{\rho} = \RefVal{p}/(\hat{\mathcal{R}}\RefVal{T}\RefVal{W})$.  By introducing these definitions into the governing  \cref{eq:NS_Conti,eq:NS_Momentum,eq:NS_energy,eq:NS_SpeciesBalance}, together with the transport coefficients and equations for the source terms $\omega_T$ and $\omega_k$ given by the one-step model, the nondimensional low-Mach number set of equations is obtained
 \begin{subequations}
 	\begin{align}
 		 & \pfrac{\rho}{t} + \nabla \cdot (\rho \vec{u})   = 0, \label{eq:LowMach_Conti}                                                                                                                                                                                                   \\
@@ -245,7 +253,7 @@ Here $\RefVal{u}, \RefVal{L}$, $\RefVal{p}$, $\RefVal{t}$, and $\RefVal{T}$ are 
 	\end{align}
 	\label{eq:all-eq}\label[pluralequation]{eq:all-eqs}
 \end{subequations}
-This system is solved for the primitive variables velocity $\vec{u} = (u_x, u_y)$, pressure $p$, temperature $T$ and mass fractions ${\mathbf{Y}' = (Y_1,\dots,Y_{N-1})}$. Note that it is assumed that the spatial gradients of the mixture heat capacity are small, which allows to introduce $c_p$ in the derivative of the diffusive term of \cref{eq:LowMachEnergy}. Furthermore, considering the fact that the sum of the mass fractions must always be one, the mass fraction of the last species $\gls{TotalNumberSpecies}$ can be calculated with
+This system is solved for the primitive variables velocity $\vec{u} = (u_x, u_y)$, pressure $p$, temperature $T$ and mass fractions ${\mathbf{Y}' = (Y_1,\dots,Y_{N-1})}$. An advantage of using the temperature as a primitive variable is that in doing so, the temperature dependant transport parameters and equation of state can be readily calculated, and no intermediate calculation needs to be done. Note that it is assumed that the spatial gradients of the mixture heat capacity are small, which allows to introduce $c_p$ in the derivative of the diffusive term of \cref{eq:LowMachEnergy}. Furthermore, considering the fact that the sum of the mass fractions must always be one, the mass fraction of the last species $\gls{TotalNumberSpecies}$ can be calculated with
 \begin{align} \label{eq:MassFractionConstraint}
 	Y_{\gls{TotalNumberSpecies}} = 1 - \sum_{k = 1}^{\gls{TotalNumberSpecies}-1}Y_k.
 \end{align}
@@ -259,12 +267,12 @@ Six nondimensional factors arise from the nondimensionalization process:
 	% \text{Ma} = \frac{\RefVal{u}}{\sqrt{\gamma \RefVal{T} \hat{\gls{GasConstant}} / \RefVal{W} }},\\
 	\text{Le}_k = \frac{\RefVal{k}}{\RefVal{\rho} \RefValS{D}{k} \RefValS{c}{p}}, \quad
 	\Da = \frac{\hat B \RefVal{L} \RefVal{\rho}}{\RefVal{M}\RefVal{u}}, \quad \label{eq:Dahmkoeler}
-	\text{H} = \frac{\hat \heatRelease_0}{\RefValS{c}{p}. \RefVal{T}}%%%%%%%%%%%%%%%%%%%%%%% CHECK THIS,  not sure if \RefVal{M} should be here
+	\text{H} = \frac{\hat \heatRelease_0}{\RefValS{c}{p} \RefVal{T}}.%%%%%%%%%%%%%%%%%%%%%%% CHECK THIS,  not sure if \RefVal{M} should be here
 	%\text{H} = \frac{\hat \heatRelease_0}{\RefVal{M} \RefValS{c}{p} \RefVal{T}}%%%%%%%%%%%%%%%%%%%%%%% CHECK THISONEEEEEEEEEEEEEEEEEEEEE
 \end{gather*}
 The first three equations define the Reynolds, Froude and Prandtl number, respectively. $\text{Le}_k$ is the Lewis number of species $k$. Finally, $\text{Da}$ and H are the Damköhler number and the nondimensional heat release, respectively. The nondimensional progress of the global reaction reads as follows
 \begin{align}
-	\mathcal{Q}(T, \vec{Y})  = \left(\frac{\rho Y_F}{M_F}\right) \left(\frac{\rho Y_O}{M_O}\right)\text{exp}\left(\frac{-T_a}{T}\right), \label{eq:NonDimArr}
+	\mathcal{Q}(T, \vec{Y})  = \text{exp}\left(\frac{-T_a}{T}\right) \left[\left(\frac{\rho Y_F}{M_F}\right) \left(\frac{\rho Y_O}{M_O}\right)\right], \label{eq:NonDimArr}
 \end{align}
 where $T_a = \hat{T}_a / \RefVal{T}$. Furthermore, the nondimensional heat release is
 \begin{equation}
@@ -298,12 +306,13 @@ The model for the transport parameters can be simplified by assuming constant va
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{A note on the multiple solutions of the system}
-The system of equations shown in this section has the particularity that it presents branching phenomena, which means that there are several solutions to the problem. One solution is evidently that of pure mixing (also called frozen chemistry), in which combustion does not occur and the equations are simply describing a mixing process. Another solution is that of a system under combustion, where the reaction takes place in a thin but finite reaction zone, in which the reactants can overlap. This phenomenon is usually represented by a bifurcation curve of the combustion process, as shown in \cref{fig:Sshaped}. in which the maximum temperature of the system is plotted for different Dahmköhler numbers. 
-The graph also shows the extinction point. If a system is in the stable combustion branch, and the Da number begins to decrease there is a point where the chemical reaction is not sustainable, and the extinction phenomenon occurs. An example of this is the case of a candle that is blown out and extinguished.
+The system of equations shown in this section has the particularity that it presents branching phenomena, which means that there are several solutions to the problem. One solution is evidently that of pure mixing (also called frozen chemistry), in which combustion does not occur and the equations are simply describing a mixing process. Another solution is that of a system under combustion, where the reaction takes place in a thin but finite reaction zone, in which the reactants can overlap. This phenomenon is usually represented by a bifurcation curve of the combustion process, as shown in \cref{fig:Sshaped} in which the maximum temperature of the system is plotted for different Dahmköhler numbers. 
+The graph also shows the extinction point. If a system is in the stable combustion branch, and the Dahmköhler number begins to decrease there is a point where the chemical reaction is not sustainable, and the extinction phenomenon occurs. An example of this is the case of a candle that is blown out and extinguished.
 
 The ignition phenomenon can be interpreted analogously. For a system where there is no chemical reaction (but mixing of the reactants), the increase of the Dahmköhler number eventually leads to ignition of the system, obtaining a flame that is in the stable combustion branch. An example of this would be when a lighter produces a flame as a result of a spark. 
 
-In the next section a strategy is presented that allows to obtain systems of steady state combustion, which does not require the simulation of the ignition process. 
+Several strategies can be recognized to obtain a solution for a steady-state flame diffusion. One sensible way would be to numerically represent the ignition process by including a high temperature zone in the initial conditions of the system and advance it in time using a marching algorithm.  From a numerical point of view this posses several challenges. For instance, in a diffusion flame, it is not clear in advance the exact location of the high reaction zones, and positioning the high temperature patch in a distant zone does not guarantee ignition of the system. Furthermore, the temperature has to be large enough to cause ignition of the system, and the large spatial gradients associated make necessary an adequate meshing strategy to obtain converged solutions. If one is only interested in the steady state solution, an implicit time stepping method with a large time-step could be used. This requires, however, a very good initial estimate to obtain a convergent solution. In the next section a strategy is presented that allows to obtain systems of steady state combustion, which does not require the simulation of the ignition process.
+ 
 \begin{figure}[h]
 	\begin{center}
 		\def\svgwidth{0.5\textwidth}
@@ -317,7 +326,12 @@ In the next section a strategy is presented that allows to obtain systems of ste
 
 \section{The flame sheet approximation} \label{sec:FlameSheet}
 
-A problem encountered when numerically solving the system of  \cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance} for the steady state simulation of combustion, is that the lack of suitable initial conditions can lead the algorithm to very slow convergence or even failure.  In this section, the concept of the flame sheet approximation is introduced, which is used for circumvent this problem. The ideas proposed in the work of \textcite{keyesFlameSheetStarting1987} are followed.
+%In this section, the concept of the flame sheet approximation is introduced, which is used to obtain steady-state solutions of diffusion flames. The ideas proposed in the work of \textcite{keyesFlameSheetStarting1987} are followed.
+
+The \cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance} present the characteristic that they are highly non-linear, and there is a very tight coupling between the fluid dynamics and the thermochemistry. The numerical solution of the fully coupled discretized equations can be realized in different ways, one of them being the use of newton algorithm to find the solution in an iterative manner. This requires however the use of adequate initial estimates which make possible the algorithm to find a converged solution. Not using an adequate estimate could lead to a very slow convergence, or even to divergence of the algorithm. In this part a strategy for obtaining an estimate is presented.
+
+The rate of reaction in a diffusion flame is determined by the rate at which the fuel and oxidizer are brought together. If one considers the limit of infinitely fast chemical reaction, the reactants are divided by a thin exothermic layer, where they meet in stoichiometric proportions maximizing the production of combustion products. The use of a infinitely fast reaction model is a good initial estimate that can be used to find a solution for the steady state systems with a finite reaction rate, and has been used in various works, such as the work from \textcite{keyesFlameSheetStarting1987} where the idea is used in a counterflow configuration, and in the work of \textcite{smookeNumericalSolutionTwoDimensional1986} for an axisymmetric coflow configuration, 
+also in \textcite{smookeNumericalModelingAxisymmetric1992} for a Tsuji-counterflow configuration and in the work by  \textcite{dobbinsFullyImplicitCompact2010} for an axisymmetric laminar jet diffusion flame with time dependent boundary conditions.
 
 Assuming that all species have the same heat capacity $c_{p,k} = c_p$ and mass diffusion coefficient $D_k=D$, that the Lewis number is unity for all species, and that combustion can be described by a single step chemical reaction, it is possible to obtain an equation for a scalar without source terms, which is a linear combination of the energy \cref{eq:LowMachEnergy} and mass fraction \cref{eq:LowMachMassBalance}. Thus, the system can be simplified to solving the low-Mach Navier-Stokes equations and an equation for a scalar $z$:
 \begin{subequations}
@@ -328,10 +342,8 @@ Assuming that all species have the same heat capacity $c_{p,k} = c_p$ and mass d
 	\end{flalign}
 	\label{eq:all-eq-mixfrac}
 \end{subequations}
-Note that \cref{eq:MixtFracMF} is simply a diffusion-convection equation. It is however still coupled to the flame structure via the velocity fields and through the density (and indirectly to the temperature and mass fractions fields, as will be shown later).
-The system of \cref{eq:MixtFracConti2,eq:MixtFracMom,eq:MixtFracMF} need to be solved together with the equation of state (\cref{eq:ideal_gas}) and expressions for the transport parameters (\cref{eq:nondim_sutherland}). 
-
 Here $z$ is the mixture fraction, which is a scalar that measures the local fuel/oxidizer ratio  \parencite{poinsotTheoreticalNumericalCombustion2005}. The variable $z$ is per definition equal to unity in the fuel feed stream and equal to zero in the oxidizer feed stream. Note that the system is not closed, because $\rho$, $\mu$ and $\rho D$ are still functions of the temperature and mass fractions. These fields can be related to the mixture fraction using the Burke-Schumann flame structure concept \parencite{burkeDiffusionFlames1928}. 
+Note that \cref{eq:MixtFracMF} is simply a diffusion-convection equation. It is however still coupled to the flame structure via the velocity fields and through the density (and indirectly to the temperature and mass fractions fields, as will be shown later), requiring an iterative procedure for the solution of the coupled system. 
 
 The procedure described before for obtaining the equation for the mixture fraction $z$ leads to expressions that relate $z$ to the temperature $T$, mass fraction of the fuel $Y_F$ and the mass fraction of the oxidizer $Y_O$ as
 \begin{equation}
@@ -389,17 +401,16 @@ Once the mixture fraction field $z$ is obtained, the temperature and mass fracti
 	\centering
 	\inputtikz{MFFRC1}%
 	\inputtikz{MFFRC2}%	
-	\caption{Temperature and fuel mass fraction profiles calculated in the center-line of a counter-flow flame configuration using finite chemistry (black) and the flame sheet approximation (green). }
+	\caption[Temperature and fuel mass fraction profiles calculated in the center-line of a counter-flow flame configuration using finite chemistry and the flame sheet approximation.]{Temperature and fuel mass fraction profiles calculated in the center-line of a counter-flow flame configuration using finite chemistry (black) and the flame sheet approximation (green). }
 	\label{fig:MixtureFraction_finiteRateComparison}
 \end{figure}
+
 Note that the expressions shown above are not differentiable at the stoichiometric point, which also means that the density and transport properties are not differentiable at $z =z_{st}$. This presents a challenge for algorithms for finding solutions of the system \parencite{rauwoensConservativeDiscreteCompatibilityconstraint2009}. Later in \cref{ssec:MethodCombustion} this point will be treated.
 
-The main idea of introducing the system of equations presented in this section is to obtain an adequate initial estimate that can be used to find a solution for the steady state systems with a finite reaction rate (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}). Note that the assumption of infinite reaction rate can be interpreted as an infinite Dahmköhler number, where the chemical time scales are much shorter than the flow scales. It is expected that the initial estimate using the flame-sheet is a good approximation for finite reaction rate systems where the Dahmköhler number is very large, or expressed differently, for conditions far away from the extinction point (see \cref{fig:Sshaped}).
-Under certain conditions, the approximation is indeed very good. In \cref{fig:MixtureFraction_finiteRateComparison}, temperature and fuel mass fraction fields obtained with infinite and finite reaction rate across the center-line of a counterflow flame configuration are shown. Clearly, both solutions are very similar, differing only in the area near the flame. However, this similarity is only valid under the assumptions made to derive \cref{eq:MixtFracMF}. In the case that the Lewis number is not equal to one, or that the heat capacities are not equal for each species, the finite-rate solution will differ slightly from that obtained for the flame sheet. It should be mentioned that the steady state solution of the full problem obtained with this approach can be used to initialize non-steady state systems, and could help to simulating reactive systems while avoiding the ignition process.
+It is worth noting that the assumption of infinite reaction rate can be interpreted as an infinite Dahmköhler number, where the chemical time scales are much shorter than the flow scales. It is expected that the initial estimate using the flame-sheet is a good approximation for finite reaction rate systems where the Dahmköhler number is very large, or expressed differently, for conditions far away from the extinction point (see \cref{fig:Sshaped}). 
 
-
-
-
+Under certain conditions, the the flame-sheet approximation is indeed very good. In \cref{fig:MixtureFraction_finiteRateComparison}, temperature and fuel mass fraction fields obtained with infinite and finite reaction rate across the center-line of a counterflow flame configuration are shown. Clearly, both solutions are very similar, differing only in the area near the flame. However, this similarity is only valid under the assumptions made to derive \cref{eq:MixtFracMF}. In the case that the Lewis number is not equal to one, or that the heat capacities are not equal for each species, the finite-rate solution will differ slightly from that obtained for the flame sheet. 
+It is worth noting that the assumption of unity Lewis number of the flame sheet formulation is not mandatory. In the work of \textcite{Lin2009N9S} a formulation for non-unity Lewis number diffusion flames is presented. It should be mentioned that the steady state solution of the full problem obtained with this approach can be used to initialize non-steady state systems where the ignition phenomenon isn't of interest.
 
 \section{Boundary conditions}
 The following boundary conditions are imposed for the resolution of the finite reaction rate system (\cref{eq:LowMach_Conti,eq:LowMach_Momentum,eq:LowMachEnergy,eq:LowMachMassBalance}) and for the flame sheet problem (\cref{eq:MixtFracConti2,eq:MixtFracMom,eq:MixtFracMF}),
@@ -454,7 +465,3 @@ The following boundary conditions are imposed for the resolution of the finite r
 	\end{align}
 \end{subequations}
 where $k = (1,\dots,N-1)$ denotes the index of mass fractions. The boundary $\Gamma_\text{D}$ represents conditions for inlets and walls, with the velocity, temperature, mass fractions and mixture fraction defined as Dirichlet boundary conditions. Boundaries $\Gamma_\text{DW}$  are used to represent adiabatic walls, where the velocity is given as a Dirichlet boundary condition again, but with the gradients perpendicular to the wall of the transported scalars are set to zero. The boundary $\Gamma_\text{N}$ represent an outflow of the domain with homogeneous Neumann condition for all scalars. The boundary $\Gamma_{\text{ND}}$ also  represents an outlet boundary condition, but with Dirichlet boundary conditions for the scalars. Finally, the boundaries $\Gamma_P$ are periodic, where $\vec{x}$ and $\vec{x}'$ are periodic pairs in the domain.
-
-\mycomment{
-	%TODO cosas por poner en algun lado
-}

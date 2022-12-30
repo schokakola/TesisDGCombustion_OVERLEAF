@@ -1,5 +1,5 @@
 \chapter{The Discontinuous Galerkin method}	\label{ch:NumericalMethods}
-This chapter aims to give an overview of the DG method, as well as to present the spatial and temporal discretization of the equations presented earlier. Parts of this chapter are based on the work presented at \parencite{kummerExtendedDiscontinuousGalerkin2017,kikkerFullyCoupledHighorder, smudamartinDirectNumericalSimulation2021}. The reader interested in a more in-depth description of the DG method is referred to the works of  \textcite{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012}
+This chapter aims to give an overview of the DG method, as well as to present the spatial and temporal discretization of the equations presented earlier. Parts of this chapter are based on the work presented in the works from  \textcite{kummerExtendedDiscontinuousGalerkin2017,kikkerFullyCoupledHighorder, smudamartinDirectNumericalSimulation2021}. The reader interested in a more in-depth description of the DG method is referred to the works of  \textcite{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012}
 
 
 \section{The Discontinuous Galerkin method}
@@ -27,12 +27,12 @@ For each field ${u} \in C^0\left(\Omega\setminus \Gamma_I\right)$, ${u}^-$  and 
 \end{align}
 The jump and mean values of ${u}$ on the inner edges $\Gamma_I$ are defined as
 \begin{align}
-	\llbracket {u} \rrbracket & = {u}^+-{u}^-                           \\
+	\llbracket {u} \rrbracket & = {u}^+-{u}^-,                           \\
 	\{{u}\}                   & = \frac{1}{2} \left({u}^-+{u}^+\right).
 \end{align}
-while the jump and mean values on the boundary edges $\partial \Omega$ are:
+while the jump and mean values on the boundary edges $\partial \Omega$ are given by
 \begin{align}
-	\llbracket {u} \rrbracket & = {u}^-  \\
+	\llbracket {u} \rrbracket & = {u}^-,  \\
 	\{{u}\}                   & = {u}^-.
 \end{align}
 Furthermore, the broken polynomial space of a total degree $k$ is defined as
@@ -184,7 +184,7 @@ As mentioned before, the numerical fluxes $\gls{numflux}$ have to fulfil certain
 \end{equation}
 assuming homogeneous Dirichlet boundary conditions. This means that the system is stable if the energy norm $\norm{\gls{DGVar}(\vectr{x},t)}_{\gls{domain}}^2 $ is  decreasing in the absence of inflow. 
 
-For a monotonic numerical flux is possible to show that the discrete problem \cref{eq:semiDiscWeakForm} satisfies the discrete equivalent of \cref{eq:energyEstimate}. In addition to the monotonicity of the numerical flux, it is necessary that $\gls{numflux}$ is Lipschitz continuous.%, which means
+For a monotonic numerical flux is possible to show that the discrete problem  given by \cref{eq:semiDiscWeakForm} satisfies the discrete equivalent of \cref{eq:energyEstimate}. In addition to the monotonicity of the numerical flux, it is necessary that $\gls{numflux}$ is Lipschitz continuous.%, which means
 %\begin{equation}
 %	\label{eq:flux_lipschitz_first}
 %	\exists C_a \in \mathbb{R}: \abs{\gls{numflux}(a_1, b, \vec{n}) - \hat{f}(a_2, b, \vec{n})} \leq C_a \abs{a_1 - a_2} 
@@ -196,7 +196,7 @@ For a monotonic numerical flux is possible to show that the discrete problem \cr
 %	\exists C_b \in \mathbb{R}: \abs{\gls{numflux}(a, b_1, \vec{n}) - \hat{f}(a, b_2, \vec{n})} \leq C_b \abs{b_1 - b_2} 
 %	\qquad \forall b_1, b_2 \in \mathbb{R}
 %\end{equation}
- For the complete proof the interested reader is referred to the book from \textcite{dipietroMathematicalAspectsDiscontinuous2012}.
+For the complete proof the interested reader is referred to the book from \textcite{dipietroMathematicalAspectsDiscontinuous2012}.
 
 Two more requirements are needed for the numerical flux. The first is the consistency of the flux, which can be written as
 \begin{equation}
@@ -210,9 +210,9 @@ Finally the last requirement is that the numerical flux should be conservative, 
 	\gls{numflux}(a,b,\gls{normal}) = 	-\gls{numflux}(b,a,-\gls{normal}), \quad \forall a,b \in \mathbb{R}. 
 	\label{eq:conservativity}
 \end{equation}
-All numerical fluxes used in this work for the spatial discretization of \cref{eq:all-eqs} fulfil these requirements and they will be shown in the next section.
+All numerical fluxes used in this work for the spatial discretization of \cref{eq:all-eqs} fulfill these requirements and they will be shown in the next section.
 \subsection{Temporal discretization}\label{ssec:TemporalDiscretization}
-This section will give a brief introduction to the most popular time-stepping techniques and then show the time-stepping method used in this work. This section is mainly based on \textcite{levequeFiniteVolumeMethods2002,ferzigerComputationalMethodsFluid2002}.
+This section will give a brief introduction to the most used time-stepping techniques and then show the time-stepping method used in this work. This section is mainly based on \textcite{levequeFiniteVolumeMethods2002,ferzigerComputationalMethodsFluid2002}.
 %\subsubsection{}
 
 In the previous section the spatial discretization of a transport equation using a DG method was shown, resulting in the semi-discrete formulation given by \cref{eq:semiDiscWeakForm}.
@@ -326,7 +326,7 @@ Performing the same procedure as explained in the previous section for the low-M
 \end{equation} 
 is obtained. Here the spatial operator is denoted as $\gls{OpM}$. Note that the time derivative of the density $\partial \rho /\partial t$ from the continuity equation is written as an additional source term, because the density $\rho$ is not one of the variables to be solved for. Note that \cref{eq:SemiDiscreteLowMa} has exactly the form that can be solved with a BDF formula as expressed by \cref{eq:BDFDiscretization}.
 
-Special attention should be put into the discretization of the temporal derivative appearing in the continuity equation, \cref{eq:LowMach_Conti}. It has been observed that the treating this term as a source term is problematic  for cases where high density ratios are present \parencite{cookDirectNumericalSimulation1996,nicoudConservativeHighOrderFiniteDifference2000}.In this context density ratios refer to the ratio between maximum and minimum density appearing in the system. \textcite{cookDirectNumericalSimulation1996} reported for a pressure projection method, and using a third-order Adams-Bashforth scheme, that the discretization of the $\partial \rho /\partial t$ is a source of instabilities. They used a second-order approximation
+Special attention should be put into the discretization of the temporal derivative appearing in the continuity equation, \cref{eq:LowMach_Conti}. It has been observed that the treating this term as a source term is problematic  for cases where high density ratios are present \parencite{cookDirectNumericalSimulation1996,nicoudConservativeHighOrderFiniteDifference2000}. In this context density ratios refer to the ratio between maximum and minimum density appearing in the system. \textcite{cookDirectNumericalSimulation1996} reported for a pressure projection method, and using a third-order Adams-Bashforth scheme, that the discretization of the $\partial \rho /\partial t$ is a source of instabilities. They used a second-order approximation
 \begin{equation}
 	\left(\frac{\partial \rho}{\partial t} \right)^n= \frac{1}{2\Delta t}\left(3\rho^n-2\rho^{n-1}+\rho^{n-2}\right) \label{eq:DiscretizationDrhoDT}
 \end{equation}
@@ -335,7 +335,7 @@ The solution of problems of the form of \cref{eq:BDFDiscretization} will be trea
 \section{Discontinuous Galerkin discretization of the low-Mach equations}
 The discretization methodology shown in last section is used for finding a discrete formulation of the governing equations for low-Mach reactive flows. In the next sections the discretization for the fully coupled problem with finite reaction rate, and for the flame sheet problem are shown. The chosen numerical fluxes are also shown, and some of their particularities are discussed. 
 
-In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition, (see \textcite{babuskaFiniteElementMethod1973})  a mixed order formulation is used in all calculations, where polynomials of order $k$ for velocity, temperature, mass fractions and mixture fractions, and of degree $k' = k-1$ for pressure are used. This is a required compatibility condition for obtaining a well posed problem. 
+In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition, (see \textcite{babuskaFiniteElementMethod1973})  a mixed order formulation is used in all calculations, where polynomials of order $k$ for velocity, temperature, mass fractions and mixture fractions, and of degree $k' = k-1$ for pressure are used. This is a required compatibility condition for obtaining a well posed problem, and can be understood as a solution analog in the context of FEM-like methods to the well known problem of the 'checkerboard' pressure distributions encountered in other methods such as FVM. \parencite{riceEqualorderVelocitypressureFormulation1986}
 \subsection{Discontinuous Galerkin discretization of the finite reaction rate problem}
 Here the DG discretization of the finite reaction system defined by \crefrange{eq:LowMach_Conti}{eq:LowMachMassBalance} is presented. 
 First, the vector $\vec{Y}' = \left(Y_1,\dots,Y_{N-1}\right)$ is defined as the vector containing the first $(\gls{TotalNumberSpecies}-1)$ mass fractions and $\vec{s} = \left(s_1, \dots, s_{N-1} \right)$ as the vector containing the test functions for the first $(\gls{TotalNumberSpecies}-1)$  mass fraction equations. 
@@ -364,7 +364,7 @@ The discretized equations of the transient problem can be written as: find the n
 		& \quad\quad\quad\quad + \mathcal{M}^S_\alpha\left(s_{\alpha h},\rateReac(T^{n+1}_h,\vec{Y}^{n+1}_h )\right) + \mathcal{T}(\partial_t (\rho Y_{\alpha,h})|_{t^{n+1}},s_h ).& \label{DiscretizedMassFractions}
 	\end{flalign}\label{eqs:variatProblemFull}
 \end{subequations}
-Here the index $\alpha$ of the mass fraction equations takes values $\alpha = 1, \dots,~(\gls{TotalNumberSpecies} - 1)$.
+where the index $\alpha$ of the mass fraction equations takes values $\alpha = 1, \dots,~(\gls{TotalNumberSpecies} - 1)$.
 Here $\mathcal{C}$ is the discretized divergence form of the continuity equation. Furthermore $\mathcal{U}^C$ is the discretized convective form of the momentum equation and  $\mathcal{S}^C$ is the discretized convective form of the temperature and mass fraction equations. $\mathcal{U}^P$ is the discretized gradient form. Additionally, $\mathcal{U}^D$, $\mathcal{S}^{D,E}$ and $\mathcal{S}^{D,M}$ are the discretized diffusive form of the momentum, temperature and mass fractions equations, respectively. Furthermore $\mathcal{U}^S$, $\mathcal{S}^S$ and $\mathcal{M}^S$ are the discretized source terms of the momentum, temperature and mass fraction equations.  Finally $\mathcal{T}$ and $\mathcal{E}$ are the contributions of the temporal derivatives, and $\gls{BCcont}$, $\gls{BCmom}$, $\gls{BCenergy}$ and $\gls{BCMass}$ contain the information of the Dirichlet boundary conditions for the continuity, momentum, energy and mass fraction equations, respectively.
 
 Note that the convective and diffusive terms of the temperature scalars $T$, mass fraction $Y_\alpha$ and mixture fraction $z$ have the same form, so they share the same expression in their discretized form. Each one of the forms introduced here are defined later in \cref{ssec:nonLinearforms}.
@@ -419,7 +419,7 @@ The Lax-Friedrichs parameter $\gamma_1$ is calculated as \textcite{kleinHighorde
 	\gamma_1  = \max \left\{2 \overline{\rho^+} |\overline{\vec{u}^+} \cdot \vec{n}^+|,2 \overline{\rho^-} |\overline{\vec{u}^-} \cdot \vec{n}^-|\right\},
 	\label{eq:vardens_lambda}
 \end{equation}
-where $\overline{\rho_{h}^\pm}$ and $\overline{\vec{u}^\pm}$ are the mean values of $\rho^\pm$ and $\vec{u}^\pm$ in $K^\pm$, respectively.\\
+where $\overline{\rho_{h}^\pm}$ and $\overline{\vec{u}^\pm}$ are the mean values of $\rho^\pm$ and $\vec{u}^\pm$ in $K^\pm$, respectively. It should be noted however, that tests using the mean values for the calculation of the penalty parameter\\
 The pressure term is discretized by using a central difference flux
 \begin{equation}
 	\mathcal{U}^P(p,\vec{v})=  \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}{ \mean{p}(\jump{\vec{v}}\cdot \vec{n}_\Gamma  )\dS}

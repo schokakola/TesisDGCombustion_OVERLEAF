@@ -1,12 +1,8 @@
 \chapter{Governing equations}	\label{ch:gov_eqs}
 %\glsresetall
-The objective of this thesis is to present a methodology that allows the simulation of reactive fluids - with emphasis on combustion systems - making use of the low-Mach equations.  In this chapter, it is intended to show the governing equations used in this work to give some remarks regarding their derivation, as well the assumptions made within the present framework.
+The aim of this thesis is to introduce a methodology for simulating reactive fluids, particularly combustion systems, using high order numerical methods. The purpose of this chapter is to present the governing equations employed in this work, including a discussion of their derivation and the assumptions made within the current framework.
 
-First, in \cref{ssect:lowMachModel}, the governing equations that allow the description of reactive fluids are presented, in addition to other thermodynamic relationships, expressions for the transport parameters and the one-step chemical model. Subsequently, in \cref{ssec:NonDimLowMachEquations} the nondimensionalization of the equations is presented, as well as the low-Mach limit of the governing equations.
-
-Finally, in \cref{sec:FlameSheet} the governing equations for an irreversible chemical model with an infinite reaction rate are presented. These equations are used as part of the algorithm to solve the finite reaction rate case.
-
-
+In section \ref{ssect:lowMachModel}, the governing equations that enable the characterization of reactive fluids, in addition to other thermodynamic relationships, expressions for the transport parameters, and the one-step chemical model, are introduced. This is followed by the presentation of the process of nondimensionalizing the equations and the low-Mach limit of the governing equations in section \ref{ssec:NonDimLowMachEquations}.  The algorithm used to solve these equations employs a simplified form in which the reaction rate is assumed to be infinitely fast. The governing equations for such a system are presented in section \ref{sec:FlameSheet}.
 
 \section{The low-Mach number equations for reactive flows} \label{sec:GovEqLowMach}
 Combustion processes can be modeled by a system of non-linear partial differential equations, namely the balance equations for the total mass, momentum, energy, and mass of individual species (usually expressed in terms of mass fractions). This system needs to be solved together with an equation of state and expressions for the transport properties as well as for the chemical reaction rates.

@@ -1,9 +1,8 @@
 \chapter{The Discontinuous Galerkin method}	\label{ch:NumericalMethods}
-This chapter aims to give an overview of the DG method, as well as to present the spatial and temporal discretization of the equations presented earlier. Parts of this chapter are based on the work presented in the works from  \textcite{kummerExtendedDiscontinuousGalerkin2017,kikkerFullyCoupledHighorder, smudamartinDirectNumericalSimulation2021}. The reader interested in a more in-depth description of the DG method is referred to the works of  \textcite{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012}
-
+This chapter aims to give an overview of the DG method, as well as to present the spatial and temporal discretization of the equations presented earlier.  Parts of this chapter are based on the works presented by \textcite{kummerExtendedDiscontinuousGalerkin2017,kikkerFullyCoupledHighorder, smudamartinDirectNumericalSimulation2021}.
 
 \section{The Discontinuous Galerkin method}
-In this section the spatial and temporal discretization of a scalar transport equation using the DG-method is shown. We start by giving some basic definitions, and later the general procedure for obtaining a DG discretization is shown. First in \cref{sec:DiscWithDG} the spatial discretization is demonstrated. Later in \cref{ssec:TemporalDiscretization} the temporal discretization is treated.
+In this section the spatial and temporal discretization of a scalar transport equation using the DG-method is shown. We start by giving some basic definitions, and later the general procedure for obtaining a DG discretization is shown. First in \cref{sec:DiscWithDG} the spatial discretization is demonstrated. Later in \cref{ssec:TemporalDiscretization} the temporal discretization is treated. The works of \textcite{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012} are referred to for a more in-depth description of the DG method.
 \subsection{Definitions for the discretization} \label{ssec:SpatDiscretization}
 First some standard definitions and notation are introduced in the context of DG methods. 
 
@@ -77,7 +76,7 @@ The DG-method allows finding an approximate solution $u_h = u_h(\vec{x},t)$ for 
 \begin{equation}
 u_j(\vec{x},t) = \sum_{l=1}^{N_k}\tilde{u}_{j,l}(t)\phi_{j,l}(\vec{x}) = \tilde{\vec{u}}_j(t) \cdot \vectr{\phi}_j (\vec{x})\label{eq:DGAnsatz}
 \end{equation}
-The coefficients $\tilde{\vectr{u}}_j = (\tilde{u}_{j,l})_{l=1,\dots,N_k}$ are the \gls{DOFs} of the local solution in the cell $K_j$, which are the unknowns of the problem. Note the time dependence of the coefficients $\tilde{\vec{u}}_j$, as well as the spatial dependence of the basis functions $\vectr{\phi}_j (\vec{x})$ on the vector $\vec{x}$. 
+The coefficients $\tilde{\vectr{u}}_j = (\tilde{u}_{j,l})_{l=1,\dots,N_k}$ are the \gls{DOF} of the local solution in the cell $K_j$, which are the unknowns of the problem. Note the time dependence of the coefficients $\tilde{\vec{u}}_j$, as well as the spatial dependence of the basis functions $\vectr{\phi}_j (\vec{x})$ on the vector $\vec{x}$. 
 
 This approximate solution sought  is the best approximation of $\gls{DGVar} \in L^2(\gls{domain})$, which gives a minimum global error in the approximation space $\gls{DGVar} \in \mathbb{P}_k(\gls{domain} )$. 
 \begin{align}
@@ -116,7 +115,7 @@ Note that inserting the ansatz \cref{eq:DGAnsatz} into \cref{eq:DGfluxFormulatio
 \begin{equation}
 	\gls{numflux}(\inn{{\gls{DGVar}}_j}, \out{{\gls{DGVar}}_j}, \gls{normalGam}) \approx \gls{flux}({\gls{DGVar}}_j) \cdot {\gls{normal}}_j.
 \end{equation}
-This expression defines an unique value for the flux of a given cell boundary, enforcing flux continuity. The numerical flux $\gls{numflux}$ couples the \gls{DOFs} of neighbouring cells, and should satisfy certain mathematical and physical properties which will be discussed later. Many different numerical fluxes have been developed, and it is an active area of investigation. They differ mainly in computational cost, stability and dissipation of the scheme.
+This expression defines an unique value for the flux of a given cell boundary, enforcing flux continuity. The numerical flux $\gls{numflux}$ couples the \glspl{DOF} of neighbouring cells, and should satisfy certain mathematical and physical properties which will be discussed later. Many different numerical fluxes have been developed, and it is an active area of investigation. They differ mainly in computational cost, stability and dissipation of the scheme.
 
 By introducing the numerical flux in \cref{eq:DGfluxFormulation} the problem now reads
 \begin{equation}
@@ -393,7 +392,7 @@ Note that density and transport parameters depend on the mixture fraction $z$, w
 In the following the nonlinear forms used in this work are shown. Regarding the choice of fluxes, the "best practices" known in literature for the incompressible Navier-Stokes equation are followed. These fluxes proved to be well suited for all the problems discussed in this thesis, providing stability to the algorithm, while maintaining the accuracy of the solver.
 
 It is well known that central difference fluxes for the pressure gradient and velocity divergence, combined with a coercive form for the viscous terms, e.g. symmetric interior penalty, gives a stable discretization for the Stokes equation \parencite{pietroMathematicalAspectsDiscontinuous2012,giraultDiscontinuousGalerkinMethod2004}. Furthermore, it is known that for all kinds of convective terms, a numerical flux which transports information in characteristic direction, e.g. Upwind, Lax-Friedrichs or Local-Lax-Friedrichs, must be used. We opted for the last one in the present implementation, as it offers a good compromise between accuracy and stability.
-\paragraph{Continuity equation}
+\subsubsection{Continuity equation}
 A central difference flux for the discretization of the continuity equation is used:
 \begin{equation}
 	\mathcal{C}(\vec{u},q, \rho)  =  \oint_{\GammaI \cup\GammaN\cup \GammaND\cup \GammaP}{\mean{\rho\vec{u} }\cdot \vec{n}_\Gamma\jump{q} \dS} - \int_{\Omega}{\rho \vec{u}\cdot \nabla_h q} \dV.  \label{eq:Conti}
@@ -407,7 +406,7 @@ The density at the boundary  $\rho_{\text{D}}$ is evaluated with \cref{eq:ideal_
 \mathcal{T}(u,v) =   \int_{\Omega}{uv} \dV.
 \end{equation}
 Note that in case of the temporal term of the continuity equation $\partial_t \rho$, it is discretized as mentioned in \cref{eq:DiscretizationDrhoDT}
-\paragraph{Momentum equations}
+\subsubsection{Momentum equations}
 The convective term of the momentum equations is discretized using a Lax-Friedrichs flux
 \begin{equation}
 	\mathcal{U}^C(\vec{w},\vec{u},\vec{v}, \rho)=  \oint_{\Gamma}{\left( \mean{\rho\vec{u}\otimes\vec{w} }\vec{n}_\Gamma + \frac{\gamma_1}{2}\jump{\vec{u}}\right)\cdot\jump{\vec{v}} \dS}
@@ -464,7 +463,7 @@ Finally the temporal derivative of the momentum equation in its discretized form
 \begin{equation}
 \mathcal{E} (\vec{u},\vec{v}) =   \int_{\Omega}{\vec{u}\cdot\vec{v}} \dV.
 \end{equation}
-\paragraph{Scalar equations}
+\subsubsection{Scalar equations}
 Since the convective and diffusive terms for the temperature, mass fractions and mixture fraction share a similar form,  here their discretized expressions are summarized in terms of an arbitrary scalar $X$ (corresponding to $T$ in the energy equation, $Y_\alpha$ in the equation for species $\alpha$ and $z$ for the mixture fraction equation) and transport parameter $\xi$ (i.e. $k/c_p$ in the energy equation, and $(\rho D)$ for the mass fraction and mixture fraction equations). The convective term of the scalars is discretized using a Lax-Friedrichs flux
 \begin{equation}
 	\mathcal{S}^C(\vec{u},X,r, \rho) =  \oint_{\Gamma}{\left( \mean{\rho\vec{u}X }\cdot \vec{n} + \frac{\gamma_2}{2}\jump{X}\right)\jump{r} \dS}

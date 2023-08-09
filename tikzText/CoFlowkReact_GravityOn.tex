@@ -1,0 +1,29 @@
+\subcaptionbox{Reaction rate \label{fig:CoFlowTkReactFieldGravityOn}}{
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			colormap name=turbo,
+			colorbar horizontal,			 
+			colorbar style={
+				yticklabel style={
+					/pgf/number format/.cd,
+					fixed,
+					fixed zerofill
+				},
+				point meta max= 0.0000000004677 ,%6.73,
+				point meta min= 0,			
+				xtick={0, 0.0000000004677 },
+				at={(0,1.2)},
+				anchor = north west,
+				xticklabel pos=upper,
+			},
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=-5,	xmax=5,	ymin=2,	ymax=12,
+			] {../plots/CoFlow_GravityOn_kReact.png};
+		\end{axis}		
+	\end{tikzpicture}
+}

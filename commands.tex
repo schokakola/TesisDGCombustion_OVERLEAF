@@ -82,7 +82,7 @@
 \newcommand{\domain}{\Omega}
 \newcommand{\dA}{\diff{A}}
 \newcommand{\Dt}[1]{\frac{\text{D}{#1}}{\text{D}t}}
-\newcommand{\LTwoNorm}[1]{\left\lVert#1\right\rVert_{L^2}}
+\newcommand{\LTwoNorm}[1]{\left\lVert#1\right\rVert_{L^2(\Omega)}}
 \newcommand{\Reynolds}{\text{Re}}
 \newcommand{\Prandtl}{\text{Pr}}
 \newcommand{\Froude}{\text{Fr}}
@@ -204,3 +204,7 @@
 \newcommand{\scp}[3][]{\left( #2 , #3 \right)_{#1}}
 \newcommand{\matrixDG}[1]{\underline{\underline{#1}}}
 \newcommand{\basisDg}{\phi}
+
+\newcommand{\poly}{\mathbb{P}}
+\newcommand{\NumericalGrid}[1][h]{\mathfrak{K}_{#1}} 
+\newcommand{\del}[2]{\frac{\partial #1}{\partial #2}}

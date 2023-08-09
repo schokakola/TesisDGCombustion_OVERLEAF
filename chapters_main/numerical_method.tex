@@ -2,7 +2,7 @@
 This chapter aims to give an overview of the DG method, as well as to present the spatial and temporal discretization of the equations presented earlier.  Parts of this chapter are based on the works presented by \textcite{kummerExtendedDiscontinuousGalerkin2017,kikkerFullyCoupledHighorder, smudamartinDirectNumericalSimulation2021}.
 
 \section{The Discontinuous Galerkin method}
-In this section the spatial and temporal discretization of a scalar transport equation using the DG-method is shown. We start by giving some basic definitions, and later the general procedure for obtaining a DG discretization is shown. First in \cref{sec:DiscWithDG} the spatial discretization is demonstrated. Later in \cref{ssec:TemporalDiscretization} the temporal discretization is treated. The works of \textcite{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012} are referred to for a more in-depth description of the DG method.
+The spatial and temporal discretization of a scalar transport equation using the DG method is demonstrated in this section. Initially, basic definitions are provided, followed by the presentation of the general procedure for obtaining a DG discretization. The works of \textcite{cockburnDevelopmentDiscontinuousGalerkin2000,hesthavenNodalDiscontinuousGalerkin2008,dipietroMathematicalAspectsDiscontinuous2012} are referred to for a more in-depth description of the DG method.
 \subsection{Definitions for the discretization} \label{ssec:SpatDiscretization}
 First some standard definitions and notation are introduced in the context of DG methods. 
 
@@ -55,7 +55,7 @@ The broken divergence $\nabla_h \cdot u$ is defined analogously. Furthermore, th
 	\label{Eq:Vspace}
 \end{equation}
 where $\myvector{k} = \left(k_1,...,k_{D_v}\right)$ is the degree vector. 
-Additionally, for a cell $K$ we define for $u_K$, $v_K\in \mathbb{V}_\myvector{k}$ a local inner product and a local $L^2$-norm as
+Additionally, for a cell $K$  a local inner product and a local $L^2$-norm is defined for $u_K$, $v_K\in \mathbb{V}_\myvector{k}$ as
 \begin{equation}
 (u_K, v_K)_K \coloneqq \int_K u_K v_K\text{d}x, \qquad \norm{u_K}^2_K \coloneqq(u_K,u_K)_K
 \end{equation}
@@ -72,38 +72,46 @@ In this subsection the DG discretization of a simple problem will be shown in or
 &u(\vec{x},0) = u_0(\vec{x}), \qquad\qquad\qquad &\vec{x}\in\Omega.
 \end{align}\label{eqs:DGTransportExample}
 \end{subequations}
-The DG-method allows finding an approximate solution $u_h = u_h(\vec{x},t)$ for the problem defined by \cref{eqs:DGTransportExample} by forming a linear combination of polynomial functions in each cell.  The discretization procedure starts by the approximation of the domain $\gls{domain}$ with a numerical grid $\gls{grid}$. In each cell $K_j$ of the numerical grid a set of polynomial basis $\vectr{\phi}_j = (\tilde{\phi}_{j,l})_{l=1,\dots,N_k} \in \mathbb{P}_k(\mathcal{K}_h)$ with a local cell support $\text{supp}(\phi_j) = \overline{\gls{cell}}_j$ is defined. This allows to represent the local solution for each cell $K_j$ as
+The DG method allows finding an approximate solution $u_h = u_h(\vec{x},t)$ for the problem defined by \cref{eqs:DGTransportExample} by forming a linear combination of polynomial functions in each cell.  The discretization procedure starts by the approximation of the domain $\gls{domain}$ with a numerical grid $\gls{grid}$. In each cell $K_j$ of the numerical grid a set of polynomial basis $\vectr{\phi}_j = ({\phi}_{j,l})_{l=1,\dots,N_k} \in \mathbb{P}_k(\mathcal{K}_h)$ with a local cell support $\text{supp}(\phi_j) = \overline{\gls{cell}}_j$ is defined. This allows to represent the local solution for each cell $K_j$ as
 \begin{equation}
 u_j(\vec{x},t) = \sum_{l=1}^{N_k}\tilde{u}_{j,l}(t)\phi_{j,l}(\vec{x}) = \tilde{\vec{u}}_j(t) \cdot \vectr{\phi}_j (\vec{x})\label{eq:DGAnsatz}
 \end{equation}
-The coefficients $\tilde{\vectr{u}}_j = (\tilde{u}_{j,l})_{l=1,\dots,N_k}$ are the \gls{DOF} of the local solution in the cell $K_j$, which are the unknowns of the problem. Note the time dependence of the coefficients $\tilde{\vec{u}}_j$, as well as the spatial dependence of the basis functions $\vectr{\phi}_j (\vec{x})$ on the vector $\vec{x}$. 
+The coefficients $\tilde{\vectr{u}}_j = (\tilde{u}_{j,l})_{l=1,\dots,N_k}$ are the \gls{DOF} of the local solution in the cell $K_j$, which are the unknowns of the problem. Note the time dependence of the coefficients $\tilde{\vec{u}}_j$, as well as the spatial dependence of the basis functions $\vectr{\phi}_j$ on the vector $\vec{x}$. 
 
 This approximate solution sought  is the best approximation of $\gls{DGVar} \in L^2(\gls{domain})$, which gives a minimum global error in the approximation space $\gls{DGVar} \in \mathbb{P}_k(\gls{domain} )$. 
 \begin{align}
 	\int_{\domain} (\underbrace{ \nuM{\gls{DGVar}}(x)-\gls{DGVar}(x) }_{=: \gls{dgerror}(x)})^2 \dV
 	= ||\nuM{\gls{DGVar}} - \gls{DGVar}||_2^2 \rightarrow \text{min}
 \end{align}
-Here $\gls{dgerror}$ is the error of the discretization. Minimization is equivalent to requiring
+Here $\gls{dgerror}$ is the error of the discretization. Minimization is equivalent to the requirement 
 \begin{equation}
 	\label{eq:L2projection}
 	\scp{r(x)}{\basis{}_m} = \scp{\gls{DGVar}_h-\gls{DGVar}}{\basis{}_m} \stackrel{!}{=} 0 \qquad \forall\basis{}_m.
 \end{equation}
-This means that the error is orthogonal to every polynomial function $ \basis{}_m$ in the approximation space. The Bramble-Hilbert lemma \parencite{brambleEstimationLinearFunctionals1970} says, that for a $p$-times differentiable variable $\gls{DGVar}$, the error $r$ is of the order $\mathcal{O}(h^{p+1})$, where $h$ is a characteristic cell length. This is one of the major motivations for the use of high order methods. The differentiability assumption is essential. For non smooth $\gls{DGVar}$ the well known Gibbs phenomenon occurs.
-
+This means that the error is orthogonal to every polynomial function $ \basis{}_m$ in the approximation space. This requirement, together with the ansatz \cref{eq:DGAnsatz} define the projection operator $\pi_p$ as
+\begin{equation}
+	L^2(\domain) \ni \gls{DGVar} \mapsto \pi_p(\gls{DGVar}) = \gls{DGVar}_h \in  \poly_p( \NumericalGrid )
+	\label{eq:ProjOperatorMapping}
+\end{equation}
+One of the major motivations for the use of high order methods stems from the so called Bramble-Hilbert lemma \parencite{brambleEstimationLinearFunctionals1970}, which states that for a $p$-times differentiable variable $\gls{DGVar}$, %the error $r$ is of the order $\mathcal{O}(h^{p+1})$, where $h$ is a characteristic cell length.
+\begin{equation}
+	\LTwoNorm{\gls{DGVar}(x) - \pi_p(\gls{DGVar}(x))} \leq C \cdot h^{p+1}
+\end{equation}
+where $h$ is a characteristic cell length and $C$ is a constant that depends on $\gls{DGVar}$ but not on $h$. This means, that for a sufficiently smooth $\gls{DGVar}$, the approximation error is of the order $\mathcal{O}(h^{p+1})$. Note that he differentiability assumption is essential: for non smooth $\gls{DGVar}$ the well known Gibbs phenomenon occurs.
 %There are two general approaches used for the representation of the solution using basis functions: modal and nodal. Each one of them present some advantages and disadvantages \parencite{hesthavenNodalDiscontinuousGalerkin2008}. 
-In this work, a modal polynomial representation is used. The basis functions are chosen such that they are orthogonal to each other 
+In this work a modal polynomial representation is used, using in particular Legendre polynomials. The basis functions are chosen such that they are orthogonal to each other 
 \begin{equation}
 	\int_{K_j} \phi_{j,m}\phi_{j,n} \text{d}V= \delta_{mn}
 \end{equation}
-where $\delta_{mn}$ is the Kronecker delta. In the present work Legendre polynomials are used, since they present the orthogonality property. This property implies that the mass matrix (to be defined later) equals the identity matrix. This is advantageous particularly for incompressible flows, where the calculation of the mass matrix is dramatically simplified using this property.
-
+where $\delta_{mn}$ is the Kronecker delta. This property implies that the mass matrix (to be defined later) equals the identity matrix, at least for constant density systems. This is advantageous particularly for incompressible flows, where the calculation of the mass matrix is dramatically simplified using this property. 
+\subsubsection{The local formulation}
 By inserting the approximate solution defined by \cref{eq:DGAnsatz} in the conservation \cref{eq:consEqDG}, a local residual $R_j$ can be defined
 \begin{equation}\label{eq:DGResidualeq}
 R_j(\vec{x},t) = \pfrac{u_j}{t} + \nabla \cdot \vec{f}(u_j), \quad \vec{x} \in K_j
 \end{equation}
-Minimization of this local residual is done by multiplying \cref{eq:DGResidualeq} by the so called test functions. In the Galerkin approach, these test functions are required to be from the same space as the trial functions, i.e. $\gls{testF}_{j,l} = \gls{basis}_{j,l}$. Thus, by multiplying \cref{eq:DGResidualeq} by a trial function and integrating over the cell $K_j$, one obtains
+Minimization of this local residual is done by multiplying \cref{eq:DGResidualeq} by the so called test functions $\gls{testF}_{j,l}$. In the Galerkin approach, these test functions are required to be from the same space as the trial functions, i.e. $\gls{testF}_{j,l} = \gls{basis}_{j,l}$. Thus, by multiplying \cref{eq:DGResidualeq} by a trial function and integrating over the cell $K_j$, one obtains
 \begin{equation}
-	\int_{\gls{cell}_j} \gls{DGres}_j \gls{testF}_{j,l} \d{V} = \int_{\gls{cell}_j} \underbrace{ \pDeriv{{\gls{DGVar}}_j}{t} \gls{basis}_{j,l}}_{\text{Temporal}} + \underbrace{\div{\gls{flux}({\gls{DGVar}}_j)} \gls{basis}_{j,l} \d{V}}_{\text{Spatial}} \stackrel{!}{=} 0, \quad \forall \vectr{\gls{basis}}_{j,l}.
+	\int_{\gls{cell}_j} \gls{DGres}_j \gls{basis}_{j,l} \d{V} = \int_{\gls{cell}_j} \underbrace{ \pDeriv{{\gls{DGVar}}_j}{t} \gls{basis}_{j,l}}_{\text{Temporal}} + \underbrace{\div{\gls{flux}({\gls{DGVar}}_j)} \gls{basis}_{j,l} \d{V}}_{\text{Spatial}} \stackrel{!}{=} 0, \quad \forall \vectr{\gls{basis}}_{j,l}.
 	\label{eq:DGminimization}
 \end{equation}
 Where the minimization comes from requiring the equality to zero. Note that until this point only a cell-local discretization has been addressed. The next step for obtaining a global DG formulation is to use integration by parts for rewriting the spatial term in \cref{eq:DGminimization}. This is done to make the boundary edge integrals explicitly appear in the formulation, which are used to couple cell $K_j$ with neighbouring cells. The partial integration process results in
@@ -111,13 +119,13 @@ Where the minimization comes from requiring the equality to zero. Note that unti
 	\int_{\gls{cell}_j}  \pDeriv{{\gls{DGVar}}_j}{t} \gls{basis}_{j,l} \d{V} + \oint_{\partial{\gls{cell}}_j} \left( \gls{flux}({\gls{DGVar}}_j)\cdot{\gls{normal}}_j \right) \gls{basis}_{j,l} \d{S} - \int_{\gls{cell}_j} \gls{flux}({\gls{DGVar}}_j) \cdot \gradH{\gls{basis}}_{j,l} \d{V}  = 0, \quad \forall \gls{basis}_{j,l},
 	\label{eq:DGfluxFormulation}
 \end{equation} 
-Note that inserting the ansatz \cref{eq:DGAnsatz} into \cref{eq:DGfluxFormulation} is problematic, since $\partial{\gls{cell}}_j$ is shared by other cells, and in the DG method continuity of a variable is not enforced across cell boundaries. This means that in general the inner value $u^{-}_j$ and the outer value $u^{+}_j$ are not equal. This problem is solved by introducing the concept of a numerical flux function, denoted here with $\gls{numflux}$, which follows 
+Note that inserting the ansatz \cref{eq:DGAnsatz} into \cref{eq:DGfluxFormulation} is problematic, since $\partial{\gls{cell}}_j$ is shared by other cells, and in the DG method, continuity of a variable is not enforced across cell boundaries. This means that in general the inner value $u^{-}_j$ and the outer value $u^{+}_j$ are not equal. This problem is solved by introducing the concept of a numerical flux function, denoted here with $\gls{numflux}$, which follows 
 \begin{equation}
 	\gls{numflux}(\inn{{\gls{DGVar}}_j}, \out{{\gls{DGVar}}_j}, \gls{normalGam}) \approx \gls{flux}({\gls{DGVar}}_j) \cdot {\gls{normal}}_j.
 \end{equation}
 This expression defines an unique value for the flux of a given cell boundary, enforcing flux continuity. The numerical flux $\gls{numflux}$ couples the \glspl{DOF} of neighbouring cells, and should satisfy certain mathematical and physical properties which will be discussed later. Many different numerical fluxes have been developed, and it is an active area of investigation. They differ mainly in computational cost, stability and dissipation of the scheme.
 
-By introducing the numerical flux in \cref{eq:DGfluxFormulation} the problem now reads
+Finally by introducing the numerical flux in \cref{eq:DGfluxFormulation} the problem now reads
 \begin{equation}
 	\int_{\gls{cell}_j}  \pDeriv{{\gls{DGVar}}_j}{t} \gls{basis}_{j,l} \d{V} + \oint_{\partial{\gls{cell}}_j} \left( \gls{numflux}(\inn{{\gls{DGVar}}_j}, \out{{\gls{DGVar}}_j}, \gls{normalGam})    \right) \gls{basis}_{j,l} \d{S} - \int_{\gls{cell}_j} \gls{flux}({\gls{DGVar}}_j) \cdot \gradH{\gls{basis}}_{j,l} \d{V}  = 0, \quad \forall \gls{basis}_{j,l},
 	\label{eq:DGNumericalfluxFormulation}
@@ -130,7 +138,7 @@ Note that \cref{eq:DGNumericalfluxFormulation} is still a local formulation. A g
 \end{equation}
 which corresponds to the direct sum of the $J$ local solutions $u_j$. A vector $\tilde{\vec{u}} = \tilde{\gls{DGVar}}_{1,1},\allowbreak \tilde{\gls{DGVar}}_{1,2},\allowbreak\dots, \allowbreak \tilde{\gls{DGVar}}_{j,l},\allowbreak\dots,\allowbreak\tilde{\gls{DGVar}}_{J,\gls{NoDOFloc}}\allowbreak$ which comprises all the DOFs of the global approximation $\gls{DGVar}_h$ is defined, and is of length $\gls{NoDOF} = J\cdot\gls{NoDOFloc}$.%
 
-Finally, the global formulation is obtained by inserting the ansatz \cref{eq:DGAnsatz} into \cref{eq:DGNumericalfluxFormulation}, summing over all cells $K_j$ and making use of \cref{eq:globalApprox}. The problem reads: Find $\nuM{\gls{DGVar}} \in 	\mathbb{P}_k(\gls{grid})$, such that $\forall \phi \in 	\mathbb{P}_k(\gls{grid})$
+Finally, the global formulation is obtained by inserting the ansatz (\cref{eq:DGAnsatz}) into \cref{eq:DGNumericalfluxFormulation}, summing over all cells $K_j$ and making use of \cref{eq:globalApprox}. The problem reads: Find $\nuM{\gls{DGVar}} \in 	\mathbb{P}_k(\gls{grid})$, such that $\forall \phi \in 	\mathbb{P}_k(\gls{grid})$
 \begin{equation}
 	\int_{\gls{domain}}  \pDeriv{\nuM{\gls{DGVar}}}{t} \gls{basis} \d{V}  + \oint_{\gls{edge}} \gls{numflux}(\inn{\nuM{\gls{DGVar}}}, \out{\nuM{\gls{DGVar}}}, \gls{normalGam}) \jump{\gls{basis}} \d{S} - \int_{\gls{domain}} \gls{flux}(\nuM{\gls{DGVar}}) \cdot \gradH{\gls{basis}} \d{V} = 0,
 	\label{eq:semiDiscWeakForm}
@@ -171,33 +179,30 @@ which is block-diagonal, since  ${\gls{massM}}_{j}$ does not depend on neighbour
 \begin{equation}
 	({\gls{massM}}_j)_{m,n} = \int_{\gls{cell}_j} \gls{basis}_{j,m} \gls{basis}_{j,n} \d{V}	\label{eq:massMatrix}
 \end{equation} 
-The mass matrix of a cell ${\gls{massM}}_{j} := \matrixDG{M}_{(j,-) \ (j,-)} $ only depends in this case on the cell-local basis functions. 
-%\todo[inline]{How is the mass matrix defined for variable density flows?}
+The mass matrix of a cell ${\gls{massM}}_{j} := \matrixDG{M}_{(j,-) \ (j,-)} $ only depends in this case on the cell-local basis functions. Note also that for an orthonormal basis, $\gls{massM} = \mathbf{1}$, i.e. the identity matrix.
 
-It is interesting to note regarding the DG discretization, that a \gls{FVM}-type  discretization can be recovered if the basis functions in this formulation are restrited to zero-degree polynomials. Similarly, a discretization similar to a \gls{FEM} formulation would be obtained if the allowance of discontinuities in the formulation of the DG-method would have been ignored.
+It is interesting to note regarding the DG discretization, that a \gls{FVM}-type  discretization can be recovered if the basis functions in this formulation are restricted to zero-degree polynomials. Similarly, a discretization similar to a \gls{FEM} formulation would be obtained if the allowance of discontinuities in the formulation of the DG method would have been ignored.
 \subsubsection{Note on the numerical fluxes}
-As mentioned before, the numerical fluxes $\gls{numflux}$ have to fulfil certain physical and mathematical properties for obtaining a stable and convergent method. One of the requirement for proving the stability of the scheme is the monotonicity. First, the energy estimate is defined as
+As mentioned before, the numerical fluxes $\gls{numflux}$ have to fulfil certain physical and mathematical properties for obtaining a stable and convergent method. A proof for the stability of the numerical flux is given in \textcite{dipietroMathematicalAspectsDiscontinuous2012}. One of the requirement for proving the stability is the Lipschitz continuity, meaning 
 \begin{equation}
-	\norm{\gls{DGVar}(\vectr{x},t)}_{\gls{domain}}^2 \leq \norm{\gls{DGVar}(\vectr{x},0)}_{\gls{domain}}^2, \quad \forall t \geq 0,
-	\label{eq:energyEstimate}
+	\label{eq:flux_lipschitz_first}
+	\exists C_a \in \mathbb{R}: \abs{\gls{numflux}(a_1, b, \vec{n}) - \hat{f}(a_2, b, \vec{n})} \leq C_a \abs{a_1 - a_2} 
+	\qquad \forall a_1, a_2 \in \mathbb{R}
 \end{equation}
-assuming homogeneous Dirichlet boundary conditions. This means that the system is stable if the energy norm $\norm{\gls{DGVar}(\vectr{x},t)}_{\gls{domain}}^2 $ is  decreasing in the absence of inflow. 
+and
+\begin{equation}
+	\label{eq:flux_lipschitz_second}
+	\exists C_b \in \mathbb{R}: \abs{\gls{numflux}(a, b_1, \vec{n}) - \hat{f}(a, b_2, \vec{n})} \leq C_b \abs{b_1 - b_2} 
+	\qquad \forall b_1, b_2 \in \mathbb{R}
+\end{equation}
+Additionally, the proof of the stability requires is the monotonicity of the flux:
 
-For a monotonic numerical flux is possible to show that the discrete problem  given by \cref{eq:semiDiscWeakForm} satisfies the discrete equivalent of \cref{eq:energyEstimate}. In addition to the monotonicity of the numerical flux, it is necessary that $\gls{numflux}$ is Lipschitz continuous.%, which means
-%\begin{equation}
-%	\label{eq:flux_lipschitz_first}
-%	\exists C_a \in \mathbb{R}: \abs{\gls{numflux}(a_1, b, \vec{n}) - \hat{f}(a_2, b, \vec{n})} \leq C_a \abs{a_1 - a_2} 
-%	\qquad \forall a_1, a_2 \in \mathbb{R}
-%\end{equation}
-%and
-%\begin{equation}
-%	\label{eq:flux_lipschitz_second}
-%	\exists C_b \in \mathbb{R}: \abs{\gls{numflux}(a, b_1, \vec{n}) - \hat{f}(a, b_2, \vec{n})} \leq C_b \abs{b_1 - b_2} 
-%	\qquad \forall b_1, b_2 \in \mathbb{R}
-%\end{equation}
-For the complete proof the interested reader is referred to the book from \textcite{dipietroMathematicalAspectsDiscontinuous2012}.
+\begin{equation}
+	\label{eq:flux_monotonicity}
+	\del{\hat{f}(a, b, \vec{n})}{a} \geq 0 \quad\land\quad \del{\hat{f}(a, b, \vec{n})}{b} \leq 0 \qquad \forall a, b, \vec{n}
+\end{equation}
 
-Two more requirements are needed for the numerical flux. The first is the consistency of the flux, which can be written as
+Two more requirements are needed for the numerical flux. The first is its consistency, which can be written as
 \begin{equation}
 	\gls{numflux}(a,a,\gls{normal}) = \gls{flux}(a) \cdot \gls{normal}, \quad \forall a \in \mathbb{R}. 
 	\label{eq:consistency}
@@ -209,9 +214,9 @@ Finally the last requirement is that the numerical flux should be conservative, 
 	\gls{numflux}(a,b,\gls{normal}) = 	-\gls{numflux}(b,a,-\gls{normal}), \quad \forall a,b \in \mathbb{R}. 
 	\label{eq:conservativity}
 \end{equation}
-All numerical fluxes used in this work for the spatial discretization of \cref{eq:all-eqs} fulfill these requirements and they will be shown in the next section.
+All numerical fluxes used in this work for the spatial discretization of \cref{eq:all-eqs} fulfil these requirements.% and they will be shown in the next section.
 \subsection{Temporal discretization}\label{ssec:TemporalDiscretization}
-This section will give a brief introduction to the most used time-stepping techniques and then show the time-stepping method used in this work. This section is mainly based on \textcite{levequeFiniteVolumeMethods2002,ferzigerComputationalMethodsFluid2002}.
+This section gives a brief introduction to the most used time-stepping techniques and then show the time-stepping method used in this work. It is mainly based on \textcite{levequeFiniteVolumeMethods2002,ferzigerComputationalMethodsFluid2002}.
 %\subsubsection{}
 
 In the previous section the spatial discretization of a transport equation using a DG method was shown, resulting in the semi-discrete formulation given by \cref{eq:semiDiscWeakForm}.
@@ -223,7 +228,7 @@ First the time discretization for a system with a constant mass matrix will be d
 \begin{equation}
 \gls{massM}\frac{\text{d}\vec{u}}{\text{d}t} = - \vec{F}(t,\vec{u}(t))\qquad \text{for}\qquad t \in (0,T).\label{eq:timestep1}
 \end{equation}
-with a initial condition given by $\vec{u}(t=0) = \vec{u}^0$. The main idea of a time-stepper algorithm is to discretize the time coordinate, and advance gradually the solution $\vec{u}(t^n)$ in time from values at previous time levels $\vec{u}(t^{n-1})$, $\vec{u}(t^{n-2})$, $\dots$,  until a certain final time $t = T$ is reached.
+with a initial condition given by $\vec{u}(t=0) = \vec{u}^0$. The main idea of a time-stepping algorithm is to discretize the time coordinate, and advance gradually the solution $\vec{u}(t^n)$ in time using the information  at previous time levels $\vec{u}(t^{n-1})$, $\vec{u}(t^{n-2})$, $\dots$,  until a certain final time $t = T$ is reached.
 By integrating \cref{eq:timestep1} in time, one obtains
 \begin{equation}
 \gls{massM}(\vec{u}(t^{n+1})-\vec{u}(t^{n})) = - \int_{t^n}^{t^{n+1}}\vec{F}(t,\vec{u}(t)) \text{d}t \label{eq:timestep2}
@@ -238,13 +243,13 @@ which is first order accurate in time. Other explicit methods exists with better
 
 Due to the local nature of the approach, explicit methods present themselves specially attractive for DG methods, particularly for hyperbolic equations. Explicit methods are relatively easy to implement, and need considerably less storage compared to implicit methods. However, explicit methods experience the disadvantage that the stability of the algorithm is heavily limited by a maximal timestep size $\Delta t$. The timestep typically scales with the grid size $h$ and polynomial degree $k$ by $\Delta \sim h/k$ for hyperbolic and $\Delta \sim (h/k)^2$ for parabolic problems \parencite{gassnerContributionConstructionDiffusion2007}. For many problems of interest, particularly stiff systems, this limitation is highly restrictive, since very little timesteps need to be chosen in order to obtain a stable method. 
 
-Implicit methods  on the other hand are specially well suited for stiff problems, as they don't suffer from the restrictive timestep limitation of explicit methods, even not being restricted at all under certain conditions. This allows using considerably bigger timesteps. Implicit methods present however the inconvenience that they require the solution of a system of equations, which for large problems is not a trivial task and specialized methods are needed. The use of implicit methods is justified, particularly for stiff problems, as the extra computational overhead originating from solving of the system of equations is usually smaller than the time it would take to solve the same problem using explicit schemes with very small timesteps.
+Implicit methods  on the other hand are specially well suited for stiff problems, as they don't suffer from the restrictive timestep limitation of explicit methods, even not being restricted at all under certain conditions. This allows using considerably bigger timesteps, potentially reducing drastically calculation times. Implicit methods present however the inconvenience that they require the solution of a system of equations, which for large problems is not a trivial task and specialized methods are needed. The use of implicit methods is justified, particularly for stiff problems, as the extra computational overhead originating from solving of the system of equations is usually smaller than the time it would take to solve the same problem using explicit schemes with very small timesteps.
 
 The simplest implicit method is the Implicit Euler Method,
 \begin{equation}
 \gls{massM}\vec{u}(t^{n+1}) + \Delta t\vec{F}(t^{n+1},\vec{u}(t^{n+1}))= \gls{massM}\vec{u}(t^{n}).
 \end{equation}
-Note that this is a non-linear system of algebraic equations that has to be solved for $\vec{u}(t^{n+1})$ iteratively. The Implicit Euler Methods is the first method of a family of \gls{BDF} methods, and presents the property of being unconditionally stable, meaning that the algorithm allows an arbitrarily large timestep. This property allows the calculation of steady state solutions just by choosing a very big $\Delta t$ value. However, not all BDF schemes are unconditionally stable, as it will be shown next.
+Note that this is a nonlinear system of algebraic equations that has to be solved for $\vec{u}(t^{n+1})$. The Implicit Euler Methods is the first method of a family of \gls{BDF} methods, and under some conditions presents the property of being unconditionally stable, meaning that the algorithm allows an arbitrarily large timestep. This property allows the calculation of steady state solutions just by choosing a very large $\Delta t$ value. However, not all BDF schemes are unconditionally stable, as it will be shown next.
 \subsubsection{Backward Differentiation Formula}
 \begin{table}[h]
 	\centering
@@ -260,7 +265,7 @@ Note that this is a non-linear system of algebraic equations that has to be solv
 	\label{tab:BDFCoeff}
 \end{table}
 
-In the present work BDF methods are used. These are a family of implicit methods used for numerical integration. Their main characteristic is that they are linear multistep methods, which means that they use information available from previous timesteps, which increases the accuracy of the scheme. In case of a non-constant mass matrix $\gls{massM}$, they have a general formula given by
+In the present work BDF methods are used.  The main characteristic of this family of methods is that they are linear multistep methods, which means that they use information available from previous timesteps, increasing the accuracy of the scheme. In case of a non-constant mass matrix $\gls{massM}$, they have a general formula given by
 \begin{equation}
 	\frac{\beta_0}{\gamma\Delta t}\gls{massM}\bigl(\vec{u}(t^n)\bigr)\vec{u}(t^n)- \vec{F}\bigl(\vec{u}(t^n)\bigr) = - \sum_{i=1}^s \frac{\beta_i}{\gamma \Delta t}\gls{massM}\bigl(\vec{u}(t^{n-i})\bigr)\vec{u}(t^{n-i}).\label{eq:BDFDiscretization}
 \end{equation}
@@ -271,7 +276,7 @@ where $s$ is the order of the BDF-scheme.  The coefficients of each schema are s
 	\centering
 	\pgfplotsset{width=0.5\textwidth}
 	\inputtikz{BDF_Stability}
-	\caption[{A-stability regions of the BDF schemes for different order $s$. The areas shown in grey are unstable regions.} ]{A-stability regions of the BDF schemes for different $s$. The areas shown in grey are unstable regions. Figure adapted from \parencite{kikkerHighOrderEXtendedDiscontinuous2020}} 
+	\caption[{A-stability regions of the BDF schemes for different order $s$. The areas shown in grey are unstable regions.} ]{A-stability regions of the BDF schemes for different $s$. The areas shown in grey are unstable regions. Figure taken and adapted from \parencite{kikkerHighOrderEXtendedDiscontinuous2020}} 
 	%	\caption{A-stability regions of the \gls{BDF}\gls{l} schemes for $1\leq \gls{l}\leq 4$. The inner regions of the circles are unstable, the outer regions are stable. It can be seen that the schemes up to the \gls{BDF}2 are always stable for all $\mathfrak{R}(\gls{lambda} \Delta \gls{t})<0$. For the \gls{BDF}4 the opening angle of the A($\gls{open}$)-stability region is marked.}
 	\label{Fig:AStability}
 \end{figure}
@@ -323,23 +328,22 @@ Performing the same procedure as explained in the previous section for the low-M
 		\right)
 		\right]}_{\vec{F}(\vectr{U})} = 0 \label{eq:SemiDiscreteLowMa}
 \end{equation} 
-is obtained. Here the spatial operator is denoted as $\gls{OpM}$. Note that the time derivative of the density $\partial \rho /\partial t$ from the continuity equation is written as an additional source term, because the density $\rho$ is not one of the variables to be solved for. Note that \cref{eq:SemiDiscreteLowMa} has exactly the form that can be solved with a BDF formula as expressed by \cref{eq:BDFDiscretization}.
-
-Special attention should be put into the discretization of the temporal derivative appearing in the continuity equation, \cref{eq:LowMach_Conti}. It has been observed that the treating this term as a source term is problematic  for cases where high density ratios are present \parencite{cookDirectNumericalSimulation1996,nicoudConservativeHighOrderFiniteDifference2000}. In this context density ratios refer to the ratio between maximum and minimum density appearing in the system. \textcite{cookDirectNumericalSimulation1996} reported for a pressure projection method, and using a third-order Adams-Bashforth scheme, that the discretization of the $\partial \rho /\partial t$ is a source of instabilities. They used a second-order approximation
+is obtained. Here the spatial operator is denoted as $\gls{OpM}$.  \cref{eq:SemiDiscreteLowMa} has exactly the form that can be solved with a BDF formula as expressed by \cref{eq:BDFDiscretization}. Note that the time derivative $\partial \rho /\partial t$ from the continuity equation is written as an additional source term, since the density is not a primitive variable. A second-order approximation of the density time derivative is used for its discretization
 \begin{equation}
 	\left(\frac{\partial \rho}{\partial t} \right)^n= \frac{1}{2\Delta t}\left(3\rho^n-2\rho^{n-1}+\rho^{n-2}\right) \label{eq:DiscretizationDrhoDT}
 \end{equation}
-which is reported to be much more stable than a third-order approximation, by arguing that the extra dissipation from even-ordered schemas, compared to the dispersive effects of odd-ordered schemas, is helpful for the stability of the algorithm. However, they found that even with even-ordered time approximations of the density time derivative, the algorithm is stable only to maximum density variations up to a factor of three. The approximation of the time derivative given by \cref{eq:DiscretizationDrhoDT} is used in this work. Some comments in this will be done later in \cref{ch:results}
-The solution of problems of the form of \cref{eq:BDFDiscretization} will be treated in \cref{ch:CompMethodology}.
+While this type of discretization works for a wide range of applications, as it will be seen later, it can lead to instabilities in systems where density variations are large. 
+%The solution of problems of the form of \cref{eq:BDFDiscretization} will be treated in \cref{ch:CompMethodology}.
 \section{Discontinuous Galerkin discretization of the low-Mach equations}
 The discretization methodology shown in last section is used for finding a discrete formulation of the governing equations for low-Mach reactive flows. In the next sections the discretization for the fully coupled problem with finite reaction rate, and for the flame sheet problem are shown. The chosen numerical fluxes are also shown, and some of their particularities are discussed. 
 
-In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition, (see \textcite{babuskaFiniteElementMethod1973})  a mixed order formulation is used in all calculations, where polynomials of order $k$ for velocity, temperature, mass fractions and mixture fractions, and of degree $k' = k-1$ for pressure are used. This is a required compatibility condition for obtaining a well posed problem, and can be understood as a solution analog in the context of FEM-like methods to the well known problem of the 'checkerboard' pressure distributions encountered in other methods such as FVM. \parencite{riceEqualorderVelocitypressureFormulation1986}
+In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition, (see \textcite{babuskaFiniteElementMethod1973})  a mixed order formulation is used in all calculations, where polynomials of order $k$ for velocity, temperature, mass fractions and mixture fractions, and of degree $k' = k-1$ for pressure are used. This is a required compatibility condition for obtaining a well posed problem, and can be understood as a solution analogue in the context of FEM-like methods to the well known problem of the 'chequerboard' pressure distributions encountered in other methods such as FVM.  \parencite{riceEqualorderVelocitypressureFormulation1986} %TODO mention schaferComputationalEngineeringIntroduction2006
+%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY
 \subsection{Discontinuous Galerkin discretization of the finite reaction rate problem}
 Here the DG discretization of the finite reaction system defined by \crefrange{eq:LowMach_Conti}{eq:LowMachMassBalance} is presented. 
 First, the vector $\vec{Y}' = \left(Y_1,\dots,Y_{N-1}\right)$ is defined as the vector containing the first $(\gls{TotalNumberSpecies}-1)$ mass fractions and $\vec{s} = \left(s_1, \dots, s_{N-1} \right)$ as the vector containing the test functions for the first $(\gls{TotalNumberSpecies}-1)$  mass fraction equations. 
 
-The discretized form of \crefrange{eq:LowMach_Conti}{eq:LowMachMassBalance} is obtained in a similar fashion to the methodology shown in \cref{sec:DiscWithDG}. This means, (1) each equation is multiplied by a test function, (2) integrated it over an element $K_j$, (3) applied integration by parts, (4) introduced an adequate numerical flux for each term and finally (5) summing over all cells in order to obtain a global formulation.
+The discretized form of \crefrange{eq:LowMach_Conti}{eq:LowMachMassBalance} is obtained in a similar fashion to the methodology shown in \cref{sec:DiscWithDG}. This means, (1) each equation is multiplied by a test function, (2) integrated over an element $K_j$, (3) applied integration by parts, (4) introduced an adequate numerical flux for each term and (5) summing over all cells in order to obtain a global formulation.
 
 The discretized equations of the transient problem can be written as: find the numerical solution $(p^{n+1}_h,\vec{u}^{n+1}_h, T^{n+1}_h, \MFVecPrima^{n+1}_h) \in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h, r_h, \mathbf{s}_h) \in \mathbb{V}_\myvector{k}$ , following equations are fulfilled:
 \begin{subequations}
@@ -387,11 +391,11 @@ The resulting problem reads: find the numerical solution $(p^{n+1}_h,\vec{u}^{n+
 \end{subequations}
 Note that density and transport parameters depend on the mixture fraction $z$, which indirectly modifies the temperature and mass fraction fields.%Due to the similarity of the mass fraction equation and the mixture fraction equation the discretization is analogous.
 
-%The evaluation of those parameters is done as mentioned in \cref{sec:FlameSheet} and solved iteratively using a Newton-Dogleg type method as shown later in \cref{sec:newton}
+%The evaluation of those parameters is done as mentioned in \cref{sec:FlameSheet} and solved iteratively using a Newton-Dogleg type method as shown later in \cref{sec:Newton}
 \subsection{Definitions of nonlinear forms}\label{ssec:nonLinearforms}
 In the following the nonlinear forms used in this work are shown. Regarding the choice of fluxes, the "best practices" known in literature for the incompressible Navier-Stokes equation are followed. These fluxes proved to be well suited for all the problems discussed in this thesis, providing stability to the algorithm, while maintaining the accuracy of the solver.
 
-It is well known that central difference fluxes for the pressure gradient and velocity divergence, combined with a coercive form for the viscous terms, e.g. symmetric interior penalty, gives a stable discretization for the Stokes equation \parencite{pietroMathematicalAspectsDiscontinuous2012,giraultDiscontinuousGalerkinMethod2004}. Furthermore, it is known that for all kinds of convective terms, a numerical flux which transports information in characteristic direction, e.g. Upwind, Lax-Friedrichs or Local-Lax-Friedrichs, must be used. We opted for the last one in the present implementation, as it offers a good compromise between accuracy and stability.
+It is well known that central difference fluxes for the pressure gradient and velocity divergence, combined with a coercive form for the viscous terms, e.g. symmetric interior penalty, gives a stable discretization for the Stokes equation \parencite{pietroMathematicalAspectsDiscontinuous2012,giraultDiscontinuousGalerkinMethod2004}. Furthermore, it is known that for all kinds of convective terms, a numerical flux which transports information in characteristic direction, e.g. Upwind, Lax-Friedrichs or Local-Lax-Friedrichs, must be used. The last one was opted for in the present implementation, as it provides a good compromise between accuracy and stability.
 \subsubsection{Continuity equation}
 A central difference flux for the discretization of the continuity equation is used:
 \begin{equation}
@@ -401,7 +405,7 @@ The density in \cref{eq:Conti} is evaluated as a function of the temperature and
 \begin{equation}
 	\mathcal{B}^1(q) =  -\oint_{\GammaD\cup \GammaDW}{q(\rho_{\text{D}} \vec{u}_{\text{D}} \cdot \normalBoundary). \dS}
 \end{equation}
-The density at the boundary  $\rho_{\text{D}}$ is evaluated with \cref{eq:ideal_gas} using the corresponding Dirichlet values of temperature and mass fractions.
+The density at the boundary  $\rho_{\text{D}}$ is evaluated with \cref{eq:ideal_gas} using the corresponding Dirichlet values of temperature and mass fractions, i.e. $\rho_D = \rho (T_D,\vec{Y}_D)$. Finally the temporal contribution is
 \begin{equation}
 \mathcal{T}(u,v) =   \int_{\Omega}{uv} \dV.
 \end{equation}
@@ -418,7 +422,7 @@ The Lax-Friedrichs parameter $\gamma_1$ is calculated as \textcite{kleinHighorde
 	\gamma_1  = \max \left\{2 \overline{\rho^+} |\overline{\vec{u}^+} \cdot \vec{n}^+|,2 \overline{\rho^-} |\overline{\vec{u}^-} \cdot \vec{n}^-|\right\},
 	\label{eq:vardens_lambda}
 \end{equation}
-where $\overline{\rho_{h}^\pm}$ and $\overline{\vec{u}^\pm}$ are the mean values of $\rho^\pm$ and $\vec{u}^\pm$ in $K^\pm$, respectively. It should be noted however, that tests using the mean values for the calculation of the penalty parameter\\
+where $\overline{\rho^\pm}$ and $\overline{\vec{u}^\pm}$ are the mean values of $\rho^\pm$ and $\vec{u}^\pm$ in $K^\pm$, respectively. %It should be noted however, that preliminary tests using the mean values for the calculation of the penalty parameter\\
 The pressure term is discretized by using a central difference flux
 \begin{equation}
 	\mathcal{U}^P(p,\vec{v})=  \oint_{\Gamma \setminus \Gamma_{\text{N}}\setminus \Gamma_{\text{ND}}}{ \mean{p}(\jump{\vec{v}}\cdot \vec{n}_\Gamma  )\dS}
@@ -441,7 +445,7 @@ The viscosity $\mu$ is evaluated as a function of temperature according to \cref
 \begin{equation}
 	\eta = \eta_0 \frac{A(\partial K)}{V(K)},
 \end{equation}\label{eq:PenaltyFactor}
-where for a two-dimensional problem $A$ is the perimeter and $V$ the area of the element. The parameter $\eta_0$ is a safety factor. If not stated otherwise, the value  $\eta_0 = 4$ is  set in all calculations. Further information on the determination of the penalty term of the SIP formulation $\eta$ and the penalty term of the Lax-Friedrichs $\gamma_1 $ can be found in  the works from \textcite{hesthavenNodalDiscontinuousGalerkin2008} and \textcite{hillewaertDevelopmentDiscontinuousGalerkin2013}.
+where for a two-dimensional problem $A$ is the perimeter and $V$ the area of the element. The parameter $\eta_0$ is a safety factor. If not stated otherwise, the value  $\eta_0 = 4$ is  set in all calculations. Further information on the determination of the penalty term of the SIP formulation $\eta$ and the penalty term of the Lax-Friedrichs  flux $\gamma_1 $ can be found in  the works from \textcite{hesthavenNodalDiscontinuousGalerkin2008} and \textcite{hillewaertDevelopmentDiscontinuousGalerkin2013}.
 
 Note that the diffusive term of the momentum equations is scaled by the Reynolds number, obtaining finally
 \begin{equation}
@@ -452,7 +456,7 @@ The source term arising due to body forces is:
 \begin{equation}
 	\mathcal{U}^S\left(\rho, \vec{v}\right) =  \smash{\frac{1}{\Froude^2}}\int_{\Omega}{  \rho \frac{\vec{g}}{\Vert \vec{g} \Vert}\cdot \vec{v}} \dV.  \label{eq:Mom_source}
 \end{equation}
-Finally, the right hand sides of \cref{DiscretizedMomentum} and \cref{DiscretizedMomentum2} contain the information from Dirichlet boundary conditions:
+Finally, the left hand sides of \cref{DiscretizedMomentum} and \cref{DiscretizedMomentum2} contain the information from Dirichlet boundary conditions:
 \begin{equation}
 	\mathcal{B}^2(\vec{v}) =
 	-\oint_{\Gamma_{\text{D}}}{ \left( (\rho\vec{u}_{\text{D}}\otimes\vec{u}_{\text{D}} )\normalBoundary + \frac{\gamma_1}{2}\vec{u}_{\text{D}}\right)\cdot\vec{v} \dS}  +
@@ -499,8 +503,8 @@ The boundary condition term of the corresponding scalar equation is:
 	\oint_{\GammaD\cup \GammaND}{ \left( (\rho_D\vec{u}_D X_D)\cdot \normalBoundary + \frac{\gamma_2}{2}X_D\right)r \dS}
 	+\oint_{\GammaD\cup \GammaND} \xi_D X_D(\nabla_h r \cdot \normalBoundary - \eta r )\dS.
 \end{equation}
-Here, $X_D$ is the Dirichlet value of the scalar $X$ on boundaries and $\xi_D$ is the corresponding transport parameter calculated,which is calculated with \cref{eq:nondim_sutherland} using the Dirichlet values of the temperature at the boundary.
-Finally, the volumetric source term of the energy and mass fraction equations are defined as follows:
+Here, $X_D$ is the Dirichlet value of the scalar $X$ on boundaries and $\xi_D$ is the corresponding transport parameter, which is calculated with \cref{eq:nondim_sutherland} using the Dirichlet values of the temperature at the boundary.
+Finally, the volumetric source terms of the energy and mass fraction equations are defined as follows:
 \begin{gather}
 	\mathcal{S}^S(r,\heatRelease, \rateReac,c_p) =  \text{H}~\Da ~ \int_{\Omega}{ \frac{\heatRelease \rateReac}{c_p} r} \dV, \\
 	\mathcal{M}^S_\alpha(s_\alpha,\rateReac ) =  \Da \int_{\Omega}{  \stoicCoef_\alpha M_\alpha \rateReac s_\alpha} \dV.

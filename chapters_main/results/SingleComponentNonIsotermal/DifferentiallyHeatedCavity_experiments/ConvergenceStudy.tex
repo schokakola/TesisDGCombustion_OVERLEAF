@@ -5,7 +5,7 @@ An $h-$convergence study of the XNSEC solver was conducted using the heated cavi
  
 As discussed in the previous section, the difference in the average values of the Nusselt number on the hot wall $\text{Nu}_\text{h}$  and the cold wall $\text{Nu}_\text{c}$ is a direct consequence of the spatial discretization error and should decrease for finer meshes. In \cref{fig:NusseltStudy} the convergence behavior of the Nusselt number is presented for different polynomial degrees $k$, different number of elements and for two Rayleigh numbers. As expected, it can be observed that this discrepancy is smaller when a larger number of elements is used. It can also be seen that  $\text{Nu}_\text{h}$ reaches the expected solution of cells for a much smaller number of elements. This can be explained if one thinks that more complex phenomena take place near the cold wall (see \cref{fig:HSCStreamlines}), which makes necessary a finer mesh resolution in that area.
 
-The results presented in this section allow us to conclude that the implemented solver is capable of dealing with flows with variable densities, and in particular in closed spaces. Additionally, it was observed that even for this complex test, convergence properties close to those expected from the DG-method are obtained. In this section only systems with a steady state solution were treated. In the next section the ability of the solver to compute flows with varying densities in non-steady state will be shown.
+
 
 \begin{figure}[tb]
 	\centering
@@ -24,7 +24,7 @@ The results presented in this section allow us to conclude that the implemented 
 \centering
 \begin{tabular}{lllllll}
 	\hline \vspace{0.1cm}
-		$\eta_0$                  & DOFs & $k$ & $\text{Nu}_c$ &  $\frac{\text{Nu}_c - \text{Nu}_{c,\text{ref}}} {\text{Nu}_{c,\text{ref}}}\times 10^2 $   & $p_0$    & $\frac{p_0 - p_{0,\textbf{ref}}} {p_{0,\textbf{ref} }}\times 10^4 $ \\ \hline
+		$\eta_0$                  &  $k$ & DOFs& $\text{Nu}_c$ &  $\frac{\text{Nu}_c - \text{Nu}_{c,\text{ref}}} {\text{Nu}_{c,\text{ref}}}\times 10^2 $   & $p_0$    & $\frac{p_0 - p_{0,\textbf{ref}}} {p_{0,\textbf{ref} }}\times 10^4 $ \\ \hline
 \multirow{3}{*}{0.01} & 2 & 6804 & 0.549483* & 50.39424 & 0.899757* & 408.7292 \\
                       & 3 & 7056 & 0.722593* & 34.76637 & 0.936085* & 21.48436 \\
                       & 4 & 6655 & -0.50954* & 146      & 1.016691* & 837.7683 \\ \hline
@@ -46,4 +46,4 @@ It is possible to see that the penalty safety factor (and therefore the penalty 
 
 It is also noticeable that, maintaining a constant penalty safety factor, increasing the polynomial degree for an approximately constant number of DOFs gives an improvement in the results compared to the literature. Although for this testcase the effect of the penalty factor on the solution is not very large, the effect could be considerable, especially when dealing with more complex geometries and coarser meshes. The value $\eta_0 = 4$ has shown to be a value that gives stability to the scheme and is used for all simulations in this thesis, as already has been done in many works \parencite{krauseIncompressibleImmersedBoundary2017,kummerExtendedDiscontinuousGalerkin2017,smudamartinDirectNumericalSimulation2021} and is used for all calculations in this work.
  
-
+The results presented in this section allows to conclude that the implemented solver is capable of dealing with flows with variable densities, and in particular in closed spaces. Additionally, it was observed that even for this complex test, convergence properties close to those expected from the DG method are obtained. Until this point only systems with a steady state solution were treated. Later in \cref{ssec:FlowCircCyl} the ability of the solver to compute flows with varying densities in non-steady state will be shown.

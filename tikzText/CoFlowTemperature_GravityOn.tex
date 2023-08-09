@@ -1,0 +1,29 @@
+\subcaptionbox{Nondimensional temperature \label{fig:CoFlowTemperatureFieldGravityOn}}{
+	\begin{tikzpicture}
+		\begin{axis}[
+			axis on top,
+			scale only axis,
+			enlargelimits=false,	
+			axis equal image,
+			colormap name=turbo,
+			colorbar horizontal,			 
+			colorbar style={
+				yticklabel style={
+					/pgf/number format/.cd,
+					fixed,
+					fixed zerofill
+				},
+				point meta max= 6.6,
+				point meta min= 1.0,			
+				xtick={1,6.6},
+				at={(0,1.2)},
+				anchor = north west,
+				xticklabel pos=upper,
+			},
+			]
+			\addplot[thick,blue] graphics[	
+			xmin=-5,	xmax=5,	ymin=2,	ymax=12,
+			] {../plots/CoFlow_GravityOn_Temperature.png};
+		\end{axis}		
+	\end{tikzpicture}
+}

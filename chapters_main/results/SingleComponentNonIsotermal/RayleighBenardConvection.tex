@@ -1,6 +1,6 @@
 \subsection{Rayleigh-Bénard Convection}\label{ssec:RayBer}
 
-The Rayleigh-Bénard convection is a configuration similar to the heated cavity (see \cref{ss:DHC}) as the flow is also induced by bouyancy effects. The configuration consists of a fluid located between two horizontal plates maintained at different temperatures, with the temperature of the lower plate being higher than that of the upper plate. It is known that under a certain Rayleigh number the flow presents a macroscopically stable behavior and the heat is simply transferred by conduction. When the Rayleigh number exceeds a certain critical value $\text{Ra}_{\text{crit}}$, the system becomes unstable, which causes a perturbation of the system to give rise to fluid motion, creating the so-called convection cells, also usually referred to as Bénard cells.
+The Rayleigh-Bénard convection problem is a configuration similar to the heated cavity (see \cref{ss:DHC}) as the flow is also induced by bouyancy effects. The configuration consists of a fluid located between two horizontal plates maintained at different temperatures, with the temperature of the lower plate being higher than that of the upper plate. It is known that under a certain Rayleigh number the flow presents a macroscopically stable behavior and the heat is simply transferred by conduction. When the Rayleigh number exceeds a certain critical value $\text{Ra}_{\text{crit}}$, the system becomes unstable, which causes a perturbation of the system to give rise to fluid motion, creating the so-called convection cells, also usually referred to as Bénard cells.
 
 In the following sections two aspects of this situation will be discussed by making use of different types of boundary conditions on the sides of the domain. First in \cref{ssec:SingleCellConv} periodic boundary conditions are used, which allows studying a single pair of convection rolls and to calculate numerically the critical value $\text{Ra}_{\text{crit}}$, which is compared with theoretical values. Subsequently, in \cref{ssec:MultipleCellConv} a transient simulation of this configuration is performed by using pressure-outlet boundary conditions. The results shown in this section are taken from the work by \textcite{miaoHighOrderSimulationLowMachFlows2022}.
 
@@ -20,7 +20,7 @@ For the range of Rayleigh numbers treated here, the simulations are steady state
 
 First, the stability of the XNSEC solver is studied by determining the critical value $\text{Ra}_{\text{crit}}$. As mentioned above, the theoretical value $\text{Ra}_{\text{crit}} = 1707.762$ was determined using the Boussinesq  assumption in the governing equations, which, unlike the low-Mach equations, is only valid if the variation of temperature within the system is very small. For this reason, an analysis is performed for a dimensionless temperature difference $\epsilon = (T_h-T_c)/(T_h+T_c) = 0.0001$, meaning $T_h =1.0001$ and $T_c = 0.9999$. The reference temperature is chosen to be $\RefVal{T} = \SI{600}{\kelvin}$. Since the XNSEC solver is based on the low-Mach equations, this choice of low temperature difference allows comparing the present results with those obtained analytically using the Boussinesq approximation. The definition of the dimensionless numbers as well as the reference velocity are exactly the same as those mentioned in \cref{ss:DHC}. The transport coefficients are calculated with Sutherland's law.
 
-Similarly to the case discussed in \cref{ssec:FlowCircCyl}, velocity fields are initialized with vortices, which play the role within the simulation of a trigger for the inherent instabilities of the problem. In particular, two vortices with opposite directions of rotation are added. The velocity components of these are again given by \cref{eq:VortexU,eq:VortexV}. The coordinates of the first vortex are $(x^o,y^o) = (-0.5,0)$ and it has a strength $a = 1$ and a radius $r=0.4$. For the second vortex $(x^o,y^o) = (0.5,0)$, $a = -1$ and $r=0.4$ are selected. The initial conditions are
+Similarly to the case discussed in \cref{ssec:FlowCircCyl}, velocity fields are initialized with vortices, which are used to trigger the inherent instabilities of the studied system. In particular, two vortices with opposite directions of rotation are added. The velocity components of these are again given by \cref{eq:VortexU,eq:VortexV}. The coordinates of the first vortex are $(x^o,y^o) = (-0.5,0)$ and it has a strength $a = 1$ and a radius $r=0.4$. For the second vortex $(x^o,y^o) = (0.5,0)$, $a = -1$ and $r=0.4$ are selected. The initial conditions are
 \begin{subequations} 
 	\begin{align}
 		&u(t=0) = 1 + u^{\text{vortex-left}} + u^{\text{vortex-right}},  \\
@@ -29,7 +29,7 @@ Similarly to the case discussed in \cref{ssec:FlowCircCyl}, velocity fields are 
 		&p(t=0) = -\frac{\rho y}{\text{Fr}^2}.
 	\end{align}
 \end{subequations}
-It is worth noting that the initialization of the solver without the vortices leads the solver to a stationary solution where there is no fluid motion. Clearly, this is a solution of the equations, but, as already mentioned, it is an unstable solution.
+It is worth noting that the initialization of the solver without the vortices leads the solver to a stationary solution with no fluid motion. Clearly this is a solution of the equations, but is an unstable solution.
 \begin{figure}[bt]
 	\centering
 	\pgfplotsset{width=0.29\textwidth, compat=1.3}
@@ -45,12 +45,12 @@ It is worth noting that the initialization of the solver without the vortices le
 	\inputtikz{RayBerCalculationRa}
 	\caption{Stability behavior of the Rayleigh-Bénard convection with $\epsilon = 0.0001$.} \label{fig:ReyBerCritRa}
 \end{figure}
-\begin{figure}[bt]
-	\pgfplotsset{width=0.45\textwidth, compat=1.3}
-	\centering
-    \inputtikz{RayBenTemperatureRa}
-\caption{Critical Rayleigh number at different temperatures and different reference temperatures.}\label{fig:RayBenardTemperatureRaPlot}
-\end{figure}
+%\begin{figure}[bt]
+%	\pgfplotsset{width=0.45\textwidth, compat=1.3}
+%	\centering
+%    \inputtikz{RayBenTemperatureRa}
+%\caption{Critical Rayleigh number at different temperatures and different reference temperatures.}\label{fig:RayBenardTemperatureRaPlot}
+%\end{figure}
 \begin{figure}[h]
 	\centering
 	\pgfplotsset{width=0.31\textwidth, compat=1.3}
@@ -61,29 +61,32 @@ It is worth noting that the initialization of the solver without the vortices le
 	\inputtikz{RayBerTemperature1e4}%
 	\inputtikz{RayBerTemperature5e4}%
 	\inputtikz{RayBerTemperature1e5}%
-	\caption{Temperature field and contours of a Rayleigh-Bénard convection roll} \label{fig:RayBenTemperatureField}
+	\caption{Temperature field and temperature contours of a Rayleigh-Bénard convection roll} \label{fig:RayBenTemperatureField}
 \end{figure}
-\begin{figure}[h!]
-	\centering
-	\pgfplotsset{width=0.31\textwidth, compat=1.3}
-	\inputtikz{RayBerStreamLine2e3}%
-	\inputtikz{RayBerStreamLine3e3}%
-	\inputtikz{RayBerStreamLine5e3}%
-	\par\bigskip
-	\inputtikz{RayBerStreamLine1e4}%
-	\inputtikz{RayBerStreamLine5e4}%
-	\inputtikz{RayBerStreamLine1e5}%
-	\caption{Streamlines of a Rayleigh-Bénard convection roll} \label{fig:RayBenStreamlines}
-\end{figure}
+%\begin{figure}[h!]
+%	\centering
+%	\pgfplotsset{width=0.31\textwidth, compat=1.3}
+%	\inputtikz{RayBerStreamLine2e3}%
+%	\inputtikz{RayBerStreamLine3e3}%
+%	\inputtikz{RayBerStreamLine5e3}%
+%	\par\bigskip
+%	\inputtikz{RayBerStreamLine1e4}%
+%	\inputtikz{RayBerStreamLine5e4}%
+%	\inputtikz{RayBerStreamLine1e5}%
+%	\caption{Streamlines of a Rayleigh-Bénard convection roll} \label{fig:RayBenStreamlines}
+%\end{figure}
 First, a study was performed to demonstrate the independence of the steady-state solution from the chosen initial conditions. This is demonstrated in \cref{fig:RayBerMaxVel}, where for a given Rayleigh number the maximum velocity obtained inside the system is shown, varying the strength $a$ or the radius $r$ of the vortices. It is apparent that the case $\text{Ra} = 1000$ does not exhibit a macroscopic fluid motion, while $\text{Ra} = 2000$ does. This points to the fact that the critical value is effectively in this range. 
 
-Subsequently, a series of simulations were performed with $a = 0.5$ and $r = 0.4$, and a bisection algorithm was used to find the critical Rayleigh value, obtaining $\Ra = 1707.922$, as shown in \cref{fig:ReyBerCritRa}. Compared to the theoretical value $\Ra = 1707.762$, it presents a difference of only $0.009\%$. In addition, the proportionality  $u \propto \sqrt{\text{Ra}- \text{Ra}_\text{Ra}}$  that is expected by analytical arguments is also obtained, in particular, $u_{\text{max}}  = 0.008015\sqrt{\text{Ra} - 1707.922}$. It is possible to conclude that, at least for small temperature differences, the low-Mach approximation has a behavior similar to that of the equations with the Boussinesq approximation. 
+Subsequently a series of simulations were performed with $a = 0.5$ and $r = 0.4$ were done to find the critical Rayleigh value. By using a bisection strategy, the critical Rayleigh was found to be $\Ra = 1707.922$, as shown in \cref{fig:ReyBerCritRa}. 
 
-In relation to this, it is interesting to analyse the influence of the temperature difference within the system on the critical Rayleigh value. This is demonstrated in \cref{fig:RayBenardTemperatureRaPlot}, where the calculation is done for different values of the reference temperature. Clearly, for low $\epsilon$  the critical value is very close to the theoretical value obtained under the Boussinesq approximation. As $\epsilon$ increases, a larger deviation becomes apparent. This can be attributed to the dependence of the viscosity, thermal conductivity, and density coefficients on the temperature. 
+A the theoretical value  for the critical Ra number can be calculated. For the case of two plates with no-slip boundaries the value corresponds to $\Ra = 1707.762$ \parencite{shishkinaRayleighBenardConvectionContainer2021}. The calculated value with the XNSEC solver presents a difference of only $0.009\%$ compared with the analytical value. In addition, the proportionality  $u \propto \sqrt{\text{Ra}- \text{Ra}_\text{Ra}}$  that is expected by analytical arguments is also obtained, in particular, $u_{\text{max}}  = 0.008015\sqrt{\text{Ra} - 1707.922}$. It is possible to conclude that, at least for small temperature differences, the low-Mach approximation has a behavior similar to that of the equations with the Boussinesq approximation. 
 
-Finally, in \cref{fig:RayBenTemperatureField} and \cref{fig:RayBenStreamlines} the temperature fields and streamlines obtained with the XNSEC solver for $\epsilon = 0.5$ and $\RefVal{T} = \SI{600}{\kelvin}$ for different Rayleigh numbers are shown. An interesting point to mention is the difference between the results obtained using the Boussinesq approximation and the low-Mach approximation. Comparing the results reported here with publications that use the Boussinesq approximation ( \textcite{shishkinaRayleighBenardConvectionContainer2021,zhouNumericalSimulationLaminar2004}), a clear difference in the streamlines is observed. In particular, the centers of the streamlines obtained with the low-Mach solver are slightly shifted towards the colder zones, while the streamlines obtained with the Boussinesq approximation do not present this deviation and remain close to the center. A possible explanation for this is that with the Boussinesq approximation the expansion effects of the fluid are ignored, whereas in the low-Mach equations this is not the case. When the latter is used, the hot fluid moves the center of the streamline towards the cold fluid.
-\subsubsection{Pressure outlet boundary condition}\label{ssec:MultipleCellConv}
-\begin{figure}[t!]
+Finally, in \cref{fig:RayBenTemperatureField} the temperature fields obtained with the XNSEC solver for $\epsilon = 0.5$ and $\RefVal{T} = \SI{600}{\kelvin}$ for different Rayleigh numbers are shown. For a Ra number of 2000 -which corresponds to a value slightly higher than the critical value- the apparition of convection rolls can be appreciated. As the value increases, the fluid departs from its purely conductive state, and the fluid gets more accelerated. As this happens, more complex structures appear.
+ %An interesting point to mention is the difference between the results obtained using the Boussinesq approximation and the low-Mach approximation. Comparing the results reported here with publications that use the Boussinesq approximation ( \textcite{shishkinaRayleighBenardConvectionContainer2021,zhouNumericalSimulationLaminar2004}), a clear difference in the streamlines is observed. In particular, the centers of the streamlines obtained with the low-Mach solver are slightly shifted towards the colder zones, while the streamlines obtained with the Boussinesq approximation do not present this deviation and remain close to the center. A possible explanation for this is that with the Boussinesq approximation the expansion effects of the fluid are ignored, whereas in the low-Mach equations this is not the case. When the latter is used, the hot fluid moves the center of the streamline towards the cold fluid.
+\FloatBarrier
+\subsubsection{Simulation with open boundaries}\label{ssec:MultipleCellConv}
+%In relation to this, it is interesting to analyse the influence of the temperature difference within the system on the critical Rayleigh value. This is demonstrated in \cref{fig:RayBenardTemperatureRaPlot}, where the calculation is done for different values of the reference temperature. Clearly, for low $\epsilon$  the critical value is very close to the theoretical value obtained under the Boussinesq approximation. As $\epsilon$ increases, a larger deviation becomes apparent. This can be attributed to the dependence of the viscosity, thermal conductivity, and density coefficients on the temperature. 
+\begin{figure}[h]
 	\begin{center}
 		\def\svgwidth{0.93\textwidth}
 		\import{./plots/}{RayleighBen_Geometry_PressOutlet.pdf_tex}
@@ -91,7 +94,7 @@ Finally, in \cref{fig:RayBenTemperatureField} and \cref{fig:RayBenStreamlines} t
 		\label{fig:RayBenGeometry}
 	\end{center}
 \end{figure}
-Now a transient calculation of the Rayleigh-Bénard configuration is done. The configuration is similar to the one described for the case with periodic boundary conditions, with the difference that the boundaries of the left and right sides are now pressure outlet boundary conditions and the length $L$ of the system is chosen to be considerably longer. A sketch of the system is shown in \cref{fig:RayBenGeometry}. Theoretically, adequately representing the convection rolls would require an infinitely long system, because then, the influence of the boundary conditions would be negligible The nondimensional lengths are chosen to be $H=1$ and $L=10$. A grid with $32\times320$ cells is used. The polynomial degrees for the velocity components and temperature are set to four and for the hydrodynamic pressure to three. The time discretization is done again with a BDF-3 scheme and the calculation time is 150, using timesteps of $\Delta t = 0.5$. The temperatures are set to $T_h = 1.5$ and $T_c = 0.5$, with a reference temperature of $\RefVal{T} = \SI{600}{\kelvin}$. The Rayleigh number is $\Ra = 5659$, which is above the critical value.
+Finally, a transient calculation of the Rayleigh-Bénard configuration is shown. This example shall work as a test for the implementation of the time-stepping algorithm. The configuration is similar to the one described for the case with periodic boundary conditions, with the difference that the boundaries of the left and right sides are now pressure outlet boundary conditions, representing an open system. The length $L$ of the system is chosen to be considerably longer in order to allow the apparition of multiple convection rolls. A sketch of the system is shown in \cref{fig:RayBenGeometry}. The nondimensional lengths are chosen to be $H=1$ and $L=10$. A grid with $32\times320$ cells is used. The polynomial degrees for the velocity components and temperature are set to four and for the pressure to three. The time discretization is done again with a BDF-3 scheme and the calculation time is 150, using timesteps of $\Delta t = 0.5$. The temperatures are set to $T_h = 1.5$ and $T_c = 0.5$, with a reference temperature of $\RefVal{T} = \SI{600}{\kelvin}$. The Rayleigh number is $\Ra = 5659$, which is above the critical value.
 The initial conditions are chosen to be
 \begin{subequations} 
 	\begin{align}
@@ -102,7 +105,7 @@ The initial conditions are chosen to be
 	\end{align}
 \end{subequations}
 
-Note that no vortex is included in the initial conditions and that only a fluid at rest is considered. A perturbation-like effect caused by the pressure outlet boundaries triggers the movement of the fluid. At the first stages of the simulation the perturbations induce a vortex-like structure close to the left and right boundaries, and start gradually filling the whole domain, finally reaching a steady solution. This can be seen in \cref{fig:RayBerUnsteadySol}. Clearly, in the center of the domain (far away from the outlet boundary conditions), the structure of the solution is very similar to the ones shown in the last subsection. In fact, if the domain length is chosen sufficiently large, they should be equal. 
+Note that no vortex is included in the initial conditions and that only a fluid at rest is considered. A perturbation effect caused by the pressure outlet boundaries triggers the movement of the fluid. At the first stages of the simulation the perturbations induce a vortex-like structure close to the left and right boundaries, and start gradually filling the whole domain, finally reaching a steady solution. This can be seen in \cref{fig:RayBerUnsteadySol}. Clearly, in the center of the domain (far away from the outlet boundary conditions), the structure of the solution is very similar to the ones shown in the last subsection. In fact, if the domain length is chosen sufficiently large, they should be equal. 
 \begin{figure}[t]
 	\centering
 	\pgfplotsset{width=0.96\textwidth, compat=1.3}

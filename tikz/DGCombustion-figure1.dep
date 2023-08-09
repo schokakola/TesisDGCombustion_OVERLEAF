@@ -1,0 +1,2 @@
+tikz/DGCombustion-figure1.pdf: data/LidDrivenCavity/omegaRe1000_y_ref.txt
+tikz/DGCombustion-figure1.pdf: data/LidDrivenCavity/omegaRe1000_y.txt

@@ -59,8 +59,8 @@
     \put(0,0){\includegraphics[width=\unitlength,page=2]{diffheatedCavityGeometry.pdf}}%
     \put(0.49520184,0.44089067){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$L$\end{tabular}}}}%
     \put(0.66516869,0.28937231){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$L$\end{tabular}}}}%
-    \put(0.27070017,0.28757142){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$\hat{T}_h$\end{tabular}}}}%
-    \put(0.73299485,0.28368869){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\hat{T}_c$\end{tabular}}}}%
+    \put(0.27070017,0.28757142){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$T_h$\end{tabular}}}}%
+    \put(0.73299485,0.28368869){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$T_c$\end{tabular}}}}%
     \put(0.50040873,0.52453636){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\text{Adiabatic wall}\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{diffheatedCavityGeometry.pdf}}%
     \put(0.34544306,0.01736467){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x$\end{tabular}}}}%

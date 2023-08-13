@@ -337,8 +337,9 @@ While this type of discretization works for a wide range of applications, as it 
 \section{Discontinuous Galerkin discretization of the low-Mach equations}
 The discretization methodology shown in last section is used for finding a discrete formulation of the governing equations for low-Mach reactive flows. In the next sections the discretization for the fully coupled problem with finite reaction rate, and for the flame sheet problem are shown. The chosen numerical fluxes are also shown, and some of their particularities are discussed. 
 
-In order to ensure the validity  of the  Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition, (see \textcite{babuskaFiniteElementMethod1973})  a mixed order formulation is used in all calculations, where polynomials of order $k$ for velocity, temperature, mass fractions and mixture fractions, and of degree $k' = k-1$ for pressure are used. This is a required compatibility condition for obtaining a well posed problem, and can be understood as a solution analogue in the context of FEM-like methods to the well known problem of the 'chequerboard' pressure distributions encountered in other methods such as FVM.  \parencite{riceEqualorderVelocitypressureFormulation1986} %TODO mention schaferComputationalEngineeringIntroduction2006
-%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY%TODO ACA VOOOOOOOOOOOOOOOY
+Special care has to be taken to avoid spurious oscillations on the pressure field. This is done in the present work by using a mixed order formulation, where polynomials of order $k$ for velocity, temperature, mass fractions and mixture fractions, and of degree $k' = k-1$ for pressure are used. 
+This is a required compatibility condition for obtaining a well posed problem and is used to ensure the validity of the Ladyzenskaja-Babu\u{s}ka-Brezzi (or inf-sup) condition \parencite{babuskaFiniteElementMethod1973}.  
+
 \subsection{Discontinuous Galerkin discretization of the finite reaction rate problem}
 Here the DG discretization of the finite reaction system defined by \crefrange{eq:LowMach_Conti}{eq:LowMachMassBalance} is presented. 
 First, the vector $\vec{Y}' = \left(Y_1,\dots,Y_{N-1}\right)$ is defined as the vector containing the first $(\gls{TotalNumberSpecies}-1)$ mass fractions and $\vec{s} = \left(s_1, \dots, s_{N-1} \right)$ as the vector containing the test functions for the first $(\gls{TotalNumberSpecies}-1)$  mass fraction equations. 
@@ -372,9 +373,9 @@ Here $\mathcal{C}$ is the discretized divergence form of the continuity equation
 
 Note that the convective and diffusive terms of the temperature scalars $T$, mass fraction $Y_\alpha$ and mixture fraction $z$ have the same form, so they share the same expression in their discretized form. Each one of the forms introduced here are defined later in \cref{ssec:nonLinearforms}.
 \subsection{Discontinuous Galerkin discretization of the flame sheet problem}
-Discretizing the flame sheet problem given by \crefrange{eq:MixtFracConti2}{eq:MixtFracMF} proceeds in a similar way. 
+The discretization the flame sheet problem given by \crefrange{eq:MixtFracConti2}{eq:MixtFracMF} proceeds in a analogous way. 
 
-The resulting problem reads: find the numerical solution $(p^{n+1}_h,\vec{u}^{n+1}_h,z^{n+1}_h)\in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h,r_h)\in \mathbb{V}_\myvector{k}$ following equations have to be fulfilled:
+The resulting problem reads: find the numerical solution $(p^{n+1}_h,\vec{u}^{n+1}_h,z^{n+1}_h)\in \mathbb{V}_\myvector{k}$ such that for all test functions $(q_h,\vec{v}_h,r_h)\in \mathbb{V}_\myvector{k}$ following equations are fulfilled:
 \begin{subequations}
 	\begin{flalign}
 		%% Continuity

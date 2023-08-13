@@ -1,60 +1,23 @@
 \chapter{Computational methodology} \label{ch:CompMethodology}
-%
-%\chapter{State of the art}
-%\section{Introduction and state of the art.}
-%\subsection{Combustion}
-%\subsubsection{Non-Premixed Flames}
-\paragraph{State of the art of DG methods}
-There are numerous works in which the DG method has been used within the context of incompressible flows. \textcite{shahbaziHighorderDiscontinuousGalerkin2007,kummerBoSSSDiscontinuousGalerkin2012,kleinSIMPLEBasedDiscontinuous2013}  However, there are not many publications in which the flow problem at low Mach numbers is addressed using a pressure-based solver. In the work by Klein et al. \textcite{kleinHighorderDiscontinuousGalerkin2016} the low-Mach equations are solved in a DG Framework making use of a SIMPLE type scheme. The solution of a time-step involves an iterative process that requires multiple matrix assemblies and solutions. The obtained systems of equations are solved by means of fixed-point iterations, where relaxation factors are necessary to obtain convergence of the computations.
-In the work of Hennink et al. \textcite{henninkPressurebasedSolverLowMach2021} a pressure-based solver for low-Mach flows is presented. They solve  the mass flux instead of the velocity as the primitive variable.
+This chapter addresses the computational methods developed for solving the system of governing equations presented in the preceding chapters. The chapter starts in \cref{sec:StateOFArt} with a concise literature review concerning the methods employed in this study. Subsequently, in \cref{sec:XNSECSolver} a comprehensive description of the methods employed by the XNSEC solver is provided. Then in \cref{sec:SolNonLinProblem} the implementation and uses of both nonlinear and linear solvers are presented. Finally, in \cref{sec:ConvSupportStrat} various convergence-enhancing strategies employed for solving highly nonlinear problems are presented, such as the use of a homotopy strategy for highly non-linear problems, or the use of solver safeguards to avoid nonphysical results. 
+
+\section{State of the art of DG methods for diffusion flame simulations} \label{sec:StateOFArt}
 
 
+There are numerous works in which the \Gls{DG} method has been used in the context of \Gls{CFD}. Extensive attention has been paid to algorithms for solving incompressible flows, such as in the works from  \textcite{shahbaziHighorderDiscontinuousGalerkin2007,kummerBoSSSDiscontinuousGalerkin2012,kleinSIMPLEBasedDiscontinuous2013}. However, not much attention has been put into extending the methods to be able to handle variable density flows. In the work by \textcite{kleinHighorderDiscontinuousGalerkin2016} an extension is presented of the method for solving  the low-Mach equations in a DG Framework making use of a SIMPLE type scheme. As mentioned in the introduction, while the strategy proved useful for simulating various flow problems, for many of these problems the computation time proved to be prohibitive. Similarly, in the work of  \textcite{henninkPressurebasedSolverLowMach2021} a pressure-based solver for low-Mach flows is presented. They solve the system of equations in a segregated way, and solve for the mass flux instead of the velocity as the primitive variable. They employ an equal order formulation for the coupling of pressure and velocity; however, this approach results in significant computational expenses, especially when dealing with high Reynolds numbers. They solve the enthalpy form of the energy equations, which is shown to be a source of instabilities if special care is not taken. 
 
-\paragraph{State of the art simulation of combustion? (muy amplio))}
-Simulacion de procesos de combustion haciendo uso metodos de high order. Mencionar papers donde se utiliza la flame sheet estimation para la resolución de sistemas con combustion en estado estacionario. La gran mayoria de esas publicaciones está enfocada en la resolución de sistemas caracteristicos de difusion flames tales como la counterflow flame o coflowing flame, haciendo uso de modelos quimicos complejos. 
+In the context of \Gls{CFD}, the coupling between velocity fields and pressure within the Navier--Stokes equations has been a topic of considerable research and interest. It's a well known fact that in the case of incompressible flows, the absence of a time derivative in the continuity equation poses challenges for advancing the system in time using conventional methods. Traditionally this type of coupling has been solved by means of segregated methods, such as projection methods \parencite{chorinNumericalSolutionNavierStokes1967}, or by using methods such as SIMPLE \parencite{patankarNumericalHeatTransfer1980}. Such algorithms offer the benefit of low memory usage and have undergone extensive investigation and application especially within the context of approaches like \gls{FVM}. However, as mentioned earlier, the use of segregated methods doesn't guarantee conservativity of the relevant physical quantities, and special care has to be taken in that regard. Since for low-Mach number flows the flow field is coupled to the temperature and therefore to the density, it is not possible to solve the equations in a completely conservative way in a non-iterative segregated framework. 
 
+The investigations mentioned above deal exclusively with segregated approaches, which as mentioned, are not necessarily conservative. An alternative approach involves solving the complete system of equations in a fully coupled manner. This approach guarantees the conservation of relevant physical variables, provided careful attention is paid to the convergence criteria.  While this strategy may appear to be the most straightforward, it is not free of complications. Special care must be taken in the algorithms for solving the usually nonlinear problem, as this can easily lead to problems with convergence. Memory resources can also be prohibitive, as solving the equations in a coupled manner usually requires dealing with very big matrices.  
 
+The DG method has also been used for simulations of combustion, mainly within a compressible framework. In the work from \textcite{johnsonConservativeDiscontinuousGalerkin2020} the compressible Navier--Stokes equations are solved using a nodal DG scheme for combustion with complex chemistry and transport parameters. An hp-adaptive method is also presented. Similarly in the work from \textcite{lvHighorderDiscontinuousGalerkin2017} a DG solver for multi-component chemically reacting flows, which solves the fully compressible Navier-Stokes equation, is presented. A hybrid-flux formulation is used, where a conservative Riemann solver is used for shock treatment, and a double-flux formulation is used in smooth regions. They show its applicability for non-reacting and reacting flows, particularly for systems characterized by high Mach numbers. To the best of the authors' knowledge, there are no publications that address low Mach number reactive flows using a fully coupled solver, as done in the present work.
 
-One point that should be discussed is the method of solving the discretized system presented in \cref{NumericalMethods}. The coupling of the velocity fields with the pressure that exists in the Navier Stokes equations has been a subject of much work and interest. It is well known that for incompressible flows, the system of governing equations has the disadvantage that the continuity equation does not include a time derivative, which makes it difficult to advance the system in time using conventional methods. Traditionally this type of coupling has been solved by using projection methods such as \parencite{chorinNumericalSolutionNavierStokes1967}, or by using methods such as SIMPLE \parencite{patankarNumericalHeatTransfer1980} or PISO. These types of algorithms have the advantage of low memory consumption, and have been widely studied and used, particularly in the context of methods such as FVM. On the other hand, very little research has been done on the use of methods such as SIMPLE in conjunction with DG Methods. In the work of \textcite{kleinSIMPLEBasedDiscontinuous2013} one of the first investigations was carried out with the objective of creating a framework for solving the Navier-Stokes equations in a DG-Methods context. In addition, in \parencite{kleinHighorderDiscontinuousGalerkin2016} an extension of the previously presented method for low-Mach number flows is made. All these investigations were done using the BoSSS framework. The combination of both algorithms proved to be successful in many situations. However, as will be seen later the computational times associated with it turned out to be very high under certain conditions. This prompted the development of other strategies for solving the problem. 
+The system of equations obtained from the discretization of highly nonlinear systems  can be very difficult to solve. Fixed-point iteration schemes have been used often used as a linearization strategy, as done by \textcite{kleinHighorderDiscontinuousGalerkin2016}. A significant limitation of this strategy is the necessity for an adequate selection of the under-relaxation factors, which are highly dependent on the specific problem. A much more robust strategy is the use of Newton type methods. Here, a problem-dependent factor is not needed. There is however a trade-off, because the Jacobian matrix has to be calculated, which can be computationally expensive. This approach has been used for combustion related problems in numerous works. \textcite{karaaPreconditionedMultigridSimulation2003} studied the axisymmetric laminar jet diffusion flame and investigated the behavior of a multi-grid solver when using different pre-conditioners with a damped Newton algorithm. \textcite{shenNewtonMethodSteady2006a} investigated the use  and efficiency of a Newton method coupled with the Bi-CGSTAB method for an axisymmetric laminar jet flame. They concluded that, in terms of computational cost, the steady-state solution is more efficiently obtained by directly solving the steady formulation of the equations, than by solving the transient Navier-Stokes equations until the steady state is reached.
 
-
-Another approach is to solve the complete system of equations in a fully coupled form. In this way, a solution is obtained that satisfies all constraints imposed by the set of equations, such as the divergence-free velocity constraint imposed by the continuity equation. While this approach may appear to be the most straightforward, it is not free of complications. Special care must be taken in the algorithms for solving the (usually nonlinear) associated problem, as this can easily lead to problems with convergence. 
-
+\section{The XNSEC solver} \label{sec:XNSECSolver}
+The XNSEC solver is mainly focused on the simulation of combustion using the low-Mach equations. The equations are solved in a fully coupled way, and the associated nonlinear problem is solved by means of a globalized Newton method. Motivated by future work, where a burning droplet is going to be simulated, the solver is embedded in the framework for \gls{XDG} solvers presented in \textcite{kummerExtendedDiscontinuousGalerkin2017}, which focuses on applications for multi-phase flows using a sharp interface approach employing a level-set method. However, in the present work only the single-phase case is treated. 
  
-
-The DG method has also been used for simulations of combustion, mainly within a compressible framework. In the work from Johnson et al. \textcite{johnsonConservativeDiscontinuousGalerkin2020} the compressible Navier--Stokes equations are solved using a nodal DG scheme for combustion with complex chemistry and transport parameters. An hp-adaptive method is also presented, and shown to be useful for solving the ordinary differential equations used for describing the unsteady behaviour of the system.  Similarly in the work from \textcite{lvHighorderDiscontinuousGalerkin2017} a DG solver for multi-component chemically reacting flows, which solves the fully compressible Navier-Stokes equation, is presented. A hybrid-flux formulation is used, where a conservative Riemann solver is used for shock treatment, and a double-flux formulation is used in smooth regions. They show its applicability for non-reacting and reacting flows, particularly for systems characterized by high Mach numbers. On the other hand, the solution of combustion problems using the DG method in an incompressible framework is a topic that has not received much attention in the literature. This fact is the motivation of the present paper.
-
-The system of equations obtained from the discretization of highly nonlinear systems  can be very difficult to solve. Fixed-point iteration schemes have been used as a linearization strategy, as done by \textcite{kleinHighorderDiscontinuousGalerkin2016} A major drawback of this approach is the highly problem dependent choice of under-relaxation factors. A much more robust strategy is the use of Newton type methods. Here, a problem-dependent factor is not needed. There is however a trade-off, because the Jacobian matrix has to be calculated, which can be computationally expensive. This approach has been used for combustion problems in numerous works. Karaa et al. \textcite{karaaPreconditionedMultigridSimulation2003} studied the axisymmetric laminar jet diffusion flame and investigated the behaviour of a multi-grid solver when using different pre-conditioners with a damped Newton algorithm. Shen et al. \textcite{shenNewtonMethodSteady2006a} investigated the use  and efficiency of a Newton method coupled with the Bi-CGSTAB method for an axisymmetric laminar jet flame. They concluded that, in terms of computational cost, the steady-state solution  is more efficiently obtained by directly solving the steady formulation of the equations, than by solving the transient Navier-Stokes equations until the steady state is reached.
-
-
-
-Puesto que para low-Mach number flows el campo de flujo está acoplado a la temperatura y por lo tanto a la densidad, no es posible resolver las ecuaciones de una forma completamente conservativa en un framework segregado.  En \textcite{knikkerComparativeStudyHighorder2011} se hace un estudio de diferentes algoritmos para la simulacion de low-Mach number flows haciendo uso de distiontas estrategias en algoritmos segregados. 
-
-
-La estrategia propuesta en el presente trabajo consiste en la resolucion completamente acoplada del sistema de ecuaciones, incluyendo en el mismo sistema todas las ecuaciones governantes discretizadas asi como los parametros de transporte y ecuacion de estado. De esta forma se logra circumvent the problems asociated with the solution of the problem using segregated approaches. Como ejemplo que motiva el desarrollo y uso de estrategia \cref{fig:RuntimeComparisonk2} se puede mostrar una comparación en los tiempos de calculo para el mismo caso haciendo uso de un fully coupled approach (XNSEC) y el algoritmo SIMPLE. Si bien ambos algoritmos permiten la simulación de low-Mach number flows, claramente el algoritmo SIMPLE requiere mucho más tiempo. Esto no es por ningun motivo un indicador de que la resolución haciendo uso de un esquema fully implicit es en general superior a una estrategia como el algoritmo SIMPLE en el contexto de DG-methods, y posiblemente una mayor optimización de los algoritmos segregados podría llevar a una mejora en los tiempos de calculo.
-
-
-This section has the objective of introducing the computational strategies used in the present work for the solution of low-Mach number flows. Parts of this section are based on the work published by \textcite{kikkerFullyCoupledHighorder} and \textcite{gutierrez-jorqueraFullyCoupledHigh2022}.
-
-\textit{BoSSS} also features a method for solving highly nonlinear problems with a homotopy strategy.
-Further details on the used Newton method solver, the homotopy strategy and its implementation are given in the next sections, which are adapted from \textcite{kikkerFullyCoupledHighorder}. For information on the mentioned orthonormalization multigrid algorithm, the interested reader is referred to the work of \textcite{kummerBoSSSPackageMultigrid2021}.
-First, the globalized Newton method is presented that allows the resolution of a nonlinear system of equations. In addition, comments on the termination criteria are given.
-
-
-In the early stages of development of the XNSEC solver the BoSSS code featured a framework for the solution of nonlinear systems using Picard iterations. These proved to be useful for systems where no large nonlinearities exist. Although the use of Picard iterations was useful for solving various types of problems (particularly problems involving incompressible flows), the method did not prove to be a particularly robust method, since it requires user-defined under-relaxation parameters in order to obtain a stable algorithm. These parameters are highly dependent on the problem at hand and require user experience to be adequately chosen.
-This motivated the development of the implementation of a Newton method for the resolution of the nonlinear system. The use of a Newton method proved to be very successful for all testcases treated in the present work. 
-
-The Newton algorithm presented in this section is a collaborative work of the \textit{BoSSS}  code developers group and has also been used for the simulation of viscoelastic \parencite{kikkerFullyCoupledHighorder} flows, among others.
-
-
-It should be noted however that this globalization strategy is still not sufficient to ensure convergence for some of the test cases presented, namely for high Rayleigh numbers for the differentially heated cavity problem. For those a homotopy strategy is used, where it is started with a low homotopy-parameter, a parameter for which the solution of the problem is not hard to find, which is gradually and carefully increased until convergence for the aimed value is reached (cf. \cref{sec:HomotopyMethod}).
-
-
-
-
-\section{The XNSEC solver}
-The XNSEC solver is mainly focused on the simulation of combustion using the low-Mach equations. Motivated by future work, where it is intended to simulate multiphase cases involving chemical reactions, such as a burning droplet, the solver is embedded in the framework for \gls{XDG} solvers presented in \textcite{kummerExtendedDiscontinuousGalerkin2017}, which focuses on applications for multi-phase flows using a sharp interface approach employing a level-set method.  In the present work only the single-phase case is treated. The solution of the algebraic system of equations exposed above is part of an iterative framework subdivided into several levels, which allows the fully coupled solution of the equations
-
+The fully coupled solution of the equations is realized by means of various algorithmic components
 \begin{itemize}
 \item  The solution of the flame-sheet problem for initialization of a fully coupled steady-state finite-reaction rate system. The strategy is presented in \cref{ssec:MethodCombustion}
 \item A timestepping framework based on a \gls{BDF} scheme, described in \textcite{kummer2018}.
@@ -62,10 +25,9 @@ The XNSEC solver is mainly focused on the simulation of combustion using the low
 \item A Newton-Dogleg method for the solution of nonlinear problems. The Dogleg globalization increases the likelihood of finding a convergent solution even in cases where no adequate initial estimate is available. An increased computational efficiency is archived by an special method for the calculation of the Jacobian matrix. The algorithm is described in \cref{sec:Newton}
 \end{itemize}
 
-Note that even for steady state calculations, a time stepping scheme is used and the steady-state solutions are obtained by using a Implicit Euler time stepping scheme. Since the scheme is unconditionally stable (see \cref{ssec:TemporalDiscretization}), it is possible to use a very large timestep to obtain the steady state solution. In particular, a value $\Delta t = 1.7976931348623157\cdot 10^{304}$ is used, which is four orders of magnitude lower than the largest possible value of a double-precision floating-point number.
+Note that even for steady state calculations, a time stepping scheme is used and the steady-state solutions are obtained by using a Implicit Euler time stepping scheme. Since the scheme is unconditionally stable (see \cref{ssec:TemporalDiscretization}), it is possible to select a very large timestep to obtain the steady state solution. In particular, a value $\Delta t = 1.7976931348623157\cdot 10^{304}$ is used, which is four orders of magnitude lower than the largest possible value of a double-precision floating-point number.
 \section{Solution of the nonlinear problem}\label{sec:SolNonLinProblem}
-
-
+In the early stages of development of the XNSEC solver, the BoSSS code featured a framework for the solution of nonlinear systems using Picard iterations. These proved to be useful for systems where no large nonlinearities exist. Although the use of Picard iterations was useful for solving various types of problems (particularly problems involving incompressible flows), the method did not prove to be a particularly robust method, since it requires user-defined under-relaxation parameters in order to obtain a stable algorithm. This motivated the development of the implementation of a Newton method for the resolution of the nonlinear system which will be presented in the following pages. The use of this globalized Newton method proved to be very successful for all testcases treated in the present work.  
 
 The variational problem defined by \cref*{DiscretizedConti,DiscretizedMomentum,DiscretizedEnergy,DiscretizedMassFractions} can be cast into a more compact notation. By subtracting all terms from the right-hand sides from the terms of the left-hand sides of \crefrange{DiscretizedConti}{DiscretizedMassFractions} the problem can be written as:
 Find $\myvector{U}_h \in \mathbb{V}_\myvector{k}$
@@ -92,7 +54,7 @@ The $i$-th component of $ \mathcal{A}(\myvector{U})$, can be defined by $\mathca
 $[\mathcal{A}(\myvector{U})]_i = \mathcal{N}( \underline{ \gvec{\Phi} } \cdot \myvector{U} , \gvec{\Phi}_i)$.
 
 \subsection{Newton's method}
-Newton's method is a very popular and well known iterative method used for finding roots of nonlinear systems. The method is particularly attractive because shows the property of having quadratic convergence sufficiently close to the solution \textcite{deuflhardNewtonMethodsNonlinear2011}. In this section the method will be briefly described. For more information the interested reader is referred to the textbook from \textcite{kelleyIterativeMethodsLinear1995}. 
+Newton's method is a very popular and well known iterative method used for finding roots of nonlinear systems. The method is particularly attractive because shows the property of having quadratic convergence sufficiently close to the solution \parencite{deuflhardNewtonMethodsNonlinear2011}. In this section the method will be briefly described. For more information the interested reader is referred to the textbook from \textcite{kelleyIterativeMethodsLinear1995}. 
 
 Consider the linearization of \cref{Eq:nonLinSystem} around $\myvector{U}_n$,
 \begin{equation}
@@ -114,10 +76,10 @@ In the classical undamped Newton method, the correction step $\myvector{s}'_n$ i
 \end{equation}
 which is computed using a direct solver. Unfortunately, convergence of the Newton method for any starting value $\myvector{U}_0$ is not guaranteed. As a way to remedy this problem, so-called globalization methods have been developed, where basically the area of convergence of the Newton algorithm is enlarged used different kind of strategies.  
 
-A big drawback of Newton method is the calculation of the Jacobian matrix, since its direct calculation using usual methods can be computationally expensive. The \textit{BoSSS} framework provides an efficient algorithm for the evaluation of the Jacobian, and is presented in \cref{ssec:EvalJacobian}
+A big drawback of Newton method is the calculation is the necessity of the Jacobian matrix, since its direct calculation using usual methods can be computationally expensive. The \textit{BoSSS} framework provides an efficient algorithm for the evaluation of the Jacobian, and is presented next.
 
 \subsection{Calculation of the Jacobian matrix} \label{ssec:EvalJacobian}
-During the development process of the XNSEC solver different strategies for the calculation of the Jacobian matrix $\partial \mathcal{A}$ were tested and are shown here. 
+During the development process of the XNSEC solver different strategies for the calculation of the Jacobian matrix $\partial \mathcal{A}$ were developed and are shown here. 
 
 First, it is interesting to show the relationship existing between two well known methods for solving nonlinear systems: Picard iterations and Newton's method. Note that the nonlinear problems \cref{Eq:nonLinSystem} appearing in this work have the structure
 \begin{equation}
@@ -129,9 +91,9 @@ Thus, the Jacobian matrix \cref{Eq:Jacobian} can be written as
 \end{equation}
 Inserting \cref{eq:LinearForm} and  \cref{eq:JacMatrix2} into \cref{eq:LinearizedSys}, the linear system to be solved using Newton's method can be written as
 \begin{equation}
-	\underbrace{A(\myvector{U}_n)(\myvector{U}_n+\myvector{s}'_n) - \myvector{b}}_{\text{Picard system}} + A'(\myvector{U}_n)\myvector{U}_n\myvector{s}'_n = 0
+	\underbrace{A(\myvector{U}_n)(\myvector{U}_n+\myvector{s}'_n) - \myvector{b}}_{\text{Picard system}} + A'(\myvector{U}_n)\myvector{U}_n\myvector{s}'_n = 0 \label{eq:PicardNewtonComp}
 \end{equation}
-This makes the relationship between the two algorithms apparent. Unlike Picard's method of iterations, Newton's method requires additionally the evaluation of the Jacobi matrix, which must be approximated in some way. This section shows three strategies that were used throughout the development of this work for that purpose.
+This makes the relationship between the two algorithms apparent, and shows that by usind Picard iterations some terms are being neglected from the iteration scheme. Unlike Picard's method of iterations, Newton's method requires additionally the evaluation of the Jacobi matrix, which must be approximated in some way. This section shows three strategies that were used throughout the development of this work for that purpose.
 
 \subsubsection{Ad-hoc linearization of the Jacobian matrix}
 For some problems, particularly saddle-point problems, the Jacobian $A$' can be approximated fairly well by simply evaluating the operator matrix. Thus, the system to be solved for Newton Iteration yields
@@ -142,12 +104,11 @@ This strategy offers a computationally cheap algorithm to obtain a solution of t
 
 \subsubsection{Approximation of the Jacobian matrix by finite differences}
 
-A straightforward way of calculating the Jacobian matrix is to use forward finite differences as an approximation.
-
+A straightforward way of calculating the Jacobian matrix appearing in \cref{eq:PicardNewtonComp} is to use forward finite differences as an approximation
 \begin{equation}
-	A'(\myvector{U})_j \coloneqq \frac{A(\myvector{U}+\varepsilon\norm{\myvector{U}}\myvector{e}_j )-A(\myvector{U})  }{\varepsilon\norm{\myvector{U}}}
+	A'(\myvector{U})_j \coloneqq \frac{A(\myvector{U}+\varepsilon\norm{\myvector{U}}\myvector{e}_j )-A(\myvector{U})  }{\varepsilon\norm{\myvector{U}}},
 \end{equation}
-where $\myvector{e}_j$ is the unit vector with $j$th component equal to one, and zero in all other components. The value of $\varepsilon$ should be chosen small, as usual when calculating finite differences, but also large enough not to disturb the calculations due to problems caused by floating-point rounding calculations.  For all calculations in this work, the value $\varepsilon = \sqrt{\mathtt{eps}}$ was adequate, where $\mathtt{eps} = 2.22044604925031 \cdot 10^{-16}$ is the floating point accuracy for double precision.
+where $\myvector{e}_j$ is the unit vector with $j$th component equal to one, and zero in all other components. The value of $\varepsilon$ should be chosen small, as usual when calculating finite differences, but also large enough not to disturb the calculations due to problems caused by floating-point rounding calculations.  Here, value $\varepsilon = \sqrt{\mathtt{eps}}$ is selected, where $\mathtt{eps} = 2.22044604925031 \cdot 10^{-16}$ is the floating point accuracy for double precision.
 
 The calculation of the forward finite difference approximation is a costly operation, especially for large systems, where it can be particularly prohibitive. However it offers a robust way to approximate the Jacobian. Strategies for improving the efficiency of this calculation exists, such as the use of analytic Jacobians, or use of the sparsity patterns of the Jacobian \parencite{kelleyIterativeMethodsLinear1995}. These are not treated in the present work. 
 \subsubsection{Approximation of the Jacobian from differentiation of equation components}
@@ -186,11 +147,9 @@ and by application of the chain rule, it is possible to derive an expression for
 	\oint_{\Gamma} \ldots \mathrm{dS} .
 	\label{eq:JacobiGestalt}
 \end{equation}
-All omitted  terms in \cref{eq:JacobiGestalt} can be approximated analogously to the contributions for $N_1$. In the \BoSSS code, derivatives $ \partial_{ \myvector{U}_h} N_1 ( \ldots )$ and  $ \partial_{ \nabla \myvector{U}_h} N_1 ( \ldots )$ are approximated by a finite difference, using a perturbation by $\varepsilon$ in the respective argument.
+All omitted  terms in \cref{eq:JacobiGestalt} can be approximated analogously to the contributions for $N_1$. In the \BoSSS code, derivatives $ \partial_{ \myvector{U}_h} N_1 ( \ldots )$ and  $ \partial_{ \nabla \myvector{U}_h} N_1 ( \ldots )$ are approximated by a finite difference, using a perturbation by $\mathtt{eps}$ in the respective argument.
 
 This approach has the significant improvement that it offers an efficient and accurate way to obtain the Jacobian matrix, unlike the two approaches mentioned above. For this reason, this option is the one chosen for the resolution of all the testcases shown in this work.
-
-
 
 \subsection{Newton-Dogleg Method} \label{sec:Newton}
 %However, if the initial solution guess is not adequate, the method converge to a solution slowly, or may not even converge at all. A popular globalized Newton method is the Newton-Dogleg method, \textcite{pawlowskiInexactNewtonDogleg2008} which is based on a trust-region technique.
@@ -218,7 +177,7 @@ Substituting $\myvector{w} \coloneqq - \partial \mathcal{A}(\myvector{U}_n) \nab
 	\label{eq:CauchyPoint}
 \end{equation}
 
-In contrast to the classical undamped Newton Method, where each iteration used the whole Newton-step $\vec{s}_n$ (cf. \cref{eq:NewtonStep}), within the Newton-Dogleg method, the correction step  $\myvector{s}'_n$ is chosen along the so-called Dogleg curve, which is the piece-wise linear
+In contrast to the classical undamped Newton Method, where each iteration used the whole Newton-step $\vec{s}_n$ (cf. \cref{eq:NewtonStep}) within the Newton-Dogleg method, the correction step  $\myvector{s}'_n$ is chosen along the so-called Dogleg curve, which is the piece-wise linear
 curve from the origin to $\myvector{g}_n$ and further to $ \myvector{s}_n$. The selection of $\myvector{s}'_n$ on this curve is controlled by the trust-region diameter $\delta > 0$:
 \begin{itemize}
 	\item
@@ -265,12 +224,10 @@ $\textrm{pred}_n \coloneqq \| \mathcal{A} (\myvector{U}_n) \|_2 - \| \mathcal{A}
 \end{itemize}
 \subsection{Linear solver}\label{ssec:LinearSolver}
 
-The computation of the Newton step according to \cref{eq:NewtonStep} requires the inversion of the Jacobian matrix.  For most of the problems presented in this work, the system is solved by using  \gls{PARDISO}, originally developed by Schenk et al.  \parencite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
-from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows'' library collection.
+The computation of the Newton step according to \cref{eq:NewtonStep} requires the inversion of the Jacobian matrix.  For most of the problems presented in this work, the system is solved by using the package \gls{PARDISO}, originally developed by Schenk et al.  \parencite{schenkEfficientSparseLU2000,schenkTwolevelDynamicScheduling2002,schenkSolvingUnsymmetricSparse2004a},
+from the ``Intel(R) Parallel Studio XE 2018 Update 3 Cluster Edition for Windows'' library collection. However for some of the testcases presented in this work, particularly the cases where combustion is present, the use of \texttt{PARDISO} for the solution of the linear problem was not possible due to memory problems. A limit of approximately 500,000 DOFs was observed. For larger problems an iterative scheme was used.
 
-However for some of the testcases presented later, particularly the cases with combustion, the use of \texttt{PARDISO} for the solution of the linear problem resulted in memory problems. A limit of approximately 500,000 DOFs was observed. 
-
-An active field of study in the BoSSS development group is that of iterative algorithms for solving linear systems. The BoSSS code features a multigrid orthonormalization method \parencite{kummerBoSSSPackageMultigrid2021}, which uses additive Schwarz schemes as smoothers for all multigrid levels, except the coarsest one, where \texttt{PARDISO} is used. This method of solution proved to be adequate to solve systems that are too big to be solved directly by \texttt{PARDISO}, and is adopted for all combustion calculations.
+An active field of study in the BoSSS development group is that of iterative algorithms for solving linear systems. The BoSSS code features a multigrid orthonormalization  algorithm \parencite{kummerBoSSSPackageMultigrid2021}, which uses additive Schwarz schemes as smoothers for all multigrid levels, except the coarsest one, where \texttt{PARDISO} is used. This method of solution proved to be adequate to solve systems that are too big to be solved directly by \texttt{PARDISO}, and is adopted for all combustion calculations.
 Additionally, BoSSS includes a matrix preconditioning procedure using LU-factorization. In particular, it allows preconditioning of each block of the matrix, with the objective of reducing the condition number of the system.
 
 \subsection{Termination criterion} \label{ssec:TerminationCriterion}
@@ -310,7 +267,7 @@ The choice of the values of the parameter of the intermediate steps of the homot
 
 Based on the above, a methodology for homotopy methods was implemented in the BoSSS framework making use of an algorithm that automatically determines a homotopy path to the full system solution. This algorithm is based on the ideas from the textbook by  \textcite{deuflhardNewtonMethodsNonlinear2011}. In this section the main ideas of the algorithm are presented, as already shown in \parencite{gutierrez-jorqueraFullyCoupledHigh2022}. For a more detailed explanation of the method, the interested reader is referred to the mentioned textbook.
 
-The first step is to identify a parameter that causes difficulties in the solution of the nonlinear problem. Hereafter this variable will be referred to as the homotopy parameter. 
+The first step is to identify a parameter that causes difficulties in the solution of the nonlinear problem. Hereafter this variable will be referred to as the homotopy parameter $\mathrm{hp}$. 
 As mentioned, the main idea of the homotopy strategy is to solve a series of simpler problems, starting with a parameter where the problem is easy to solve, and carefully increasing it until the desired value is reached.  Let  $\mathrm{Hp}$ be the value of the homotopy parameter for which a solution is sought. Let
 \begin{equation}
 	\mathcal{A}_{\mathrm{hp}^*}(\myvector{U}) = 0

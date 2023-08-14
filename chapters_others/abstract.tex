@@ -1,30 +1,11 @@
-The aim of this work is to present a high-order fully coupled numerical solver based on the Discontinuous Galerkin method for simulating reactive flows. The discretized set of equations of continuity, momentum, energy, and chemical species are solved in a fully coupled manner, using specialized nonlinear and linear solvers together with adequate preconditioning. The low-Mach approximation of the governing equations is used which allows the simulation of non-Boussinesq flow and the chemical reaction is modeled using a one-step combustion model with variable kinetic parameters.
-A detailed derivation of the governing equations is presented, with emphasis on the 
+\glsresetall
+In this work, a high-order fully coupled numerical solver based on the \Gls{DG} method for simulating reactive flows is presented. The discretized set of equations of continuity, momentum, energy and chemical species are solved in a fully coupled manner using a globalized Newton algorithm. The main objective of the solver is to create a framework for investigating diffusion flames using the \Gls{DG} method. For this, the low-Mach approximation of the Navier--Stokes equations is used, which enables the simulation of non-Boussinesq flows. The chemical reaction is modeled using a one-step combustion model with variable kinetic parameters, which is specifically tailored for hydrocarbon combustion. The temperature and concentration dependence of the density, heat capacity, and transport parameters is considered in the formulation. 
 
- The temporal discretization is realized in a implicit manner using BDF-schemes. 
+A detailed description of the governing equations utilized in this study is presented, along with a comprehensive discussion of their derivation and the assumptions involved.
+The general procedure involved in the temporal and spatial discretization of the \Gls{DG} method is illustrated using a basic transport equation. Subsequently, the DG discretization of the governing equations for reacting flows is presented, and numerical fluxes are thoroughly described. 
 
+The computational methods developed for solving the governing equations are presented in detail. In particular, the strategy for the solution of the nonlinear problem by means of the globalized Dogleg-Newton method is explained, together with an efficient method for calculating the Jacobian matrix. Furthermore, various strategies that improve the convergence properties of the algorithm are presented. These include a fully automatized homotopy continuation method for the solution of highly nonlinear systems, an Adaptive Mesh Refinement strategy used for generating adequate meshes on critical areas of the simulation, and a solver safeguard for avoiding unphysical solutions during the calculation. 
 
+For steady reacting flows an additional strategy is applied, which allows to find adequate initial estimates for the simulation of diffusion flames. This approach involves solving a simplified set of equations obtained under the assumption of an infinitely fast chemical reaction and is a robust method for finding the solution of combustion systems.
 
-
-
-
-The solution of the nonlinear problem is done by means of the Dogleg-Newton method, a globalized algorithm which increases the likelihood of finding a convergence solution even in cases where no adequate initial is avaliable. Various strategies that improve the convergence properties of the algorithm are also presented. 
-Fully automatized homotopy method for the solution of highly nonlinear systems, based in the idea solving a series of simpler problems until convergence of the original problem is reached.
-
-An adaptive mesh refinement framework is also presented, which is used for obtaining suitable meshes for a better representation of high gradients present in some of the problems presented.
-
-Steady state simulation of diffusion flames are initialized by means of flame-sheet estimates, which correspond to the solution of a system with infinitely fast chemistry. These estimates serve as suitable initial conditions that guide the algorithm towards the solution where the flame is present.
-
-
-
-The use of a fully coupled method as an alternative to segregated approaches is explored. 
-The fully coupled method proves to be a robust approach 
-
-===================================
-
- Details on the spatial dis-cretization and the nonlinear solver are presented. 
- The method is tested withreactive and nonreactive benchmark cases. Convergence studies are presented,and we show that the expected convergence rates are obtained. 
- The solver forthe low-Mach equations is used for calculating a differentially heated cavityconfiguration, which is validated against benchmark solutions. 
- 
- Additionally,a two-dimensional counter diffusion flame is calculated, and the results arecompared with the self-similar one dimensional solution of said configuration.
-
+A thorough validation of the solver using several test cases is shown, which also highlight important advantages of the DG method and the algorithms introduced in this work. The test cases validate the solver against various benchmark solutions obtaining results in very good agreement with the literature. Additionally, the accuracy of the method is assessed in various flow settings, all of them demonstrating the expected high convergence rates of the \Gls{DG} method. However, stability problems are observed in transient simulations of low-Mach flows in which density exhibits large variations.

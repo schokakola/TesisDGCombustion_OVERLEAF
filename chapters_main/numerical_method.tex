@@ -101,7 +101,7 @@ where $h$ is a characteristic cell length and $C$ is a constant that depends on 
 %There are two general approaches used for the representation of the solution using basis functions: modal and nodal. Each one of them present some advantages and disadvantages \parencite{hesthavenNodalDiscontinuousGalerkin2008}. 
 In this work a modal polynomial representation is used, using in particular Legendre polynomials. The basis functions are chosen such that they are orthogonal to each other 
 \begin{equation}
-	\int_{K_j} \phi_{j,m}\phi_{j,n} \text{d}V= \delta_{mn}
+	\int_{K_j} \phi_{j,m}\phi_{j,n} \text{d}V= \delta_{mn},
 \end{equation}
 where $\delta_{mn}$ is the Kronecker delta. This property implies that the mass matrix (to be defined later) equals the identity matrix, at least for constant density systems. This is advantageous particularly for incompressible flows, where the calculation of the mass matrix is dramatically simplified using this property. 
 \subsubsection{The local formulation}

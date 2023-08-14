@@ -26,6 +26,11 @@
 	description={Pressure},
 	sort={press}, type=symbols, symbol=[$p$]
 }
+\newglossaryentry{ThermodynamicPressure}{
+	name=\ensuremath{p_0},
+	description={Thermodynamic Pressure},
+	sort={pressther}, type=symbols, symbol=[$p_0$]
+}
 \newglossaryentry{ViscTensor}{
 	name=\ensuremath{\mytensor{\tau}},
 	description={Viscous tensor},
@@ -74,6 +79,11 @@
 	description={Total number of species in the mixture},
 	sort={N}, type=symbols, symbol=[$-$]
 }
+\newglossaryentry{TotalNumberReactions}{
+	name=\ensuremath{M},
+	description={Total number of chemical reactions},
+	sort={M}, type=symbols, symbol=[$M$]
+}
 %\newglossaryentry{TotalNumberSpecies}{
 %	name=\ensuremath{\gls{TotalNumberSpecies}},
 %	description={Total number of species in the mixture},
@@ -89,6 +99,17 @@
 	description={Mass fraction of species $k$},
 	sort={yk}, type=symbols, symbol=[$-$]
 }
+\newglossaryentry{MixtureFraction}{
+	name=\ensuremath{z},
+	description={Mixture fraction},
+	sort={z}, type=symbols, symbol=[$z$]
+}
+
+\newglossaryentry{MoleFraction_k}{
+	name=\ensuremath{X_k},
+	description={Mole fraction of species $k$},
+	sort={xk}, type=symbols, symbol=[$X_k$]
+}
 \newglossaryentry{DiffCoeff}{
 	name=\ensuremath{D},
 	description={Diffusion coefficient},
@@ -100,6 +121,14 @@
 	description={Stoichiometric coefficient of species $k$},
 	sort={nu}, type=symbols, symbol=[$-$]
 }
+
+\newglossaryentry{massStoichRatio}{
+	name=\ensuremath{s},
+	description={Mass stoichiometric ratio},
+	sort={s}, type=symbols, symbol=[$s$]
+}
+
+
 \newglossaryentry{heatCapacity_k}{
 	name=\ensuremath{c_{p,k}},
 	description={Specific heat capacity of species $k$},
@@ -113,19 +142,19 @@
 
 \newglossaryentry{specificEnthalpy_k}{
 	name=\ensuremath{h_k},
-	description={Specific enthalpy of $k$ species.},
+	description={Specific enthalpy of $k$ species},
 	sort={hk}, type=symbols, symbol=[$-$]
 }
 
 \newglossaryentry{formationEnthalpy_k}{
 	name=\ensuremath{h_k^0},
-	description={Formation enthalpy of $k$ species.},
+	description={Formation enthalpy of $k$ species},
 	sort={hk}, type=symbols, symbol=[$-$]
 }
 
 \newglossaryentry{sensibleEnthalpy_k}{
 	name=\ensuremath{h_k},
-	description={Sensible enthalpy of $k$ species.},
+	description={Sensible enthalpy of $k$ species},
 	sort={hk}, type=symbols, symbol=[$-$]
 }
 
@@ -203,7 +232,7 @@ sort={Fro}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{ExpansionRatio}{
 	name=\ensuremath{\text{ER}},
-	description={Expansion ratio the backward-facing step},
+	description={Expansion ratio of the backward-facing step},
 	sort={Er}, type=symbols, symbol=[$-$]
 }
 
@@ -326,43 +355,55 @@ sort={Fro}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{BCcont}{
 	name=\ensuremath{\mathcal{B}^1},
-	description={Boundary condition form of the continuity equation.},
+	description={Boundary condition form of the continuity equation},
 	sort={b1}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{BCmom}{
 	name=\ensuremath{\mathcal{B}^2},
-	description={Boundary condition forms of the momentum equations.},
+	description={Boundary condition forms of the momentum equations},
 	sort={b2}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{BCenergy}{
 	name=\ensuremath{\mathcal{B}^3},
-	description={Boundary condition form of the temperature equation.},
+	description={Boundary condition form of the temperature equation},
 	sort={b3}, type=symbols, symbol=[$-$]
 }
 \newglossaryentry{BCMass}{
 	name=\ensuremath{\mathcal{B}^4},
-	description={Boundary condition forms of the mass fraction equations.},
+	description={Boundary condition forms of the mass fraction equations},
 	sort={b4}, type=symbols, symbol=[$-$]
 }
 
 \newglossaryentry{heatVec}{
 name=\ensuremath{\vec{q}},
-description={Local heat flux.},
+description={Local heat flux},
 sort={q}, type=symbols, symbol=[$-$]
 }
 
 
 \newglossaryentry{massVE}{
 	name=\ensuremath{\vec{j}_k},
-	description={Molecular mass flux vector of species $k$.},
+	description={Molecular mass flux vector of species $k$},
 	sort={j}, type=symbols, symbol=[$-$]
 }
 
 \newglossaryentry{SutherlandConstant}{
 	name=\ensuremath{S},
-	description={Sutherland constant.},
+	description={Sutherland constant},
 	sort={suth}, type=symbols, symbol=[$-$]
 }
+
+\newglossaryentry{SutherlandTemperature}{
+	name=\ensuremath{T_\text{suth}},
+	description={Sutherland temperature},
+	sort={Tsuth}, type=symbols, symbol=[$T$]
+}
+\newglossaryentry{SutherlandVisc}{
+	name=\ensuremath{\mu_\text{suth}},
+	description={Sutherland viscosity},
+	sort={viscsuth}, type=symbols, symbol=[$\mu$]
+}
+
 \newglossaryentry{rateProgress}{
 name=\ensuremath{\mathcal{Q}_j},
 description={Rate of progress of reaction $j$},
@@ -377,4 +418,37 @@ sort={q}, type=symbols, symbol=[$-$]
 	name=\ensuremath{T_a},
 	description={Activation temperature},
 	sort={Ta}, type=symbols, symbol=[$-$]
+}
+\newglossaryentry{ChemReactOrder_a}{
+	name=\ensuremath{a},
+	description={Reaction order of chemical model},
+	sort={a}, type=symbols, symbol=[$a$]
+}
+\newglossaryentry{ChemReactOrder_b}{
+	name=\ensuremath{b},
+	description={Reaction order of chemical model},
+	sort={b}, type=symbols, symbol=[$b$]
+}
+
+\newglossaryentry{polDeg}{
+	name=\ensuremath{p},
+	description={Polynomial degree},
+	sort={p}, type=symbols, symbol=[$-$]
+}
+
+\newglossaryentry{localEqRation}{
+	name=\ensuremath{p},
+	description={Local equivalence ratio},
+	sort={p}, type=symbols, symbol=[$-$]
+}
+
+\newglossaryentry{HeatOfReaction}{
+	name=\ensuremath{Q},
+	description={Mass heat of reaction},
+	sort={Q}, type=symbols, symbol=[$Q$]
+}
+\newglossaryentry{HeatOfReactionMolar}{
+	name=\ensuremath{Q^m},
+	description={Molar heat of reaction},
+	sort={Qm}, type=symbols, symbol=[$Q^m$]
 }

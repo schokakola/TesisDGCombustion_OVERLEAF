@@ -11,7 +11,7 @@ As a further test case for the low-Mach solver, a Couette flow with a vertical t
 %\subsubsection{Set-up}
 
 In \cref{fig:CouetteTempDiff_scheme} a schematic representation of the test case is shown. The domain is chosen as $\Omega = [0,1]\times[0,1]$, and Dirichlet boundary conditions are used for all boundaries. The upper wall corresponds to a moving wall ($u = 1$) with a fixed temperature $T=T_h$. The bottom wall is static ($u = 0$) and has a constant temperature $T = T_c$.
-Additionally, the system is subjected to a gravitational field, where the gravity vector only has a component in the $y$ direction. Under these conditions, the x-component of velocity, pressure, and temperature are only dependent on the $y$ coordinate, that is, $u = u(y)$, $T = T(y)$ and $p = p(y)$. The governing equations (\cref{eq:NS-eq}) reduce to%
+Additionally, the system is subjected to a gravitational field, where the gravity vector only has a component in the $y$ direction. Under these conditions, the x-component of velocity, pressure, and temperature are only dependent on the $y$ coordinate, that is, $u = u(y)$, $T = T(y)$ and $p = p(y)$. The governing equations reduce to%
 \begin{subequations}
     \begin{align}
     	 & \frac{1}{\gls{Reynolds}} \pfrac{ }{y}\left(\mu\pfrac{u}{y}\right) = 0,\\

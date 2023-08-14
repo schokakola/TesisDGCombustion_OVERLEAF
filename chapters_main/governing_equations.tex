@@ -79,8 +79,8 @@ The molecular mass flux vector $\hat{\vec{j}}_k$ of species $k$ is defined as $ 
 \begin{equation}\label[pluralequation]{MaxwellStefan}
 	\nabla X_p = \sum_{k=1}^{N}\frac{X_p X_k}{D_{pk}}(\vec{U}_k-\vec{U}_p), \qquad p = 1,\dots,N. 
 \end{equation}
-Here $D_{pk} = D_{kp}$ is the binary mass diffusion coefficient of species $p$ into species $k$. $X_p$ is the mole fraction of species $k$ and is related to the mass fraction of $k$ as $ X_k = Y_k \hat W /\hat W_k$.
-The solution of \Cref{MaxwellStefan} is often a difficult and costly task \parencite{williamsCombustionTheoryFundamental2000,poinsotTheoreticalNumericalCombustion2011}, and often simplifications are made. It can be shown that for binary mixtures ($N = 2$), and for mixtures containing multiple species ($N>2$) with equal diffusion coefficients, Equations (\ref{MaxwellStefan}) reduce exactly to the well-known Fick's law
+Here $D_{pk} = D_{kp}$ is the binary mass diffusion coefficient of species $p$ into species $k$. $\gls{MoleFraction_k}$ is the mole fraction of species $k$ and is related to the mass fraction of $k$ as $ X_k = Y_k \hat W /\hat W_k$.
+The solution of the system defined by \Cref{MaxwellStefan} is often a difficult and costly task \parencite{williamsCombustionTheoryFundamental2000,poinsotTheoreticalNumericalCombustion2011}, and often simplifications are made. It can be shown that for binary mixtures ($N = 2$), and for mixtures containing multiple species ($N>2$) with equal diffusion coefficients, Equations (\ref{MaxwellStefan}) reduce exactly to the well-known Fick's law
 \begin{equation}
 	\hat{\vec{j}}_k = -\rho \hat D_k \nabla Y_k.
 \end{equation}\label{eq:FickLaw}
@@ -109,7 +109,7 @@ where $\nu'_{jk}$ and $\nu''_{jk}$ are the molar stoichiometric coefficients of 
 %%%%%%%%
 The reaction rate of species $k$ is $\hat \omega_k$, which accounts for the net change in the total amount of species $k$ due to $M$ chemical reactions. Its given by
 \begin{equation} \label{eq:reacRateDef}
-	\hat \omega_k  = \hat W_k \sum_{j=1}^{M}\nu_{jk}\hat{\mathcal{Q}}_j.
+	\hat \omega_k  = \hat W_k \sum_{j=1}^{\gls{TotalNumberReactions}}\nu_{jk}\hat{\mathcal{Q}}_j.
 \end{equation}
 Here $\nu_{kj} = \nu''_{kj} -\nu'_{kj}$, and $\hat{\mathcal{Q}}_j$ is the rate of progress of the reaction $j$, which is usually modeled using Arrhenius-type expressions.\newline
 
@@ -129,7 +129,7 @@ with $n$ and $m$ denoting the number of carbon and hydrogen atoms composing a mo
 \begin{align}
 	\hat{\mathcal{Q}}= \hat B e^{-\hat T_a/\hat T} \left(\frac{\hat \rho Y_F}{\hat W_F}\right)^a \left(\frac{\hat \rho Y_O}{\hat W_O}\right)^b . \label{eq:DimArr}
 \end{align}%
-Here, the subscripts $F$ and $O$ refer to fuel and oxidizer, respectively. The parameter $\hat{B}$ corresponds to the pre-exponential factor, $\hat T_a$ is the activation temperature, and $a$ and $b$ are reaction orders. For a one-step reaction model, the reaction rate of the $k$-th component in \cref{eq:reacRateDef} is
+Here, the subscripts $F$ and $O$ refer to fuel and oxidizer, respectively. The parameter $\hat{B}$ corresponds to the pre-exponential factor, $\hat T_a$ is the activation temperature, and $\gls{ChemReactOrder_a}$ and $\gls{ChemReactOrder_b}$ are reaction orders. For a one-step reaction model, the reaction rate of the $k$-th component in \cref{eq:reacRateDef} is
 \begin{equation}
 	\hat \omega_k  =  \nu_{k} \hat W_k\hat{\mathcal{Q}}.
 \end{equation}
@@ -176,7 +176,7 @@ Within the model proposed by \textcite{fernandez-tarrazoSimpleOnestepChemistry20
 \begin{equation}\label{eq:equivalenceRatio}
 	\phi = \frac{s Y_F^0}{Y_O^0}\frac{s Y_F-Y_O+Y_O^0}{s(Y_F^0-Y_F) + Y_O},
 \end{equation}
-where $Y_F^0$ and $Y_O^0$ are the mass fractions of the fuel and oxidizer flows in their corresponding feed streams, and $s$ is the mass stoichiometric ratio, defined as $s =\nu_O \hat W_O/\nu_F \hat W_F$.
+where $Y_F^0$ and $Y_O^0$ are the mass fractions of the fuel and oxidizer flows in their corresponding feed streams, and $s$ is the mass stoichiometric ratio, defined as $\gls{massStoichRatio} =\nu_O \hat W_O/\nu_F \hat W_F$.
 The activation energy depends on $\phi$ as
 \begin{equation}
 	\hat{T}_a(\phi)=
@@ -197,7 +197,7 @@ and the molar heat release according to
 
 The parameter $\alpha$ is a constant that depends on the hydrocarbon being considered, in particular $\alpha = 0.21$ for methane combustion.
 
-It should be noted that \cref{eq:heatReleaseOneStep} yields nonphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep}. However, in practice, this should not have a significant effect because the non-physical values of $\hat Q$ appear in zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. However, setting an upper bound for $\phi$ is helpful for avoiding possible numerical instabilities.
+It should be noted that \cref{eq:heatReleaseOneStep} yields unphysical values of $\hat Q$ for large values of $\phi$. This problem can be avoided by setting an upper boundary value for $\phi$ in \cref{eq:heatReleaseOneStep}. However, in practice, this should not have a significant effect because the non-physical values of $\hat Q$ appear in zones where the reaction rate $\hat{\rateReac}$ is very close to zero, making the factor $\hat Q \hat{\rateReac}$ in the temperature equation negligible. However, setting an upper bound for $\phi$ is helpful for avoiding possible numerical instabilities.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -233,7 +233,7 @@ In this work a nondimensional formulation of the governing equations is used. Fo
 	\vec{g} = \frac{\hat{\vec{g}}}{\RefVal{g}},\quad
 	Q = \frac{\hat Q}{\hat{Q}_0}.
 \end{align*}
-Here $\RefVal{u}, \RefVal{L}$, $\RefVal{p}$, $\RefVal{t}$, and $\RefVal{T}$ are the reference velocity, length, pressure, time, and temperature, respectively, and are equal to some characteristic value for the particular studied configuration. Furthermore, $\RefVal{g}$ is the magnitude of the gravitational acceleration and $\RefVal{W}$ is the reference molecular weight. The reference transport properties $\RefVal{\mu}$, $\RefVal{k}$, $\RefValS{D}{k}$ and the reference heat capacity of the mixture $\RefValS{c}{p}$ are evaluated at the reference temperature $\RefVal{T}$. Similarly, the reference density must satisfy the equation of state, thus $\RefVal{\rho} = \RefVal{p}\RefVal{W}/(\hat{\mathcal{R}}\RefVal{T})$.  By introducing these definitions into the governing  \cref{eq:NS_Conti,eq:NS_Momentum,eq:NS_energy,eq:NS_SpeciesBalance}, together with the transport coefficients and equations for the source terms $\omega_T$ and $\omega_k$ given by the one-step model, the nondimensional low-Mach number set of equations is obtained
+Here $\RefVal{u}, \RefVal{L}$, $\RefVal{p}$, $\RefVal{t}$, and $\RefVal{T}$ are the reference velocity, length, pressure, time, and temperature, respectively, and are equal to some characteristic value for the particular studied configuration. Furthermore, $\RefVal{g}$ is the magnitude of the gravitational acceleration and $\RefVal{W}$ is the reference molecular weight. The reference transport properties $\RefVal{\mu}$, $\RefVal{k}$, $\RefValS{D}{k}$ and the reference heat capacity of the mixture $\RefValS{c}{p}$ are evaluated at the reference temperature $\RefVal{T}$. Similarly, the reference density must satisfy the equation of state, thus $\RefVal{\rho} = \RefVal{p}\RefVal{W}/(\hat{\mathcal{R}}\RefVal{T})$.  By introducing these definitions into the governing  \cref{eq:NS_Conti,eq:NS_Momentum,eq:NS_energy,eq:NS_SpeciesBalance}, together with the transport coefficients and equations for the source terms $\omega_T$ and $\omega_k$ given by the one-step model, the nondimensional reactive low-Mach number set of equations is obtained
 \begin{subequations}
 	\begin{align}
 		 & \pfrac{\rho}{t} + \nabla \cdot (\rho \vec{u})   = 0, \label{eq:LowMach_Conti}                                                                                                                                                                                                   \\
@@ -274,7 +274,7 @@ where $T_a = \hat{T}_a / \RefVal{T}$. Furthermore, the nondimensional heat relea
 \end{equation}
 with $\phi$ evaluated according to \cref{eq:equivalenceRatio}. In the low-Mach limit, the ideal gas equation depends on the thermodynamic pressure, temperature and mass fractions. It reads in its nondimensional form
 \begin{align} \label{eq:ideal_gas}
-	\rho(p_0,T, \vec{Y}) = \frac{p_0}{T \SumOvAllns \frac{Y_k}{W_k}}.
+	\rho(p_0,T, \vec{Y}) = \frac{\gls{ThermodynamicPressure}}{T \SumOvAllns \frac{Y_k}{W_k}}.
 \end{align}
 As mentioned previously, in a closed system, the thermodynamic pressure must be determined to ensure mass conservation. Conversely, in an open system, the pressure is equal to the atmospheric pressure. By integrating \cref{eq:ideal_gas} into the entire domain $\Omega$, the expression
 \begin{equation}
@@ -296,7 +296,7 @@ The model for the transport parameters can be simplified by assuming constant va
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{A note on the multiple solutions of the system}
-The system of equations shown in this section has the particularity that its solution presents branching phenomena, which means that there are several solutions to the problem. The presence of branching solutions often arises in nonlinear or complex systems, where multiple stable or unstable states can exist, leading to various possible solutions for the given set of equations, depending on the initial conditions considered for the solution.
+The system of equations shown in this section has the particularity that its solution presents branching phenomena. The presence of branching solutions often arises in nonlinear or complex systems, where multiple stable or unstable states can exist, leading to various possible solutions for the given set of equations, depending on the initial conditions considered for the solution.
 
 In context of the reactive equations presented above, one solution is evidently that of pure mixing (also called frozen chemistry), in which combustion does not occur and the equations are simply describing a mixing process. Another solution is that of a system under combustion, where the reaction takes place in a thin but finite reaction zone, in which the reactants can overlap. This phenomenon is usually represented by a bifurcation curve of the combustion process, as shown in \cref{fig:Sshaped} in which the maximum temperature of the system is plotted for different Dahmköhler numbers. 
 
@@ -353,7 +353,7 @@ Note that the system of governing equations is not closed, because $\rho$, $\mu$
 
 The procedure described before for obtaining the equation for the mixture fraction $z$ leads to expressions that relate $z$ to the temperature $T$, mass fraction of the fuel $Y_F$ and the mass fraction of the oxidizer $Y_O$ as
 \begin{equation}
-	z = \frac{s Y_F -Y_O +Y_O^0}{sY_F^0+Y_O^0} = \frac{\frac{c_p}{Q}(T-T_O^0)+Y_F }{\frac{c_p}{Q}(T_F^0-T_O^0)+Y_F^0} = \frac{\frac{s c_p}{Q}(T-T_O^0)+Y_O-Y_O^0 }{\frac{sc_p}{Q}(T_F^0-T_O^0)+Y_O^0}. \label{eq:AllMFRelationships}
+	\gls{MixtureFraction} = \frac{s Y_F -Y_O +Y_O^0}{sY_F^0+Y_O^0} = \frac{\frac{c_p}{Q}(T-T_O^0)+Y_F }{\frac{c_p}{Q}(T_F^0-T_O^0)+Y_F^0} = \frac{\frac{s c_p}{Q}(T-T_O^0)+Y_O-Y_O^0 }{\frac{sc_p}{Q}(T_F^0-T_O^0)+Y_O^0}. \label{eq:AllMFRelationships}
 \end{equation}
 
 In the case of an infinitely fast chemical reaction, fuel and oxidizer cannot coexist. On one side of this sheet only oxidizer is found, and on the other side only fuel. The exact position of the flame sheet can be determined  using \cref{eq:AllMFRelationships} by the location of the points where the reactant mass fractions $Y_F$ and $Y_O$ are zero, that is, the points where the mixture fraction $z = z_{st}$, with

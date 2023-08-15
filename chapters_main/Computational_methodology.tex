@@ -17,7 +17,7 @@ The XNSEC solver is mainly focused on the simulation of combustion using the low
  
 The fully coupled solution of the equations is realized by means of various algorithmic components
 \begin{itemize}
-\item A timestepping framework based on a \gls{BDF} scheme, described in \textcite{kummer2018}.
+\item A time-stepping framework based on a \gls{BDF} scheme, described in \textcite{kummer2018}.
 \item A Newton-Dogleg method for the solution of nonlinear problems. The Dogleg globalization increases the likelihood of finding a convergent solution even in cases where no adequate initial estimate is available. An increased computational efficiency is archived by an special method for the calculation of the Jacobian matrix. The algorithm is described in \cref{sec:Newton}
 \item A homotopy continuation scheme that allows solving highly nonlinear problems by generating a series of convergent solutions. This algorithm is described in \cref{sec:HomotopyMethod}.
 \item  The solution of the flame-sheet problem for initialization of a fully coupled steady-state finite-reaction rate system. The strategy is presented in \cref{ssec:MethodCombustion}
@@ -91,7 +91,7 @@ Inserting \cref{eq:LinearForm} and  \cref{eq:JacMatrix2} into \cref{eq:Linearize
 \begin{equation}
 	\underbrace{A(\myvector{U}_n)(\myvector{U}_n+\myvector{s}'_n) - \myvector{b}}_{\text{Picard system}} + A'(\myvector{U}_n)\myvector{U}_n\myvector{s}'_n = 0 \label{eq:PicardNewtonComp}
 \end{equation}
-This makes the relationship between the two algorithms apparent, and shows that by usind Picard iterations some terms are being neglected from the iteration scheme. Unlike Picard's method of iterations, Newton's method requires additionally the evaluation of the Jacobi matrix, which must be approximated in some way. This section shows three strategies that were used throughout the development of this work for that purpose.
+This makes the relationship between the two algorithms apparent, and shows that by using Picard iterations some terms are being neglected from the iteration scheme. Unlike Picard's method of iterations, Newton's method requires additionally the evaluation of the Jacobi matrix, which must be approximated in some way. This section shows three strategies that were used throughout the development of this work for that purpose.
 
 \subsubsection{Ad-hoc linearization of the Jacobian matrix}
 For some problems, particularly saddle-point problems, the Jacobian $A$' can be approximated fairly well by simply evaluating the operator matrix. Thus, the system to be solved for Newton Iteration yields

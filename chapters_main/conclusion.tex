@@ -11,13 +11,7 @@ The fully coupled method proved to be adequate and very time-efficient in findin
 
 Additionally, as a convergence supporting strategy, an homotopy method is included in the structure of the nonlinear solver, which allows for solving highly nonlinear systems in a fully automatic manner. This type of algorithm is useful to solve steady state systems where some parameter makes the solution of the system difficult, as is, for example, the simulation of the square heated cavity problem for high Rayleigh numbers. The homotopy algorithm shown here is shown to be a robust and automatic strategy that allows finding solutions to such problems without the need for user intervention.
 
-For reactive test cases, the concept of the flame sheet estimate is demonstrated to be a useful and computationally inexpensive way to initialize steady-state calculation of combustion systems with finite reaction rate. Using this strategy avoids the need for ignition simulation, usually performed by means of timestepping or pseudo-timestepping techniques, which can be very time consuming.
-
-%TODO decir que el tiempo de calculo para los casos estacionarios es comparativamente bajo. Incluso para las simulaciones más complejas, la solución del sistema requería a lo más 15 Newton iterationen, las cuales si bien pueden ser comparativamente más computationally intensive, as when compared with other strategies which rely on pseudo timesteping algorithms. De todas formas, the low number of iterations results in low calculation times
-
-
-
-
+For reactive test cases, the concept of the flame sheet estimate is demonstrated to be a useful and computationally inexpensive way to initialize steady-state calculation of combustion systems with finite reaction rate. Using this strategy avoids the need for ignition simulation, usually performed by means of time-stepping or pseudo-time-stepping techniques, which can be very time consuming.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Future work}

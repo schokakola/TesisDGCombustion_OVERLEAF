@@ -150,7 +150,7 @@ abbreviate = true,				% Ob Aufl. oder Auflage im Literaturverzeichnis stehen sol
 
 %\addbibresource{bibliography.bib}
 
-\bibliography{bibliography5}
+\bibliography{bibliography3}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -405,6 +405,7 @@ noabbrev
 %\usepackage{longtable} % Mehrseitige Tabellen
 %\usepackage{xltabular} % Mehrseitige Tabellen mit anpassarer Breite
 \usepackage{booktabs}   % Verbesserte Möglichkeiten für Tabellenlayout über horizontale Linien
+\usepackage{pdfpages}
 
 \crefalias{subequation}{equation}
 \newcommand{\mycomment}[1]{}
@@ -449,7 +450,8 @@ noabbrev
 \selectlanguage{ngerman}
 \maketitle
 \selectlanguage{USenglish}
-
+\renewcommand*{\SignatureBox}[2][5cm]{\parbox[t]{#1}{\centering\includegraphics[scale=0.06]{CV/signature.png}\vspace{-.4cm}
+		\rule{\linewidth}{.3pt}\\\makebox[0pt][c]{#2}}}
 \affidavit
 
 \cleardoublepage
@@ -518,26 +520,20 @@ noabbrev
 \input{chapters_main/results}
 \cleardoublepage
 \input{chapters_main/conclusion}
-
-
 \cleardoublepage
 \printbibliography[heading=bibintoc]
 \label{bibref}
-
 \cleardoublepage
 \appendix
-%\input{chapters_others/AppendixMatlabCode}
-
-%\cleardoublepage
-%\phantomsection
-%\addcontentsline{toc}{chapter}{Curriculum vitae}
-%\input{chapters_others/cv}
-
+%%%%%%%%%%%\input{chapters_others/AppendixMatlabCode}
+\cleardoublepage
+\phantomsection
+\newpage
+\addcontentsline{toc}{chapter}{Curriculum vitae}
+\includepdf[pages=-]{CV/CVDeutsch.pdf}
  
 
- 
 
-%$$$: Todos creo que listos?
 
 \end{document}
 
